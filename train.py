@@ -4,7 +4,7 @@ from datetime import datetime
 from pytz import all_timezones
 
 from config import img_height, img_width, learning_rate, batch_size, num_classes
-from models import model1, model2
+from models import *
 
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 AUTOTUNE = tf.data.AUTOTUNE
@@ -15,6 +15,7 @@ train_ds = tf.keras.utils.image_dataset_from_directory(
   validation_split=0.2,
   subset="training",
   seed=123,
+  color_mode='rgb',
   image_size=(img_height, img_width),
   batch_size=10)
 
@@ -23,6 +24,7 @@ val_ds = tf.keras.utils.image_dataset_from_directory(
   validation_split=0.2,
   subset="validation",
   seed=123,
+  color_mode='rgb',
   image_size=(img_height, img_width),
   batch_size=batch_size)
 
