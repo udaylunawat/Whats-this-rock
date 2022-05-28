@@ -1,5 +1,6 @@
 import tensorflow as tf
 from config import img_height, img_width, learning_rate, batch_size, num_classes
+from tensorflow.keras.applications import MobileNetV2
 
 def model1():
   inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
@@ -67,3 +68,22 @@ def model2(img_height, img_width):
             tf.keras.layers.Dense(4, activation = 'softmax'),
             tf.keras.layers.Dense(num_classes)
             ])
+
+def model3():
+
+  mobilenet_pretrained = MobileNetV2(
+      input_shape=(160, 160, 3), weights="imagenet", include_top=False
+  )
+
+  # Freeze layers
+  mobilenet_pretrained.trainable = False
+
+  # Add untrained final layers
+  model = tf.keras.Sequential(
+      [
+          mobilenet_pretrained,
+          tf.keras.layers.GlobalAveragePooling2D(),
+          tf.keras.layers.Dense(1024),
+          tf.keras.layers.Dense(num_classes, activation="softmax"),
+      ]
+  )
