@@ -1,6 +1,6 @@
 python-telegram-bot
-opencv-python-headless
+opencv-python
 numpy
-tensorflow-cpu
+tensorflow
 kaggle
 pandas

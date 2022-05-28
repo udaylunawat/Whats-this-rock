@@ -1,0 +1,6 @@
+python-telegram-bot
+opencv-python-headless==4.1.2.30
+numpy
+tensorflow-cpu
+kaggle
+pandas
