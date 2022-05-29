@@ -183,7 +183,7 @@ def train_efficientnet(args):
                                                       x_col="image_path",
                                                       y_col='classes',
                                                       batch_size=args.batch_size,
-                                                      validation_split = None,
+                                                      validation_split=None,
                                                       seed=42,
                                                       shuffle=False,
                                                       color_mode = 'rgb',
@@ -198,12 +198,12 @@ def train_efficientnet(args):
     # Save best checkpoints and stop early to save time
     callbacks = [
         # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-        EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
+        # EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
         WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
     ]
     model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
 
-    #Confution Matrix and Classification Report
+    # Confution Matrix and Classification Report
     Y_pred = model.predict(val_generator, len(val_generator) // args.batch_size+1)
     y_pred = np.argmax(Y_pred, axis=1)
 
