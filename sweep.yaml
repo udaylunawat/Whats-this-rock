@@ -13,6 +13,10 @@ parameters:
     distribution: uniform
     max: 0.01
     min: 5e-05
+  sample_size:
+    distribution: uniform
+    max: 1.0
+    min: 0.1
   optimizer:
     distribution: categorical
     values:

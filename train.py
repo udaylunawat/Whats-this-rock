@@ -42,6 +42,7 @@ else:
     import pandas as pd
     from utilities import get_stratified_dataset_partitions_pd
     from tensorflow.keras.preprocessing.image import ImageDataGenerator
+    from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 
     data = pd.read_csv('training_data.csv', index_col=0)
     data = data.sample(frac=config.sample_size).reset_index(drop=True)
@@ -139,6 +140,6 @@ else:
                   metrics=[tfa.metrics.F1Score(num_classes=num_classes, average='weighted', threshold=0.5),
                            'accuracy'])
 callbacks = [  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-             EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
+             EarlyStopping(monitor="val_f1_score", min_delta=0.05, patience=10),
              WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)]
 model.fit(train_generator, validation_data=val_generator, epochs=config.epochs, callbacks=callbacks)
