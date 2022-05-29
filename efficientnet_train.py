@@ -148,7 +148,7 @@ def train_efficientnet(args):
                                  rotation_range=0,
                                  rescale=1. / 255.)
 
-    train_generator = datagen.flow_from_dataframe(dataframe=val_df,
+    train_generator = datagen.flow_from_dataframe(dataframe=train_df,
                                                   directory="./",
                                                   x_col="image_path",
                                                   y_col="classes",
@@ -160,7 +160,7 @@ def train_efficientnet(args):
                                                   class_mode="categorical",
                                                   target_size=(args.size, args.size))
 
-    val_generator = datagen.flow_from_dataframe(dataframe=train_df,
+    val_generator = datagen.flow_from_dataframe(dataframe=val_df,
                                                 directory="./",
                                                 x_col="image_path",
                                                 y_col="classes",
