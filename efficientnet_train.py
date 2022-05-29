@@ -164,7 +164,7 @@ def train_efficientnet(args):
     callbacks = [
         ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
         EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
-        WandbCallback(data_type="image", labels=train_ds.class_indices.keys(), generator=val_ds)
+        WandbCallback(data_type="image", labels=list(train_ds.class_indices.keys()), generator=val_ds)
     ]
     model.fit(train_ds, validation_data=val_ds, epochs=args.epochs, callbacks=callbacks)
 
