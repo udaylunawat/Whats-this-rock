@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 
 """
-Trains a simple cnn on the fashion mnist dataset.
+Trains an EfficientNet model on the given dataset.
 Deigned to show how to do a simple wandb integration with keras.
 """
 import argparse
 import os
+import numpy as np
 import pandas as pd
+
+from sklearn.metrics import classification_report
+
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
@@ -15,10 +19,12 @@ from tensorflow.keras.applications import EfficientNetV2B0
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras import backend as K
 import tensorflow_addons as tfa
+
 import wandb
 from wandb.keras import WandbCallback
 
 from utilities import get_stratified_dataset_partitions_pd
+import plot
 
 # default config/hyperparameter values
 # you can modify these below or via command line
@@ -28,25 +34,26 @@ PROJECT_NAME = "rock_classification"
 SAMPLE_SIZE = 0.1
 LEARNING_RATE = 0.00001
 BATCH_SIZE = 512
-DROPOUT = 0.2
 EPOCHS = 50
 TRAINABLE = False
-L1_SIZE = 16
-L2_SIZE = 32
-HIDDEN_LAYER_SIZE = 128
-DECAY = 1e-6
-MOMENTUM = 0.9
+# DROPOUT = 0.2
+# L1_SIZE = 16
+# L2_SIZE = 32
+# HIDDEN_LAYER_SIZE = 128
+# DECAY = 1e-6
+# MOMENTUM = 0.9
 MODEL_NOTES = f'''
 EfficientNetV2B0
-f1 macro, {SAMPLE_SIZE}% sample
+f1 macro, {SAMPLE_SIZE}% sample_size
 efficientnet_pretrained.trainable = True
 '''
 
 # dataset config
-img_width = 28
-img_height = 28
+img_width = 224
+img_height = 224
 
 num_classes = 4
+
 
 def split_and_stratify_data(args):
     data = pd.read_csv('training_data.csv', index_col=0)
@@ -56,7 +63,7 @@ def split_and_stratify_data(args):
     return train_df, val_df, test_df
 
 
-def build_model(num_classes):
+def build_model(args, num_classes):
     """ Construct a simple categorical CNN following the Keras tutorial """
     if K.image_data_format() == 'channels_first':
         input_shape = (3, args.size, args.size)
@@ -96,7 +103,8 @@ def build_model(num_classes):
 
 def train_efficientnet(args):
     # initialize wandb logging to your project
-    wandb.init(project=args.project_name, notes=args.notes)
+    run = wandb.init(project=args.project_name, notes=args.notes)
+    # config = wandb.config
     # log all experimental args to wandb
     wandb.config.update(args)
 
@@ -113,61 +121,87 @@ def train_efficientnet(args):
     #                              rescale=args['aug_rescale'])
 
     datagen = ImageDataGenerator(horizontal_flip=True,
+                                 featurewise_center=True,
+                                 featurewise_std_normalization=True,
                                  validation_split=0.2,
                                  fill_mode="nearest",
                                  zoom_range=0,
-                                 brightness_range=[0.4,1.5],
+                                 brightness_range=[0.4, 1.5],
                                  width_shift_range=0.2,
                                  height_shift_range=0.2,
                                  rotation_range=45,
-                                 rescale=1./255.)
+                                 rescale=1. / 255.)
 
-    train_ds = datagen.flow_from_dataframe(dataframe=train_df,
-                                           directory="./",
-                                           x_col="image_path",
-                                           y_col="classes",
-                                           subset="training",
-                                           batch_size=args.batch_size,
-                                           seed=42,
-                                           color_mode='rgb',
-                                           shuffle=True,
-                                           class_mode="categorical",
-                                           target_size=(args.size, args.size))
+    train_generator = datagen.flow_from_dataframe(dataframe=train_df,
+                                                  directory="./",
+                                                  x_col="image_path",
+                                                  y_col="classes",
+                                                  subset="training",
+                                                  batch_size=args.batch_size,
+                                                  seed=42,
+                                                  color_mode='rgb',
+                                                  shuffle=True,
+                                                  class_mode="categorical",
+                                                  target_size=(args.size, args.size))
 
-    val_ds = datagen.flow_from_dataframe(dataframe=train_df,
-                                         directory="./",
-                                         x_col="image_path",
-                                         y_col="classes",
-                                         subset="validation",
-                                         batch_size=args.batch_size,
-                                         seed=42,
-                                         color_mode='rgb',
-                                         shuffle=True,
-                                         class_mode="categorical",
-                                         target_size=(args.size, args.size))
-
-    test_datagen = ImageDataGenerator(rescale=1. / 255.)
-
-    test_ds = test_datagen.flow_from_dataframe(dataframe=test_df,
+    val_generator = datagen.flow_from_dataframe(dataframe=train_df,
                                                 directory="./",
                                                 x_col="image_path",
-                                                y_col='classes',
+                                                y_col="classes",
+                                                subset="validation",
                                                 batch_size=args.batch_size,
                                                 seed=42,
-                                                shuffle=False,
-                                                class_mode=None,
+                                                color_mode='rgb',
+                                                shuffle=True,
+                                                class_mode="categorical",
                                                 target_size=(args.size, args.size))
-    num_classes = len(train_ds.class_indices)
 
-    model = build_model(num_classes)
+    test_datagen = ImageDataGenerator(featurewise_center=True,
+                                      featurewise_std_normalization=True,
+                                      rescale=1. / 255.)
+
+    test_generator = test_datagen.flow_from_dataframe(dataframe=test_df,
+                                                      directory="./",
+                                                      x_col="image_path",
+                                                      y_col='classes',
+                                                      batch_size=1,
+                                                      seed=42,
+                                                      shuffle=False,
+                                                      class_mode=None,
+                                                      target_size=(args.size, args.size))
+
+    num_classes = len(train_generator.class_indices)
+    labels = list(train_generator.class_indices.keys())
+
+    model = build_model(args, num_classes)
     # Save best checkpoints and stop early to save time
     callbacks = [
         ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
         EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
-        WandbCallback(input_type="image", labels=list(train_ds.class_indices.keys()), generator=val_ds)
+        WandbCallback(input_type="image", labels=labels, generator=val_generator)
     ]
-    model.fit(train_ds, validation_data=val_ds, epochs=args.epochs, callbacks=callbacks)
+    model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
 
+    scores = model.evaluate_generator(generator=test_generator, steps=755 // args.batch_size)
+    print('Accuracy: ', scores[1])
+
+    filenames = test_generator.filenames
+    nb_samples = len(filenames)
+    pred = model.predict_generator(test_generator, steps=nb_samples, verbose=1)
+    predicted_class_indices = np.argmax(pred, axis=1)
+    test_acc = sum([predicted_class_indices[i] == test_generator.classes[i] for i in range(len(test_df))]) / len(test_df)
+    # Confution Matrix and Classification Report
+    # print('Confusion Matrix')
+    # print(confusion_matrix(test_generator.classes, predicted_class_indices))
+
+    confusion_matrix = plot.confusion_matrix(labels, test_generator.classes, predicted_class_indices)
+    wandb.log({"test_accuracy": test_acc, "Confusion Matrix": confusion_matrix})
+
+    cl_report = classification_report(test_generator.classes, predicted_class_indices)
+    print('Classification Report')
+    print(cl_report)
+    wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
+    run.finish()
     # save trained model
     # model.save(args.model_name + ".h5")
 
@@ -175,46 +209,52 @@ def train_efficientnet(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-      "-m",
-      "--notes",
-      type=str,
-      default=MODEL_NOTES,
-      help="Notes about the training run")
+        "-m",
+        "--notes",
+        type=str,
+        default=MODEL_NOTES,
+        help="Notes about the training run")
     parser.add_argument(
-      "-p",
-      "--project_name",
-      type=str,
-      default=PROJECT_NAME,
-      help="Main project name")
+        "-p",
+        "--project_name",
+        type=str,
+        default=PROJECT_NAME,
+        help="Main project name")
     parser.add_argument(
-      "-sample",
-      "--sample_size",
-      type=float,
-      default=SAMPLE_SIZE,
-      help="sample_size")
+        "-sample",
+        "--sample_size",
+        type=float,
+        default=SAMPLE_SIZE,
+        help="sample_size")
     parser.add_argument(
-      "-b",
-      "--batch_size",
-      type=int,
-      default=BATCH_SIZE,
-      help="batch_size")
+        "-lr",
+        "--learning_rate",
+        type=float,
+        default=LEARNING_RATE,
+        help="learning rate")
+    parser.add_argument(
+        "-b",
+        "--batch_size",
+        type=int,
+        default=BATCH_SIZE,
+        help="batch_size")
+    parser.add_argument(
+        "-e",
+        "--epochs",
+        type=int,
+        default=EPOCHS,
+        help="number of training epochs (passes through full training data)")
+    parser.add_argument(
+        "-size",
+        "--size",
+        type=int,
+        default=224,
+        help="Image size")
     # parser.add_argument(
     #   "--dropout",
     #   type=float,
     #   default=DROPOUT,
     #   help="dropout before dense layers")
-    parser.add_argument(
-      "-e",
-      "--epochs",
-      type=int,
-      default=EPOCHS,
-      help="number of training epochs (passes through full training data)")
-    parser.add_argument(
-      "-size",
-      "--size",
-      type=int,
-      default=32,
-      help="Image size")
     #   parser.add_argument(
     #     "--hidden_layer_size",
     #     type=int,
@@ -232,12 +272,6 @@ if __name__ == "__main__":
     #     type=int,
     #     default=L2_SIZE,
     #     help="layer 2 size")
-    parser.add_argument(
-      "-lr",
-      "--learning_rate",
-      type=float,
-      default=LEARNING_RATE,
-      help="learning rate")
     #   parser.add_argument(
     #     "--decay",
     #     type=float,
@@ -249,20 +283,20 @@ if __name__ == "__main__":
     #     default=MOMENTUM,
     #     help="learning rate momentum")
     parser.add_argument(
-      "-q",
-      "--dry_run",
-      action="store_true",
-      help="Dry run (do not log to wandb)")
+        "-q",
+        "--dry_run",
+        action="store_true",
+        help="Dry run (do not log to wandb)")
     parser.add_argument(
-      "-trainable",
-      "--pretrained_trainable",
-      action="store_true",
-      default=TRAINABLE,
-      help="Train the pretrained model")
+        "-trainable",
+        "--pretrained_trainable",
+        action="store_true",
+        default=TRAINABLE,
+        help="Train the pretrained model")
 
     args = parser.parse_args()
 
     # easier testing--don't log to wandb if dry run is set
     if args.dry_run:
-      os.environ['WANDB_MODE'] = 'dryrun'
+        os.environ['WANDB_MODE'] = 'dryrun'
     train_efficientnet(args)
