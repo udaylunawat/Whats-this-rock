@@ -1,5 +1,5 @@
 # Whats-this-rock
-They're not Rocks, They're Minerals Marie!
+Telegram Rock Classification Bot!
 
 ![God Damn it, Marie!](imgs/marie.jpg "Title")
 
