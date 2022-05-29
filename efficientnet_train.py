@@ -8,8 +8,12 @@ import argparse
 import os
 import numpy as np
 import pandas as pd
+import random
 
 from sklearn.metrics import classification_report
+
+# *IMPORANT*: Have to do this line *before* importing tensorflow
+os.environ['PYTHONHASHSEED'] = str(1)
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
@@ -18,6 +22,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.applications import EfficientNetV2B0
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras import backend as K
+from tensorflow.random import set_seed
 import tensorflow_addons as tfa
 
 import wandb
@@ -25,6 +30,17 @@ from wandb.keras import WandbCallback
 
 from utilities import get_stratified_dataset_partitions_pd
 import plot
+
+
+def reset_random_seeds():
+    os.environ['PYTHONHASHSEED']=str(1)
+    set_seed(1)
+    np.random.seed(1)
+    random.seed(1)
+
+
+#make some random data
+reset_random_seeds()
 
 # default config/hyperparameter values
 # you can modify these below or via command line
@@ -121,18 +137,18 @@ def train_efficientnet(args):
     #                              rescale=args['aug_rescale'])
 
     datagen = ImageDataGenerator(horizontal_flip=True,
-                                 featurewise_center=True,
-                                 featurewise_std_normalization=True,
-                                 validation_split=0.2,
+                                 featurewise_center=False,
+                                 featurewise_std_normalization=False,
+                                 validation_split=0,
                                  fill_mode="nearest",
                                  zoom_range=0,
                                  brightness_range=[0.4, 1.5],
-                                 width_shift_range=0.2,
-                                 height_shift_range=0.2,
-                                 rotation_range=45,
+                                 width_shift_range=0,
+                                 height_shift_range=0,
+                                 rotation_range=0,
                                  rescale=1. / 255.)
 
-    train_generator = datagen.flow_from_dataframe(dataframe=train_df,
+    train_generator = datagen.flow_from_dataframe(dataframe=val_df,
                                                   directory="./",
                                                   x_col="image_path",
                                                   y_col="classes",
@@ -156,8 +172,8 @@ def train_efficientnet(args):
                                                 class_mode="categorical",
                                                 target_size=(args.size, args.size))
 
-    test_datagen = ImageDataGenerator(featurewise_center=True,
-                                      featurewise_std_normalization=True,
+    test_datagen = ImageDataGenerator(featurewise_center=False,
+                                      featurewise_std_normalization=False,
                                       rescale=1. / 255.)
 
     test_generator = test_datagen.flow_from_dataframe(dataframe=test_df,
@@ -182,8 +198,8 @@ def train_efficientnet(args):
     ]
     model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
 
-    scores = model.evaluate_generator(generator=test_generator, steps=755 // args.batch_size)
-    print('Accuracy: ', scores[1])
+    scores = model.evaluate_generator(generator=test_generator)
+    print('Accuracy: ', scores)
 
     filenames = test_generator.filenames
     nb_samples = len(filenames)
