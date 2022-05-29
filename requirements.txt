@@ -5,3 +5,4 @@ kaggle
 pandas
 wandb
 tensorflow-addons
+plotly
