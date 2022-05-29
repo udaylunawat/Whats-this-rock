@@ -20,7 +20,8 @@ defaults = dict(learning_rate=0.01,
                 pretrained_trainable=False,
                 batch_size=64,
                 optimizer='adam',
-                sample_size=0.2)
+                sample_size=0.2,
+                f1_scoring='macro')
 
 resume = sys.argv[-1] == "--resume"
 wandb.init(config=defaults, resume=resume)
@@ -50,13 +51,13 @@ else:
     train_df, val_df, test_df = get_stratified_dataset_partitions_pd(data, 0.8, 0.1, 0.1)
     train_df = pd.concat([train_df, val_df])
 
-    datagen = ImageDataGenerator(horizontal_flip=True,
+    datagen = ImageDataGenerator(horizontal_flip=False,
                                  featurewise_center=False,
                                  featurewise_std_normalization=False,
                                  validation_split=0.2,
                                  fill_mode="nearest",
-                                 zoom_range=0,
-                                 brightness_range=[0.4, 1.5],
+                                 zoom_range=[0.5, 1.0],
+                                 brightness_range=[1.0],
                                  width_shift_range=0,
                                  height_shift_range=0,
                                  rotation_range=0,
@@ -137,7 +138,7 @@ else:
     # enable logging for validation examples
     model.compile(optimizer=opt,
                   loss="categorical_crossentropy",
-                  metrics=[tfa.metrics.F1Score(num_classes=num_classes, average='weighted', threshold=0.5),
+                  metrics=[tfa.metrics.F1Score(num_classes=num_classes, average=config.f1_scoring, threshold=0.5),
                            'accuracy'])
 callbacks = [  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
              EarlyStopping(monitor="val_f1_score", min_delta=0.05, patience=10),

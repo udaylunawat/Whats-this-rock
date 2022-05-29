@@ -1,25 +1,22 @@
 method: bayes
 metric: validation_loss
   goal: minimize
-  name: Relative Time (Process)
 parameters:
   batch_size:
-    distribution: int_uniform
-    max: 1024
-    min: 32
+    values: [32, 64, 256, 512]
   epochs:
-    value: 30
-  lr:
-    distribution: uniform
-    max: 0.01
-    min: 5e-05
+    value: 100
+  learning_rate:
+    values: [0.01, 0.001, 0.0001, 0.00001]
   sample_size:
-    distribution: uniform
-    max: 1.0
-    min: 0.1
+    value: 0.2
   optimizer:
     distribution: categorical
     values:
-      - RMS
       - adam
+  f1_scoring:
+    distribution: categorical
+    values:
+      - macro
+      - weighted
 program: train.py
