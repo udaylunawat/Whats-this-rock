@@ -114,12 +114,12 @@ def train_efficientnet(args):
 
     datagen = ImageDataGenerator(horizontal_flip=True,
                                  validation_split=0.2,
-                                #  fill_mode=args['aug_fill_mode'],
-                                #  zoom_range=args['aug_zoom_range'],
-                                #  brightness_range=args['aug_brightness_range'],
-                                #  width_shift_range=args['aug_width_shift_range'],
-                                #  height_shift_range=args['aug_height_shift_range'],
-                                #  rotation_range=args['aug_rotation_range'],
+                                 fill_mode="nearest",
+                                 zoom_range=0,
+                                 brightness_range=[0.4,1.5],
+                                 width_shift_range=0.2,
+                                 height_shift_range=0.2,
+                                 rotation_range=45,
                                  rescale=1./255.)
 
     train_ds = datagen.flow_from_dataframe(dataframe=train_df,
@@ -164,7 +164,7 @@ def train_efficientnet(args):
     callbacks = [
         ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
         EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
-        WandbCallback(data_type="image", labels=list(train_ds.class_indices.keys()), generator=val_ds)
+        WandbCallback(input_type="image", labels=list(train_ds.class_indices.keys()), generator=val_ds)
     ]
     model.fit(train_ds, validation_data=val_ds, epochs=args.epochs, callbacks=callbacks)
 
