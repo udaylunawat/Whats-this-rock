@@ -4,16 +4,17 @@
 Trains an EfficientNet model on the given dataset.
 Deigned to show how to do a simple wandb integration with keras.
 """
-import argparse
+# *IMPORANT*: Have to do this line *before* importing tensorflow
 import os
+os.environ['PYTHONHASHSEED'] = str(1)
+
+import argparse
 import numpy as np
 import pandas as pd
 import random
+import matplotlib.pyplot as plt
 
 from sklearn.metrics import classification_report
-
-# *IMPORANT*: Have to do this line *before* importing tensorflow
-os.environ['PYTHONHASHSEED'] = str(1)
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
@@ -33,13 +34,13 @@ import plot
 
 
 def reset_random_seeds():
-    os.environ['PYTHONHASHSEED']=str(1)
+    os.environ['PYTHONHASHSEED'] = str(1)
     set_seed(1)
     np.random.seed(1)
     random.seed(1)
 
 
-#make some random data
+# make some random data
 reset_random_seeds()
 
 # default config/hyperparameter values
@@ -125,6 +126,7 @@ def train_efficientnet(args):
     wandb.config.update(args)
 
     train_df, val_df, test_df = split_and_stratify_data(args)
+    train_df = pd.concat([train_df, val_df])
 
     # datagen = ImageDataGenerator(horizontal_flip=args['aug_horizontal_flip'],
     #                              validation_split=args['aug_validation_split'],
@@ -139,7 +141,7 @@ def train_efficientnet(args):
     datagen = ImageDataGenerator(horizontal_flip=True,
                                  featurewise_center=False,
                                  featurewise_std_normalization=False,
-                                 validation_split=0,
+                                 validation_split=0.2,
                                  fill_mode="nearest",
                                  zoom_range=0,
                                  brightness_range=[0.4, 1.5],
@@ -193,34 +195,59 @@ def train_efficientnet(args):
 
     # Save best checkpoints and stop early to save time
     callbacks = [
-        ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
+        # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
         EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
         WandbCallback(input_type="image", labels=labels, generator=val_generator)
     ]
     model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
 
-    scores = model.evaluate_generator(generator=test_generator)
-    print('Accuracy: ', scores)
+    def num_steps_per_epoch(data_generator, batch_size):
+        if data_generator.n % batch_size == 0:
+            return data_generator.n // batch_size
+        else:
+            return data_generator.n // batch_size + 1
 
-    filenames = test_generator.filenames
-    nb_samples = len(filenames)
-    pred = model.predict_generator(test_generator, steps=nb_samples, verbose=1)
-    predicted_class_indices = np.argmax(pred, axis=1)
-    test_acc = sum([predicted_class_indices[i] == test_generator.classes[i] for i in range(len(test_df))]) / len(test_df)
-    # Confution Matrix and Classification Report
-    # print('Confusion Matrix')
-    # print(confusion_matrix(test_generator.classes, predicted_class_indices))
+    train_steps = num_steps_per_epoch(train_generator, args.batch_size)
+    valid_steps = num_steps_per_epoch(val_generator, args.batch_size)
 
-    confusion_matrix = plot.confusion_matrix(labels, test_generator.classes, predicted_class_indices)
-    wandb.log({"test_accuracy": test_acc, "Confusion Matrix": confusion_matrix})
+    test_step = num_steps_per_epoch(test_generator, args.batch_size)
 
-    cl_report = classification_report(test_generator.classes, predicted_class_indices)
-    print('Classification Report')
-    print(cl_report)
-    wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
+    y_pred = model.predict(test_generator, steps=test_step).argmax(-1)
+    # y_pred = np.argmax(model.predict(valid_generator, steps = valid_steps), axis = 1)
+
+    # confusion matrix
+    from sklearn.metrics import accuracy_score, confusion_matrix
+    import seaborn as sns
+    print(f"accuracy_score: {accuracy_score(test_generator.classes, y_pred):.3f}")
+    confusion = confusion_matrix(test_generator.classes, y_pred)
+    plt.figure(figsize=(5, 5))
+    sns.heatmap(confusion_matrix(test_generator.classes, y_pred),
+                cmap="Blues", annot=True, fmt="d", cbar=False,
+                xticklabels=[0, 1], yticklabels=[0, 1])
+    plt.title("Confusion Matrix")
+    plt.show()
+
+    # scores = model.evaluate_generator(generator=test_generator)
+    # print('Accuracy: ', scores)
+
+    # filenames = test_generator.filenames
+    # nb_samples = len(filenames)
+    # pred = model.predict_generator(test_generator, steps=nb_samples, verbose=1)
+    # predicted_class_indices = np.argmax(pred, axis=1)
+    # test_acc = sum([predicted_class_indices[i] == test_generator.classes[i] for i in range(len(test_df))]) / len(test_df)
+    # # Confution Matrix and Classification Report
+    # # print('Confusion Matrix')
+    # # print(confusion_matrix(test_generator.classes, predicted_class_indices))
+
+    # confusion_matrix = plot.confusion_matrix(labels, test_generator.classes, predicted_class_indices)
+    # wandb.log({"test_accuracy": test_acc, "Confusion Matrix": confusion_matrix})
+
+    # cl_report = classification_report(test_generator.classes, predicted_class_indices)
+    # print('Classification Report')
+    # print(cl_report)
+    # wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
+
     run.finish()
-    # save trained model
-    # model.save(args.model_name + ".h5")
 
 
 if __name__ == "__main__":
