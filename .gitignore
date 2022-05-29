@@ -138,3 +138,4 @@ getting-started/*
 secrets.json
 kaggle.json
 *.h5
+.vscode
