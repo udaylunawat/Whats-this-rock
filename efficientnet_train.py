@@ -73,7 +73,7 @@ def build_model(num_classes):
 
     # Freeze layers
     efficientnet_pretrained.trainable = args.pretrained_trainable
-    num_classes = len(train_ds.class_indices)
+    num_classes = num_classes
     # Add untrained final layers
     model = Sequential(
         [
@@ -159,7 +159,7 @@ def train_efficientnet(args):
                                                 target_size=(args.size, args.size))
     num_classes = len(train_ds.class_indices)
 
-    build_model(num_classes)
+    model = build_model(num_classes)
     # Save best checkpoints and stop early to save time
     callbacks = [
         ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
