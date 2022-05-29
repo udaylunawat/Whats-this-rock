@@ -14,7 +14,7 @@ import pandas as pd
 import random
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
@@ -113,7 +113,7 @@ def build_model(args, num_classes):
     # enable logging for validation examples
     model.compile(optimizer=opt,
                   loss="categorical_crossentropy",
-                  metrics=[tfa.metrics.F1Score(num_classes=num_classes, average='macro', threshold=0.5),
+                  metrics=[tfa.metrics.F1Score(num_classes=num_classes, average='weighted', threshold=0.5),
                            'accuracy'])
     return model
 
@@ -182,9 +182,11 @@ def train_efficientnet(args):
                                                       directory="./",
                                                       x_col="image_path",
                                                       y_col='classes',
-                                                      batch_size=1,
+                                                      batch_size=args.batch_size,
+                                                      validation_split = None,
                                                       seed=42,
                                                       shuffle=False,
+                                                      color_mode = 'rgb',
                                                       class_mode=None,
                                                       target_size=(args.size, args.size))
 
@@ -197,56 +199,22 @@ def train_efficientnet(args):
     callbacks = [
         # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
         EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
-        WandbCallback(input_type="image", labels=labels, generator=val_generator)
+        WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
     ]
     model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
 
-    def num_steps_per_epoch(data_generator, batch_size):
-        if data_generator.n % batch_size == 0:
-            return data_generator.n // batch_size
-        else:
-            return data_generator.n // batch_size + 1
+    #Confution Matrix and Classification Report
+    Y_pred = model.predict(val_generator, len(val_generator) // args.batch_size+1)
+    y_pred = np.argmax(Y_pred, axis=1)
 
-    train_steps = num_steps_per_epoch(train_generator, args.batch_size)
-    valid_steps = num_steps_per_epoch(val_generator, args.batch_size)
+    print('Confusion Matrix with Validation data')
+    print(confusion_matrix(val_generator.classes, y_pred))
+    print('Classification Report')
+    cl_report = classification_report(val_generator.classes, y_pred, target_names=labels, output_dict=True)
+    print(pd.DataFrame(cl_report))
+    run.log({"Classification Report": pd.DataFrame(cl_report)})
 
-    test_step = num_steps_per_epoch(test_generator, args.batch_size)
-
-    y_pred = model.predict(test_generator, steps=test_step).argmax(-1)
-    # y_pred = np.argmax(model.predict(valid_generator, steps = valid_steps), axis = 1)
-
-    # confusion matrix
-    from sklearn.metrics import accuracy_score, confusion_matrix
-    import seaborn as sns
-    print(f"accuracy_score: {accuracy_score(test_generator.classes, y_pred):.3f}")
-    confusion = confusion_matrix(test_generator.classes, y_pred)
-    plt.figure(figsize=(5, 5))
-    sns.heatmap(confusion_matrix(test_generator.classes, y_pred),
-                cmap="Blues", annot=True, fmt="d", cbar=False,
-                xticklabels=[0, 1], yticklabels=[0, 1])
-    plt.title("Confusion Matrix")
-    plt.show()
-
-    # scores = model.evaluate_generator(generator=test_generator)
-    # print('Accuracy: ', scores)
-
-    # filenames = test_generator.filenames
-    # nb_samples = len(filenames)
-    # pred = model.predict_generator(test_generator, steps=nb_samples, verbose=1)
-    # predicted_class_indices = np.argmax(pred, axis=1)
-    # test_acc = sum([predicted_class_indices[i] == test_generator.classes[i] for i in range(len(test_df))]) / len(test_df)
-    # # Confution Matrix and Classification Report
-    # # print('Confusion Matrix')
-    # # print(confusion_matrix(test_generator.classes, predicted_class_indices))
-
-    # confusion_matrix = plot.confusion_matrix(labels, test_generator.classes, predicted_class_indices)
-    # wandb.log({"test_accuracy": test_acc, "Confusion Matrix": confusion_matrix})
-
-    # cl_report = classification_report(test_generator.classes, predicted_class_indices)
-    # print('Classification Report')
-    # print(cl_report)
-    # wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
-
+    wandb.sklearn.plot_confusion_matrix(val_generator.classes, y_pred, labels)
     run.finish()
 
 
