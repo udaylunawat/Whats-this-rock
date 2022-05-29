@@ -8,7 +8,6 @@ parameters:
     max: 1024
     min: 32
   epochs:
-    distribution: int_uniform
     value: 30
   lr:
     distribution: uniform
