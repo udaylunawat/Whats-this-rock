@@ -1,6 +1,7 @@
-python-telegram-bot
 opencv-python
 numpy
 tensorflow
 kaggle
 pandas
+wandb
+tensorflow-addons
