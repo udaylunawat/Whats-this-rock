@@ -211,7 +211,7 @@ if __name__ == "__main__":
       help="number of training epochs (passes through full training data)")
     parser.add_argument(
       "-size",
-      "--image_size",
+      "--size",
       type=int,
       default=32,
       help="Image size")
