@@ -59,9 +59,9 @@ def split_and_stratify_data(args):
 def build_model(num_classes):
     """ Construct a simple categorical CNN following the Keras tutorial """
     if K.image_data_format() == 'channels_first':
-        input_shape = (3, args.img_width, args.img_height)
+        input_shape = (3, args.size, args.size)
     else:
-        input_shape = (args.img_width, args.img_height, 3)
+        input_shape = (args.size, args.size, 3)
 
     efficientnet_pretrained = EfficientNetV2B0(
         include_top=False,
@@ -132,7 +132,7 @@ def train_efficientnet(args):
                                            color_mode='rgb',
                                            shuffle=True,
                                            class_mode="categorical",
-                                           target_size=(args.img_height, args.img_width))
+                                           target_size=(args.size, args.size))
 
     val_ds = datagen.flow_from_dataframe(dataframe=train_df,
                                          directory="./",
@@ -144,7 +144,7 @@ def train_efficientnet(args):
                                          color_mode='rgb',
                                          shuffle=True,
                                          class_mode="categorical",
-                                         target_size=(args.img_height, args.img_width))
+                                         target_size=(args.size, args.size))
 
     test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
@@ -156,7 +156,7 @@ def train_efficientnet(args):
                                                 seed=42,
                                                 shuffle=False,
                                                 class_mode=None,
-                                                target_size=(args.img_height, args.img_width))
+                                                target_size=(args.size, args.size))
     num_classes = len(train_ds.class_indices)
 
     build_model('adam', num_classes)
@@ -209,6 +209,12 @@ if __name__ == "__main__":
       type=int,
       default=EPOCHS,
       help="number of training epochs (passes through full training data)")
+    parser.add_argument(
+      "-size",
+      "--image_size",
+      type=int,
+      default=32,
+      help="Image size")
     #   parser.add_argument(
     #     "--hidden_layer_size",
     #     type=int,
