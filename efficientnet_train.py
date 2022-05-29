@@ -159,7 +159,7 @@ def train_efficientnet(args):
                                                 target_size=(args.size, args.size))
     num_classes = len(train_ds.class_indices)
 
-    build_model('adam', num_classes)
+    build_model(num_classes)
     # Save best checkpoints and stop early to save time
     callbacks = [
         ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
