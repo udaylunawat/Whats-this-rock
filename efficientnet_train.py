@@ -160,7 +160,7 @@ def train_efficientnet(args):
                                                   class_mode="categorical",
                                                   target_size=(args.size, args.size))
 
-    val_generator = datagen.flow_from_dataframe(dataframe=val_df,
+    val_generator = datagen.flow_from_dataframe(dataframe=train_df,
                                                 directory="./",
                                                 x_col="image_path",
                                                 y_col="classes",
@@ -190,6 +190,7 @@ def train_efficientnet(args):
     labels = list(train_generator.class_indices.keys())
 
     model = build_model(args, num_classes)
+
     # Save best checkpoints and stop early to save time
     callbacks = [
         ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
