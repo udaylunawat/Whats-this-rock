@@ -65,12 +65,6 @@ f1 macro, {SAMPLE_SIZE}% sample_size
 efficientnet_pretrained.trainable = True
 '''
 
-# dataset config
-img_width = 224
-img_height = 224
-
-num_classes = 4
-
 
 def split_and_stratify_data(args):
     data = pd.read_csv('training_data.csv', index_col=0)
@@ -97,7 +91,6 @@ def build_model(args, num_classes):
 
     # Freeze layers
     efficientnet_pretrained.trainable = args.pretrained_trainable
-    num_classes = num_classes
     # Add untrained final layers
     model = Sequential(
         [
