@@ -102,15 +102,25 @@ def train_efficientnet(args):
 
     train_df, val_df, test_df = split_and_stratify_data(args)
 
-    datagen = ImageDataGenerator(horizontal_flip=args['aug_horizontal_flip'],
-                                 validation_split=args['aug_validation_split'],
-                                 fill_mode=args['aug_fill_mode'],
-                                 zoom_range=args['aug_zoom_range'],
-                                 brightness_range=args['aug_brightness_range'],
-                                 width_shift_range=args['aug_width_shift_range'],
-                                 height_shift_range=args['aug_height_shift_range'],
-                                 rotation_range=args['aug_rotation_range'],
-                                 rescale=args['aug_rescale'])
+    # datagen = ImageDataGenerator(horizontal_flip=args['aug_horizontal_flip'],
+    #                              validation_split=args['aug_validation_split'],
+    #                              fill_mode=args['aug_fill_mode'],
+    #                              zoom_range=args['aug_zoom_range'],
+    #                              brightness_range=args['aug_brightness_range'],
+    #                              width_shift_range=args['aug_width_shift_range'],
+    #                              height_shift_range=args['aug_height_shift_range'],
+    #                              rotation_range=args['aug_rotation_range'],
+    #                              rescale=args['aug_rescale'])
+
+    datagen = ImageDataGenerator(horizontal_flip=True,
+                                 validation_split=0.2,
+                                #  fill_mode=args['aug_fill_mode'],
+                                #  zoom_range=args['aug_zoom_range'],
+                                #  brightness_range=args['aug_brightness_range'],
+                                #  width_shift_range=args['aug_width_shift_range'],
+                                #  height_shift_range=args['aug_height_shift_range'],
+                                #  rotation_range=args['aug_rotation_range'],
+                                 rescale=1./255.)
 
     train_ds = datagen.flow_from_dataframe(dataframe=train_df,
                                            directory="./",
