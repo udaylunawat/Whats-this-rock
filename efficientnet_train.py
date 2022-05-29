@@ -189,7 +189,7 @@ if __name__ == "__main__":
     parser.add_argument(
       "-sample",
       "--sample_size",
-      type=int,
+      type=float,
       default=SAMPLE_SIZE,
       help="sample_size")
     parser.add_argument(
@@ -198,11 +198,11 @@ if __name__ == "__main__":
       type=int,
       default=BATCH_SIZE,
       help="batch_size")
-    parser.add_argument(
-      "--dropout",
-      type=float,
-      default=DROPOUT,
-      help="dropout before dense layers")
+    # parser.add_argument(
+    #   "--dropout",
+    #   type=float,
+    #   default=DROPOUT,
+    #   help="dropout before dense layers")
     parser.add_argument(
       "-e",
       "--epochs",
