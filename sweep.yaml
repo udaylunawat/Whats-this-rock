@@ -1,0 +1,18 @@
+program: efficientnet_train.py
+method: bayes
+metric:
+  name: validation_loss
+  goal: minimize
+parameters:
+  learning_rate:
+    min: 0.0001
+    max: 0.1
+  optimizer:
+    values: ["adam", "sgd"]
+  epochs:
+    value: 30
+early_terminate:
+  type: hyperband
+  s: 2
+  eta: 3
+  max_iter: 27

@@ -1,6 +1,5 @@
-import tensorflow as tf
-from config import img_height, img_width, learning_rate, batch_size, num_classes
-from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Flatten
 
 def model1():
   inputs = tf.keras.layers.Input(shape=(img_height, img_width, 3))
@@ -68,6 +67,7 @@ def model2(img_height, img_width):
             tf.keras.layers.Dense(4, activation = 'softmax'),
             tf.keras.layers.Dense(num_classes)
             ])
+    return model
 
 def model3():
 
@@ -76,7 +76,7 @@ def model3():
   )
 
   # Freeze layers
-  mobilenet_pretrained.trainable = False
+  mobilenet_pretrained.trainable = True
 
   # Add untrained final layers
   model = tf.keras.Sequential(
@@ -88,13 +88,14 @@ def model3():
       ]
   )
 
+
 def baseline_model(IMG_SIZE, CHANNELS, OUTPUT):
-    input = Input(shape=(IMG_SIZE,IMG_SIZE,CHANNELS))
-    flt_1 = Flatten(input_shape=(IMG_SIZE, IMG_SIZE, CHANNELS))(input)
-    Dense_1 = Dense(128, activation="relu")(flt_1)
-    D_out_1 = Dropout(0.1)(Dense_1)
-    Dense_2 = Dense(64, activation="relu")(D_out_1)
-    output =  Dense(OUTPUT)(Dense_2)
-    model = Model(input, output)
+    input = tf.keras.layers.Input(shape=(IMG_SIZE,IMG_SIZE,CHANNELS))
+    flt_1 = tf.keras.layers.Flatten(input_shape=(IMG_SIZE, IMG_SIZE, CHANNELS))(input)
+    Dense_1 = tf.keras.layers.Dense(128, activation="relu")(flt_1)
+    D_out_1 = tf.keras.layers.Dropout(0.1)(Dense_1)
+    Dense_2 = tf.keras.layers.Dense(64, activation="relu")(D_out_1)
+    output =  tf.keras.layers.Dense(OUTPUT, activation="softmax")(Dense_2)
+    model = tf.keras.models.Model(input, output)
 
     return model
