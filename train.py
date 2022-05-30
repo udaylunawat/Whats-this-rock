@@ -51,6 +51,12 @@ def get_parser():
         default=PROJECT_NAME,
         help="Main project name")
     parser.add_argument(
+        "-m",
+        "--model",
+        type=str,
+        default=MODEL_NAME,
+        help="Model")
+    parser.add_argument(
         "-sample",
         "--sample_size",
         type=float,
@@ -80,12 +86,6 @@ def get_parser():
         type=int,
         default=224,
         help="Image size")
-    parser.add_argument(
-        "-m",
-        "--model",
-        type=str,
-        default=MODEL_NAME,
-        help="Model")
     # parser.add_argument(
     #   "--dropout",
     #   type=float,
@@ -208,16 +208,18 @@ def finetune(args, model):
                              initial_epoch=history.epoch[-1])
 
 
-def get_generators(config, train_data, val_data, test_data):
-    datagen = ImageDataGenerator(horizontal_flip=False, featurewise_center=False,
+def get_generators(config, train_data, test_data):
+    datagen = ImageDataGenerator(horizontal_flip=False,
+                                 featurewise_center=False,
                                  featurewise_std_normalization=False,
+                                 zca_whitening=config.zca_whitening,
                                  validation_split=0.2,
-                                 fill_mode="nearest",
+                                 fill_mode=config.fill_mode,
                                  zoom_range=config.zoom_range,
                                  # brightness_range=[1.0],
-                                 width_shift_range=0,
-                                 height_shift_range=0,
-                                 rotation_range=90,
+                                 width_shift_range=config.width_shift_range,
+                                 height_shift_range=config.height_shift_range,
+                                 rotation_range=config.rotation_range,
                                  rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(
@@ -280,7 +282,7 @@ reset_random_seeds()
 # https://github.com/wandb/examples/blob/master/examples/keras/keras-cnn-fashion/cnn_train.py
 
 PROJECT_NAME = "rock_classification"
-MODEL_NAME = "EfficientNet"
+MODEL_NAME = "mobilenet"
 SAMPLE_SIZE = 0.1
 LEARNING_RATE = 0.00001
 BATCH_SIZE = 64
@@ -323,10 +325,18 @@ if __name__ == "__main__":
         project=args.project_name,
         notes=args.notes,
         resume=resume)
-    wandb.config.update(args)
-    print(args)
+
     config = args
-    assert 1 == 2
+    config.optimizer = 'Adam'
+    config.f1_scoring = 'weighted'
+    config.zoom_range = [0.5, 1.0]
+    config.fill_mode = 'reflect'
+    config.width_shift_range = [0, 0.3]
+    config.height_shift_range = [0, 0.3]
+    config.rotation_range = 90
+    config.zca_whitening = True
+    wandb.config.update(config)
+
 
     # build model
     if wandb.run.resumed:
@@ -344,7 +354,7 @@ if __name__ == "__main__":
 
         if args.model == "efficientnet":
             model = get_efficientnet(config, num_classes)
-        elif args.model == "mobilenet":
+        else:
             model = get_mobilenet(config, num_classes)
 
     model = get_compiled_model(config, model)
