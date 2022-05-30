@@ -245,7 +245,7 @@ def finetune(config, model):
     epochs = 10
     callbacks = [
         # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-        EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
+        # EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
         WandbCallback(
             training_data=train_generator,
             validation_data=val_generator,
@@ -401,7 +401,7 @@ if __name__ == "__main__":
                  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
                  EarlyStopping(
         monitor="val_f1_score",
-        min_delta=0.005,
+        min_delta=0.05,
         patience=10,
         mode='max')
     ]
