@@ -55,7 +55,7 @@ else:
                                  validation_split=0.2,
                                  fill_mode="nearest",
                                  zoom_range=config.zoom_range,
-                                #  brightness_range=[1.0],
+                                 # brightness_range=[1.0],
                                  width_shift_range=0,
                                  height_shift_range=0,
                                  rotation_range=90,
@@ -109,7 +109,7 @@ else:
     else:
         input_shape = (config.size, config.size, 3)
 
-    efficientnet_pretrained = EfficientNetV2B0(
+    feature_extractor = EfficientNetV2B0(
         include_top=False,
         weights="imagenet",
         input_shape=input_shape,
@@ -118,13 +118,14 @@ else:
     )
 
     # Freeze layers
-    efficientnet_pretrained.trainable = config.pretrained_trainable
+    feature_extractor.trainable = config.pretrained_trainable
+
     num_classes = len(train_generator.class_indices)
     labels = list(train_generator.class_indices.keys())
     # Add untrained final layers
     model = Sequential(
         [
-            efficientnet_pretrained,
+            feature_extractor,
             GlobalAveragePooling2D(),
             Dense(1024),
             Dense(num_classes, activation="softmax"),
@@ -133,12 +134,12 @@ else:
 
     learning_rate = config.learning_rate     # 0.001
 
-    if config.optimizer=='Adam':
+    if config.optimizer == 'Adam':
         opt = Adam(learning_rate)
-    elif config.optimizer=='RMS':
+    elif config.optimizer == 'RMS':
         opt = RMSprop(lr=learning_rate, rho=0.9, epsilon=1e-08, decay=0.0)
-    elif config.optimizer=='SGD':
-        opt = SGD(learning_rate = learning_rate)
+    elif config.optimizer == 'SGD':
+        opt = SGD(learning_rate=learning_rate)
     else:
         opt = 'adam'    # native adam optimizer
 
@@ -147,7 +148,10 @@ else:
                   loss="categorical_crossentropy",
                   metrics=[tfa.metrics.F1Score(num_classes=num_classes, average=config.f1_scoring, threshold=0.5),
                            'accuracy'])
-callbacks = [  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
+    # Print The Summary of The Model
+    model.summary()
+
+callbacks = [#ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
              EarlyStopping(monitor="val_f1_score", min_delta=0.005, patience=10, mode='max'),
              WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)]
 model.fit(train_generator, validation_data=val_generator, epochs=config.epochs, callbacks=callbacks)
