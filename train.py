@@ -20,14 +20,12 @@ defaults = dict(learning_rate=0.01,
                 pretrained_trainable=False,
                 batch_size=64,
                 optimizer='adam',
-                sample_size=0.2,
-                f1_scoring='macro')
+                sample_size=0.4,
+                f1_scoring='weighted')
 
 resume = sys.argv[-1] == "--resume"
 wandb.init(config=defaults, resume=resume)
 config = wandb.config
-
-
 
 # build model
 if wandb.run.resumed:
@@ -37,7 +35,7 @@ if wandb.run.resumed:
 else:
     from tensorflow.keras import backend as K
     from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
-    from tensorflow.keras.optimizers import Adam
+    from tensorflow.keras.optimizers import Adam, RMSprop, SGD
     from tensorflow.keras.applications import EfficientNetV2B0
     import tensorflow_addons as tfa
     import pandas as pd
@@ -56,11 +54,11 @@ else:
                                  featurewise_std_normalization=False,
                                  validation_split=0.2,
                                  fill_mode="nearest",
-                                 zoom_range=[0.5, 1.0],
-                                 brightness_range=[1.0],
+                                 zoom_range=config.zoom_range,
+                                #  brightness_range=[1.0],
                                  width_shift_range=0,
                                  height_shift_range=0,
-                                 rotation_range=0,
+                                 rotation_range=90,
                                  rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(dataframe=train_df,
@@ -133,7 +131,16 @@ else:
         ]
     )
 
-    opt = config.optimizer
+    learning_rate = config.learning_rate     # 0.001
+
+    if config.optimizer=='Adam':
+        opt = Adam(learning_rate)
+    elif config.optimizer=='RMS':
+        opt = RMSprop(lr=learning_rate, rho=0.9, epsilon=1e-08, decay=0.0)
+    elif config.optimizer=='SGD':
+        opt = SGD(learning_rate = learning_rate)
+    else:
+        opt = 'adam'    # native adam optimizer
 
     # enable logging for validation examples
     model.compile(optimizer=opt,
@@ -141,6 +148,6 @@ else:
                   metrics=[tfa.metrics.F1Score(num_classes=num_classes, average=config.f1_scoring, threshold=0.5),
                            'accuracy'])
 callbacks = [  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-             EarlyStopping(monitor="val_f1_score", min_delta=0.05, patience=10),
+             EarlyStopping(monitor="val_f1_score", min_delta=0.005, patience=10, mode='max'),
              WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)]
 model.fit(train_generator, validation_data=val_generator, epochs=config.epochs, callbacks=callbacks)
