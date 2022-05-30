@@ -334,7 +334,7 @@ if __name__ == "__main__":
     config.width_shift_range = [0, 0.3]
     config.height_shift_range = [0, 0.3]
     config.rotation_range = 90
-    config.zca_whitening = True
+    config.zca_whitening = False
     wandb.config.update(config)
 
 
