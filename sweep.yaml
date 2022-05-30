@@ -27,11 +27,11 @@ parameters:
   zca_whitening:
     values: [True, False]
   zoom_range:
-    min: 0
+    min: 0.0
     max: 1.0
   width_shift_range:
-    min: 0
+    min: 0.0
     max: 0.3
   height_shift_range:
-    min: 0
+    min: 0.0
     max: 0.3
