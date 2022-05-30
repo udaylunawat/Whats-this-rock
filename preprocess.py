@@ -2,6 +2,7 @@ import os
 import shutil
 import argparse
 import pandas as pd
+from utilities import get_stratified_dataset_partitions_pd
 
 
 def setup_dirs_and_preprocess(args):
