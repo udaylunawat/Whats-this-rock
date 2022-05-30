@@ -307,7 +307,7 @@ if __name__ == "__main__":
     args = get_parser()
 
     resume = sys.argv[-1] == "--resume"
-    if not args.args:
+    if not args.myArg:
         # used for sweep
         defaults = dict(model=MODEL_NAME,
                         learning_rate=LEARNING_RATE,
