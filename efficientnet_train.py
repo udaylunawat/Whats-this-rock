@@ -135,7 +135,7 @@ def train_efficientnet(args):
                                  featurewise_center=False,
                                  featurewise_std_normalization=False,
                                  validation_split=0.2,
-                                 fill_mode="reflect", # 'nearest'
+                                 fill_mode="reflect",  # 'nearest'
                                  zoom_range=[0.5, 1.0],
                                  brightness_range=[0.8, 1.2],
                                  width_shift_range=[0.25],
