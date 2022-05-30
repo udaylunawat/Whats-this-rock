@@ -1,9 +1,10 @@
 import os
 import shutil
-
+import argparse
 import pandas as pd
 
-def setup_dirs_and_preprocess():
+
+def setup_dirs_and_preprocess(args):
     os.system("sh setup.sh")
 
     def get_all_filePaths(folderPath):
@@ -14,10 +15,11 @@ def setup_dirs_and_preprocess():
 
     all_paths = []
     all_classes = []
-    class_dirs = os.listdir('data/1_extracted/Rock_Dataset/')
+    root_path = args.root
+    class_dirs = os.listdir(root_path)
     for class_name in class_dirs:
         os.makedirs(os.path.join('data/2_processed', class_name))
-        paths_list = get_all_filePaths(f'data/1_extracted/Rock_Dataset/{class_name}')
+        paths_list = get_all_filePaths(os.path.join(root_path, class_name))
 
         for image_path in paths_list:
             source = image_path
@@ -28,10 +30,20 @@ def setup_dirs_and_preprocess():
             all_paths.append(os.path.join(target, os.path.basename(source)))
             all_classes.append(class_name)
 
+    shutil.rmtree(root_path)
     data = pd.DataFrame(list(zip(all_paths, all_classes)),
-                columns =['image_path', 'classes'])
+                        columns=['image_path', 'classes'])
+    print(data)
     data.to_csv("training_data.csv")
 
 
 if __name__ == "__main__":
-    setup_dirs_and_preprocess()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-r",
+        "--root",
+        type=str,
+        default='data/1_extracted/Rock_Dataset/',
+        help="Root Folder")
+    args = parser.parse_args()
+    setup_dirs_and_preprocess(args)
