@@ -334,7 +334,7 @@ reset_random_seeds()
 
 PROJECT_NAME = "rock_classification"
 MODEL_NAME = "efficientnet"
-SAMPLE_SIZE = 0.1
+SAMPLE_SIZE = 0.4
 LEARNING_RATE = 0.00001
 BATCH_SIZE = 64
 EPOCHS = 100
