@@ -401,7 +401,7 @@ if __name__ == "__main__":
                  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
                  EarlyStopping(
         monitor="val_f1_score",
-        min_delta=0.05,
+        min_delta=0.01,
         patience=10,
         mode='max')
     ]
