@@ -98,13 +98,13 @@ def get_mobilenet(config, num_classes):
     return model
 
 
-def baseline_model(IMG_SIZE, CHANNELS, OUTPUT):
+def baseline_model(IMG_SIZE, CHANNELS, num_classes):
     input = Input(shape=(IMG_SIZE, IMG_SIZE, CHANNELS))
     flt_1 = Flatten(input_shape=(IMG_SIZE, IMG_SIZE, CHANNELS))(input)
     Dense_1 = Dense(128, activation="relu")(flt_1)
     D_out_1 = Dropout(0.1)(Dense_1)
     Dense_2 = Dense(64, activation="relu")(D_out_1)
-    output = Dense(OUTPUT, activation="softmax")(Dense_2)
+    output = Dense(num_classes, activation="softmax")(Dense_2)
     model = Model(input, output)
 
     return model

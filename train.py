@@ -6,7 +6,7 @@ Designed to show how to do a simple wandb integration with keras.
 """
 # *IMPORANT*: Have to do this line *before* importing tensorflow
 from utilities import get_data
-from models import get_efficientnet, get_mobilenet
+from models import get_efficientnet, get_mobilenet, baseline_model, model2
 from sklearn.metrics import classification_report, confusion_matrix
 import tensorflow_addons as tfa
 from tensorflow.random import set_seed
@@ -209,58 +209,8 @@ def get_compiled_model(config, model):
     return model
 
 
-def finetune(config, model):
-    if K.image_data_format() == 'channels_first':
-        input_shape = (3, config.size, config.size)
-    else:
-        input_shape = (config.size, config.size, 3)
-
-    feature_extractor = EfficientNetV2B0(
-        include_top=False,
-        weights="imagenet",
-        input_shape=input_shape,
-        classifier_activation="softmax",
-        include_preprocessing=False,
-    )
-    feature_extractor.trainable = True
-
-    # Fine-tune from this layer onwards
-    fine_tune_at = 150
-
-    # Freeze all the layers before the `fine_tune_at` layer
-    for layer in feature_extractor.layers[:fine_tune_at]:
-        layer.trainable = False
-
-    model.summary()
-    model.compile(
-        optimizer=Adam(1e-5),
-        loss="categorical_crossentropy",
-        metrics=[
-            tfa.metrics.F1Score(
-                num_classes=num_classes,
-                average='weighted',
-                threshold=0.5),
-            'accuracy'])
-
-    epochs = 10
-    callbacks = [
-        # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-        # EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
-        WandbCallback(
-            training_data=train_generator,
-            validation_data=val_generator,
-            input_type="image",
-            labels=labels)
-    ]
-    history_tune = model.fit(train_generator,
-                             validation_data=val_generator,
-                             epochs=epochs,
-                             callbacks=callbacks,
-                             initial_epoch=history.epoch[-1])
-
-
 def get_generators(config, train_data, test_data):
-    datagen = ImageDataGenerator(horizontal_flip=False,
+    datagen = ImageDataGenerator(horizontal_flip=True,
                                  featurewise_center=False,
                                  featurewise_std_normalization=False,
                                  zca_whitening=config.zca_whitening,
@@ -323,6 +273,56 @@ def get_generators(config, train_data, test_data):
             config.size))
 
     return train_generator, val_generator, test_generator
+
+
+# def finetune(config, model):
+#     if K.image_data_format() == 'channels_first':
+#         input_shape = (3, config.size, config.size)
+#     else:
+#         input_shape = (config.size, config.size, 3)
+
+#     feature_extractor = EfficientNetV2B0(
+#         include_top=False,
+#         weights="imagenet",
+#         input_shape=input_shape,
+#         classifier_activation="softmax",
+#         include_preprocessing=False,
+#     )
+#     feature_extractor.trainable = True
+
+#     # Fine-tune from this layer onwards
+#     fine_tune_at = 150
+
+#     # Freeze all the layers before the `fine_tune_at` layer
+#     for layer in feature_extractor.layers[:fine_tune_at]:
+#         layer.trainable = False
+
+#     model.summary()
+#     model.compile(
+#         optimizer=Adam(1e-5),
+#         loss="categorical_crossentropy",
+#         metrics=[
+#             tfa.metrics.F1Score(
+#                 num_classes=num_classes,
+#                 average='weighted',
+#                 threshold=0.5),
+#             'accuracy'])
+
+#     epochs = 10
+#     callbacks = [
+#         # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
+#         # EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
+#         WandbCallback(
+#             training_data=train_generator,
+#             validation_data=val_generator,
+#             input_type="image",
+#             labels=labels)
+#     ]
+#     history_tune = model.fit(train_generator,
+#                              validation_data=val_generator,
+#                              epochs=epochs,
+#                              callbacks=callbacks,
+#                              initial_epoch=history.epoch[-1])
 
 
 # make some random data
@@ -392,6 +392,10 @@ if __name__ == "__main__":
 
         if config.model == "efficientnet":
             model = get_efficientnet(config, num_classes)
+        elif config.model == "baseline":
+            model = baseline_model(config.size, 3, num_classes)
+        elif config.model == "baseline_cnn":
+            model = model2(config.size, config.size, num_classes)
         else:
             model = get_mobilenet(config, num_classes)
 
