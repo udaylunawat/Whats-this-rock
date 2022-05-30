@@ -1,22 +1,20 @@
+program: train.py
 method: bayes
-metric: validation_loss
-  goal: minimize
+metric:
+  name: val_accuracy
+  goal: maximize
 parameters:
-  batch_size:
-    values: [32, 64, 256, 512]
-  epochs:
-    value: 100
   learning_rate:
-    values: [0.01, 0.001, 0.0001, 0.00001]
-  sample_size:
-    value: 0.2
+    values: [0.01, 0.001, 0.0001]
   optimizer:
-    distribution: categorical
-    values:
-      - adam
+    values: ["adam"]
   f1_scoring:
     distribution: categorical
     values:
-      - macro
       - weighted
-program: train.py
+      - macro
+  zoom_range:
+    min: 0.1
+    max: 0.3
+  epochs:
+    value: 100
