@@ -129,6 +129,12 @@ def get_parser():
         type=bool,
         default=False,
         help="Augmentation ZCA Whitening")
+    parser.add_argument(
+        "-ro",
+        "--rotation_range",
+        type=float,
+        default=0.0,
+        help="Augmentation Rotation Range")
 
 
     # parser.add_argument(
@@ -327,7 +333,7 @@ reset_random_seeds()
 # https://github.com/wandb/examples/blob/master/examples/keras/keras-cnn-fashion/cnn_train.py
 
 PROJECT_NAME = "rock_classification"
-MODEL_NAME = "mobilenet"
+MODEL_NAME = "efficientnet"
 SAMPLE_SIZE = 0.1
 LEARNING_RATE = 0.00001
 BATCH_SIZE = 64
@@ -362,14 +368,14 @@ if __name__ == "__main__":
         resume=resume)
 
     config = args
-    # config.optimizer = 'Adam'
-    # config.f1_scoring = 'weighted'
-    # config.zoom_range = [0.5, 1.0]
-    # config.fill_mode = 'reflect'
-    # config.width_shift_range = [0, 0.3]
-    # config.height_shift_range = [0, 0.3]
-    # config.rotation_range = 90
-    # config.zca_whitening = False
+    config.optimizer = 'Adam'
+    config.f1_scoring = 'weighted'
+    config.zoom_range = [0.5, 1.0]
+    config.fill_mode = 'reflect'
+    config.width_shift_range = [0, 0.3]
+    config.height_shift_range = [0, 0.3]
+    config.rotation_range = 90
+    config.zca_whitening = False
     wandb.config.update(config)
 
     # build model
