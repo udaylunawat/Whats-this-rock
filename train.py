@@ -10,6 +10,7 @@ from models import get_efficientnet, get_mobilenet
 from sklearn.metrics import classification_report, confusion_matrix
 import tensorflow_addons as tfa
 from tensorflow.random import set_seed
+from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adam, RMSprop, SGD
@@ -158,11 +159,11 @@ def get_compiled_model(config, model):
     return model
 
 
-def finetune(args, model):
+def finetune(config, model):
     if K.image_data_format() == 'channels_first':
-        input_shape = (3, args.size, args.size)
+        input_shape = (3, config.size, config.size)
     else:
-        input_shape = (args.size, args.size, 3)
+        input_shape = (config.size, config.size, 3)
 
     feature_extractor = EfficientNetV2B0(
         include_top=False,
@@ -287,6 +288,7 @@ SAMPLE_SIZE = 0.1
 LEARNING_RATE = 0.00001
 BATCH_SIZE = 64
 EPOCHS = 100
+SIZE = 224,
 TRAINABLE = False
 # DROPOUT = 0.2
 # L1_SIZE = 16
@@ -300,43 +302,43 @@ f1 macro, {SAMPLE_SIZE}% sample_size
 efficientnet_pretrained.trainable = True
 '''
 
-# used for sweep
-# defaults = dict(learning_rate=0.01,
-#                 epochs=30,
-#                 size=224,
-#                 pretrained_trainable=False,
-#                 batch_size=64,
-#                 optimizer='adam',
-#                 sample_size=0.4,
-#                 f1_scoring='weighted')
-# wandb.init(config=defaults, resume=resume)
-# config = wandb.config
-
 
 if __name__ == "__main__":
     args = get_parser()
 
-    # easier testing--don't log to wandb if dry run is set
-    if args.dry_run:
-        os.environ['WANDB_MODE'] = 'dryrun'
-
     resume = sys.argv[-1] == "--resume"
-    run = wandb.init(
-        project=args.project_name,
-        notes=args.notes,
-        resume=resume)
+    if not args.args:
+        # used for sweep
+        defaults = dict(model=MODEL_NAME,
+                        learning_rate=LEARNING_RATE,
+                        epochs=EPOCHS,
+                        pretrained_trainable=TRAINABLE,
+                        batch_size=BATCH_SIZE,
+                        size=SIZE,
+                        optimizer='adam')
+        wandb.init(config=defaults, resume=resume)
+        config = wandb.config
 
-    config = args
-    config.optimizer = 'Adam'
-    config.f1_scoring = 'weighted'
-    config.zoom_range = [0.5, 1.0]
-    config.fill_mode = 'reflect'
-    config.width_shift_range = [0, 0.3]
-    config.height_shift_range = [0, 0.3]
-    config.rotation_range = 90
-    config.zca_whitening = False
-    wandb.config.update(config)
+    else:
+        # easier testing--don't log to wandb if dry run is set
+        if args.dry_run:
+            os.environ['WANDB_MODE'] = 'dryrun'
 
+        run = wandb.init(
+            project=args.project_name,
+            notes=args.notes,
+            resume=resume)
+
+        config = args
+        config.optimizer = 'Adam'
+        config.f1_scoring = 'weighted'
+        config.zoom_range = [0.5, 1.0]
+        config.fill_mode = 'reflect'
+        config.width_shift_range = [0, 0.3]
+        config.height_shift_range = [0, 0.3]
+        config.rotation_range = 90
+        config.zca_whitening = False
+        wandb.config.update(config)
 
     # build model
     if wandb.run.resumed:
@@ -352,7 +354,7 @@ if __name__ == "__main__":
         num_classes = len(train_generator.class_indices)
         labels = list(train_generator.class_indices.keys())
 
-        if args.model == "efficientnet":
+        if config.model == "efficientnet":
             model = get_efficientnet(config, num_classes)
         else:
             model = get_mobilenet(config, num_classes)
@@ -373,15 +375,13 @@ if __name__ == "__main__":
         epochs=config.epochs,
         callbacks=callbacks)
 
-    if args.pretrained_trainable:
-        finetune(args, model)
+    if config.pretrained_trainable:
+        finetune(config, model)
 
         # Confution Matrix and Classification Report
     Y_pred = model.predict(
         val_generator,
-        len(val_generator) //
-        args.batch_size +
-        1)
+        len(val_generator) // config.batch_size + 1)
     y_pred = np.argmax(Y_pred, axis=1)
 
     print('Confusion Matrix with Validation data')
