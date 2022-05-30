@@ -245,7 +245,7 @@ def finetune(config, model):
     epochs = 10
     callbacks = [
         # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-        # EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
+        EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
         WandbCallback(
             training_data=train_generator,
             validation_data=val_generator,
@@ -347,9 +347,7 @@ TRAINABLE = False
 # DECAY = 1e-6
 # MOMENTUM = 0.9
 MODEL_NOTES = f'''
-{MODEL_NAME}
-f1 macro, {SAMPLE_SIZE}% sample_size
-efficientnet_pretrained.trainable = True
+
 '''
 
 
