@@ -12,7 +12,7 @@ import argparse
 import numpy as np
 import pandas as pd
 import random
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 from sklearn.metrics import classification_report, confusion_matrix
 
@@ -30,7 +30,7 @@ import wandb
 from wandb.keras import WandbCallback
 
 from utilities import get_stratified_dataset_partitions_pd
-import plot
+# import plot
 
 
 def reset_random_seeds():
@@ -50,8 +50,8 @@ reset_random_seeds()
 PROJECT_NAME = "rock_classification"
 SAMPLE_SIZE = 0.1
 LEARNING_RATE = 0.00001
-BATCH_SIZE = 512
-EPOCHS = 50
+BATCH_SIZE = 64
+EPOCHS = 100
 TRAINABLE = False
 # DROPOUT = 0.2
 # L1_SIZE = 16
@@ -90,7 +90,7 @@ def build_model(args, num_classes):
     )
 
     # Freeze layers
-    efficientnet_pretrained.trainable = args.pretrained_trainable
+    efficientnet_pretrained.trainable = False
     # Add untrained final layers
     model = Sequential(
         [
@@ -114,9 +114,9 @@ def build_model(args, num_classes):
 def train_efficientnet(args):
     # initialize wandb logging to your project
     run = wandb.init(project=args.project_name, notes=args.notes)
-    # config = wandb.config
-    # log all experimental args to wandb
     wandb.config.update(args)
+    # log all experimental args to wandb
+    # config = wandb.config
 
     train_df, val_df, test_df = split_and_stratify_data(args)
     train_df = pd.concat([train_df, val_df])
@@ -131,15 +131,15 @@ def train_efficientnet(args):
     #                              rotation_range=args['aug_rotation_range'],
     #                              rescale=args['aug_rescale'])
 
-    datagen = ImageDataGenerator(horizontal_flip=True,
+    datagen = ImageDataGenerator(horizontal_flip=False,
                                  featurewise_center=False,
                                  featurewise_std_normalization=False,
                                  validation_split=0.2,
                                  fill_mode="nearest",
-                                 zoom_range=0,
-                                 brightness_range=[0.4, 1.5],
-                                 width_shift_range=0,
-                                 height_shift_range=0,
+                                 zoom_range=[0.1, 0.4],
+                                 # brightness_range=[1.0],
+                                 width_shift_range=[0.1, 0.6],
+                                 height_shift_range=[0.1, 0.6],
                                  rotation_range=0,
                                  rescale=1. / 255.)
 
@@ -179,7 +179,7 @@ def train_efficientnet(args):
                                                       validation_split=None,
                                                       seed=42,
                                                       shuffle=False,
-                                                      color_mode = 'rgb',
+                                                      color_mode='rgb',
                                                       class_mode=None,
                                                       target_size=(args.size, args.size))
 
@@ -196,8 +196,36 @@ def train_efficientnet(args):
     ]
     model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
 
+    if args.pretrained_trainable:
+        if K.image_data_format() == 'channels_first':
+            input_shape = (3, args.size, args.size)
+        else:
+            input_shape = (args.size, args.size, 3)
+
+        efficientnet_pretrained = EfficientNetV2B0(
+            include_top=False,
+            weights="imagenet",
+            input_shape=input_shape,
+            classifier_activation="softmax",
+            include_preprocessing=False,
+        )
+        efficientnet_pretrained.trainable = True
+        model.summary()
+        model.compile(optimizer=Adam(1e-5),
+                      loss="categorical_crossentropy",
+                      metrics=[tfa.metrics.F1Score(num_classes=num_classes, average='weighted', threshold=0.5),
+                               'accuracy'])
+
+        epochs = 10
+        callbacks = [
+            # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
+            # EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
+            WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
+        ]
+        model.fit(train_generator, validation_data=val_generator, epochs=epochs, callbacks=callbacks)
+
     # Confution Matrix and Classification Report
-    Y_pred = model.predict(val_generator, len(val_generator) // args.batch_size+1)
+    Y_pred = model.predict(val_generator, len(val_generator) // args.batch_size + 1)
     y_pred = np.argmax(Y_pred, axis=1)
 
     print('Confusion Matrix with Validation data')
@@ -205,9 +233,9 @@ def train_efficientnet(args):
     print('Classification Report')
     cl_report = classification_report(val_generator.classes, y_pred, target_names=labels, output_dict=True)
     print(pd.DataFrame(cl_report))
-    run.log({"Classification Report": pd.DataFrame(cl_report)})
 
-    wandb.sklearn.plot_confusion_matrix(val_generator.classes, y_pred, labels)
+    # run.log({"Classification Report": pd.DataFrame(cl_report)})
+    # wandb.sklearn.plot_confusion_matrix(val_generator.classes, y_pred, labels)
     run.finish()
 
 
