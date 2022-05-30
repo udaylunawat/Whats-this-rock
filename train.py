@@ -87,6 +87,43 @@ def get_parser():
         type=int,
         default=224,
         help="Image size")
+    parser.add_argument(
+        "-f",
+        "--f1_scoring",
+        type=str,
+        default='macro',
+        help="f1 scoring")
+    parser.add_argument(
+        "-fm",
+        "--fill_mode",
+        type=str,
+        default='reflect',
+        help="augmentation fill_mode")
+    parser.add_argument(
+        "-hsr",
+        "--height_shift_range",
+        type=float,
+        default=0.0,
+        help="Augmentation Height Shift Range")
+    parser.add_argument(
+        "-o",
+        "--optimizer",
+        type=str,
+        default='adam',
+        help="optimizer")
+    parser.add_argument(
+        "-wsr",
+        "--width_shift_range",
+        type=float,
+        default=0.0,
+        help="Augmentation Width Shift Range")
+    parser.add_argument(
+        "-z",
+        "--zoom_range",
+        type=float,
+        default=0.0,
+        help="Augmentation Zoom Range")
+
     # parser.add_argument(
     #   "--dropout",
     #   type=float,
@@ -307,38 +344,26 @@ if __name__ == "__main__":
     args = get_parser()
 
     resume = sys.argv[-1] == "--resume"
-    if len(sys.argv) < 1:
-        # used for sweep
-        defaults = dict(model=MODEL_NAME,
-                        learning_rate=LEARNING_RATE,
-                        epochs=EPOCHS,
-                        pretrained_trainable=TRAINABLE,
-                        batch_size=BATCH_SIZE,
-                        size=SIZE,
-                        optimizer='adam')
-        wandb.init(config=defaults, resume=resume)
-        config = wandb.config
 
-    else:
-        # easier testing--don't log to wandb if dry run is set
-        if args.dry_run:
-            os.environ['WANDB_MODE'] = 'dryrun'
+    # easier testing--don't log to wandb if dry run is set
+    if args.dry_run:
+        os.environ['WANDB_MODE'] = 'dryrun'
 
-        run = wandb.init(
-            project=args.project_name,
-            notes=args.notes,
-            resume=resume)
+    run = wandb.init(
+        project=args.project_name,
+        notes=args.notes,
+        resume=resume)
 
-        config = args
-        config.optimizer = 'Adam'
-        config.f1_scoring = 'weighted'
-        config.zoom_range = [0.5, 1.0]
-        config.fill_mode = 'reflect'
-        config.width_shift_range = [0, 0.3]
-        config.height_shift_range = [0, 0.3]
-        config.rotation_range = 90
-        config.zca_whitening = False
-        wandb.config.update(config)
+    config = args
+    # config.optimizer = 'Adam'
+    # config.f1_scoring = 'weighted'
+    # config.zoom_range = [0.5, 1.0]
+    # config.fill_mode = 'reflect'
+    # config.width_shift_range = [0, 0.3]
+    # config.height_shift_range = [0, 0.3]
+    # config.rotation_range = 90
+    # config.zca_whitening = False
+    wandb.config.update(config)
 
     # build model
     if wandb.run.resumed:
