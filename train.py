@@ -123,6 +123,13 @@ def get_parser():
         type=float,
         default=0.0,
         help="Augmentation Zoom Range")
+    parser.add_argument(
+        "-zca",
+        "--zca_whitening",
+        type=bool,
+        default=False,
+        help="Augmentation ZCA Whitening")
+
 
     # parser.add_argument(
     #   "--dropout",
