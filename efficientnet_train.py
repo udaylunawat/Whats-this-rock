@@ -81,7 +81,7 @@ def build_model(args, num_classes):
     else:
         input_shape = (args.size, args.size, 3)
 
-    efficientnet_pretrained = EfficientNetV2B0(
+    feature_extractor = EfficientNetV2B0(
         include_top=False,
         weights="imagenet",
         input_shape=input_shape,
@@ -90,11 +90,11 @@ def build_model(args, num_classes):
     )
 
     # Freeze layers
-    efficientnet_pretrained.trainable = False
+    feature_extractor.trainable = False
     # Add untrained final layers
     model = Sequential(
         [
-            efficientnet_pretrained,
+            feature_extractor,
             GlobalAveragePooling2D(),
             Dense(1024),
             Dense(num_classes, activation="softmax"),
@@ -135,12 +135,13 @@ def train_efficientnet(args):
                                  featurewise_center=False,
                                  featurewise_std_normalization=False,
                                  validation_split=0.2,
-                                 fill_mode="nearest",
-                                 zoom_range=[0.1, 0.4],
-                                 # brightness_range=[1.0],
-                                 width_shift_range=[0.1, 0.6],
-                                 height_shift_range=[0.1, 0.6],
+                                 fill_mode="reflect", # 'nearest'
+                                 zoom_range=[0.5, 1.0],
+                                 brightness_range=[0.8, 1.2],
+                                 width_shift_range=[0.25],
+                                 height_shift_range=[0.25],
                                  rotation_range=0,
+                                 zca_whitening=True,
                                  rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(dataframe=train_df,
@@ -194,7 +195,7 @@ def train_efficientnet(args):
         # EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
         WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
     ]
-    model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
+    history = model.fit(train_generator, validation_data=val_generator, epochs=args.epochs, callbacks=callbacks)
 
     if args.pretrained_trainable:
         if K.image_data_format() == 'channels_first':
@@ -202,14 +203,22 @@ def train_efficientnet(args):
         else:
             input_shape = (args.size, args.size, 3)
 
-        efficientnet_pretrained = EfficientNetV2B0(
+        feature_extractor = EfficientNetV2B0(
             include_top=False,
             weights="imagenet",
             input_shape=input_shape,
             classifier_activation="softmax",
             include_preprocessing=False,
         )
-        efficientnet_pretrained.trainable = True
+        feature_extractor.trainable = True
+
+        # Fine-tune from this layer onwards
+        fine_tune_at = 150
+
+        # Freeze all the layers before the `fine_tune_at` layer
+        for layer in feature_extractor.layers[:fine_tune_at]:
+            layer.trainable = False
+
         model.summary()
         model.compile(optimizer=Adam(1e-5),
                       loss="categorical_crossentropy",
@@ -222,7 +231,7 @@ def train_efficientnet(args):
             # EarlyStopping(monitor="f1_score", min_delta=0, patience=10),
             WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
         ]
-        model.fit(train_generator, validation_data=val_generator, epochs=epochs, callbacks=callbacks)
+        model.fit(train_generator, validation_data=val_generator, epochs=epochs, callbacks=callbacks, initial_epoch=history.epoch[-1])
 
     # Confution Matrix and Classification Report
     Y_pred = model.predict(val_generator, len(val_generator) // args.batch_size + 1)
