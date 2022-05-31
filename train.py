@@ -187,7 +187,6 @@ def get_parser():
         "--pretrained_trainable",
         type=bool,
         default=False,
-        default=TRAINABLE,
         help="Train the pretrained model")
 
     args = parser.parse_args()
