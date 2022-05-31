@@ -6,26 +6,32 @@ parameters:
   augmentation:
     values:
       - true
+      - false
   batch_size:
-    value: 64
+    values: [32, 64, 128, 256, 512, 1024]
   epochs:
     value: 100
   f1_scoring:
     distribution: categorical
     values:
       - weighted
+      - macro
+      - micro
   learning_rate:
-    value: 0.001
+    min: 0.00001
+    max: 0.01
   model:
     values:
       - efficientnet
+      - mobilenet
+      - baseline
+      - baseline_cnn
   optimizer:
     values:
       - Adam
       - RMS
   sample_size:
-    max: 0.5
-    min: 0.25
+    value: 1.0
   size:
     value: 224
 program: train.py

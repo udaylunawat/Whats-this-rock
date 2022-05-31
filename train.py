@@ -461,7 +461,7 @@ if __name__ == "__main__":
         resume=resume)
 
     config = args
-    print(config)
+    print(f'Augmentation {config.augmentation is False}')
     # config.optimizer = 'Adam'
     # config.f1_scoring = 'weighted'
     # config.zoom_range = [0.5, 1.0]
@@ -499,23 +499,23 @@ if __name__ == "__main__":
     model = get_compiled_model(config, model)
     model.summary()
 
-    class_weights = class_weight.compute_class_weight(
-                class_weight='balanced',
-                classes=np.unique(train_generator.classes),
-                y=train_generator.classes)
+    # class_weights = class_weight.compute_class_weight(
+    #             class_weight='balanced',
+    #             classes=np.unique(train_generator.classes),
+    #             y=train_generator.classes)
 
-    train_class_weights = dict(enumerate(class_weights))
+    # train_class_weights = dict(enumerate(class_weights))
 
     # model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
     reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=1,verbose=0)
     wandbcallback = WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
-    early_stop = EarlyStopping(monitor="val_loss", patience=5, verbose=0, restore_best_weights=True)
+    early_stop = EarlyStopping(monitor="val_loss", patience=20, verbose=0, restore_best_weights=True)
     callbacks = [reduce_lr, early_stop, wandbcallback]
     history = model.fit(
         train_generator,
         validation_data=val_generator,
         epochs=config.epochs,
-        class_weight=train_class_weights,
+        # class_weight=train_class_weights,
         callbacks=callbacks)
 
     if config.pretrained_trainable:
