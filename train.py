@@ -179,12 +179,14 @@ def get_parser():
     parser.add_argument(
         "-q",
         "--dry_run",
-        action="store_true",
+        type=bool,
+        default=False,
         help="Dry run (do not log to wandb)")
     parser.add_argument(
         "-trainable",
         "--pretrained_trainable",
-        action="store_true",
+        type=bool,
+        default=False,
         default=TRAINABLE,
         help="Train the pretrained model")
 
@@ -421,7 +423,7 @@ if __name__ == "__main__":
                  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
                  EarlyStopping(
         monitor="val_f1_score",
-        min_delta=0.01,
+        min_delta=0.005,
         patience=10,
         mode='max')
     ]

@@ -5,9 +5,9 @@ metric:
   goal: maximize
 parameters:
   model:
-    value: ["efficientnet", "mobilenet"]
+    values: ["efficientnet", "mobilenet"]
   epochs:
-    value: 15
+    value: 100
   learning_rate:
     min: 0.0005
     max: 0.005
@@ -17,16 +17,14 @@ parameters:
   batch_size:
     value: 64
   size:
-    values: [224]
+    value: 224
   augmentation:
     values: [True, False]
   optimizer:
     values: ["Adam", "RMS", "SGD"]
   f1_scoring:
     distribution: categorical
-    values: ["macro", "micro", "weighted", None]
+    value: "macro"
   fill_mode:
     distribution: categorical
-    values:
-      - reflect
-      - nearest
+    value: reflect
