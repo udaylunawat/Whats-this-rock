@@ -16,8 +16,7 @@ parameters:
       - weighted
       - macro
   learning_rate:
-    max: 0.0005
-    min: 0.000005
+    value: 0.001
   model:
     values:
       - efficientnet
