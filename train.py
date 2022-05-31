@@ -507,7 +507,7 @@ if __name__ == "__main__":
     # train_class_weights = dict(enumerate(class_weights))
 
     # model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.3, patience=1,verbose=0)
+    reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=1,verbose=0)
     wandbcallback = WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
     early_stop = EarlyStopping(monitor="val_loss", patience=20, verbose=0, restore_best_weights=True)
     callbacks = [reduce_lr, early_stop, wandbcallback]
