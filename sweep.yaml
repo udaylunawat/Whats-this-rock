@@ -5,7 +5,6 @@ metric:
 parameters:
   augmentation:
     values:
-      - false
       - true
   batch_size:
     value: 64
@@ -17,8 +16,8 @@ parameters:
       - weighted
       - macro
   learning_rate:
-    max: 0.01
-    min: 0.001
+    max: 0.0005
+    min: 0.000005
   model:
     values:
       - efficientnet
