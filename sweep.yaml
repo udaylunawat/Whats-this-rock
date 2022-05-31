@@ -5,7 +5,7 @@ metric:
 parameters:
   augmentation:
     values:
-      - true
+      - false
   batch_size:
     value: 64
   epochs:
@@ -14,7 +14,6 @@ parameters:
     distribution: categorical
     values:
       - weighted
-      - macro
   learning_rate:
     value: 0.001
   model:
