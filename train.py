@@ -490,7 +490,7 @@ if __name__ == "__main__":
         if config.model == "efficientnet":
             model = get_efficientnet(config, num_classes)
         elif config.model == "baseline":
-            model = baseline_model(config.size, 3, num_classes)
+            model = get_baseline_model(config.size, 3, num_classes)
         elif config.model == "baseline_cnn":
             model = model2(config.size, config.size, num_classes)
         elif config.model == "mobilenet":
@@ -506,11 +506,11 @@ if __name__ == "__main__":
 
     train_class_weights = dict(enumerate(class_weights))
 
-    model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
+    # model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
     reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=1,verbose=0)
     wandbcallback = WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
     early_stop = EarlyStopping(monitor="val_loss", patience=5, verbose=0, restore_best_weights=True)
-    callbacks = [reduce_lr, model_checkpoint, early_stop, wandbcallback]
+    callbacks = [reduce_lr, early_stop, wandbcallback]
     history = model.fit(
         train_generator,
         validation_data=val_generator,
