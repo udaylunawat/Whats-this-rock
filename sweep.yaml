@@ -5,7 +5,7 @@ metric:
 parameters:
   augmentation:
     values:
-      - false
+      - true
   batch_size:
     value: 64
   epochs:
