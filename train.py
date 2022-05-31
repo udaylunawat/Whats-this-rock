@@ -246,7 +246,7 @@ def get_generators(config, X_train, y_train, test_df):
         seed=42,
         # color_mode='rgb',
         shuffle=True,
-        class_mode="categorical",
+        # class_mode="categorical",
         target_size=(
             config.size,
             config.size))
@@ -258,7 +258,7 @@ def get_generators(config, X_train, y_train, test_df):
         seed=42,
         # color_mode='rgb',
         shuffle=True,
-        class_mode="categorical",
+        # class_mode="categorical",
         target_size=(
             config.size,
             config.size))
@@ -275,7 +275,7 @@ def get_generators(config, X_train, y_train, test_df):
         seed=42,
         shuffle=False,
         # color_mode='rgb',
-        class_mode=None,
+        # class_mode=None,
         target_size=(
             config.size,
             config.size))
