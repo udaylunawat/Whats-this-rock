@@ -22,7 +22,6 @@ import random
 import pandas as pd
 import numpy as np
 import argparse
-from imblearn.over_sampling import SMOTE
 import sys
 import os
 os.environ['PYTHONHASHSEED'] = str(1)
@@ -217,7 +216,7 @@ def get_compiled_model(config, model):
 
 
 def get_generators(config, train_data, test_data):
-    if config.augmentation is True:
+    if config.augmentation == True:
         datagen = ImageDataGenerator(horizontal_flip=False,
                                      featurewise_center=False,
                                      featurewise_std_normalization=False,
@@ -230,7 +229,7 @@ def get_generators(config, train_data, test_data):
                                      height_shift_range=config.height_shift_range,
                                      rotation_range=config.rotation_range,
                                      rescale=1. / 255.)
-    elif config.augmentation is False:
+    elif config.augmentation == False:
         datagen = ImageDataGenerator(rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(
@@ -280,10 +279,7 @@ def get_generators(config, train_data, test_data):
             config.size,
             config.size))
 
-    sm = SMOTE(random_state=2)
-    X_train, y_train = sm.fit_resample(train_generator, y_train)
-
-    return train_generator, val_generator, test_generator, X_train, y_train
+    return train_generator, val_generator, test_generator
 
 
 # def finetune(config, model):
@@ -406,18 +402,16 @@ if __name__ == "__main__":
     else:
         train_df, test_df = get_data(config.sample_size)
 
-        y_train, y_test = train_df[['classes']], test_df[['classes']]
-
-        train_generator, val_generator, test_generator, X_train, y_train = get_generators(
+        train_generator, val_generator, test_generator = get_generators(
             config, train_df, test_df)
 
-        num_classes = train_df[['classes']].nunique()
+        num_classes = len(train_generator.class_indices)
         labels = list(train_generator.class_indices.keys())
 
         if config.model == "efficientnet":
             model = get_efficientnet(config, num_classes)
         elif config.model == "baseline":
-            model = get_baseline_model(config.size, 3, num_classes)
+            model = baseline_model(config.size, 3, num_classes)
         elif config.model == "baseline_cnn":
             model = model2(config.size, config.size, num_classes)
         elif config.model == "mobilenet":
@@ -425,7 +419,7 @@ if __name__ == "__main__":
 
     model = get_compiled_model(config, model)
     model.summary()
-    callbacks = [WandbCallback(X_train, y_train, validation_data=val_generator, input_type="image", labels=labels),
+    callbacks = [WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels),
                  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
                  EarlyStopping(
         monitor="val_f1_score",
@@ -434,7 +428,7 @@ if __name__ == "__main__":
         mode='max')
     ]
     history = model.fit(
-        X_train, y_train,
+        train_generator,
         validation_data=val_generator,
         epochs=config.epochs,
         callbacks=callbacks)

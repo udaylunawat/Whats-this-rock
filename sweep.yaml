@@ -1,11 +1,11 @@
 program: train.py
 method: bayes
 metric:
-  name: val_accuracy
-  goal: maximize
+  name: val_loss
+  goal: minimize
 parameters:
   model:
-    values: ["efficientnet", "mobilenet"]
+    values: ["efficientnet"]
   epochs:
     value: 100
   learning_rate:
@@ -19,9 +19,9 @@ parameters:
   size:
     value: 224
   augmentation:
-    values: [False]
+    values: [False, True]
   optimizer:
     values: ["Adam", "RMS"]
   f1_scoring:
     distribution: categorical
-    values: ["micro", "weighted", "macro"]
+    values: ["weighted", "macro"]
