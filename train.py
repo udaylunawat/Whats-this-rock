@@ -13,7 +13,7 @@ from sklearn.utils import class_weight
 import tensorflow_addons as tfa
 from tensorflow.random import set_seed
 from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0
-from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adam, RMSprop, SGD
 from tensorflow.keras.models import load_model
@@ -506,13 +506,11 @@ if __name__ == "__main__":
 
     train_class_weights = dict(enumerate(class_weights))
 
-    callbacks = [WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels),
-                 # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-                 EarlyStopping(
-        monitor="val_loss",
-        min_delta=0.01,
-        patience=10)
-    ]
+    model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
+    reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=1,verbose=0)
+    wandbcallback = WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
+    early_stop = EarlyStopping(monitor="val_loss", patience=5, verbose=0, restore_best_weights=True)
+    callbacks = [reduce_lr, model_checkpoint, early_stop]
     history = model.fit(
         train_generator,
         validation_data=val_generator,
