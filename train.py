@@ -425,7 +425,7 @@ if __name__ == "__main__":
         X_train, y_train = SMOTE_Data(train_df)
 
         train_generator, val_generator, test_generator = get_generators(
-            config, train_df, test_df)
+            config, X_train, y_train, test_df)
 
         num_classes = len(train_generator.class_indices)
         labels = list(train_generator.class_indices.keys())
