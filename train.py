@@ -26,7 +26,7 @@ import numpy as np
 import argparse
 import sys
 import os
-os.environ['PYTHONHASHSEED'] = str(1)
+# os.environ['PYTHONHASHSEED'] = str(1)
 
 
 # import matplotlib.pyplot as plt
@@ -217,7 +217,7 @@ def get_compiled_model(config, model):
     return model
 
 
-def get_generators(config, X_train, y_train, test_df):
+def get_generators(config, train_data, test_data):
     if config.augmentation == True:
         datagen = ImageDataGenerator(horizontal_flip=False,
                                      featurewise_center=False,
@@ -234,36 +234,35 @@ def get_generators(config, X_train, y_train, test_df):
     elif config.augmentation == False:
         datagen = ImageDataGenerator(rescale=1. / 255.)
 
-    # train_generator = datagen.flow_from_dataframe(
-    #     dataframe=train_df,
-    #     x_col="image_path",
-    #     y_col="classes",
-
-    train_generator = datagen.flow(
-        X_train, y_train,
+    train_generator = datagen.flow_from_dataframe(
+        dataframe=train_df,
+        directory="./",
+        x_col="image_path",
+        y_col="classes",
         subset="training",
         batch_size=config.batch_size,
         seed=42,
-        # color_mode='rgb',
+        color_mode='rgb',
         shuffle=True,
-        # class_mode="categorical",
-        # target_size=(
-        #     config.size,
-        #     config.size)
-            )
+        class_mode="categorical",
+        target_size=(
+            config.size,
+            config.size))
 
-    val_generator = datagen.flow(
-        X_train, y_train,
+    val_generator = datagen.flow_from_dataframe(
+        dataframe=train_df,
+        directory="./",
+        x_col="image_path",
+        y_col="classes",
         subset="validation",
         batch_size=config.batch_size,
         seed=42,
-        # color_mode='rgb',
+        color_mode='rgb',
         shuffle=True,
-        # class_mode="categorical",
-        # target_size=(
-        #     config.size,
-        #     config.size)
-            )
+        class_mode="categorical",
+        target_size=(
+            config.size,
+            config.size))
 
     test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
@@ -276,8 +275,8 @@ def get_generators(config, X_train, y_train, test_df):
         validation_split=None,
         seed=42,
         shuffle=False,
-        # color_mode='rgb',
-        # class_mode=None,
+        color_mode='rgb',
+        class_mode=None,
         target_size=(
             config.size,
             config.size))
@@ -346,7 +345,7 @@ def get_generators(config, X_train, y_train, test_df):
 
 
 # make some random data
-reset_random_seeds()
+# reset_random_seeds()
 
 # default config/hyperparameter values
 # you can modify these below or via command line
@@ -370,13 +369,12 @@ MODEL_NOTES = f'''
 Minerals Removed
 '''
 
-
-def SMOTE_Data(train_df):
+def SMOTE_Data(train_df=train):
     from imblearn.over_sampling import SMOTE
     from tensorflow.keras.preprocessing.image import load_img, img_to_array
     X_train = []
     for img in train_df['image_path']:
-        loaded_img = load_img(img, target_size=(config.size, config.size))
+        loaded_img = load_img(os.path.join(IMAGE_DIR, img), target_size=(config.size, config.size))
         img_arr = img_to_array(loaded_img)
         X_train.append(img_arr)
 
@@ -424,10 +422,10 @@ if __name__ == "__main__":
         model = load_model(wandb.restore("model-best.h5").name)
     else:
         train_df, test_df = get_data(config.sample_size)
-        X_train, y_train = SMOTE_Data(train_df)
+
 
         train_generator, val_generator, test_generator = get_generators(
-            config, X_train, y_train, test_df)
+            config, train_df, test_df)
 
         num_classes = len(train_generator.class_indices)
         labels = list(train_generator.class_indices.keys())
@@ -435,7 +433,7 @@ if __name__ == "__main__":
         if config.model == "efficientnet":
             model = get_efficientnet(config, num_classes)
         elif config.model == "baseline":
-            model = get_baseline_model(config.size, 3, num_classes)
+            model = baseline_model(config.size, 3, num_classes)
         elif config.model == "baseline_cnn":
             model = model2(config.size, config.size, num_classes)
         elif config.model == "mobilenet":
@@ -446,8 +444,8 @@ if __name__ == "__main__":
 
     class_weights = class_weight.compute_class_weight(
             'balanced',
-            np.unique(train_generator.classes),
-            train_generator.classes)
+                np.unique(train_generator.classes),
+                train_generator.classes)
 
     train_class_weights = dict(enumerate(class_weights))
 
