@@ -8,6 +8,8 @@ Designed to show how to do a simple wandb integration with keras.
 from utilities import get_data
 from models import get_efficientnet, get_mobilenet, get_baseline_model, model2
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.utils import class_weight
+
 import tensorflow_addons as tfa
 from tensorflow.random import set_seed
 from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0
@@ -215,7 +217,7 @@ def get_compiled_model(config, model):
     return model
 
 
-def get_generators(config, train_data, test_data):
+def get_generators(config, X_train, y_train, test_df):
     if config.augmentation == True:
         datagen = ImageDataGenerator(horizontal_flip=False,
                                      featurewise_center=False,
@@ -232,11 +234,13 @@ def get_generators(config, train_data, test_data):
     elif config.augmentation == False:
         datagen = ImageDataGenerator(rescale=1. / 255.)
 
-    train_generator = datagen.flow_from_dataframe(
-        dataframe=train_df,
-        directory="./",
-        x_col="image_path",
-        y_col="classes",
+    # train_generator = datagen.flow_from_dataframe(
+    #     dataframe=train_df,
+    #     x_col="image_path",
+    #     y_col="classes",
+
+    train_generator = datagen.flow(
+        X_train, y_train,
         subset="training",
         batch_size=config.batch_size,
         seed=42,
@@ -247,11 +251,8 @@ def get_generators(config, train_data, test_data):
             config.size,
             config.size))
 
-    val_generator = datagen.flow_from_dataframe(
-        dataframe=train_df,
-        directory="./",
-        x_col="image_path",
-        y_col="classes",
+    val_generator = datagen.flow(
+        X_train, y_train,
         subset="validation",
         batch_size=config.batch_size,
         seed=42,
@@ -368,6 +369,26 @@ Minerals Removed
 '''
 
 
+def SMOTE_Data(train_df):
+    from imblearn.over_sampling import SMOTE
+    from tensorflow.keras.preprocessing.image import load_img, img_to_array
+    X_train = []
+    for img in train_df['image_path']:
+        loaded_img = load_img(img, target_size=(config.size, config.size))
+        img_arr = img_to_array(loaded_img)
+        X_train.append(img_arr)
+
+    print(np.array(X_train).shape)
+    y_train = train_df.drop('image_path', axis=1, inplace=False)
+    print(y_train.head())
+    y_train = np.array(y_train.values)
+    X_train = np.array(X_train)
+    sm = SMOTE(random_state=42)
+    X_train, y_train = sm.fit_resample(X_train.reshape((-1, config.size * config.size * 3)), y_train)
+    X_train.reshape(-1, config.size, config.size, 3)
+    return X_train, y_train
+
+
 if __name__ == "__main__":
     args = get_parser()
 
@@ -401,6 +422,7 @@ if __name__ == "__main__":
         model = load_model(wandb.restore("model-best.h5").name)
     else:
         train_df, test_df = get_data(config.sample_size)
+        X_train, y_train = SMOTE_Data(train_df)
 
         train_generator, val_generator, test_generator = get_generators(
             config, train_df, test_df)
@@ -411,7 +433,7 @@ if __name__ == "__main__":
         if config.model == "efficientnet":
             model = get_efficientnet(config, num_classes)
         elif config.model == "baseline":
-            model = baseline_model(config.size, 3, num_classes)
+            model = get_baseline_model(config.size, 3, num_classes)
         elif config.model == "baseline_cnn":
             model = model2(config.size, config.size, num_classes)
         elif config.model == "mobilenet":
@@ -419,6 +441,14 @@ if __name__ == "__main__":
 
     model = get_compiled_model(config, model)
     model.summary()
+
+    class_weights = class_weight.compute_class_weight(
+            'balanced',
+                np.unique(train_generator.classes),
+                train_generator.classes)
+
+    train_class_weights = dict(enumerate(class_weights))
+
     callbacks = [WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels),
                  # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
                  EarlyStopping(
@@ -431,6 +461,7 @@ if __name__ == "__main__":
         train_generator,
         validation_data=val_generator,
         epochs=config.epochs,
+        class_weight=train_class_weights,
         callbacks=callbacks)
 
     if config.pretrained_trainable:
