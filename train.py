@@ -272,17 +272,19 @@ def custom_augmentation(np_tensor):
 
 def get_generators(config, train_data, test_data):
     if config.augmentation is True:
+
         datagen = ImageDataGenerator(horizontal_flip=True,
                                      featurewise_center=False,
                                      featurewise_std_normalization=False,
                                      zca_whitening=config.zca_whitening,
                                      validation_split=0.2,
                                      fill_mode=config.fill_mode,
-                                     zoom_range=[0.5, 1.0],
+                                     zoom_range=[0.8, 1.25],  # config.zoom_range,
                                      brightness_range=[0.5, 1.2],
-                                     width_shift_range=config.width_shift_range,
-                                     height_shift_range=config.height_shift_range,
-                                     rotation_range=config.rotation_range,
+                                     width_shift_range=0.1,  # config.width_shift_range,
+                                     height_shift_range=0.1,  # config.height_shift_range,
+                                     rotation_range=30,  # config.rotation_range,
+                                     shear_range=30,
                                      rescale=1. / 255.)
     elif config.augmentation is False:
         datagen = ImageDataGenerator(rescale=1. / 255.)
@@ -535,6 +537,7 @@ if __name__ == "__main__":
         y_pred,
         target_names=labels,
         output_dict=True)
-    print(pd.DataFrame(cl_report))
+    # print(pd.DataFrame(cl_report))
+    print(cl_report)
 
     run.finish()
