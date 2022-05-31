@@ -9,22 +9,19 @@ parameters:
   epochs:
     value: 100
   learning_rate:
-    min: 0.0005
-    max: 0.005
+    min: 0.001
+    max: 0.01
   sample_size:
-    max: 0.3
-    min: 0.1
+    max: 0.5
+    min: 0.25
   batch_size:
     value: 64
   size:
     value: 224
   augmentation:
-    values: [True, False]
+    values: [False]
   optimizer:
-    values: ["Adam", "RMS", "SGD"]
+    values: ["Adam", "RMS"]
   f1_scoring:
     distribution: categorical
-    value: "macro"
-  fill_mode:
-    distribution: categorical
-    value: reflect
+    values: ["micro", "weighted", "macro"]
