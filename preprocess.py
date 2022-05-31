@@ -6,7 +6,6 @@ from utilities import get_stratified_dataset_partitions_pd
 
 
 def setup_dirs_and_preprocess(args):
-    os.system("sh setup.sh")
 
     def get_all_filePaths(folderPath):
         result = []
