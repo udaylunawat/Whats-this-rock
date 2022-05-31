@@ -444,8 +444,8 @@ if __name__ == "__main__":
 
     class_weights = class_weight.compute_class_weight(
             'balanced',
-                np.unique(train_generator.classes),
-                train_generator.classes)
+            np.unique(train_generator.classes),
+            train_generator.classes)
 
     train_class_weights = dict(enumerate(class_weights))
 

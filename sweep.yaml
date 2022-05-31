@@ -1,27 +1,34 @@
-program: train.py
 method: bayes
 metric:
-  name: val_loss
   goal: minimize
+  name: val_loss
 parameters:
-  model:
-    values: ["efficientnet"]
+  augmentation:
+    values:
+      - false
+      - true
+  batch_size:
+    value: 64
   epochs:
     value: 100
+  f1_scoring:
+    distribution: categorical
+    values:
+      - weighted
+      - macro
   learning_rate:
-    min: 0.001
     max: 0.01
+    min: 0.001
+  model:
+    values:
+      - efficientnet
+  optimizer:
+    values:
+      - Adam
+      - RMS
   sample_size:
     max: 0.5
     min: 0.25
-  batch_size:
-    value: 64
   size:
     value: 224
-  augmentation:
-    values: [False, True]
-  optimizer:
-    values: ["Adam", "RMS"]
-  f1_scoring:
-    distribution: categorical
-    values: ["weighted", "macro"]
+program: train.py
