@@ -247,9 +247,10 @@ def get_generators(config, X_train, y_train, test_df):
         # color_mode='rgb',
         shuffle=True,
         # class_mode="categorical",
-        target_size=(
-            config.size,
-            config.size))
+        # target_size=(
+        #     config.size,
+        #     config.size)
+            )
 
     val_generator = datagen.flow(
         X_train, y_train,
@@ -259,9 +260,10 @@ def get_generators(config, X_train, y_train, test_df):
         # color_mode='rgb',
         shuffle=True,
         # class_mode="categorical",
-        target_size=(
-            config.size,
-            config.size))
+        # target_size=(
+        #     config.size,
+        #     config.size)
+            )
 
     test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
