@@ -369,7 +369,7 @@ MODEL_NOTES = f'''
 Minerals Removed
 '''
 
-def SMOTE_Data(train_df=train):
+def SMOTE_Data(train_df):
     from imblearn.over_sampling import SMOTE
     from tensorflow.keras.preprocessing.image import load_img, img_to_array
     X_train = []
