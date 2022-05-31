@@ -6,7 +6,7 @@ Designed to show how to do a simple wandb integration with keras.
 """
 # *IMPORANT*: Have to do this line *before* importing tensorflow
 from utilities import get_data
-from models import get_efficientnet, get_mobilenet, baseline_model, model2
+from models import get_efficientnet, get_mobilenet, get_baseline_model, model2
 from sklearn.metrics import classification_report, confusion_matrix
 import tensorflow_addons as tfa
 from tensorflow.random import set_seed
@@ -363,7 +363,7 @@ TRAINABLE = False
 # DECAY = 1e-6
 # MOMENTUM = 0.9
 MODEL_NOTES = f'''
-
+Minerals Removed
 '''
 
 
