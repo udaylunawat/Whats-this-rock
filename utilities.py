@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from sklearn import datasets
 
 # https://towardsdatascience.com/stratified-sampling-you-may-have-been-splitting-your-dataset-all-wrong-8cfdd0d32502
 
@@ -48,3 +47,12 @@ def get_data(sample_size):
         data, 0.8, 0.1, 0.1)
     train_df = pd.concat([train_df, val_df])
     return train_df, test_df
+
+
+def undersample_df(data, class_name):
+    merged_df = pd.DataFrame()
+    for rock_type in data[class_name].unique():
+        temp = data[data[class_name] == rock_type].sample(n=min(data[class_name].value_counts()))
+        merged_df = pd.concat([merged_df, temp])
+
+    return merged_df

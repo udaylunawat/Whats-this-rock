@@ -2,7 +2,7 @@ import os
 import shutil
 import argparse
 import pandas as pd
-from utilities import get_stratified_dataset_partitions_pd
+from utilities import undersample_df
 
 
 def setup_dirs_and_preprocess(args):
@@ -33,7 +33,7 @@ def setup_dirs_and_preprocess(args):
     shutil.rmtree(root_path)
     data = pd.DataFrame(list(zip(all_paths, all_classes)),
                         columns=['image_path', 'classes'])
-    print(data)
+    data = undersample_df(data, 'classes')
     data.to_csv("training_data.csv")
 
 
