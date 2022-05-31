@@ -384,6 +384,7 @@ if __name__ == "__main__":
         resume=resume)
 
     config = args
+    print(config)
     # config.optimizer = 'Adam'
     # config.f1_scoring = 'weighted'
     # config.zoom_range = [0.5, 1.0]
