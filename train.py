@@ -44,7 +44,8 @@ def get_parser():
         "--notes",
         type=str,
         default=MODEL_NOTES,
-        help="Notes about the training run")
+        help="Notes about the training run",
+        required=False)
     parser.add_argument(
         "-p",
         "--project_name",
@@ -82,6 +83,12 @@ def get_parser():
         default=EPOCHS,
         help="number of training epochs (passes through full training data)")
     parser.add_argument(
+        "-o",
+        "--optimizer",
+        type=str,
+        default='Adam',
+        help="optimizer")
+    parser.add_argument(
         "-size",
         "--size",
         type=int,
@@ -103,14 +110,9 @@ def get_parser():
         "-hsr",
         "--height_shift_range",
         type=float,
+        nargs='+',
         default=0.0,
         help="Augmentation Height Shift Range")
-    parser.add_argument(
-        "-o",
-        "--optimizer",
-        type=str,
-        default='adam',
-        help="optimizer")
     parser.add_argument(
         "-wsr",
         "--width_shift_range",
@@ -135,7 +137,12 @@ def get_parser():
         type=float,
         default=0.0,
         help="Augmentation Rotation Range")
-
+    parser.add_argument(
+        "-aug",
+        "--augmentation",
+        type=bool,
+        default=True,
+        help="Augmentation")
 
     # parser.add_argument(
     #   "--dropout",
@@ -193,8 +200,6 @@ def get_compiled_model(config, model):
                       rho=0.9, epsilon=1e-08, decay=0.0)
     elif config.optimizer == 'SGD':
         opt = SGD(learning_rate=config.learning_rate)
-    else:
-        opt = 'adam'    # native adam optimizer
 
     # enable logging for validation examples
     model.compile(
@@ -210,18 +215,21 @@ def get_compiled_model(config, model):
 
 
 def get_generators(config, train_data, test_data):
-    datagen = ImageDataGenerator(horizontal_flip=True,
-                                 featurewise_center=False,
-                                 featurewise_std_normalization=False,
-                                 zca_whitening=config.zca_whitening,
-                                 validation_split=0.2,
-                                 fill_mode=config.fill_mode,
-                                 zoom_range=config.zoom_range,
-                                 # brightness_range=[1.0],
-                                 width_shift_range=config.width_shift_range,
-                                 height_shift_range=config.height_shift_range,
-                                 rotation_range=config.rotation_range,
-                                 rescale=1. / 255.)
+    if config.augmentation:
+        datagen = ImageDataGenerator(horizontal_flip=False,
+                                     featurewise_center=False,
+                                     featurewise_std_normalization=False,
+                                     zca_whitening=config.zca_whitening,
+                                     validation_split=0.2,
+                                     fill_mode=config.fill_mode,
+                                     zoom_range=[0.5, 1.0],
+                                     brightness_range=[0.5, 1.2],
+                                     width_shift_range=config.width_shift_range,
+                                     height_shift_range=config.height_shift_range,
+                                     rotation_range=config.rotation_range,
+                                     rescale=1. / 255.)
+    elif config.augmentation is False:
+        datagen = ImageDataGenerator(rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(
         dataframe=train_df,
@@ -253,9 +261,7 @@ def get_generators(config, train_data, test_data):
             config.size,
             config.size))
 
-    test_datagen = ImageDataGenerator(featurewise_center=False,
-                                      featurewise_std_normalization=False,
-                                      rescale=1. / 255.)
+    test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
     test_generator = test_datagen.flow_from_dataframe(
         dataframe=test_df,
@@ -297,6 +303,16 @@ def get_generators(config, train_data, test_data):
 #     for layer in feature_extractor.layers[:fine_tune_at]:
 #         layer.trainable = False
 
+#     # Add untrained final layers
+#     model = Sequential(
+#         [
+#             feature_extractor,
+#             GlobalAveragePooling2D(),
+#             Dense(1024),
+#             Dense(num_classes, activation="softmax"),
+#         ]
+#     )
+
 #     model.summary()
 #     model.compile(
 #         optimizer=Adam(1e-5),
@@ -334,10 +350,10 @@ reset_random_seeds()
 
 PROJECT_NAME = "rock_classification"
 MODEL_NAME = "efficientnet"
-SAMPLE_SIZE = 0.4
-LEARNING_RATE = 0.00001
+SAMPLE_SIZE = 0.2
+LEARNING_RATE = 0.0001
 BATCH_SIZE = 64
-EPOCHS = 100
+EPOCHS = 20
 SIZE = 224,
 TRAINABLE = False
 # DROPOUT = 0.2
@@ -366,15 +382,15 @@ if __name__ == "__main__":
         resume=resume)
 
     config = args
-    config.optimizer = 'Adam'
-    config.f1_scoring = 'weighted'
-    config.zoom_range = [0.5, 1.0]
-    config.fill_mode = 'reflect'
-    config.width_shift_range = [0, 0.3]
-    config.height_shift_range = [0, 0.3]
-    config.rotation_range = 90
-    config.zca_whitening = False
-    wandb.config.update(config)
+    # config.optimizer = 'Adam'
+    # config.f1_scoring = 'weighted'
+    # config.zoom_range = [0.5, 1.0]
+    # config.fill_mode = 'reflect'
+    # config.width_shift_range = [0, 0.3]
+    # config.height_shift_range = [0, 0.3]
+    # config.rotation_range = 90
+    # config.zca_whitening = False
+    # wandb.config.update(config)
 
     # build model
     if wandb.run.resumed:
@@ -396,7 +412,7 @@ if __name__ == "__main__":
             model = baseline_model(config.size, 3, num_classes)
         elif config.model == "baseline_cnn":
             model = model2(config.size, config.size, num_classes)
-        else:
+        elif config.model == "mobilenet":
             model = get_mobilenet(config, num_classes)
 
     model = get_compiled_model(config, model)

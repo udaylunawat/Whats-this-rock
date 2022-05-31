@@ -4,34 +4,29 @@ metric:
   name: val_accuracy
   goal: maximize
 parameters:
+  model:
+    value: ["efficientnet", "mobilenet"]
   epochs:
-    value: 100
+    value: 15
   learning_rate:
-    values: [0.01, 0.001, 0.0001, 0.00001]
+    min: 0.0005
+    max: 0.005
+  sample_size:
+    max: 0.3
+    min: 0.1
   batch_size:
-    values: [32, 64, 128, 256, 512]
+    value: 64
   size:
-    values: [32, 64, 128, 224, 300]
+    values: [224]
+  augmentation:
+    values: [True, False]
   optimizer:
-    values: ["adam"]
+    values: ["Adam", "RMS", "SGD"]
   f1_scoring:
     distribution: categorical
-    values:
-      - weighted
-      - macro
+    values: ["macro", "micro", "weighted", None]
   fill_mode:
     distribution: categorical
     values:
-      - nearest
       - reflect
-  zca_whitening:
-    values: [True, False]
-  zoom_range:
-    min: 0.0
-    max: 1.0
-  width_shift_range:
-    min: 0.0
-    max: 0.3
-  height_shift_range:
-    min: 0.0
-    max: 0.3
+      - nearest
