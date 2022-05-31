@@ -19,9 +19,7 @@ python efficientnet_train.py --project_name rock_classification \
 ```
 # To-do
 - Improve preprocessing Techniques
-- find a better name for deployment_requirements.txt
 - Dockerize
-- improve directory structure
 - Deploy on AWS
 - Add notebook
 - EDA
