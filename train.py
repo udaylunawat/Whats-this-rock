@@ -244,7 +244,7 @@ def get_generators(config, X_train, y_train, test_df):
         subset="training",
         batch_size=config.batch_size,
         seed=42,
-        color_mode='rgb',
+        # color_mode='rgb',
         shuffle=True,
         class_mode="categorical",
         target_size=(
@@ -256,7 +256,7 @@ def get_generators(config, X_train, y_train, test_df):
         subset="validation",
         batch_size=config.batch_size,
         seed=42,
-        color_mode='rgb',
+        # color_mode='rgb',
         shuffle=True,
         class_mode="categorical",
         target_size=(
@@ -274,7 +274,7 @@ def get_generators(config, X_train, y_train, test_df):
         validation_split=None,
         seed=42,
         shuffle=False,
-        color_mode='rgb',
+        # color_mode='rgb',
         class_mode=None,
         target_size=(
             config.size,
