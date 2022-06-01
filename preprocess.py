@@ -27,7 +27,9 @@ def setup_dirs_and_preprocess(args):
     shutil.rmtree(root_path)
     data = pd.DataFrame(list(zip(all_paths, all_classes)),
                         columns=['image_path', 'classes'])
-    data = undersample_df(data, 'classes')
+    if args.undersample:
+        data = undersample_df(data, 'classes')
+
     data.to_csv("training_data.csv")
 
 
