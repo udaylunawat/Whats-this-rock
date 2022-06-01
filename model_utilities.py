@@ -76,16 +76,18 @@ def custom_augmentation(np_tensor):
                   cutout_width_point:cutout_width_point + cutout_width, :] = 127
         return np_tensor
 
-    # if (np.random.uniform() < 0.1):
-    #     np_tensor = random_contrast(np_tensor)
-    # if (np.random.uniform() < 0.1):
-    #     np_tensor = random_hue(np_tensor)
-    # if (np.random.uniform() < 0.1):
-    #     np_tensor = random_saturation(np_tensor)
-    # if (np.random.uniform() < 0.2):
-    #     np_tensor = random_crop(np_tensor)
+    if (np.random.uniform() < 0.1):
+        np_tensor = random_contrast(np_tensor)
+    if (np.random.uniform() < 0.1):
+        np_tensor = random_hue(np_tensor)
+    if (np.random.uniform() < 0.1):
+        np_tensor = random_saturation(np_tensor)
     if (np.random.uniform() < 0.2):
-        np_tensor = gaussian_noise(np_tensor)
+        np_tensor = random_crop(np_tensor)
+
+    # Gaussian noise giving error hence removed
+    # if (np.random.uniform() < 0.2):
+    #     np_tensor = gaussian_noise(np_tensor)
     if (np.random.uniform() < 0.3):
         np_tensor = cutout(np_tensor)
     return np.array(np_tensor)
@@ -96,11 +98,7 @@ def get_generators(config, train_df, test_df):
     if config.augment == "True":
         datagen = ImageDataGenerator(validation_split=0.2,
                                      horizontal_flip=True,
-                                     featurewise_center=False,
-                                     featurewise_std_normalization=False,
-                                     zca_whitening=False,
                                      fill_mode="nearest",
-                                     # config.zoom_range,
                                      zoom_range=[0.8, 1.25],
                                      brightness_range=[0.5, 1.2],
                                      width_shift_range=0.1,  # config.width_shift_range,
