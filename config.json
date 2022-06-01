@@ -1,0 +1,13 @@
+{
+    "root_dir" : "data/1_extracted/Rock_Dataset/",
+    "project_name" : "rock_classification",
+    "model_name" : "efficientnet",
+    "sample_size" : 0.2,
+    "augmentation": false,
+    "optimizer": "Adam",
+    "learning_rate" : 0.0001,
+    "batch_size" : 64,
+    "epochs" : 20,
+    "image_size" : 224,
+    "trainable" : false
+}
