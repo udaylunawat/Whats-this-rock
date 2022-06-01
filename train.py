@@ -181,7 +181,7 @@ if __name__ == "__main__":
     model.summary()
 
     # model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=3, verbose=0)
+    reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=2, verbose=0)
     early_stop = EarlyStopping(monitor="val_loss", patience=10, verbose=0, restore_best_weights=True)
     wandbcallback = WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
 
