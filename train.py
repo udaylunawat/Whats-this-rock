@@ -164,6 +164,7 @@ if __name__ == "__main__":
             config, train_df, test_df)
 
         num_classes = len(train_generator.class_indices)
+        wandb.log({"num_classes": num_classes})
         labels = list(train_generator.class_indices.keys())
 
         model = get_model(config, num_classes)
