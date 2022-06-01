@@ -4,11 +4,12 @@ metric:
   name: val_loss
 parameters:
   augmentation:
+    distribution: boolean
     values:
-      - true
+      - True
       - false
   batch_size:
-    values: [32, 64, 128, 256, 512, 1024]
+    values: [32, 64, 128, 256, 512]
   epochs:
     value: 100
   f1_scoring:
@@ -24,8 +25,6 @@ parameters:
     values:
       - efficientnet
       - mobilenet
-      - baseline
-      - baseline_cnn
   optimizer:
     values:
       - Adam
