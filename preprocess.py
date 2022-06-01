@@ -2,16 +2,10 @@ import os
 import shutil
 import argparse
 import pandas as pd
-from utilities import undersample_df
+from data_utilities import get_all_filePaths, undersample_df
 
 
 def setup_dirs_and_preprocess(args):
-
-    def get_all_filePaths(folderPath):
-        result = []
-        for dirpath, dirnames, filenames in os.walk(folderPath):
-            result.extend([os.path.join(dirpath, filename) for filename in filenames if filename[-3:] == 'jpg'])
-        return result
 
     all_paths = []
     all_classes = []
@@ -45,5 +39,13 @@ if __name__ == "__main__":
         type=str,
         default='data/1_extracted/Rock_Dataset/',
         help="Root Folder")
+    parser.add_argument(
+        "-usample",
+        "--undersample",
+        type=bool,
+        default=True,
+        help="Undersample Data")
+
     args = parser.parse_args()
+
     setup_dirs_and_preprocess(args)
