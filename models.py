@@ -5,7 +5,7 @@ from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras import backend as K
 
 
-def model1(img_height, img_width, num_classes):
+def get_small_cnn(img_height, img_width, num_classes):
     inputs = Input(shape=(img_height, img_width, 3))
     x = Conv2D(filters=32,
                kernel_size=(3, 3),
@@ -31,7 +31,7 @@ def model1(img_height, img_width, num_classes):
     return Model(inputs=inputs, outputs=outputs)
 
 
-def model2(img_height, img_width, num_classes):
+def get_large_cnn(img_height, img_width, num_classes):
     model = Sequential([
         Conv2D(16, kernel_size=(3, 3), input_shape=(img_height, img_width, 3)),
         BatchNormalization(),
@@ -77,8 +77,8 @@ def model2(img_height, img_width, num_classes):
 def get_mobilenet(config, num_classes):
     mobilenet_pretrained = MobileNetV2(
         input_shape=(
-            config.size,
-            config.size,
+            config.image_size,
+            config.image_size,
             3),
         weights="imagenet",
         include_top=False)
@@ -98,7 +98,7 @@ def get_mobilenet(config, num_classes):
     return model
 
 
-def get_baseline_model(IMG_SIZE, CHANNELS, num_classes):
+def get_baseline_model(IMG_SIZE, num_classes, CHANNELS=3):
     input = Input(shape=(IMG_SIZE, IMG_SIZE, CHANNELS))
     flt_1 = Flatten(input_shape=(IMG_SIZE, IMG_SIZE, CHANNELS))(input)
     Dense_1 = Dense(128, activation="relu")(flt_1)
@@ -113,9 +113,9 @@ def get_baseline_model(IMG_SIZE, CHANNELS, num_classes):
 def get_efficientnet(config, num_classes):
     """ Construct a simple categorical CNN following the Keras tutorial """
     if K.image_data_format() == 'channels_first':
-        input_shape = (3, config.size, config.size)
+        input_shape = (3, config.image_size, config.image_size)
     else:
-        input_shape = (config.size, config.size, 3)
+        input_shape = (config.image_size, config.image_size, 3)
 
     feature_extractor = EfficientNetV2B0(
         include_top=False,
