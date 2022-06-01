@@ -11,7 +11,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.models import load_model
-from tensorflow.addons import tfa
+import tensorflow_addons as tfa
 
 from wandb.keras import WandbCallback
 import wandb
@@ -50,12 +50,6 @@ def get_parser():
         type=str,
         default=config.project_name,
         help="Main project name")
-    parser.add_argument(
-        "-remove",
-        "--remove_class",
-        type=str,
-        default=None,
-        help="Root Folder")
     parser.add_argument(
         "-m",
         "--model",
@@ -120,6 +114,13 @@ def get_parser():
     args = parser.parse_args()
     return args
 
+# https://stackoverflow.com/a/23689767/9292995
+class dotdict(dict):
+    """dot.notation access to dictionary attributes"""
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
 
 if __name__ == "__main__":
 
@@ -142,13 +143,10 @@ if __name__ == "__main__":
         config = args
     else:
         with open('config.json') as f:
-            config = json.load(f)
+            config = dotdict(json.load(f))
     wandb.config.update(config)
 
     print(f'Augmentation - {config.augmentation is False}')
-
-    if args.remove:
-        shutil.rmtree(os.path.join(args.root, args.remove))
 
     # build model
     if wandb.run.resumed:
