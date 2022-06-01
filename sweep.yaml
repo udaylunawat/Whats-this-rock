@@ -21,6 +21,6 @@ parameters:
       - RMS
   sample_size:
     value: 1.0
-  size:
+  image_size:
     value: 224
 program: train.py
