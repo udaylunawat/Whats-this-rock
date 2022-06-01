@@ -27,9 +27,6 @@ import shutil
 # *IMPORANT*: Have to do this line *before* importing tensorflow
 # os.environ['PYTHONHASHSEED'] = str(1)
 
-with open('config.json') as f:
-    config = json.load(f)
-
 
 def reset_random_seeds():
     os.environ['PYTHONHASHSEED'] = str(1)
@@ -144,7 +141,9 @@ if __name__ == "__main__":
     if len(sys.argv) == 1:
         config = args
     else:
-        wandb.config.update(config)
+        with open('config.json') as f:
+            config = json.load(f)
+    wandb.config.update(config)
 
     print(f'Augmentation - {config.augmentation is False}')
 
