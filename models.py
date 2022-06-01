@@ -92,6 +92,11 @@ def get_mobilenet(config, num_classes):
             mobilenet_pretrained,
             GlobalAveragePooling2D(),
             Dense(1024),
+            Dropout(0.3),
+            Dense(256),
+            Dropout(0.3),
+            Dense(64),
+            Dropout(0.3),
             Dense(num_classes, activation="softmax"),
         ]
     )
@@ -133,6 +138,11 @@ def get_efficientnet(config, num_classes):
             feature_extractor,
             GlobalAveragePooling2D(),
             Dense(1024),
+            Dropout(0.3),
+            Dense(256),
+            Dropout(0.3),
+            Dense(64),
+            Dropout(0.3),
             Dense(num_classes, activation="softmax"),
         ]
     )
