@@ -101,28 +101,22 @@ def get_parser():
         type=int,
         default=config.image_size,
         help="Image size")
-    parser.add_argument(
-        "-f",
-        "--f1_scoring",
-        type=str,
-        default='macro',
-        help="f1 scoring")
+    # https://stackoverflow.com/a/60999928/9292995
     parser.add_argument(
         "-aug",
         "--augmentation",
-        type=bool,
-        default=config.augmentation,
+        action='store_true',
         help="Augmentation")
     parser.add_argument(
         "-q",
         "--dry_run",
-        type=bool,
         default=False,
+        action='store_true',
         help="Dry run (do not log to wandb)")
     parser.add_argument(
         "-trainable",
         "--pretrained_trainable",
-        type=bool,
+        action='store_true',
         default=False,
         help="Train the pretrained model")
 
