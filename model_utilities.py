@@ -76,14 +76,14 @@ def custom_augmentation(np_tensor):
                   cutout_width_point:cutout_width_point + cutout_width, :] = 127
         return np_tensor
 
-    if (np.random.uniform() < 0.1):
-        np_tensor = random_contrast(np_tensor)
-    if (np.random.uniform() < 0.1):
-        np_tensor = random_hue(np_tensor)
-    if (np.random.uniform() < 0.1):
-        np_tensor = random_saturation(np_tensor)
-    if (np.random.uniform() < 0.2):
-        np_tensor = random_crop(np_tensor)
+    # if (np.random.uniform() < 0.1):
+    #     np_tensor = random_contrast(np_tensor)
+    # if (np.random.uniform() < 0.1):
+    #     np_tensor = random_hue(np_tensor)
+    # if (np.random.uniform() < 0.1):
+    #     np_tensor = random_saturation(np_tensor)
+    # if (np.random.uniform() < 0.2):
+    #     np_tensor = random_crop(np_tensor)
     if (np.random.uniform() < 0.2):
         np_tensor = gaussian_noise(np_tensor)
     if (np.random.uniform() < 0.3):
@@ -107,6 +107,7 @@ def get_generators(config, train_df, test_df):
                                      height_shift_range=0.1,  # config.height_shift_range,
                                      rotation_range=30,  # config.rotation_range,
                                      shear_range=30,
+                                     preprocessing_function=custom_augmentation,
                                      rescale=1. / 255.)
     elif config.augment == "False":
         datagen = ImageDataGenerator(validation_split=0.2, rescale=1. / 255.)
