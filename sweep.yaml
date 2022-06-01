@@ -4,16 +4,15 @@ metric:
   name: val_f1_score
 parameters:
   augment:
-    values: [True, False]
+    values: [True]
   batch_size:
-    values: [16, 32, 64, 128]
+    value: 64
   epochs:
     value: 100
   learning_rate:
-    values: [0.00005, 0.00001, 0.000005]
+    values: [0.0001, 0.00005, 0.00001, 0.000005]
   model:
     values:
-      - efficientnet
       - mobilenet
   optimizer:
     values:
