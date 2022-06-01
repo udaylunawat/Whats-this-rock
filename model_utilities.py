@@ -4,7 +4,6 @@ from tensorflow.keras.optimizers import Adam, RMSprop, SGD
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf
 from sklearn.utils import class_weight
-
 from models import get_efficientnet, get_mobilenet, get_baseline_model, get_small_cnn
 
 
@@ -158,67 +157,6 @@ def get_generators(config, train_df, test_df):
             config.image_size))
 
     return train_generator, val_generator, test_generator
-
-
-def finetune(config, model):
-    pass
-    # if K.image_data_format() == 'channels_first':
-    #     input_shape = (3, config.image_size, config.image_size)
-    # else:
-    #     input_shape = (config.image_size, config.image_size, 3)
-
-    # feature_extractor = EfficientNetV2B0(
-    #     include_top=False,
-    #     weights="imagenet",
-    #     input_shape=input_shape,
-    #     classifier_activation="softmax",
-    #     include_preprocessing=False,
-    # )
-    # feature_extractor.trainable = True
-
-    # # Fine-tune from this layer onwards
-    # fine_tune_at = 150
-
-    # # Freeze all the layers before the `fine_tune_at` layer
-    # for layer in feature_extractor.layers[:fine_tune_at]:
-    #     layer.trainable = False
-
-    # # Add untrained final layers
-    # model = Sequential(
-    #     [
-    #         feature_extractor,
-    #         GlobalAveragePooling2D(),
-    #         Dense(1024),
-    #         Dense(num_classes, activation="softmax"),
-    #     ]
-    # )
-
-    # model.summary()
-    # model.compile(
-    #     optimizer=Adam(1e-5),
-    #     loss="categorical_crossentropy",
-    #     metrics=[
-    #         tfa.metrics.F1Score(
-    #             num_classes=num_classes,
-    #             average='weighted',
-    #             threshold=0.5),
-    #         'accuracy'])
-
-    # epochs = 10
-    # callbacks = [
-    #     # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-    #     # EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
-    #     WandbCallback(
-    #         training_data=train_generator,
-    #         validation_data=val_generator,
-    #         input_type="image",
-    #         labels=labels)
-    # ]
-    # history_tune = model.fit(train_generator,
-    #                          validation_data=val_generator,
-    #                          epochs=epochs,
-    #                          callbacks=callbacks,
-    #                          initial_epoch=history.epoch[-1])
 
 
 def get_model_weights(train_generator):

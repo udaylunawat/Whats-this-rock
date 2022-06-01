@@ -194,7 +194,72 @@ if __name__ == "__main__":
         callbacks=callbacks)
 
     if config.pretrained_trainable:
-        finetune(config, model)
+        from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0
+        from tensorflow.keras import backend as K
+        from tensorflow.keras.optimizers import Adam
+        from tensorflow.keras.models import Sequential
+        from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
+        if K.image_data_format() == 'channels_first':
+            input_shape = (3, config.image_size, config.image_size)
+        else:
+            input_shape = (config.image_size, config.image_size, 3)
+
+        if config.model_name == "efficientnet":
+            feature_extractor = EfficientNetV2B0
+        elif config.model_name == "mobilenet":
+            feature_extractor = MobileNetV2
+        feature_extractor(
+                include_top=False,
+                weights="imagenet",
+                input_shape=input_shape,
+                classifier_activation="softmax",
+                include_preprocessing=False,
+            )
+        feature_extractor.trainable = True
+
+        # Fine-tune from this layer onwards
+        fine_tune_at = 150
+
+        # Freeze all the layers before the `fine_tune_at` layer
+        for layer in feature_extractor.layers[:fine_tune_at]:
+            layer.trainable = False
+
+        # Add untrained final layers
+        model = Sequential(
+            [
+                feature_extractor,
+                GlobalAveragePooling2D(),
+                Dense(1024),
+                Dense(num_classes, activation="softmax"),
+            ]
+        )
+
+        model.summary()
+        model.compile(
+            optimizer=Adam(1e-5),
+            loss="categorical_crossentropy",
+            metrics=[
+                tfa.metrics.F1Score(
+                    num_classes=num_classes,
+                    average='weighted',
+                    threshold=0.5),
+                'accuracy'])
+
+        epochs = 10
+        callbacks = [
+            # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
+            # EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
+            WandbCallback(
+                training_data=train_generator,
+                validation_data=val_generator,
+                input_type="image",
+                labels=labels)
+        ]
+        history_tune = model.fit(train_generator,
+                                validation_data=val_generator,
+                                epochs=epochs,
+                                callbacks=callbacks,
+                                initial_epoch=history.epoch[-1])
 
         # Confution Matrix and Classification Report
     Y_pred = model.predict(

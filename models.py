@@ -3,6 +3,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Flatte
     BatchNormalization, LeakyReLU, Input
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras import backend as K
+from tensorflow.keras.optimizers import Adam, RMSprop, SGD
 
 
 def get_small_cnn(img_height, img_width, num_classes):
@@ -148,3 +149,8 @@ def get_efficientnet(config, num_classes):
     )
 
     return model
+
+
+def finetune(config, model, num_classes, history):
+
+    pass
