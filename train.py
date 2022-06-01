@@ -5,7 +5,8 @@ Trains a model on the dataset.
 Designed to show how to do a simple wandb integration with keras.
 """
 from data_utilities import get_data
-from model_utilities import get_generators, finetune, get_model, get_optimizer
+from model_utilities import get_generators, get_model, get_optimizer
+from models import finetune
 
 from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
