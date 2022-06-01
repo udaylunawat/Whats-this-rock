@@ -94,7 +94,7 @@ def custom_augmentation(np_tensor):
 
 def get_generators(config, train_df, test_df):
 
-    if config.augmentation is True:
+    if config.augment == "True":
         datagen = ImageDataGenerator(validation_split=0.2,
                                      horizontal_flip=True,
                                      featurewise_center=False,
@@ -109,7 +109,7 @@ def get_generators(config, train_df, test_df):
                                      rotation_range=30,  # config.rotation_range,
                                      shear_range=30,
                                      rescale=1. / 255.)
-    elif config.augmentation is False:
+    elif config.augment == "False":
         datagen = ImageDataGenerator(validation_split=0.2, rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(

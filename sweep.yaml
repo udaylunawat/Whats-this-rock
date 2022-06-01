@@ -3,24 +3,14 @@ metric:
   goal: minimize
   name: val_loss
 parameters:
-  augmentation:
-    distribution: boolean
-    values:
-      - True
-      - false
+  augment:
+    values: [True, False]
   batch_size:
     values: [32, 64, 128, 256, 512]
   epochs:
     value: 100
-  f1_scoring:
-    distribution: categorical
-    values:
-      - weighted
-      - macro
-      - micro
   learning_rate:
-    min: 0.00001
-    max: 0.01
+    value: 0.01
   model:
     values:
       - efficientnet

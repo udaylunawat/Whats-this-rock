@@ -3,7 +3,7 @@
     "project_name" : "rock_classification",
     "model_name" : "efficientnet",
     "sample_size" : 1.0,
-    "augmentation": false,
+    "augment": "False",
     "optimizer": "Adam",
     "learning_rate" : 0.01,
     "batch_size" : 64,

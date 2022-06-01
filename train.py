@@ -51,7 +51,7 @@ def get_parser():
         help="Main project name")
     parser.add_argument(
         "-m",
-        "--model",
+        "--model_name",
         type=str,
         default=config.model_name,
         help="Model")
@@ -87,7 +87,7 @@ def get_parser():
         help="optimizer")
     parser.add_argument(
         "-size",
-        "--size",
+        "--image_size",
         type=int,
         default=config.image_size,
         help="Image size")
@@ -95,7 +95,8 @@ def get_parser():
     parser.add_argument(
         "-aug",
         "--augment",
-        action='store_true',
+        type=str,
+        default=config.augment,
         help="Augmentation")
     parser.add_argument(
         "-q",
@@ -143,12 +144,12 @@ if __name__ == "__main__":
         resume=resume)
 
     # if arguments are passed in, override config
-    if len(sys.argv) == 1:
+    if len(sys.argv) > 1:
         config = args
 
     wandb.config.update(config)
 
-    print(f'Augmentation - {config.augmentation is False}\nmodel name - {config.model_name}\nconfig - {config}')
+    print(f'Augmentation - {config.augment}\nmodel name - {config.model_name}\nconfig - {config}')
 
     # build model
     if wandb.run.resumed:
@@ -174,7 +175,7 @@ if __name__ == "__main__":
         metrics=[
             tfa.metrics.F1Score(
                 num_classes=num_classes,
-                average=config.f1_scoring,
+                average='macro',
                 threshold=0.5),
             'accuracy'])
     model.summary()
