@@ -44,9 +44,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "-usample",
         "--undersample",
-        type=bool,
-        default=True,
+        action='store_true',
         help="Undersample Data")
+    parser.add_argument(
+        "-nousample",
+        "--no_undersample",
+        action='store_false',
+        help="Don't Undersample Data")
 
     args = parser.parse_args()
 

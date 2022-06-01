@@ -71,23 +71,3 @@ def get_all_filePaths(folderPath):
 # default config/hyperparameter values
 # you can modify these below or via command line
 # https://github.com/wandb/examples/blob/master/examples/keras/keras-cnn-fashion/cnn_train.py
-
-
-def SMOTE_Data(config, train_df):
-    from imblearn.over_sampling import SMOTE
-    from tensorflow.keras.preprocessing.image import load_img, img_to_array
-    X_train = []
-    for img in train_df['image_path']:
-        loaded_img = load_img(os.path.join(IMAGE_DIR, img), target_size=(config.image_size, config.image_size))
-        img_arr = img_to_array(loaded_img)
-        X_train.append(img_arr)
-
-    print(np.array(X_train).shape)
-    y_train = train_df.drop('image_path', axis=1, inplace=False)
-    print(y_train.head())
-    y_train = np.array(y_train.values)
-    X_train = np.array(X_train)
-    sm = SMOTE(random_state=42)
-    X_train, y_train = sm.fit_resample(X_train.reshape((-1, config.image_size * config.image_size * 3)), y_train)
-    X_train.reshape(-1, config.image_size, config.image_size, 3)
-    return X_train, y_train
