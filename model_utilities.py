@@ -20,16 +20,16 @@ def get_optimizer(config):
 
 
 def get_model(config, num_classes):
-    if config.model == "efficientnet":
+    if config.model_name == "efficientnet":
         model = get_efficientnet(config, num_classes)
-    elif config.model == "baseline":
+    elif config.model_name == "baseline":
         model = get_baseline_model(config.image_size, num_classes)
-    elif config.model == "baseline_cnn":
+    elif config.model_name == "baseline_cnn":
         model = get_small_cnn(
             config.image_size,
             config.image_size,
             num_classes)
-    elif config.model == "mobilenet":
+    elif config.model_name == "mobilenet":
         model = get_mobilenet(config, num_classes)
 
     return model
@@ -93,14 +93,14 @@ def custom_augmentation(np_tensor):
 
 
 def get_generators(config, train_df, test_df):
-    if config.augmentation is True:
 
-        datagen = ImageDataGenerator(horizontal_flip=True,
+    if config.augmentation is True:
+        datagen = ImageDataGenerator(validation_split=0.2,
+                                     horizontal_flip=True,
                                      featurewise_center=False,
                                      featurewise_std_normalization=False,
-                                     zca_whitening=config.zca_whitening,
-                                     validation_split=0.2,
-                                     fill_mode=config.fill_mode,
+                                     zca_whitening=False,
+                                     fill_mode="nearest",
                                      # config.zoom_range,
                                      zoom_range=[0.8, 1.25],
                                      brightness_range=[0.5, 1.2],
@@ -110,7 +110,7 @@ def get_generators(config, train_df, test_df):
                                      shear_range=30,
                                      rescale=1. / 255.)
     elif config.augmentation is False:
-        datagen = ImageDataGenerator(rescale=1. / 255.)
+        datagen = ImageDataGenerator(validation_split=0.2, rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(
         dataframe=train_df,

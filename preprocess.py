@@ -6,7 +6,7 @@ from data_utilities import get_all_filePaths, undersample_df
 
 
 def setup_dirs_and_preprocess(args):
-    shutil.rmtree(os.path.join(args.root, args.remove))
+    shutil.rmtree(os.path.join(args.root, args.remove_class))
     all_paths = []
     all_classes = []
 

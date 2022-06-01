@@ -21,7 +21,6 @@ import json
 import argparse
 import sys
 import os
-import shutil
 # import matplotlib.pyplot as plt
 
 # *IMPORANT*: Have to do this line *before* importing tensorflow
@@ -95,7 +94,7 @@ def get_parser():
     # https://stackoverflow.com/a/60999928/9292995
     parser.add_argument(
         "-aug",
-        "--augmentation",
+        "--augment",
         action='store_true',
         help="Augmentation")
     parser.add_argument(
@@ -114,12 +113,17 @@ def get_parser():
     args = parser.parse_args()
     return args
 
+
 # https://stackoverflow.com/a/23689767/9292995
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
+
+
+with open('config.json') as f:
+    config = dotdict(json.load(f))
 
 
 if __name__ == "__main__":
@@ -141,12 +145,10 @@ if __name__ == "__main__":
     # if arguments are passed in, override config
     if len(sys.argv) == 1:
         config = args
-    else:
-        with open('config.json') as f:
-            config = dotdict(json.load(f))
+
     wandb.config.update(config)
 
-    print(f'Augmentation - {config.augmentation is False}')
+    print(f'Augmentation - {config.augmentation is False}\nmodel name - {config.model_name}\nconfig - {config}')
 
     # build model
     if wandb.run.resumed:
@@ -164,7 +166,7 @@ if __name__ == "__main__":
 
         model = get_model(config, num_classes)
 
-    opt = get_optimizer(config, model)
+    opt = get_optimizer(config)
 
     model.compile(
         optimizer=opt,
