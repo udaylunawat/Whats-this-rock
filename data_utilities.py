@@ -40,7 +40,7 @@ def get_stratified_dataset_partitions_pd(
 
 
 def get_data(sample_size):
-    data = pd.read_csv('training_data.csv', index_col=0)
+    data = pd.read_csv(os.path.join("data/3_consume/", "image_paths.csv"), index_col=0)
     data = data.sample(frac=sample_size).reset_index(drop=True)
     # Splitting data into train, val and test samples using stratified splits
     train_df, val_df, test_df = get_stratified_dataset_partitions_pd(

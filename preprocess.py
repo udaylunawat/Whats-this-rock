@@ -31,7 +31,7 @@ def setup_dirs_and_preprocess(args):
     if args.undersample:
         data = undersample_df(data, 'classes')
 
-    data.to_csv("training_data.csv")
+    data.to_csv(os.path.join("data/3_consume/", "image_paths.csv"))
 
 
 if __name__ == "__main__":
