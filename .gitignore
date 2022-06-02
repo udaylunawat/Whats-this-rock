@@ -139,3 +139,6 @@ secrets.json
 kaggle.json
 *.h5
 .vscode
+data/*
+wandb/*
+linux-packages.txt
