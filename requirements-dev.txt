@@ -6,3 +6,4 @@ pandas
 wandb
 tensorflow-addons
 plotly
+scikit-learn

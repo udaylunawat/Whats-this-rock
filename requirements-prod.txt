@@ -4,3 +4,4 @@ numpy
 tensorflow-cpu
 kaggle
 pandas
+scikit-learn
