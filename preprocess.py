@@ -2,12 +2,16 @@ import os
 import shutil
 import argparse
 import pandas as pd
-from data_utilities import get_all_filePaths, undersample_df
+from data_utilities import get_all_filePaths, undersample_df, remove_corrupted_images
 
 
 def setup_dirs_and_preprocess(args):
     if args.remove_class:
         shutil.rmtree(os.path.join(args.root, args.remove_class))
+
+    root_dir = 'data/1_extracted/'
+    remove_corrupted_images(root_dir)
+
     all_paths = []
     all_classes = []
 
