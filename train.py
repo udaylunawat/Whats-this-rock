@@ -5,7 +5,7 @@ Trains a model on the dataset.
 Designed to show how to do a simple wandb integration with keras.
 """
 from data_utilities import get_data
-from model_utilities import get_generators, get_model, get_optimizer
+from model_utilities import get_generators, get_model, get_optimizer, get_model_weights
 from models import finetune
 
 from sklearn.metrics import classification_report, confusion_matrix
@@ -183,8 +183,8 @@ if __name__ == "__main__":
     model.summary()
 
     model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=2, verbose=0)
-    early_stop = EarlyStopping(monitor="val_loss", patience=5, verbose=0, restore_best_weights=True)
+    reduce_lr = ReduceLROnPlateau(monitor="val_f1_score", factor=0.5, patience=2, verbose=0)
+    early_stop = EarlyStopping(monitor="val_f1_score", patience=5, verbose=0, restore_best_weights=True)
     wandbcallback = WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
 
     callbacks = [early_stop, wandbcallback]
@@ -192,7 +192,7 @@ if __name__ == "__main__":
         train_generator,
         validation_data=val_generator,
         epochs=config.epochs,
-        # class_weight=train_class_weights,
+        class_weight=get_model_weights(train_generator),
         callbacks=callbacks)
 
     if config.pretrained_trainable:
