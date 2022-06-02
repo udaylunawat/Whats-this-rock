@@ -3,6 +3,7 @@
 <p align="center">
     <img src="imgs/marie.jpg " alt="What's my name?" width="200"/>
 </p>
+
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
@@ -88,7 +89,8 @@ limitations under the License.
 ## Credits
 - [Dataset - by Mahmoud Alforawi](https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals)
 
-<p align="center"> Made with :blue_heart: for India
+<br>
+<p align="center"> Walt might be the one who knocks <br> but Hank is the one who rocks. </br> </p>
 
 [contributors-shield]: https://img.shields.io/github/contributors/udaylunawat/Covid-19-Radiology.svg?style=flat-square
 [contributors-url]: https://github.com/udaylunawat/Covid-19-Radiology/graphs/contributors
