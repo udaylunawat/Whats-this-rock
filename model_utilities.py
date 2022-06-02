@@ -1,20 +1,22 @@
 import numpy as np
 
-from tensorflow.keras.optimizers import Adam, RMSprop, SGD
+from tensorflow.keras.optimizers import optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import tensorflow as tf
+
 from sklearn.utils import class_weight
 from models import get_efficientnet, get_mobilenet, get_baseline_model, get_small_cnn
 
+import tensorflow as tf
+import keras_cv
 
 def get_optimizer(config):
     if config.optimizer == 'Adam':
-        opt = Adam(config.learning_rate)
+        opt = optimizers.Adam(config.learning_rate)
     elif config.optimizer == 'RMS':
-        opt = RMSprop(learning_rate=config.learning_rate,
-                      rho=0.9, epsilon=1e-08, decay=0.0)
+        opt = optimizers.RMSprop(learning_rate=config.learning_rate,
+                                 rho=0.9, epsilon=1e-08, decay=0.0)
     elif config.optimizer == 'SGD':
-        opt = SGD(learning_rate=config.learning_rate)
+        opt = optimizers.SGD(learning_rate=config.learning_rate)
     return opt
 
 
@@ -155,6 +157,9 @@ def get_generators(config, train_df, test_df):
             config.image_size,
             config.image_size))
 
+    AUTOTUNE = tf.data.AUTOTUNE
+    train_generator = train_generator.prefetch(buffer_size=32)
+    val_generator = val_generator.prefetch(buffer_size=32)
     return train_generator, val_generator, test_generator
 
 
