@@ -9,9 +9,6 @@ def setup_dirs_and_preprocess(args):
     if args.remove_class:
         shutil.rmtree(os.path.join(args.root, args.remove_class))
 
-    root_dir = 'data/1_extracted/'
-    remove_corrupted_images(root_dir)
-
     all_paths = []
     all_classes = []
 
@@ -65,4 +62,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    root_dir = 'data/1_extracted/'
+    remove_corrupted_images(root_dir)
     setup_dirs_and_preprocess(args)

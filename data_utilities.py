@@ -1,10 +1,12 @@
 import pandas as pd
 import numpy as np
 import os
+import shutil
 
 
 def remove_corrupted_images(root_dir):
     import os
+    os.makedirs('corrupted_images', exist_ok=True)
     import cv2
     def check_images( s_dir, ext_list):
         bad_images=[]
@@ -46,9 +48,7 @@ def remove_corrupted_images(root_dir):
         print(' no improper image files were found')
 
     for bad_file in bad_file_list:
-        os.remove(bad_file)
-
-
+        shutil.move(bad_file, os.path.join('corrupted_images/', os.path.basename(bad_file)))
 
     from pathlib import Path
     import imghdr
@@ -64,10 +64,10 @@ def remove_corrupted_images(root_dir):
                 img_type = imghdr.what(filepath)
                 if img_type is None:
                     print(f"{filepath} is not an image")
-                    os.remove(filepath)
+                    shutil.move(filepath, os.path.join('corrupted_images/', os.path.basename(filepath)))
                 elif img_type not in img_type_accepted_by_tf:
                     print(f"{filepath} is a {img_type}, not accepted by TensorFlow")
-                    os.remove(filepath)
+                    shutil.move(filepath, os.path.join('corrupted_images/', os.path.basename(filepath)))
 
 
 # https://towardsdatascience.com/stratified-sampling-you-may-have-been-splitting-your-dataset-all-wrong-8cfdd0d32502
