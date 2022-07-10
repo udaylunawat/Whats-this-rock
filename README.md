@@ -1,6 +1,7 @@
 # Whats-this-rock
 ## Rock Classification Telegram Bot!
-<p align="center">
+![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock) ![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock) ![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
+<p align="left">
     <img src="imgs/marie.jpg " alt="What's my name?" width="200"/>
 </p>
 
