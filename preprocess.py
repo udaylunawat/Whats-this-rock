@@ -31,8 +31,8 @@ def setup_dirs_and_preprocess(args):
                         columns=['image_path', 'classes'])
     if args.undersample:
         balanced_data = undersample_df(data, 'classes')
+        balanced_data.to_csv(os.path.join("data/3_consume/", "balanced_image_paths.csv"))
 
-    balanced_data.to_csv(os.path.join("data/3_consume/", "balanced_image_paths.csv"))
     data.to_csv(os.path.join("data/3_consume/", "all_image_paths.csv"))
 
 
