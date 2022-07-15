@@ -30,9 +30,10 @@ def setup_dirs_and_preprocess(args):
     data = pd.DataFrame(list(zip(all_paths, all_classes)),
                         columns=['image_path', 'classes'])
     if args.undersample:
-        data = undersample_df(data, 'classes')
+        balanced_data = undersample_df(data, 'classes')
 
-    data.to_csv(os.path.join("data/3_consume/", "image_paths.csv"))
+    balanced_data.to_csv(os.path.join("data/3_consume/", "balanced_image_paths.csv"))
+    data.to_csv(os.path.join("data/3_consume/", "all_image_paths.csv"))
 
 
 if __name__ == "__main__":
