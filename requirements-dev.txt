@@ -1,3 +1,4 @@
+addict
 scikit-learn
 opencv-python
 kaggle
