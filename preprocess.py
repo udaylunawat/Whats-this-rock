@@ -4,7 +4,7 @@ import argparse
 import pandas as pd
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
-from data_utilities import get_all_filePaths, undersample_df, remove_corrupted_images
+from data_utilities import get_all_filePaths, remove_corrupted_images
 
 
 def setup_dirs_and_preprocess(args):
