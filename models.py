@@ -1,9 +1,9 @@
-from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0
+from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0, ResNet50
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Flatten, GlobalAveragePooling2D, \
-    BatchNormalization, LeakyReLU, Input
+    BatchNormalization, LeakyReLU, Input, Lambda
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras import backend as K
-from tensorflow.keras.optimizers import Adam, RMSprop, SGD
+from tensorflow.image import resize
 
 
 def get_small_cnn(img_height, img_width, num_classes):
@@ -117,7 +117,7 @@ def get_baseline_model(IMG_SIZE, num_classes, CHANNELS=3):
 
 
 def get_efficientnet(config, num_classes):
-    """ Construct a simple categorical CNN following the Keras tutorial """
+    """Construct a simple categorical CNN following the Keras tutorial"""
     if K.image_data_format() == 'channels_first':
         input_shape = (3, config.image_size, config.image_size)
     else:
@@ -148,6 +148,33 @@ def get_efficientnet(config, num_classes):
         ]
     )
 
+    return model
+
+
+def get_resnet_model(config):
+    IMAGE_SIZE = (config["image_size"], config["image_size"])
+    input_t = Input(shape=(config["image_size"], config["image_size"], 3))
+    res_model = ResNet50(include_top=False,
+                         weights="imagenet",
+                         input_tensor=input_t)
+
+    to_res = IMAGE_SIZE
+
+    model = Sequential()
+    model.add(Lambda(lambda image: resize(image, to_res)))
+    model.add(res_model)
+    model.add(Flatten())
+    model.add(BatchNormalization())
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(BatchNormalization())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(BatchNormalization())
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(BatchNormalization())
+    model.add(Dense(config["num_classes"], activation='softmax'))
     return model
 
 
