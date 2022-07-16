@@ -16,14 +16,16 @@ def setup_dirs_and_preprocess(args):
 
     class_dirs = os.listdir(args.root)
     for class_name in class_dirs:
-        os.makedirs(os.path.join('data/2_processed', class_name))
+        os.makedirs(os.path.join('data/2_processed', class_name), exist_ok=True)
         paths_list = get_all_filePaths(os.path.join(args.root, class_name))
 
         for image_path in paths_list:
             source = image_path
-
-            target = os.path.join('data/2_processed', class_name)
+            target_file_name = '-'.join([image_path.split('/')[i] for i in range(-3, 0)])
+            target = os.path.join('data/2_processed', class_name, target_file_name)
             shutil.move(source, target)
+            if os.path.isfile(source):
+                os.remove(source)
 
             all_paths.append(os.path.join(target, os.path.basename(source)))
             all_classes.append(class_name)
@@ -42,7 +44,7 @@ if __name__ == "__main__":
         "-r",
         "--root",
         type=str,
-        default='data/1_extracted/Rock_Dataset/',
+        default='data/1_extracted/',
         help="Root Folder")
     parser.add_argument(
         "-usample",
@@ -77,6 +79,5 @@ if __name__ == "__main__":
                            seed=1337)
     else:
         splitfolders.ratio('data/2_processed', output="data/4_tfds_dataset",
-                           ratio=(0.8, 0.1, 0.1),
+                           ratio=(0.75, 0.25, 0.25),
                            seed=1337)
-
