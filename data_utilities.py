@@ -141,15 +141,6 @@ def get_all_filePaths(folderPath):
     return result
 
 
-def oversample_data():
-    # https://stackoverflow.com/a/64006242/9292995
-    import splitfolders
-
-    # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
-    splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True,
-                       seed=1337)
-
-
 ######################################## TFDS Dataset Utilities ########################################
 def get_data_tfds():
     # build the tfds dataset from ImageFolder
