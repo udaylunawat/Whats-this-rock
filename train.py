@@ -104,7 +104,7 @@ def get_parser():
         help="batch_size")
     parser.add_argument(
         "-e",
-        "--epochs",
+        "--max_epochs",
         type=int,
         default=config.max_epochs,
         help="number of training epochs (passes through full training data)")
