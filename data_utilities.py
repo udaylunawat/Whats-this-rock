@@ -155,10 +155,9 @@ def get_data_tfds():
 
 # # https://stackoverflow.com/a/37343690/9292995
 # # https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/
-
+IMAGE_SIZE = (config["image_size"], config["image_size"])
 
 def to_dict(image, label):
-    IMAGE_SIZE = (config["image_size"], config["image_size"])
     image = tf.image.resize(image, IMAGE_SIZE)
     image = tf.cast(image, tf.float32)
     label = tf.one_hot(label, config.num_classes)
