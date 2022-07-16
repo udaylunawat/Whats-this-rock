@@ -4,19 +4,20 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from sklearn.utils import class_weight
-from models import get_efficientnet, get_mobilenet, get_baseline_model, get_small_cnn
+from models import get_efficientnet, get_mobilenet, get_baseline_model, get_small_cnn, get_resnet_model
 
 import tensorflow as tf
-import keras_cv
+
 
 def get_optimizer(config):
-    if config.optimizer == 'Adam':
-        opt = optimizers.Adam(config.learning_rate)
-    elif config.optimizer == 'RMS':
-        opt = optimizers.RMSprop(learning_rate=config.learning_rate,
+    if config.optimizer == 'adam':
+        opt = optimizers.Adam(config.init_learning_rate)
+    elif config.optimizer == 'rms':
+        opt = optimizers.RMSprop(learning_rate=config.init_learning_rate,
                                  rho=0.9, epsilon=1e-08, decay=0.0)
-    elif config.optimizer == 'SGD':
-        opt = optimizers.SGD(learning_rate=config.learning_rate)
+    elif config.optimizer == 'sgd':
+        opt = optimizers.SGD(learning_rate=config.init_learning_rate)
+
     return opt
 
 
@@ -32,6 +33,8 @@ def get_model(config, num_classes):
             num_classes)
     elif config.model_name == "mobilenet":
         model = get_mobilenet(config, num_classes)
+    elif config.model_name == "resnet":
+        model = get_resnet_model(config)
 
     return model
 
@@ -157,7 +160,6 @@ def get_generators(config, train_df, test_df):
             config.image_size,
             config.image_size))
 
-    AUTOTUNE = tf.data.AUTOTUNE
     train_generator = train_generator.prefetch(buffer_size=32)
     val_generator = val_generator.prefetch(buffer_size=32)
     return train_generator, val_generator, test_generator
