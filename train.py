@@ -255,7 +255,7 @@ if __name__ == "__main__":
     callbacks = [earlystopper, reduce_lr, wandbcallback]
     history = model.fit(
         train_dataset,
-        epochs=config["epochs"],
+        epochs=config["max_epochs"],
         validation_data=val_dataset,
         callbacks=callbacks
     )
