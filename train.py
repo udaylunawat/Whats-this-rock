@@ -4,15 +4,17 @@
 Trains a model on the dataset.
 Designed to show how to do a simple wandb integration with keras.
 """
-from data_utilities import get_data
-from model_utilities import get_generators, get_model, get_optimizer, get_model_weights
-from models import finetune
+from data_utilities import get_data_tfds, prepare_dataset
+from model_utilities import get_model, get_optimizer
+from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess_for_model
 
-from sklearn.metrics import classification_report, confusion_matrix
+# from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
-from tensorflow.keras.models import load_model
+from tensorflow.keras.backend import clear_session
+from tensorflow.keras.models import load_model, losses
 import tensorflow_addons as tfa
+from tensorflow.data import AUTOTUNE
 
 from wandb.keras import WandbCallback
 import wandb
@@ -33,6 +35,11 @@ def reset_random_seeds():
     set_seed(1)
     np.random.seed(1)
     random.seed(1)
+
+
+def load_dataset(split="train"):
+    dataset = data[split]
+    return prepare_dataset(dataset, split)
 
 
 def get_parser():
@@ -66,7 +73,7 @@ def get_parser():
         "-lr",
         "--learning_rate",
         type=float,
-        default=config.learning_rate,
+        default=config.init_learning_rate,
         help="learning rate")
     parser.add_argument(
         "-b",
@@ -78,13 +85,13 @@ def get_parser():
         "-e",
         "--epochs",
         type=int,
-        default=config.epochs,
+        default=config.max_epochs,
         help="number of training epochs (passes through full training data)")
     parser.add_argument(
         "-o",
         "--optimizer",
         type=str,
-        default='Adam',
+        default=config.optimizer,
         help="optimizer")
     parser.add_argument(
         "-size",
@@ -116,16 +123,32 @@ def get_parser():
     return args
 
 
-# https://stackoverflow.com/a/23689767/9292995
-class dotdict(dict):
-    """dot.notation access to dictionary attributes"""
-    __getattr__ = dict.get
-    __setattr__ = dict.__setitem__
-    __delattr__ = dict.__delitem__
+config = dict(
+    root_dir="data/4_tfds_dataset",
+    project_name="rock-classification-with-keras-cv",
+    model_name="resnet50",
+    sample_size=1.0,
+    augment=True,
+    optimizer="adam",
+    init_learning_rate=0.0001,
+    batch_size=64,
+    max_epochs=5,
+    image_size=224,
+    trainable=False,
+    # lr_decay_rate = 0.7,
+    loss_fn="categoricalcrossentropy",
+    metrics=['accuracy'],
+    earlystopping_patience=5,
+    notes="keras-cv augment run"
+)
 
+# save dictionary to config.json file
+with open('config.json', 'w') as f:
+    json.dump(config, f)
 
-with open('config.json') as f:
-    config = dotdict(json.load(f))
+from addict import Dict
+# using addict to allow for easy access to dictionary keys using dot notation
+config = Dict(config)
 
 
 if __name__ == "__main__":
@@ -134,6 +157,13 @@ if __name__ == "__main__":
 
     args = get_parser()
     resume = sys.argv[-1] == "--resume"
+
+    print("Arguments:", args)
+    print(f"\n\nConfig before update: {config}\n\n")
+
+    # combine args and config
+    config.update(vars(args))
+    print("\n\nConfig after update: {config}\n\n")
 
     # easier testing--don't log to wandb if dry run is set
     if args.dry_run:
@@ -150,134 +180,106 @@ if __name__ == "__main__":
 
     wandb.config.update(config)
 
-    print(f'Augmentation - {config.augment}\nmodel name - {config.model_name}\nconfig - {config}')
-
     # build model
     if wandb.run.resumed:
         print("RESUMING")
         # restore the best model
         model = load_model(wandb.restore("model-best.h5").name)
     else:
-        train_df, test_df = get_data(config.sample_size)
+        data, builder = get_data_tfds()
 
-        train_generator, val_generator, test_generator = get_generators(
-            config, train_df, test_df)
+        num_classes = builder.info.features['label'].num_classes
+        config["num_classes"] = num_classes
 
-        num_classes = len(train_generator.class_indices)
-        wandb.log({"num_classes": num_classes})
-        labels = list(train_generator.class_indices.keys())
+        IMAGE_SIZE = (config["image_size"], config["image_size"])
 
-        model = get_model(config, num_classes)
+        # AUTOTUNE = tf.data.AUTOTUNE
+        train_dataset = (
+            load_dataset()
+            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
+            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
+        )
+
+        # visualize_dataset(train_dataset, "CutMix, MixUp and RandAugment")
+
+        train_dataset = train_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+
+        val_dataset = load_dataset(split="val")
+        val_dataset = val_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+
+        test_dataset = load_dataset(split="test")
+        test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+
+        labels = builder.info.features['label'].names
+
+        # build model
+        clear_session()
+        model = get_model()
 
     opt = get_optimizer(config)
 
+    config.metrics.append(tfa.metrics.F1Score(
+        num_classes=config.num_classes,
+        average='macro',
+        threshold=0.5))
+
+    # Notice that we use label_smoothing=0.1 in the loss function.
+    # When using MixUp, label smoothing is highly recommended.
     model.compile(
+        loss=losses.CategoricalCrossentropy(label_smoothing=0.1),
         optimizer=opt,
-        loss="categorical_crossentropy",
-        metrics=[
-            tfa.metrics.F1Score(
-                num_classes=num_classes,
-                average='macro',
-                threshold=0.5),
-            'accuracy'])
-    model.summary()
+        metrics=config["metrics"],
+    )
 
-    model_checkpoint = ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor="val_f1_score", factor=0.5, patience=2, verbose=0)
-    early_stop = EarlyStopping(monitor="val_f1_score", patience=5, verbose=0, restore_best_weights=True)
-    wandbcallback = WandbCallback(training_data=train_generator, validation_data=val_generator, input_type="image", labels=labels)
+    # model.summary()
 
-    callbacks = [early_stop, wandbcallback]
+    # model_checkpoint = ModelCheckpoint("checkpoints/"+
+    #                                    f"{wandb.run.name}-"+config["model_name"]+
+    #                                    "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
+    reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.8, patience=5, verbose=1)
+    earlystopper = EarlyStopping(
+        monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto',
+        restore_best_weights=True
+    )
+
+    wandbcallback = WandbCallback(training_data=train_dataset,
+                                  validation_data=val_dataset,
+                                  labels=labels,
+                                  save_model=True,
+                                  monitor='val_loss',
+                                  log_weights=True,
+                                  log_evaluation=True,
+                                  validation_steps=5)
+
+    # Define WandbCallback for experiment tracking
+
+    callbacks = [earlystopper, reduce_lr, wandbcallback]
     history = model.fit(
-        train_generator,
-        validation_data=val_generator,
-        epochs=config.epochs,
-        class_weight=get_model_weights(train_generator),
-        callbacks=callbacks)
+        train_dataset,
+        epochs=config["epochs"],
+        validation_data=val_dataset,
+        callbacks=callbacks
+    )
 
     if config.pretrained_trainable:
-        from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0
-        from tensorflow.keras import backend as K
-        from tensorflow.keras.optimizers import Adam
-        from tensorflow.keras.models import Sequential
-        from tensorflow.keras.layers import Dense, GlobalAveragePooling2D
-        if K.image_data_format() == 'channels_first':
-            input_shape = (3, config.image_size, config.image_size)
-        else:
-            input_shape = (config.image_size, config.image_size, 3)
+        print("Not implemented")
+        pass
 
-        if config.model_name == "efficientnet":
-            feature_extractor = EfficientNetV2B0
-        elif config.model_name == "mobilenet":
-            feature_extractor = MobileNetV2
-        feature_extractor(
-                include_top=False,
-                weights="imagenet",
-                input_shape=input_shape,
-                classifier_activation="softmax",
-                include_preprocessing=False,
-            )
-        feature_extractor.trainable = True
+    # Confusion Matrix and Classification Report
+    # Y_pred = model.predict(
+    #     val_generator,
+    #     len(val_generator) // config.batch_size + 1)
+    # y_pred = np.argmax(Y_pred, axis=1)
 
-        # Fine-tune from this layer onwards
-        fine_tune_at = 150
-
-        # Freeze all the layers before the `fine_tune_at` layer
-        for layer in feature_extractor.layers[:fine_tune_at]:
-            layer.trainable = False
-
-        # Add untrained final layers
-        model = Sequential(
-            [
-                feature_extractor,
-                GlobalAveragePooling2D(),
-                Dense(1024),
-                Dense(num_classes, activation="softmax"),
-            ]
-        )
-
-        model.summary()
-        model.compile(
-            optimizer=Adam(1e-5),
-            loss="categorical_crossentropy",
-            metrics=[
-                tfa.metrics.F1Score(
-                    num_classes=num_classes,
-                    average='weighted',
-                    threshold=0.5),
-                'accuracy'])
-
-        epochs = 10
-        callbacks = [
-            # ModelCheckpoint("save_at_{epoch}_ft_0_001.h5", save_best_only=True),
-            # EarlyStopping(monitor="val_f1_score", min_delta=0.01, patience=10),
-            WandbCallback(
-                training_data=train_generator,
-                validation_data=val_generator,
-                input_type="image",
-                labels=labels)
-        ]
-        history_tune = model.fit(train_generator,
-                                validation_data=val_generator,
-                                epochs=epochs,
-                                callbacks=callbacks,
-                                initial_epoch=history.epoch[-1])
-
-        # Confution Matrix and Classification Report
-    Y_pred = model.predict(
-        val_generator,
-        len(val_generator) // config.batch_size + 1)
-    y_pred = np.argmax(Y_pred, axis=1)
-
-    print('Confusion Matrix with Validation data')
-    print(confusion_matrix(val_generator.classes, y_pred))
-    print('Classification Report')
-    cl_report = classification_report(
-        val_generator.classes,
-        y_pred,
-        target_names=labels,
-        output_dict=True)
-    # print(pd.DataFrame(cl_report))
-    print(cl_report)
+    # print('Confusion Matrix with Validation data')
+    # print(confusion_matrix(val_generator.classes, y_pred))
+    # print('Classification Report')
+    # cl_report = classification_report(
+    #     val_generator.classes,
+    #     y_pred,
+    #     target_names=labels,
+    #     output_dict=True)
+    # # print(pd.DataFrame(cl_report))
+    # print(cl_report)
 
     run.finish()
