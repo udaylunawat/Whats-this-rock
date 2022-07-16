@@ -2,6 +2,14 @@ import pandas as pd
 import numpy as np
 import os
 import shutil
+import json
+from addict import Dict
+import tensorflow as tf
+import tensorflow_datasets as tfds
+
+# load config from config.json file
+with open('config.json', 'r') as f:
+    config = Dict(json.load(f))
 
 
 def remove_corrupted_images(root_dir):
@@ -130,6 +138,54 @@ def get_all_filePaths(folderPath):
     for dirpath, dirnames, filenames in os.walk(folderPath):
         result.extend([os.path.join(dirpath, filename) for filename in filenames if filename[-3:] == 'jpg'])
     return result
+
+
+def oversample_data():
+    # https://stackoverflow.com/a/64006242/9292995
+    import splitfolders
+
+    # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
+    splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True,
+                       seed=1337)
+
+
+######################################## TFDS Dataset Utilities ########################################
+def get_data_tfds():
+    # build the tfds dataset from ImageFolder
+    # https://www.tensorflow.org/datasets/api_docs/python/tfds/image/ImageFolder
+
+    builder = tfds.builder("rock_classification", data_dir="data/4_tfds_dataset")
+    print(builder.info)  # number of images, number of classes, etc.
+    data = builder.as_dataset(split=None, as_supervised=True)
+
+    return data, builder
+
+
+# # https://stackoverflow.com/a/37343690/9292995
+# # https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/
+
+
+def to_dict(image, label):
+    IMAGE_SIZE = (config["image_size"], config["image_size"])
+    image = tf.image.resize(image, IMAGE_SIZE)
+    image = tf.cast(image, tf.float32)
+    label = tf.one_hot(label, config["num_classes"])
+    return {"images": image, "labels": label}
+
+
+def prepare_dataset(dataset, split):
+    AUTOTUNE = tf.data.AUTOTUNE
+    if split == "train":
+        return (
+            dataset.shuffle(10 * config["batch_size"])
+            .map(to_dict, num_parallel_calls=AUTOTUNE)
+            .batch(config["batch_size"])
+        )
+    elif split == "val" or split == "test":
+        return (
+            dataset.map(to_dict, num_parallel_calls=AUTOTUNE)
+            .batch(config["batch_size"])
+        )
 
 
 # make some random data
