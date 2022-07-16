@@ -10,7 +10,7 @@ from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess
 
 # from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
-from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, LearningRateScheduler
 from tensorflow.keras.backend import clear_session
 from tensorflow.keras.models import load_model
 from tensorflow.keras import losses
@@ -29,6 +29,26 @@ import os
 
 # *IMPORANT*: Have to do this line *before* importing tensorflow
 # os.environ['PYTHONHASHSEED'] = str(1)
+
+config = dict(
+    root_dir="data/4_tfds_dataset",
+    project_name="rock-classification-with-keras-cv",
+    model_name="resnet",
+    num_classes=3,
+    sample_size=1.0,
+    augment=True,
+    optimizer="adam",
+    init_learning_rate=0.0001,
+    batch_size=64,
+    max_epochs=5,
+    image_size=224,
+    trainable=False,
+    # lr_decay_rate = 0.7,
+    loss_fn="categoricalcrossentropy",
+    metrics=['accuracy'],
+    earlystopping_patience=5,
+    notes="keras-cv augment run"
+)
 
 
 def reset_random_seeds():
@@ -71,8 +91,8 @@ def get_parser():
         default=config.sample_size,
         help="sample_size")
     parser.add_argument(
-        "-lr",
-        "--learning_rate",
+        "-init_lr",
+        "--init_learning_rate",
         type=float,
         default=config.init_learning_rate,
         help="learning rate")
@@ -100,13 +120,6 @@ def get_parser():
         type=int,
         default=config.image_size,
         help="Image size")
-    # https://stackoverflow.com/a/60999928/9292995
-    parser.add_argument(
-        "-aug",
-        "--augment",
-        type=str,
-        default=config.augment,
-        help="Augmentation")
     parser.add_argument(
         "-q",
         "--dry_run",
@@ -123,26 +136,6 @@ def get_parser():
     args = parser.parse_args()
     return args
 
-
-config = dict(
-    root_dir="data/4_tfds_dataset",
-    project_name="rock-classification-with-keras-cv",
-    model_name="resnet",
-    num_classes = 3,
-    sample_size=1.0,
-    augment=True,
-    optimizer="adam",
-    init_learning_rate=0.0001,
-    batch_size=64,
-    max_epochs=5,
-    image_size=224,
-    trainable=False,
-    # lr_decay_rate = 0.7,
-    loss_fn="categoricalcrossentropy",
-    metrics=['accuracy'],
-    earlystopping_patience=5,
-    notes="keras-cv augment run"
-)
 
 # save dictionary to config.json file
 with open('config.json', 'w') as f:
@@ -235,7 +228,13 @@ if __name__ == "__main__":
     )
 
     # model.summary()
+    def decay_schedule(epoch, lr):
+        # decay by 0.1 every 5 epochs; use `% 1` to decay after each epoch
+        if (epoch % 5 == 0) and (epoch != 0):
+            lr = lr * 0.1
+        return lr
 
+    lr_scheduler = LearningRateScheduler(decay_schedule)
     # model_checkpoint = ModelCheckpoint("checkpoints/"+
     #                                    f"{wandb.run.name}-"+config["model_name"]+
     #                                    "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
