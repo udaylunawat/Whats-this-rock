@@ -66,12 +66,17 @@ if __name__ == "__main__":
     root_dir = 'data/1_extracted/'
     remove_corrupted_images(root_dir)
     data = setup_dirs_and_preprocess(args)
-    if args.undersample:
-        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset",
-                           fixed=(int(args.undersample * 0.8), int(args.undersample * 0.2), int(args.undersample * 0.2)),
-                           oversample=False,
-                           seed=1337)
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True,
                            seed=1337)
+    elif args.undersample:
+        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset",
+                           fixed=(int(args.undersample * 0.8), int(args.undersample * 0.2), int(args.undersample * 0.2)),
+                           oversample=False,
+                           seed=1337)
+    else:
+        splitfolders.ratio('data/2_processed', output="data/4_tfds_dataset",
+                           ratio=(0.8, 0.1, 0.1),
+                           seed=1337)
+
