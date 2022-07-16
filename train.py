@@ -47,6 +47,7 @@ config = dict(
     loss_fn="categoricalcrossentropy",
     metrics=['accuracy'],
     earlystopping_patience=5,
+    lr_reduce_patience=20,
     notes="keras-cv augment run"
 )
 
@@ -238,7 +239,7 @@ if __name__ == "__main__":
     # model_checkpoint = ModelCheckpoint("checkpoints/"+
     #                                    f"{wandb.run.name}-"+config["model_name"]+
     #                                    "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.8, patience=5, verbose=1)
+    reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.5, patience=config.lr_reduce_patience, verbose=1)
     earlystopper = EarlyStopping(
         monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto',
         restore_best_weights=True
