@@ -1,13 +1,1 @@
-{
-    "root_dir" : "data/1_extracted/Rock_Dataset/",
-    "project_name" : "rock_classification",
-    "model_name" : "efficientnet",
-    "sample_size" : 1.0,
-    "augment": "False",
-    "optimizer": "Adam",
-    "learning_rate" : 0.01,
-    "batch_size" : 64,
-    "epochs" : 20,
-    "image_size" : 224,
-    "trainable" : false
-}
+{"root_dir": "data/4_tfds_dataset", "project_name": "rock-classification-with-keras-cv", "model_name": "resnet", "num_classes": 3, "sample_size": 1.0, "augment": true, "optimizer": "adam", "init_learning_rate": 0.0001, "batch_size": 64, "max_epochs": 5, "image_size": 224, "trainable": false, "loss_fn": "categoricalcrossentropy", "metrics": ["accuracy"], "earlystopping_patience": 5, "notes": "keras-cv augment run"}
