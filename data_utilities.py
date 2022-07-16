@@ -3,55 +3,56 @@ import numpy as np
 import os
 import shutil
 import json
-from addict import Dict
+from box import Box
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
 # load config from config.json file
 with open('config.json', 'r') as f:
-    config = Dict(json.load(f))
+    config = Box(json.load(f))
 
 
 def remove_corrupted_images(root_dir):
     import os
     os.makedirs('corrupted_images', exist_ok=True)
     import cv2
-    def check_images( s_dir, ext_list):
-        bad_images=[]
-        bad_ext=[]
-        s_list= os.listdir(s_dir)
+
+    def check_images(s_dir, ext_list):
+        bad_images = []
+        bad_ext = []
+        s_list = os.listdir(s_dir)
         for klass in s_list:
-            klass_path=os.path.join (s_dir, klass)
-            print ('processing class directory ', klass)
+            klass_path = os.path.join(s_dir, klass)
+            print('processing class directory ', klass)
             if os.path.isdir(klass_path):
-                file_list=os.listdir(klass_path)
+                file_list = os.listdir(klass_path)
                 for f in file_list:
-                    f_path=os.path.join (klass_path,f)
-                    index=f.rfind('.')
-                    ext=f[index+1:].lower()
+                    f_path = os.path.join(klass_path, f)
+                    index = f.rfind('.')
+                    ext = f[index + 1:].lower()
                     if ext not in ext_list:
                         print('file ', f_path, ' has an invalid extension ', ext)
                         bad_ext.append(f_path)
                     if os.path.isfile(f_path):
                         try:
-                            img=cv2.imread(f_path)
-                            shape=img.shape
+                            img = cv2.imread(f_path)
+                            shape = img.shape
                         except:
                             print('file ', f_path, ' is not a valid image file')
                             bad_images.append(f_path)
                     else:
                         print('*** fatal error, you a sub directory ', f, ' in class directory ', klass)
             else:
-                print ('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
+                print('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
         return bad_images, bad_ext
 
     source_dir = root_dir
-    good_exts=['jpg', 'png', 'jpeg', 'gif', 'bmp' ] # list of acceptable extensions
-    bad_file_list, bad_ext_list=check_images(source_dir, good_exts)
-    if len(bad_file_list) !=0:
+    good_exts = ['jpg', 'png', 'jpeg', 'gif', 'bmp']  # list of acceptable extensions
+    bad_file_list, bad_ext_list = check_images(source_dir, good_exts)
+    if len(bad_file_list) != 0:
         print('improper image files are listed below')
-        for i in range (len(bad_file_list)):
-            print (bad_file_list[i])
+        for i in range(len(bad_file_list)):
+            print(bad_file_list[i])
     else:
         print(' no improper image files were found')
 
@@ -154,7 +155,7 @@ def get_data_tfds():
     # build the tfds dataset from ImageFolder
     # https://www.tensorflow.org/datasets/api_docs/python/tfds/image/ImageFolder
 
-    builder = tfds.builder("rock_classification", data_dir="data/4_tfds_dataset")
+    builder = tfds.ImageFolder("data/4_tfds_dataset")
     print(builder.info)  # number of images, number of classes, etc.
     data = builder.as_dataset(split=None, as_supervised=True)
 
@@ -169,7 +170,7 @@ def to_dict(image, label):
     IMAGE_SIZE = (config["image_size"], config["image_size"])
     image = tf.image.resize(image, IMAGE_SIZE)
     image = tf.cast(image, tf.float32)
-    label = tf.one_hot(label, config["num_classes"])
+    label = tf.one_hot(label, config.num_classes)
     return {"images": image, "labels": label}
 
 
