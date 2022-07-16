@@ -2,7 +2,7 @@ import os
 import shutil
 import argparse
 import pandas as pd
-from data_utilities import get_all_filePaths, undersample_df, remove_corrupted_images
+from data_utilities import get_all_filePaths, undersample_df, oversample_data, remove_corrupted_images
 
 
 def setup_dirs_and_preprocess(args):
@@ -29,11 +29,9 @@ def setup_dirs_and_preprocess(args):
     shutil.rmtree(args.root)
     data = pd.DataFrame(list(zip(all_paths, all_classes)),
                         columns=['image_path', 'classes'])
-    if args.undersample:
-        balanced_data = undersample_df(data, 'classes')
-        balanced_data.to_csv(os.path.join("data/3_consume/", "balanced_image_paths.csv"))
 
     data.to_csv(os.path.join("data/3_consume/", "all_image_paths.csv"))
+    return data
 
 
 if __name__ == "__main__":
@@ -55,6 +53,11 @@ if __name__ == "__main__":
         action='store_false',
         help="Don't Undersample Data")
     parser.add_argument(
+        "-osample",
+        "--oversample",
+        action='store_true',
+        help="Oversample Data")
+    parser.add_argument(
         "-remove",
         "--remove_class",
         type=str,
@@ -65,4 +68,9 @@ if __name__ == "__main__":
 
     root_dir = 'data/1_extracted/'
     remove_corrupted_images(root_dir)
-    setup_dirs_and_preprocess(args)
+    data = setup_dirs_and_preprocess(args)
+    if args.undersample:
+        balanced_data = undersample_df(data, 'classes')
+        balanced_data.to_csv(os.path.join("data/3_consume/", "balanced_image_paths.csv"))
+    if args.oversample:
+        oversample_data()
