@@ -2,7 +2,9 @@ import os
 import shutil
 import argparse
 import pandas as pd
-from data_utilities import get_all_filePaths, undersample_df, oversample_data, remove_corrupted_images
+# https://stackoverflow.com/a/64006242/9292995
+import splitfolders
+from data_utilities import get_all_filePaths, undersample_df, remove_corrupted_images
 
 
 def setup_dirs_and_preprocess(args):
@@ -45,13 +47,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "-usample",
         "--undersample",
-        action='store_true',
+        type=int,
         help="Undersample Data")
-    parser.add_argument(
-        "-nousample",
-        "--no_undersample",
-        action='store_false',
-        help="Don't Undersample Data")
     parser.add_argument(
         "-osample",
         "--oversample",
@@ -70,7 +67,11 @@ if __name__ == "__main__":
     remove_corrupted_images(root_dir)
     data = setup_dirs_and_preprocess(args)
     if args.undersample:
-        balanced_data = undersample_df(data, 'classes')
-        balanced_data.to_csv(os.path.join("data/3_consume/", "balanced_image_paths.csv"))
+        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset",
+                           fixed=(int(args.undersample * 0.8), int(args.undersample * 0.2), int(args.undersample * 0.2)),
+                           oversample=False,
+                           seed=1337)
     if args.oversample:
-        oversample_data()
+        # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
+        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True,
+                           seed=1337)
