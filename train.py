@@ -12,7 +12,8 @@ from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess
 from tensorflow.random import set_seed
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.backend import clear_session
-from tensorflow.keras.models import load_model, losses
+from tensorflow.keras.models import load_model
+from tensorflow.keras import losses
 import tensorflow_addons as tfa
 from tensorflow.data import AUTOTUNE
 
@@ -126,7 +127,8 @@ def get_parser():
 config = dict(
     root_dir="data/4_tfds_dataset",
     project_name="rock-classification-with-keras-cv",
-    model_name="resnet50",
+    model_name="resnet",
+    num_classes = 3,
     sample_size=1.0,
     augment=True,
     optimizer="adam",
@@ -146,9 +148,9 @@ config = dict(
 with open('config.json', 'w') as f:
     json.dump(config, f)
 
-from addict import Dict
+from box import Box
 # using addict to allow for easy access to dictionary keys using dot notation
-config = Dict(config)
+config = Box(config)
 
 
 if __name__ == "__main__":
@@ -163,7 +165,7 @@ if __name__ == "__main__":
 
     # combine args and config
     config.update(vars(args))
-    print("\n\nConfig after update: {config}\n\n")
+    print(f"\n\nConfig after update: {config}\n\n")
 
     # easier testing--don't log to wandb if dry run is set
     if args.dry_run:
@@ -171,12 +173,13 @@ if __name__ == "__main__":
 
     run = wandb.init(
         project=args.project_name,
+        entity='udaylunawat',
         notes=args.notes,
         resume=resume)
 
-    # if arguments are passed in, override config
-    if len(sys.argv) > 1:
-        config = args
+    # # if arguments are passed in, override config
+    # if len(sys.argv) > 1:
+    #     config = args
 
     wandb.config.update(config)
 
@@ -214,7 +217,7 @@ if __name__ == "__main__":
 
         # build model
         clear_session()
-        model = get_model()
+        model = get_model(config, config.num_classes)
 
     opt = get_optimizer(config)
 
@@ -243,13 +246,10 @@ if __name__ == "__main__":
     )
 
     wandbcallback = WandbCallback(training_data=train_dataset,
-                                  validation_data=val_dataset,
                                   labels=labels,
                                   save_model=True,
                                   monitor='val_loss',
-                                  log_weights=True,
-                                  log_evaluation=True,
-                                  validation_steps=5)
+                                  log_weights=True)
 
     # Define WandbCallback for experiment tracking
 

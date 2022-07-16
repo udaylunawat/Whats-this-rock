@@ -1,4 +1,4 @@
-addict
+python-box[all]~=6.0
 scikit-learn
 opencv-python
 kaggle
