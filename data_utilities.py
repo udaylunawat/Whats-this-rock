@@ -93,7 +93,7 @@ def undersample_df(data, class_name):
 def get_all_filePaths(folderPath):
     result = []
     for dirpath, dirnames, filenames in os.walk(folderPath):
-        result.extend([os.path.join(dirpath, filename) for filename in filenames if os.path.splitext(filename)[1] in ['.jpg', '.png', '.PNG']])
+        result.extend([os.path.join(dirpath, filename) for filename in filenames if os.path.splitext(filename)[1] in ['.jpg']])
     return result
 
 
