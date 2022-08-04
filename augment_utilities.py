@@ -38,5 +38,5 @@ def cut_mix_and_mix_up(samples):
 
 def preprocess_for_model(inputs):
     images, labels = inputs["images"], inputs["labels"]
-    images = tf.cast(images, tf.float32)
+    images = tf.cast(images, tf.float32) / 255.0
     return images, labels
