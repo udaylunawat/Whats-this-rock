@@ -16,7 +16,7 @@ TOKEN = get_keys("secrets.json")['TOKEN']
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 AUTOTUNE = tf.data.AUTOTUNE
 
-num_classes = 4
+num_classes = 7
 
 img_height, img_width = (200,200)
 batch_size = 256

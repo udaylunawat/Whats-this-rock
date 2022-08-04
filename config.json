@@ -1,7 +1,7 @@
 {"root_dir": "data/4_tfds_dataset",
  "project_name": "rock-classification-with-keras-cv",
  "model_name": "resnet",
- "num_classes": 3,
+ "num_classes": 7,
  "sample_size": 1.0,
  "augment": true,
  "optimizer": "adam",
