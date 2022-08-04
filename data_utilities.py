@@ -17,15 +17,16 @@ def remove_corrupted_images(root_dir):
 
     from pathlib import Path
     import imghdr
-    print("Removing corrupted images...")
+    print("\n\nRemoving corrupted images...")
     # https://stackoverflow.com/a/68192520/9292995
     for class_name in os.listdir(root_dir):
         data_dir = os.path.join(root_dir, class_name)
-        image_extensions = [".png", ".jpg"]  # add there all your images file extensions
+        image_extensions = [".png", ".jpg", "jpeg"]  # add there all your images file extensions
 
-        img_type_accepted_by_tf = ["bmp", "gif", "jpeg", "png"]
-        for filepath in Path(data_dir).rglob("*"):
-            if filepath.suffix.lower() in image_extensions:
+        img_type_accepted_by_tf = ["bmp", "gif", "jpeg", "png", "jpg"]
+        all_files = get_all_filePaths(root_dir)
+        for filepath in all_files:
+            if os.path.splitext(filepath)[-1].lower() in image_extensions:
                 img_type = imghdr.what(filepath)
                 if img_type is None:
                     print(f"{filepath} is not an image")
