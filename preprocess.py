@@ -11,9 +11,6 @@ def setup_dirs_and_preprocess(args):
     if args.remove_class:
         shutil.rmtree(os.path.join(args.root, args.remove_class))
 
-    all_paths = []
-    all_classes = []
-
     for dataset in os.listdir(args.root):
         class_dirs = os.listdir(os.path.join(args.root ,dataset))
         for class_name in class_dirs:
@@ -21,15 +18,7 @@ def setup_dirs_and_preprocess(args):
             for subclass in sub_classes:
                 shutil.move(os.path.join(args.root, dataset, class_name, subclass), 'data/2_processed')
 
-    all_paths = get_all_filePaths(os.path.join('data/2_processed'))
-    all_classes = list(map(lambda x:x.split('/')[-2], all_paths))
-
     shutil.rmtree(args.root)
-    data = pd.DataFrame(list(zip(all_paths, all_classes)),
-                        columns=['image_path', 'classes'])
-
-    data.to_csv(os.path.join("data/3_consume/", "all_image_paths.csv"))
-    return data
 
 
 if __name__ == "__main__":
@@ -59,10 +48,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    root_dir = 'data/1_extracted/'
-
-    remove_corrupted_images(root_dir)
-    data = setup_dirs_and_preprocess(args)
+    remove_corrupted_images(args.root)
+    setup_dirs_and_preprocess(args)
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
@@ -77,3 +64,4 @@ if __name__ == "__main__":
         splitfolders.ratio('data/2_processed', output="data/4_tfds_dataset",
                            ratio=(0.75, 0.125, 0.125),
                            seed=1)
+
