@@ -2,14 +2,17 @@
 
 """
 Trains a model on the dataset.
+
 Designed to show how to do a simple wandb integration with keras.
 """
+
 from data_utilities import get_data_tfds, prepare_dataset
 from model_utilities import get_model, get_optimizer
 from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess_for_model
 
 # from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
+from tensorflow.keras.optimizers import Adamax
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, LearningRateScheduler
 from tensorflow.keras.backend import clear_session
 from tensorflow.keras.models import load_model
@@ -29,27 +32,6 @@ import os
 
 # *IMPORANT*: Have to do this line *before* importing tensorflow
 # os.environ['PYTHONHASHSEED'] = str(1)
-
-config = dict(
-    root_dir="data/4_tfds_dataset",
-    project_name="rock-classification-with-keras-cv",
-    model_name="resnet",
-    num_classes=3,
-    sample_size=1.0,
-    augment=True,
-    optimizer="adam",
-    init_learning_rate=0.0001,
-    batch_size=64,
-    max_epochs=5,
-    image_size=224,
-    trainable=False,
-    # lr_decay_rate = 0.7,
-    loss_fn="categoricalcrossentropy",
-    metrics=['accuracy'],
-    earlystopping_patience=5,
-    lr_reduce_patience=20,
-    notes="keras-cv augment run"
-)
 
 
 def reset_random_seeds():
@@ -127,20 +109,14 @@ def get_parser():
         default=False,
         action='store_true',
         help="Dry run (do not log to wandb)")
-    parser.add_argument(
-        "-trainable",
-        "--pretrained_trainable",
-        action='store_true',
-        default=False,
-        help="Train the pretrained model")
 
     args = parser.parse_args()
     return args
 
 
-# save dictionary to config.json file
-with open('config.json', 'w') as f:
-    json.dump(config, f)
+# read config file
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
 from box import Box
 # using addict to allow for easy access to dictionary keys using dot notation
@@ -190,12 +166,14 @@ if __name__ == "__main__":
 
         IMAGE_SIZE = (config["image_size"], config["image_size"])
 
-        # AUTOTUNE = tf.data.AUTOTUNE
-        train_dataset = (
-            load_dataset()
-            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
-            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
-        )
+        if config.augment:
+            train_dataset = (
+                load_dataset()
+                .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
+                .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
+            )
+        else:
+            train_dataset = load_dataset()
 
         # visualize_dataset(train_dataset, "CutMix, MixUp and RandAugment")
 
@@ -204,8 +182,8 @@ if __name__ == "__main__":
         val_dataset = load_dataset(split="val")
         val_dataset = val_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
 
-        test_dataset = load_dataset(split="test")
-        test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+        # test_dataset = load_dataset(split="test")
+        # test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
 
         labels = builder.info.features['label'].names
 
@@ -222,11 +200,14 @@ if __name__ == "__main__":
 
     # Notice that we use label_smoothing=0.1 in the loss function.
     # When using MixUp, label smoothing is highly recommended.
-    model.compile(
-        loss=losses.CategoricalCrossentropy(label_smoothing=0.1),
-        optimizer=opt,
-        metrics=config["metrics"],
-    )
+    # model.compile(
+    #     loss=losses.CategoricalCrossentropy(label_smoothing=0.1),
+    #     optimizer=opt,
+    #     metrics=config["metrics"],
+    # )
+    model.compile(loss='categorical_crossentropy',
+                  optimizer=opt,
+                  metrics=config["metrics"])
 
     # model.summary()
     def decay_schedule(epoch, lr):
