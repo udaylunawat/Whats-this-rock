@@ -17,6 +17,8 @@ def get_optimizer(config):
                                  rho=0.9, epsilon=1e-08, decay=0.0)
     elif config.optimizer == 'sgd':
         opt = optimizers.SGD(learning_rate=config.init_learning_rate)
+    elif config.optimizer == 'adamax':
+        opt = optimizers.Adamax(learning_rate=config.init_learning_rate)
 
     return opt
 
