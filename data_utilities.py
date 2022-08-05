@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import os, cv2
+import os
 import shutil
 import json
 from box import Box
@@ -12,47 +12,34 @@ with open('config.json', 'r') as f:
     config = Box(json.load(f))
 
 
-def remove_corrupted_images(root_dir):
+def find_filepaths(root_folder):
+    filepaths = []
+    for dirname, _, filenames in os.walk(root_folder):
+        for filename in filenames:
+            filepaths.append(os.path.join(dirname, filename))
+    total_images_before_deletion = len(filepaths)
+    print(f"Total images before deletion = {total_images_before_deletion}")
+    return filepaths
+
+
+def remove_corrupted_images(root_folder):
     os.makedirs('corrupted_images', exist_ok=True)
-
     print("\n\nRemoving corrupted images...")
-    # https://stackoverflow.com/a/68192520/9292995
 
-    def check_images( s_dir, ext_list):
-        bad_images=[]
-        bad_ext=[]
-        s_list= os.listdir(s_dir)
-        for klass in s_list:
-            klass_path=os.path.join (s_dir, klass)
-            print ('processing class directory ', klass)
-            if os.path.isdir(klass_path):
-                file_list=os.listdir(klass_path)
-                for f in file_list:
-                    f_path=os.path.join (klass_path,f)
-                    index=f.rfind('.')
-                    ext=f[index+1:].lower()
-                    if ext not in ext_list:
-                        print('file ', f_path, ' has an invalid extension ', ext)
-                        bad_ext.append(f_path)
-                    if os.path.isfile(f_path):
-                        try:
-                            img=cv2.imread(f_path)
-                            shape=img.shape
-                        except:
-                            print('file ', f_path, ' is not a valid image file')
-                            bad_images.append(f_path)
-                    else:
-                        print('*** fatal error, you a sub directory ', f, ' in class directory ', klass)
-            else:
-                print ('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
-        return bad_images, bad_ext
+    filepaths = find_filepaths(root_folder)
+    del_count = 0
+    for filepath in filepaths:
+        try:
+            fobj = open(filepath, 'rb')
+            is_JFIF = b'JFIF' in fobj.peek(10)
+        finally:
+            fobj.close()
+        if not is_JFIF:
+            del_count += 1
+            shutil.move(filepath, 'corrupted_images')
+    print(f"Total {del_count} corrupted image moved to 'corrupted_images' folder")
+    return None
 
-    good_exts=['jpg', 'png', 'jpeg', 'gif', 'bmp' ] # list of acceptable extensions
-    bad_file_list, bad_ext_list=check_images(root_dir, good_exts)
-
-    for bad_file in bad_file_list:
-        shutil.move(bad_file, 'corrupted_images')
-    print("Done!\n\n")
 
 # https://towardsdatascience.com/stratified-sampling-you-may-have-been-splitting-your-dataset-all-wrong-8cfdd0d32502
 def get_stratified_dataset_partitions_pd(
@@ -107,13 +94,6 @@ def undersample_df(data, class_name):
         merged_df = pd.concat([merged_df, temp])
 
     return merged_df
-
-
-def get_all_filePaths(folderPath):
-    result = []
-    for dirpath, dirnames, filenames in os.walk(folderPath):
-        result.extend([os.path.join(dirpath, filename) for filename in filenames if os.path.splitext(filename)[1] in ['.jpg']])
-    return result
 
 
 ######################################## TFDS Dataset Utilities ########################################
