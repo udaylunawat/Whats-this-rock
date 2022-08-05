@@ -36,8 +36,8 @@ def remove_corrupted_images(root_folder):
             fobj.close()
         if not is_JFIF:
             del_count += 1
-            shutil.move(filepath, os.path.join('data', 'corrupted_images'))
-    print(f"Total {del_count} corrupted image moved to 'corrupted_images' folder")
+            shutil.move(filepath, os.path.join('data', 'corrupted_images', os.path.basename(filepath)))
+    print(f"Total {del_count} corrupted image moved to 'corrupted_images' folder\n")
     return None
 
 
