@@ -56,54 +56,6 @@ def get_parser():
         help="Notes about the training run",
         required=False)
     parser.add_argument(
-        "-p",
-        "--project_name",
-        type=str,
-        default=config.project_name,
-        help="Main project name")
-    parser.add_argument(
-        "-m",
-        "--model_name",
-        type=str,
-        default=config.model_name,
-        help="Model")
-    parser.add_argument(
-        "-sample",
-        "--sample_size",
-        type=float,
-        default=config.sample_size,
-        help="sample_size")
-    parser.add_argument(
-        "-init_lr",
-        "--init_learning_rate",
-        type=float,
-        default=config.init_learning_rate,
-        help="learning rate")
-    parser.add_argument(
-        "-b",
-        "--batch_size",
-        type=int,
-        default=config.batch_size,
-        help="batch_size")
-    parser.add_argument(
-        "-e",
-        "--max_epochs",
-        type=int,
-        default=config.max_epochs,
-        help="number of training epochs (passes through full training data)")
-    parser.add_argument(
-        "-o",
-        "--optimizer",
-        type=str,
-        default=config.optimizer,
-        help="optimizer")
-    parser.add_argument(
-        "-size",
-        "--image_size",
-        type=int,
-        default=config.image_size,
-        help="Image size")
-    parser.add_argument(
         "-q",
         "--dry_run",
         default=False,
