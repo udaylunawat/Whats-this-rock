@@ -25,9 +25,11 @@
 - Run the commands below
 ```
 pip install -r requirements.txt
+sh setup.sh
 python preprocess.py --root data/1_extracted/Rock_Dataset/ \
-                      --undersample
-python efficientnet_train.py --dry_run
+                      --remove_class minerals \
+                      --oversample
+python train.py
 ```
 
 ## Notebooks
