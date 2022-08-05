@@ -115,7 +115,7 @@ IMAGE_SIZE = (config["image_size"], config["image_size"])
 def to_dict(image, label):
     image = tf.image.resize(image, IMAGE_SIZE)
     image = tf.cast(image, tf.float32)
-    label = tf.one_hot(label, config.num_classes)
+    label = tf.one_hot(label, config["num_classes"])
     return {"images": image, "labels": label}
 
 
