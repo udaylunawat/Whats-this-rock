@@ -8,7 +8,8 @@ from data_utilities import remove_corrupted_images
 
 
 def remove_class(args):
-    shutil.rmtree(os.path.join(args.root, args.remove_class))
+    if args.remove_class in os.listdir(args.root):
+        shutil.rmtree(os.path.join(args.root, args.remove_class))
 
 def create_classes_dir(args):
     for dataset in os.listdir(args.root):
