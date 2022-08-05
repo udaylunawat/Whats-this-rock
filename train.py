@@ -127,11 +127,7 @@ if __name__ == "__main__":
     #     restore_best_weights=True
     # )
 
-    wandbcallback = WandbCallback(training_data=train_dataset,
-                                  labels=labels,
-                                  save_model=True,
-                                  monitor='val_loss',
-                                  log_weights=True)
+    wandbcallback = WandbCallback()
 
     # Define WandbCallback for experiment tracking
 
