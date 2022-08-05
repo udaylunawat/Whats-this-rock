@@ -48,8 +48,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    remove_corrupted_images(args.root)
     setup_dirs_and_preprocess(args)
+    # remove_corrupted_images('data/2_processed')
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
