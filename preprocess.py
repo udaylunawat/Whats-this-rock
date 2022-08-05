@@ -4,13 +4,13 @@ import argparse
 import pandas as pd
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
-from data_utilities import get_all_filePaths, remove_corrupted_images
+from data_utilities import remove_corrupted_images
 
 
-def setup_dirs_and_preprocess(args):
-    if args.remove_class:
-        shutil.rmtree(os.path.join(args.root, args.remove_class))
+def remove_class(args):
+    shutil.rmtree(os.path.join(args.root, args.remove_class))
 
+def create_classes_dir(args):
     for dataset in os.listdir(args.root):
         class_dirs = os.listdir(os.path.join(args.root ,dataset))
         for class_name in class_dirs:
@@ -48,8 +48,9 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    setup_dirs_and_preprocess(args)
-    # remove_corrupted_images('data/2_processed')
+    remove_class(args)
+    create_classes_dir(args)
+    remove_corrupted_images('data/2_processed')
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
