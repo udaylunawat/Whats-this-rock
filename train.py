@@ -12,11 +12,9 @@ from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess
 
 # from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
-from tensorflow.keras.optimizers import Adamax
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, LearningRateScheduler
-from tensorflow.keras.backend import clear_session
-from tensorflow.keras.models import load_model
 from tensorflow.keras import losses
+from tensorflow.keras.backend import clear_session
 import tensorflow_addons as tfa
 from tensorflow.data import AUTOTUNE
 
@@ -25,8 +23,7 @@ import wandb
 import random
 import numpy as np
 import json
-import argparse
-import sys
+from box import Box
 import os
 # import matplotlib.pyplot as plt
 
@@ -46,31 +43,10 @@ def load_dataset(split="train"):
     return prepare_dataset(dataset, split)
 
 
-def get_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-n",
-        "--notes",
-        type=str,
-        default="",
-        help="Notes about the training run",
-        required=False)
-    parser.add_argument(
-        "-q",
-        "--dry_run",
-        default=False,
-        action='store_true',
-        help="Dry run (do not log to wandb)")
-
-    args = parser.parse_args()
-    return args
-
-
 # read config file
 with open('config.json') as config_file:
     config = json.load(config_file)
 
-from box import Box
 # using addict to allow for easy access to dictionary keys using dot notation
 config = Box(config)
 
@@ -79,69 +55,46 @@ if __name__ == "__main__":
 
     reset_random_seeds()
 
-    args = get_parser()
-    resume = sys.argv[-1] == "--resume"
-
-    print("Arguments:", args)
-    print(f"\n\nConfig before update: {config}\n\n")
-
-    # combine args and config
-    config.update(vars(args))
-    print(f"\n\nConfig after update: {config}\n\n")
-
-    # easier testing--don't log to wandb if dry run is set
-    if args.dry_run:
-        os.environ['WANDB_MODE'] = 'dryrun'
-
     run = wandb.init(
         project=config.project_name,
         entity='udaylunawat',
-        notes=args.notes,
-        resume=resume)
-
-    # # if arguments are passed in, override config
-    # if len(sys.argv) > 1:
-    #     config = args
+        notes=config.notes,
+        config=config,
+        magic=True)
 
     wandb.config.update(config)
 
-    # build model
-    if wandb.run.resumed:
-        print("RESUMING")
-        # restore the best model
-        model = load_model(wandb.restore("model-best.h5").name)
+    data, builder = get_data_tfds()
+
+    num_classes = builder.info.features['label'].num_classes
+    config["num_classes"] = num_classes
+
+    IMAGE_SIZE = (config["image_size"], config["image_size"])
+
+    if config.augment:
+        train_dataset = (
+            load_dataset()
+            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
+            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
+        )
     else:
-        data, builder = get_data_tfds()
+        train_dataset = load_dataset()
 
-        num_classes = builder.info.features['label'].num_classes
-        config["num_classes"] = num_classes
+    # visualize_dataset(train_dataset, "CutMix, MixUp and RandAugment")
 
-        IMAGE_SIZE = (config["image_size"], config["image_size"])
+    train_dataset = train_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
 
-        if config.augment:
-            train_dataset = (
-                load_dataset()
-                .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
-                .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
-            )
-        else:
-            train_dataset = load_dataset()
+    val_dataset = load_dataset(split="val")
+    val_dataset = val_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
 
-        # visualize_dataset(train_dataset, "CutMix, MixUp and RandAugment")
+    # test_dataset = load_dataset(split="test")
+    # test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
 
-        train_dataset = train_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+    labels = builder.info.features['label'].names
 
-        val_dataset = load_dataset(split="val")
-        val_dataset = val_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-        # test_dataset = load_dataset(split="test")
-        # test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-        labels = builder.info.features['label'].names
-
-        # build model
-        clear_session()
-        model = get_model(config, config.num_classes)
+    # build model
+    clear_session()
+    model = get_model(config, config.num_classes)
 
     opt = get_optimizer(config)
 
@@ -152,12 +105,8 @@ if __name__ == "__main__":
 
     # Notice that we use label_smoothing=0.1 in the loss function.
     # When using MixUp, label smoothing is highly recommended.
-    # model.compile(
-    #     loss=losses.CategoricalCrossentropy(label_smoothing=0.1),
-    #     optimizer=opt,
-    #     metrics=config["metrics"],
-    # )
-    model.compile(loss='categorical_crossentropy',
+
+    model.compile(loss=losses.CategoricalCrossentropy(label_smoothing=0.1),
                   optimizer=opt,
                   metrics=config["metrics"])
 
