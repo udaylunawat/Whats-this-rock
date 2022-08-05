@@ -10,32 +10,32 @@ import tensorflow as tf
 
 
 def get_optimizer(config):
-    if config["optimizer"] == 'adam':
-        opt = optimizers.Adam(lr=config["init_learning_rate"])
-    elif config["optimizer"] == 'rms':
-        opt = optimizers.RMSprop(learning_rate=config["init_learning_rate"],
+    if config.optimizer == 'adam':
+        opt = optimizers.Adam(config.init_learning_rate)
+    elif config.optimizer == 'rms':
+        opt = optimizers.RMSprop(learning_rate=config.init_learning_rate,
                                  rho=0.9, epsilon=1e-08, decay=0.0)
-    elif config["optimizer"] == 'sgd':
-        opt = optimizers.SGD(lr=config["init_learning_rate"])
-    elif config["optimizer"] == 'adamax':
-        opt = optimizers.Adamax(lr=config["init_learning_rate"])
+    elif config.optimizer == 'sgd':
+        opt = optimizers.SGD(learning_rate=config.init_learning_rate)
+    elif config.optimizer == 'adamax':
+        opt = optimizers.Adamax(learning_rate=config.init_learning_rate)
 
     return opt
 
 
 def get_model(config, num_classes):
-    if config["model_name"] == "efficientnet":
+    if config.model_name == "efficientnet":
         model = get_efficientnet(config, num_classes)
-    elif config["model_name"] == "baseline":
-        model = get_baseline_model(config["image_size"], num_classes)
-    elif config["model_name"] == "baseline_cnn":
+    elif config.model_name == "baseline":
+        model = get_baseline_model(config.image_size, num_classes)
+    elif config.model_name == "baseline_cnn":
         model = get_small_cnn(
-            config["image_size"],
-            config["image_size"],
+            config.image_size,
+            config.image_size,
             num_classes)
-    elif config["model_name"] == "mobilenet":
+    elif config.model_name == "mobilenet":
         model = get_mobilenet(config, num_classes)
-    elif config["model_name"] == "resnet":
+    elif config.model_name == "resnet":
         model = get_resnet_model(config)
 
     return model
@@ -102,7 +102,7 @@ def custom_augmentation(np_tensor):
 
 def get_generators(config, train_df, test_df):
 
-    if config["augment"] == "True":
+    if config.augment == "True":
         datagen = ImageDataGenerator(validation_split=0.2,
                                      horizontal_flip=True,
                                      fill_mode="nearest",
@@ -114,7 +114,7 @@ def get_generators(config, train_df, test_df):
                                      shear_range=30,
                                      preprocessing_function=custom_augmentation,
                                      rescale=1. / 255.)
-    elif config["augment"] == "False":
+    elif config.augment == "False":
         datagen = ImageDataGenerator(validation_split=0.2, rescale=1. / 255.)
 
     train_generator = datagen.flow_from_dataframe(
@@ -122,29 +122,29 @@ def get_generators(config, train_df, test_df):
         x_col="image_path",
         y_col="classes",
         subset="training",
-        batch_size=config["batch_size"],
+        batch_size=config.batch_size,
         seed=42,
         color_mode='rgb',
         shuffle=True,
         class_mode="categorical",
         preprocessing_function=custom_augmentation,
         target_size=(
-            config["image_size"],
-            config["image_size"]))
+            config.image_size,
+            config.image_size))
 
     val_generator = datagen.flow_from_dataframe(
         dataframe=train_df,
         x_col="image_path",
         y_col="classes",
         subset="validation",
-        batch_size=config["batch_size"],
+        batch_size=config.batch_size,
         seed=42,
         color_mode='rgb',
         shuffle=True,
         class_mode="categorical",
         target_size=(
-            config["image_size"],
-            config["image_size"]))
+            config.image_size,
+            config.image_size))
 
     test_datagen = ImageDataGenerator(rescale=1. / 255.)
 
@@ -152,15 +152,15 @@ def get_generators(config, train_df, test_df):
         dataframe=test_df,
         x_col="image_path",
         y_col='classes',
-        batch_size=config["batch_size"],
+        batch_size=config.batch_size,
         validation_split=None,
         seed=42,
         shuffle=False,
         color_mode='rgb',
         class_mode=None,
         target_size=(
-            config["image_size"],
-            config["image_size"]))
+            config.image_size,
+            config.image_size))
 
     train_generator = train_generator.prefetch(buffer_size=32)
     val_generator = val_generator.prefetch(buffer_size=32)

@@ -78,8 +78,8 @@ def get_large_cnn(img_height, img_width, num_classes):
 def get_mobilenet(config, num_classes):
     mobilenet_pretrained = MobileNetV2(
         input_shape=(
-            config["image_size"],
-            config["image_size"],
+            config.image_size,
+            config.image_size,
             3),
         weights="imagenet",
         include_top=False)
@@ -119,9 +119,9 @@ def get_baseline_model(IMG_SIZE, num_classes, CHANNELS=3):
 def get_efficientnet(config, num_classes):
     """Construct a simple categorical CNN following the Keras tutorial"""
     if K.image_data_format() == 'channels_first':
-        input_shape = (3, config["image_size"], config["image_size"])
+        input_shape = (3, config.image_size, config.image_size)
     else:
-        input_shape = (config["image_size"], config["image_size"], 3)
+        input_shape = (config.image_size, config.image_size, 3)
 
     feature_extractor = EfficientNetV2B0(
         include_top=False,

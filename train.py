@@ -25,7 +25,6 @@ import numpy as np
 import json
 from box import Box
 import os
-import tensorflow.keras.backend as K
 # import matplotlib.pyplot as plt
 
 # *IMPORANT*: Have to do this line *before* importing tensorflow
@@ -55,33 +54,15 @@ config = Box(config)
 if __name__ == "__main__":
 
     reset_random_seeds()
-    config = dict(
-        notes="7 classes, keras-cv, augment:True, oversample, val 453",
-        root_dir="data/4_tfds_dataset",
-        project_name="rock-classification-with-keras-cv",
-        model_name="mobilenet",
-        num_classes=7,
-        sample_size=1.0,
-        augment=True,
-        optimizer="adam",
-        init_learning_rate=0.1,
-        batch_size=32,
-        max_epochs=15,
-        image_size=224,
-        # lr_decay_rate = 0.7,
-        loss_fn="categoricalcrossentropy",
-        metrics=['accuracy'],
-        earlystopping_patience=10,
-        lr_reduce_patience=5,
-        )
+
     run = wandb.init(
-        project=config["project_name"],
+        project=config.project_name,
         entity='udaylunawat',
-        notes=config["notes"],
+        notes=config.notes,
         config=config,
         magic=True)
 
-    config = wandb.config
+    wandb.config.update(config)
 
     data, builder = get_data_tfds()
 
@@ -90,7 +71,7 @@ if __name__ == "__main__":
 
     IMAGE_SIZE = (config["image_size"], config["image_size"])
 
-    if config["augment"]:
+    if config.augment:
         train_dataset = (
             load_dataset()
             .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
@@ -113,12 +94,12 @@ if __name__ == "__main__":
 
     # build model
     clear_session()
-    model = get_model(config, config["num_classes"])
+    model = get_model(config, config.num_classes)
 
     opt = get_optimizer(config)
 
     # config.metrics.append(tfa.metrics.F1Score(
-    #     num_classes=config["num_classes"],
+    #     num_classes=config.num_classes,
     #     average='macro',
     #     threshold=0.5))
 
@@ -129,7 +110,6 @@ if __name__ == "__main__":
                   optimizer=opt,
                   metrics=config["metrics"])
 
-    print("learning rate:", K.eval(model.optimizer.lr))
     # model.summary()
     # def decay_schedule(epoch, lr):
     #     # decay by 0.1 every 5 epochs; use `% 1` to decay after each epoch
@@ -141,7 +121,7 @@ if __name__ == "__main__":
     # model_checkpoint = ModelCheckpoint("checkpoints/"+
     #                                    f"{wandb.run.name}-"+config["model_name"]+
     #                                    "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
-    # reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.5, patience=config["lr_reduce_patience"], verbose=1)
+    # reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.5, patience=config.lr_reduce_patience, verbose=1)
     # earlystopper = EarlyStopping(
     #     monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto',
     #     restore_best_weights=True
@@ -162,7 +142,7 @@ if __name__ == "__main__":
     # Confusion Matrix and Classification Report
     # Y_pred = model.predict(
     #     val_generator,
-    #     len(val_generator) // config["batch_size"] + 1)
+    #     len(val_generator) // config.batch_size + 1)
     # y_pred = np.argmax(Y_pred, axis=1)
 
     # print('Confusion Matrix with Validation data')
