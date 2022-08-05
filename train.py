@@ -94,7 +94,7 @@ if __name__ == "__main__":
         os.environ['WANDB_MODE'] = 'dryrun'
 
     run = wandb.init(
-        project=args.project_name,
+        project=config.project_name,
         entity='udaylunawat',
         notes=args.notes,
         resume=resume)
@@ -193,10 +193,6 @@ if __name__ == "__main__":
         validation_data=val_dataset,
         callbacks=callbacks
     )
-
-    if config.pretrained_trainable:
-        print("Not implemented")
-        pass
 
     # Confusion Matrix and Classification Report
     # Y_pred = model.predict(
