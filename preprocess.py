@@ -55,7 +55,7 @@ if __name__ == "__main__":
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
-        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=(30),
+        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=(65),
                            seed=1)
     elif args.undersample:
         splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset",
