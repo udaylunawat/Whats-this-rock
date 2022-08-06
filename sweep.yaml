@@ -3,6 +3,8 @@ metric:
   goal: maximize
   name: val_accuracy
 parameters:
+  project_name:
+    value: "rock-classification-with-keras-cv"
   root_dir:
     value: "data/4_tfds_dataset"
   num_classes:
@@ -14,7 +16,7 @@ parameters:
   batch_size:
     value: 64
   metrics:
-    value: ["accuracy"]
+    value: ["accuracy", "f1_score"]
   max_epochs:
     value: 20
   loss_fn:
