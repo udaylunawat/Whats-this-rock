@@ -44,30 +44,45 @@ def load_dataset(split="train"):
 
 
 # read config file
-with open('config.json') as config_file:
-    config = json.load(config_file)
+# with open('config.json') as config_file:
+#     config = json.load(config_file)
 
+config = {"root_dir": "data/4_tfds_dataset",
+        "project_name": "rock-classification-with-keras-cv",
+        "model_name": "resnet",
+        "num_classes": 7,
+        "sample_size": 1.0,
+        "augment": True,
+        "optimizer": "adam",
+        "lr": 0.0001,
+        "batch_size": 64,
+        "max_epochs": 5,
+        "image_size": 224,
+        "trainable": False,
+        "loss_fn": "categoricalcrossentropy",
+        "metrics": ["accuracy"],
+        "earlystopping_patience": 5,
+        "lr_reduce_patience": 20,
+        "notes": "keras-cv augment run"}
 # using addict to allow for easy access to dictionary keys using dot notation
-config = Box(config)
-
+# config = Box(config)
 
 if __name__ == "__main__":
 
     reset_random_seeds()
 
     run = wandb.init(
-        project=config.project_name,
+        project=wandb.config.project_name,
         entity='udaylunawat',
-        notes=config.notes,
         config=config,
-        magic=True)
+        magic="sweeps.yaml")
 
-    wandb.config.update(config)
+    config = wandb.config
 
     data, builder = get_data_tfds()
 
     num_classes = builder.info.features['label'].num_classes
-    config["num_classes"] = num_classes
+    # config["num_classes"] = num_classes
 
     IMAGE_SIZE = (config["image_size"], config["image_size"])
 
