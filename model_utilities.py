@@ -11,14 +11,14 @@ import tensorflow as tf
 
 def get_optimizer(config):
     if config.optimizer == 'adam':
-        opt = optimizers.Adam(learning_rate=config.lr)
+        opt = optimizers.Adam(learning_rate=config["lr"])
     elif config.optimizer == 'rms':
-        opt = optimizers.RMSprop(learning_rate=config.lr,
+        opt = optimizers.RMSprop(learning_rate=config["lr"],
                                  rho=0.9, epsilon=1e-08, decay=0.0)
     elif config.optimizer == 'sgd':
-        opt = optimizers.SGD(learning_rate=config.lr)
+        opt = optimizers.SGD(learning_rate=config["lr"])
     elif config.optimizer == 'adamax':
-        opt = optimizers.Adamax(learning_rate=config.lr)
+        opt = optimizers.Adamax(learning_rate=config["lr"])
 
     return opt
 
