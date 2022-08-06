@@ -4,7 +4,7 @@ import argparse
 import pandas as pd
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
-from data_utilities import remove_corrupted_images
+from data_utilities import remove_corrupted_images, get_df
 
 
 def remove_class(args):
@@ -55,7 +55,10 @@ if __name__ == "__main__":
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
-        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=(65),
+        print("Finding smallest class for oversampling fixed parameter.")
+        scc = min(get_df()['class'].value_counts())
+        print("Smallest class count is ", scc)
+        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=(scc-1),
                            seed=1)
     elif args.undersample:
         splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset",

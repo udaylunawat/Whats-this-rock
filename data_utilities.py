@@ -3,13 +3,12 @@ import numpy as np
 import os
 import shutil
 import json
-from box import Box
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
 # load config from config.json file
-with open('config.json', 'r') as f:
-    config = Box(json.load(f))
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
 
 def find_filepaths(root_folder):
@@ -87,6 +86,29 @@ def get_data(sample_size):
     return train_df, test_df
 
 
+def get_df(root="data/2_processed"):
+    """
+    root: a folder present inside data dir, which contains classes containing images
+    """
+    classes = os.listdir(root)
+
+    class_names = []
+    images_paths = []
+    file_names = []
+
+    for class_name in classes:
+        for dirname, _, filenames in os.walk(os.path.join(root, class_name)):
+            for file_name in filenames:
+                images_paths.append(os.path.join(root, class_name, file_name))
+                class_names.append(class_name)
+                file_names.append(file_name)
+
+    import pandas as pd
+    df = pd.DataFrame(list(zip(file_names, class_names, images_paths)), columns=['file_name', 'class', 'file_path'])
+
+    return df
+
+
 def undersample_df(data, class_name):
     merged_df = pd.DataFrame()
     for rock_type in data[class_name].unique():
@@ -111,6 +133,7 @@ def get_data_tfds():
 # # https://stackoverflow.com/a/37343690/9292995
 # # https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/
 IMAGE_SIZE = (config["image_size"], config["image_size"])
+
 
 def to_dict(image, label):
     image = tf.image.resize(image, IMAGE_SIZE)
