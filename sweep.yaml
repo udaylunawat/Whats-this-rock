@@ -16,7 +16,7 @@ parameters:
   batch_size:
     value: 64
   metrics:
-    value: ["accuracy", "f1_score"]
+    value: ["accuracy"]
   max_epochs:
     value: 20
   loss_fn:

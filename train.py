@@ -89,10 +89,10 @@ if __name__ == "__main__":
 
     opt = get_optimizer(config)
 
-    # config.metrics.append(tfa.metrics.F1Score(
-    #     num_classes=config.num_classes,
-    #     average='macro',
-    #     threshold=0.5))
+    config.metrics.append(tfa.metrics.F1Score(
+        num_classes=config.num_classes,
+        average='macro',
+        threshold=0.5))
 
     # Notice that we use label_smoothing=0.1 in the loss function.
     # When using MixUp, label smoothing is highly recommended.
