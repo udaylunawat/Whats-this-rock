@@ -72,7 +72,7 @@ if __name__ == "__main__":
     reset_random_seeds()
 
     run = wandb.init(
-        project=wandb.config.project_name,
+        project="rock-classification-with-keras-cv",
         entity='udaylunawat',
         config=config,
         magic="sweeps.yaml")
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     data, builder = get_data_tfds()
 
     num_classes = builder.info.features['label'].num_classes
-    # config["num_classes"] = num_classes
+    config["num_classes"] = num_classes
 
     IMAGE_SIZE = (config["image_size"], config["image_size"])
 
