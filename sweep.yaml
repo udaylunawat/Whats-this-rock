@@ -5,8 +5,6 @@ metric:
 parameters:
   root_dir:
     value: "data/4_tfds_dataset"
-  project_name:
-    value: "rock-classification-with-keras-cv"
   num_classes:
     value: 7
   notes:
@@ -21,13 +19,10 @@ parameters:
     value: "categoricalcrossentropy"
   lr:
     values: [0,001, 0.0001, 0.00005, 0.00001, 0.000005]
-  model:
-    values:
-      - mobilenet
-      - efficientnet
+  model_name:
+    values: ["mobilenet", "efficientnet", "baseline"]
   optimizer:
-    values:
-      - ["adam", "sgd"]
+    values: ["adam", "sgd"]
   sample_size:
     value: 1.0
   image_size:
