@@ -20,7 +20,7 @@ parameters:
   loss_fn:
     value: "categoricalcrossentropy"
   lr:
-    values: [0,001, 0.0001, 0.00005, 0.00001, 0.000005]
+    values: [0.001, 0.0001, 0.00005, 0.00001, 0.000005]
   model_name:
     values: ["mobilenet", "efficientnet", "baseline"]
   optimizer:
