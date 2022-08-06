@@ -23,7 +23,6 @@ import wandb
 import random
 import numpy as np
 import json
-from box import Box
 import os
 # import matplotlib.pyplot as plt
 
@@ -44,38 +43,15 @@ def load_dataset(split="train"):
 
 
 # read config file
-# with open('config.json') as config_file:
-#     config = json.load(config_file)
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
-config = {"root_dir": "data/4_tfds_dataset",
-        "project_name": "rock-classification-with-keras-cv",
-        "model_name": "resnet",
-        "num_classes": 7,
-        "sample_size": 1.0,
-        "augment": True,
-        "optimizer": "adam",
-        "lr": 0.0001,
-        "batch_size": 64,
-        "max_epochs": 5,
-        "image_size": 224,
-        "trainable": False,
-        "loss_fn": "categoricalcrossentropy",
-        "metrics": ["accuracy"],
-        "earlystopping_patience": 5,
-        "lr_reduce_patience": 20,
-        "notes": "keras-cv augment run"}
-# using addict to allow for easy access to dictionary keys using dot notation
-# config = Box(config)
 
 if __name__ == "__main__":
 
     reset_random_seeds()
 
-    run = wandb.init(
-        project="rock-classification-with-keras-cv",
-        entity='udaylunawat',
-        config=config,
-        magic="sweeps.yaml")
+    run = wandb.init(config=config)
 
     config = wandb.config
 
