@@ -1,23 +1,33 @@
 method: bayes
 metric:
   goal: maximize
-  name: val_f1_score
+  name: val_accuracy
 parameters:
+  root_dir:
+    value: "data/4_tfds_dataset"
+  project_name:
+    value: "rock-classification-with-keras-cv"
+  num_classes:
+    value: 7
+  notes:
+    value: "keras-cv augment run"
   augment:
-    values: [True]
+    value: true
   batch_size:
     value: 64
-  epochs:
-    value: 100
+  max_epochs:
+    value: 20
+  loss_fn:
+    value: "categoricalcrossentropy"
   lr:
-    values: [0.0001, 0.00005, 0.00001, 0.000005]
+    values: [0,001, 0.0001, 0.00005, 0.00001, 0.000005]
   model:
     values:
       - mobilenet
       - efficientnet
   optimizer:
     values:
-      - Adam
+      - ["adam", "sgd"]
   sample_size:
     value: 1.0
   image_size:
