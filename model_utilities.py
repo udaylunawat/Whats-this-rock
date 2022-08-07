@@ -4,7 +4,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from sklearn.utils import class_weight
-from models import get_efficientnet, get_mobilenet, get_baseline_model, get_small_cnn, get_resnet_model
+from models import get_efficientnet, get_mobilenet, get_baseline_model, get_small_cnn, get_resnet_model, get_inceptionresnetv2
 
 import tensorflow as tf
 
@@ -37,6 +37,8 @@ def get_model(config, num_classes):
         model = get_mobilenet(config, num_classes)
     elif config.model_name == "resnet":
         model = get_resnet_model(config)
+    elif config.model_name == "inceptionresnetv2":
+        model = get_inceptionresnetv2(config)
 
     return model
 

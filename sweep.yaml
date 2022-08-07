@@ -18,11 +18,11 @@ parameters:
   loss_fn:
     value: "categoricalcrossentropy"
   lr:
-    values: [0.0001, 0.0005, 0.00005, 0.00001]
+    values: [0.01, 0.0001, 0.0005, 0.00005, 0.00001]
   model_name:
-    values: ["mobilenet", "efficientnet"]
+    values: ["mobilenet", "efficientnet", "inceptionresnetv2"]
   optimizer:
-    values: ["adam"]
+    values: ["adam", "adamax"]
   sample_size:
     value: 1.0
   image_size:

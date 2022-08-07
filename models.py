@@ -1,6 +1,7 @@
-from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0, ResNet50
+from tensorflow.keras.applications import MobileNetV2, EfficientNetV2B0, ResNet50, InceptionResNetV2
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Flatten, GlobalAveragePooling2D, \
     BatchNormalization, LeakyReLU, Input, Lambda
+from tensorflow.keras import regularizers, initializers
 from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras import backend as K
 from tensorflow.image import resize
@@ -178,6 +179,13 @@ def get_resnet_model(config):
     return model
 
 
-def finetune(config, model, num_classes, history):
-
-    pass
+def get_inceptionresnetv2(config):
+    base_model = InceptionResNetV2(include_top=False, weights="imagenet", input_shape=(config["image_size"], config["image_size"]), pooling='max')
+    x = base_model.output
+    x = BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001)(x)
+    x = Dense(256, kernel_regularizer=regularizers.l2(l=0.016), activity_regularizer=regularizers.l1(0.006),
+              bias_regularizer=regularizers.l1(0.006), activation='relu', kernel_initializer=initializers.GlorotUniform(seed=123))(x)
+    x = Dropout(rate=.45, seed=123)(x)
+    output = Dense(config["num_classes"], activation='softmax', kernel_initializer=initializers.GlorotUniform(seed=123))(x)
+    model = Model(inputs=base_model.input, outputs=output)
+    return model
