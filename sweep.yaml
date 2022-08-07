@@ -29,6 +29,8 @@ parameters:
     value: 224
   earlystopping_patience:
     value: 5
+  earlystopping_min_delta:
+    value: 0.04
   lr_reduce_patience:
     value: 3
 program: train.py

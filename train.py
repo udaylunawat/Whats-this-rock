@@ -114,7 +114,7 @@ if __name__ == "__main__":
                                        "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
     reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.5, patience=config['lr_reduce_patience'], verbose=1)
     earlystopper = EarlyStopping(
-        monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto',
+        monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto', min_delta=config['earlystopping_min_delta'],
         restore_best_weights=True
     )
 
