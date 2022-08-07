@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     # build model
     clear_session()
-    model = get_model(config, config.num_classes)
+    model = get_model(config)
 
     opt = get_optimizer(config)
 

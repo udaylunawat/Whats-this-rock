@@ -4,7 +4,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from sklearn.utils import class_weight
-from models import get_efficientnet, get_mobilenet, get_baseline_model, get_small_cnn, get_resnet_model, get_inceptionresnetv2
+import models
 
 import tensorflow as tf
 
@@ -23,24 +23,20 @@ def get_optimizer(config):
     return opt
 
 
-def get_model(config, num_classes):
-    if config.model_name == "efficientnet":
-        model = get_efficientnet(config, num_classes)
-    elif config.model_name == "baseline":
-        model = get_baseline_model(config.image_size, num_classes)
-    elif config.model_name == "baseline_cnn":
-        model = get_small_cnn(
-            config.image_size,
-            config.image_size,
-            num_classes)
-    elif config.model_name == "mobilenet":
-        model = get_mobilenet(config, num_classes)
-    elif config.model_name == "resnet":
-        model = get_resnet_model(config)
-    elif config.model_name == "inceptionresnetv2":
-        model = get_inceptionresnetv2(config)
+def get_model(config):
+    models_dict = {
+        'efficientnet': models.get_efficientnet,
+        'resnet': models.get_resnet,
+        'small_cnn': models.get_small_cnn,
+        'large_cnn': models.get_large_cnn,
+        'baseline': models.get_baseline,
+        'baseline_cnn': models.get_baseline_cnn,
+        'mobilenet': models.get_mobilenet,
+        'mobilenetv2': models.get_mobilenetv2,
+        'inceptionresnetv2': models.get_inceptionresnetv2
+    }
 
-    return model
+    return models_dict[config.model_name](config)
 
 
 # https://datamonje.com/image-data-augmentation/#cutout
