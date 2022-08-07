@@ -21,16 +21,25 @@
 - [License](#license)
 <!-- - [Contact](#contact) -->
 # Instructions
-- Paste your kaggle.json file here or make sure it's in the root directory
-- Run the commands below
+
+## Deploy Telegram Bot
 ```
-pip install -r requirements.txt
+pip install -r requirements-prod.txt
+python bot.py
+```
+
+## Train Model
+- Paste your kaggle.json file in the root directory
+
+Run these commands
+```
+pip install -r requirements-dev.txt
 sh setup.sh
 python preprocess.py --root data/1_extracted/Rock_Dataset/ \
-                      --remove_class minerals \
                       --oversample
 python train.py
 ```
+
 
 ## Notebooks
 <table class="tfo-notebook-buttons" align="left">
@@ -44,7 +53,6 @@ python train.py
     <a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/notebook.ipynb"><img src="https://www.tensorflow.org/images/download_logo_32px.png" />Download notebook</a>
   </td>
 </table>
-
 <br></br>
 
 ## Bug / Feature Request
