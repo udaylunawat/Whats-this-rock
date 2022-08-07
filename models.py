@@ -122,7 +122,7 @@ def get_mobilenetv2(config):
     return model
 
 
-def get_baseline_model(config):
+def get_baseline(config):
     input = Input(shape=(config.image_size, config.image_size, 3))
     flt_1 = Flatten(input_shape=(config.image_size, config.image_size, 3))(input)
     Dense_1 = Dense(128, activation="relu")(flt_1)
@@ -169,7 +169,7 @@ def get_efficientnet(config):
     return model
 
 
-def get_resnet_model(config):
+def get_resnet(config):
     IMAGE_SIZE = (config["image_size"], config["image_size"])
     input_t = Input(shape=(config["image_size"], config["image_size"], 3))
     res_model = ResNet50(include_top=False,
