@@ -22,7 +22,6 @@ def find_filepaths(root_folder):
 
 
 def remove_corrupted_images(root_folder):
-    os.makedirs('corrupted_images', exist_ok=True)
     print("\n\nRemoving corrupted images...")
 
     filepaths = find_filepaths(root_folder)
