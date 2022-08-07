@@ -180,7 +180,7 @@ def get_resnet_model(config):
 
 
 def get_inceptionresnetv2(config):
-    base_model = InceptionResNetV2(include_top=False, weights="imagenet", input_shape=(config["image_size"], config["image_size"]), pooling='max')
+    base_model = InceptionResNetV2(include_top=False, weights="imagenet", input_shape=(config["image_size"], config["image_size"], 3), pooling='max')
     x = base_model.output
     x = BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001)(x)
     x = Dense(256, kernel_regularizer=regularizers.l2(l=0.016), activity_regularizer=regularizers.l1(0.006),
