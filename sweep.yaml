@@ -1,16 +1,12 @@
 method: bayes
 metric:
-  goal: maximize
-  name: val_accuracy
+  goal: minimize
+  name: val_loss
 parameters:
-  project_name:
-    value: "rock-classification-with-keras-cv"
   root_dir:
     value: "data/4_tfds_dataset"
   num_classes:
     value: 7
-  notes:
-    value: "keras-cv augment run"
   augment:
     value: true
   batch_size:
@@ -18,17 +14,21 @@ parameters:
   metrics:
     value: ["accuracy"]
   max_epochs:
-    value: 20
+    value: 50
   loss_fn:
     value: "categoricalcrossentropy"
   lr:
-    values: [0.001, 0.0001, 0.00005, 0.00001, 0.000005]
+    values: [0.0001, 0.0005, 0.00005, 0.00001]
   model_name:
-    values: ["mobilenet", "efficientnet", "baseline"]
+    values: ["mobilenet", "efficientnet"]
   optimizer:
-    values: ["adam", "sgd"]
+    values: ["adam"]
   sample_size:
     value: 1.0
   image_size:
     value: 224
+  earlystopping_patience:
+    value: 5
+  lr_reduce_patience:
+    value: 3
 program: train.py

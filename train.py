@@ -109,20 +109,20 @@ if __name__ == "__main__":
     #     return lr
 
     # lr_scheduler = LearningRateScheduler(decay_schedule)
-    # model_checkpoint = ModelCheckpoint("checkpoints/"+
-    #                                    f"{wandb.run.name}-"+config["model_name"]+
-    #                                    "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
-    # reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.5, patience=config.lr_reduce_patience, verbose=1)
-    # earlystopper = EarlyStopping(
-    #     monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto',
-    #     restore_best_weights=True
-    # )
+    model_checkpoint = ModelCheckpoint("checkpoints/"+
+                                       f"{wandb.run.name}-"+config["model_name"]+
+                                       "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
+    reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.5, patience=config['lr_reduce_patience'], verbose=1)
+    earlystopper = EarlyStopping(
+        monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto',
+        restore_best_weights=True
+    )
 
     wandbcallback = WandbCallback()
 
     # Define WandbCallback for experiment tracking
 
-    callbacks = [wandbcallback]
+    callbacks = [wandbcallback, earlystopper, model_checkpoint]
     history = model.fit(
         train_dataset,
         epochs=config["max_epochs"],
