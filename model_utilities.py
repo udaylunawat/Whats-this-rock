@@ -30,7 +30,6 @@ def get_model(config):
         'small_cnn': models.get_small_cnn,
         'large_cnn': models.get_large_cnn,
         'baseline': models.get_baseline,
-        'baseline_cnn': models.get_baseline_cnn,
         'mobilenet': models.get_mobilenet,
         'mobilenetv2': models.get_mobilenetv2,
         'inceptionresnetv2': models.get_inceptionresnetv2
