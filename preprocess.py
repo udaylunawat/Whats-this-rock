@@ -6,11 +6,6 @@ import splitfolders
 from data_utilities import remove_corrupted_images, get_df
 
 
-def remove_class(args):
-    if args.remove_class in os.listdir(args.root):
-        shutil.rmtree(os.path.join(args.root, args.remove_class))
-
-
 def create_classes_dir(args):
     for dataset in os.listdir(args.root):
         class_dirs = os.listdir(os.path.join(args.root, dataset))
@@ -40,25 +35,19 @@ if __name__ == "__main__":
         "--oversample",
         action='store_true',
         help="Oversample Data")
-    parser.add_argument(
-        "-remove",
-        "--remove_class",
-        type=str,
-        default=None,
-        help="Remove class")
 
     args = parser.parse_args()
 
-    remove_class(args)
-    create_classes_dir(args)
+    # create_classes_dir(args)
     remove_corrupted_images('data/2_processed')
+    print(get_df().info)
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
         scc = min(get_df()['class'].value_counts())
-        print("Smallest class count is ", scc)
-        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=(scc - 1),
+        print(f"Smallest class count is {scc}\n")
+        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=((100)),
                            seed=42)
     elif args.undersample:
         splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset",
