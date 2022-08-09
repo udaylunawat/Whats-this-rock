@@ -8,7 +8,7 @@ Designed to show how to do a simple wandb integration with keras.
 
 from data_utilities import get_data_tfds, prepare_dataset
 from model_utilities import get_model, get_optimizer
-from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess_for_model
+from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess_for_model, visualize_dataset
 
 # from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
@@ -50,7 +50,7 @@ with open('config.json') as config_file:
 if __name__ == "__main__":
 
     reset_random_seeds()
-
+    print(f"config:- {config}")
     run = wandb.init(config=config)
 
     config = wandb.config
@@ -70,8 +70,6 @@ if __name__ == "__main__":
         )
     else:
         train_dataset = load_dataset()
-
-    # visualize_dataset(train_dataset, "CutMix, MixUp and RandAugment")
 
     train_dataset = train_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
 
@@ -112,7 +110,7 @@ if __name__ == "__main__":
     model_checkpoint = ModelCheckpoint("checkpoints/"+
                                        f"{wandb.run.name}-"+config["model_name"]+
                                        "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=0.5, patience=config['lr_reduce_patience'], verbose=1)
+    reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1)
     earlystopper = EarlyStopping(
         monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto', min_delta=config['earlystopping_min_delta'],
         restore_best_weights=True
@@ -122,12 +120,14 @@ if __name__ == "__main__":
 
     # Define WandbCallback for experiment tracking
 
-    callbacks = [wandbcallback, earlystopper, model_checkpoint]
+    callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr]
+
     history = model.fit(
         train_dataset,
         epochs=config["max_epochs"],
         validation_data=val_dataset,
-        callbacks=callbacks
+        callbacks=callbacks,
+        workers=-1
     )
 
     # Confusion Matrix and Classification Report
