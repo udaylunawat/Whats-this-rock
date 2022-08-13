@@ -1,5 +1,5 @@
 {"root_dir": "data/4_tfds_dataset",
- "project_name": "rock-classification-with-keras-cv",
+ "project_name": "rock-classification-sweep-v3",
  "entity": "udaylunawat",
  "model_name": "vgg16",
  "num_classes": 7,
