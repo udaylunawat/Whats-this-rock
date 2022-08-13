@@ -53,7 +53,7 @@ if __name__ == "__main__":
     IMAGE_SIZE = (config["image_size"], config["image_size"])
 
     train_dataset, val_dataset = get_generators(config)
-
+    labels = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartzite', 'Sandstone']
     # build model
     clear_session()
 
@@ -61,8 +61,6 @@ if __name__ == "__main__":
     if best_model.split('-')[3] == config['model_name']:
         print(f"Loading {best_model}.")
         model = load_model(os.path.join('checkpoints', best_model))
-        print(f"Setting learning rate to {config['lr']/10}")
-        config.update({"lr": config['lr']/10}, allow_val_change=True)
     else:
         model = get_model(config)
 
@@ -91,13 +89,18 @@ if __name__ == "__main__":
     model_checkpoint = ModelCheckpoint("checkpoints/"+
                                        f"{wandb.run.name}-"+config["model_name"]+
                                        "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor="val_accuracy", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1)
+    reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1)
     earlystopper = EarlyStopping(
         monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto', min_delta=config['earlystopping_min_delta'],
         restore_best_weights=True
     )
 
-    wandbcallback = WandbCallback()
+    wandbcallback = WandbCallback(monitor="val_loss",
+                                  training_data=train_dataset,
+                                  validation_data=val_dataset,
+                                  input_type="images",
+                                  output_type="label",
+                                  labels=labels)
 
     # Define WandbCallback for experiment tracking
     class delete_checkpoints(Callback):
@@ -120,21 +123,24 @@ if __name__ == "__main__":
         workers=-1
     )
 
-    # Confusion Matrix and Classification Report
-    # Y_pred = model.predict(
-    #     val_generator,
-    #     len(val_generator) // config.batch_size + 1)
-    # y_pred = np.argmax(Y_pred, axis=1)
+    # scores = model.evaluate_generator(generator=test_generator)
+    # print('Accuracy: ', scores)
 
-    # print('Confusion Matrix with Validation data')
-    # print(confusion_matrix(val_generator.classes, y_pred))
+    # filenames = test_generator.filenames
+    # nb_samples = len(filenames)
+    # pred = model.predict_generator(test_generator, steps=nb_samples, verbose=1)
+    # predicted_class_indices = np.argmax(pred, axis=1)
+    # test_acc = sum([predicted_class_indices[i] == test_generator.classes[i] for i in range(len(test_df))]) / len(test_df)
+    # # Confution Matrix and Classification Report
+    # # print('Confusion Matrix')
+    # # print(confusion_matrix(test_generator.classes, predicted_class_indices))
+
+    # confusion_matrix = plot.confusion_matrix(labels, test_generator.classes, predicted_class_indices)
+    # wandb.log({"test_accuracy": test_acc, "Confusion Matrix": confusion_matrix})
+
+    # cl_report = classification_report(test_generator.classes, predicted_class_indices)
     # print('Classification Report')
-    # cl_report = classification_report(
-    #     val_generator.classes,
-    #     y_pred,
-    #     target_names=labels,
-    #     output_dict=True)
-    # # print(pd.DataFrame(cl_report))
     # print(cl_report)
+    # wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
 
     run.finish()
