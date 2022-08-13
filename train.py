@@ -7,7 +7,7 @@ Designed to show how to do a simple wandb integration with keras.
 """
 
 from data_utilities import get_data_tfds, prepare_dataset, get_generators
-from model_utilities import get_model, get_optimizer
+from model_utilities import get_model, get_optimizer, get_best_checkpoint
 
 
 # from sklearn.metrics import classification_report, confusion_matrix
@@ -17,6 +17,7 @@ from tensorflow.keras import losses
 from tensorflow.keras.backend import clear_session
 import tensorflow_addons as tfa
 from keras.callbacks import Callback
+from keras.models import load_model
 
 from wandb.keras import WandbCallback
 import wandb
@@ -55,7 +56,13 @@ if __name__ == "__main__":
 
     # build model
     clear_session()
-    model = get_model(config)
+
+    if len(os.listdir('checkpoints')) > 0:
+        best_model = get_best_checkpoint()
+        print(f"Loading {best_model}.")
+        model = load_model(os.path.join('checkpoints', best_model))
+    else:
+        model = get_model(config)
 
     opt = get_optimizer(config)
 

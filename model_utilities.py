@@ -39,6 +39,16 @@ def get_model(config):
     return models_dict[config.model_name](config)
 
 
+def get_best_checkpoint():
+    max = 0
+    best_model = NotImplementedError
+    for file_name in os.listdir('checkpoints'):
+        val_acc = int(os.path.basename(file_name).split('.')[-2])
+        if val_acc > max:
+            max = val_acc
+            best_model = file_name
+    return best_model
+
 # https://datamonje.com/image-data-augmentation/#cutout
 # https://colab.research.google.com/drive/1on9rvQdr0s8CfqYeZBTbgk0K5I_Dha-X#scrollTo=py9wqsM05kio
 def custom_augmentation(np_tensor):
