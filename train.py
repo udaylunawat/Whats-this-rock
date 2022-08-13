@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     reset_random_seeds()
     print(f"config:- {config}")
-    run = wandb.init(config=config)
+    run = wandb.init(config=config, allow_val_change=True)
 
     config = wandb.config
     IMAGE_SIZE = (config["image_size"], config["image_size"])
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         print(f"Loading {best_model}.")
         model = load_model(os.path.join('checkpoints', best_model))
         print("Setting learning rate to 0.00001")
-        config['lr'] = 0.00001
+        config.update({"lr":0.00001}, allow_val_change=True)
     else:
         model = get_model(config)
 
