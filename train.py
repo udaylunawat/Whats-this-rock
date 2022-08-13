@@ -16,7 +16,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLRO
 from tensorflow.keras import losses
 from tensorflow.keras.backend import clear_session
 import tensorflow_addons as tfa
-
+from keras.callbacks import Callback
 
 from wandb.keras import WandbCallback
 import wandb
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # Notice that we use label_smoothing=0.1 in the loss function.
     # When using MixUp, label smoothing is highly recommended.
 
-    model.compile(loss=losses.CategoricalCrossentropy(label_smoothing=0.1),
+    model.compile(loss=config['loss_fn'],
                   optimizer=opt,
                   metrics=config["metrics"])
 
@@ -91,8 +91,17 @@ if __name__ == "__main__":
     wandbcallback = WandbCallback()
 
     # Define WandbCallback for experiment tracking
+    class delete_checkpoints(Callback):
+        def on_epoch_end(self, epoch, logs=None):
+            max = 0
+            for file_name in os.listdir('checkpoints'):
+                val_acc = int(os.path.basename(file_name).split('.')[-2])
+                if val_acc > max:
+                    max = val_acc
+                if val_acc < max:
+                    os.remove(os.path.join('checkpoints', file_name))
 
-    callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr]
+    callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, delete_checkpoints()]
 
     history = model.fit(
         train_dataset,
