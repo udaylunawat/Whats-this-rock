@@ -3,8 +3,10 @@ opencv-python
 kaggle
 pandas
 numpy
-tf-nightly==2.10.0.dev20220427
-keras-nightly==2.10.0.dev2022042807
+# tf-nightly==2.10.0.dev20220427
+# keras-nightly==2.10.0.dev2022042807
+tensorflow
+keras
 tensorflow-addons
 wandb
 keras-cv
