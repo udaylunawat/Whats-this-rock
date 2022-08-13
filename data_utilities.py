@@ -123,29 +123,61 @@ def undersample_df(data, class_name):
 
     return merged_df
 
+
+def limit_data(data_dir,n=100):
+    # https://stackoverflow.com/a/65966877/9292995
+    a = []
+    for i in os.listdir(data_dir):
+        for k, j in enumerate(os.listdir(data_dir + '/' + i)):
+            if k > n:continue
+            a.append((f'{data_dir}/{i}/{j}',i))
+    return pd.DataFrame(a,columns=['filename','class'])
+
 ####################################### ImageDataGenerator Utilities ###################################
 
 
 def get_generators(config):
-    train_datagen = ImageDataGenerator(
-        rescale=1. / 255,
-        zoom_range=0.2,
-        horizontal_flip=True,
-        rotation_range=20,
-        width_shift_range=0.2,
-        height_shift_range=0.2,
-        preprocessing_function=preprocess_input)
+    if config.augment:
+        print("Augmentation is True!")
+        train_datagen = ImageDataGenerator(
+            rescale=1. / 255,
+            zoom_range=0.2,
+            horizontal_flip=True,
+            rotation_range=20,
+            width_shift_range=0.2,
+            height_shift_range=0.2,
+            preprocessing_function=preprocess_input)
+    elif not config.augment:
+        print("No Augmentation!")
+        train_datagen = ImageDataGenerator(validation_split=0.2, rescale=1. / 255.)
+    else:
+        print("Error in config.augment. Stop Training!")
+
     test_datagen = ImageDataGenerator(rescale=1. / 255)
     train_dataset = train_datagen.flow_from_directory(
         'data/4_tfds_dataset/train',
         target_size=(config['image_size'], config['image_size']),
         batch_size=config['batch_size'],
+        shuffle=True,
         class_mode='categorical')
     val_dataset = test_datagen.flow_from_directory(
         'data/4_tfds_dataset/val',
+        shuffle=False,
         target_size=(config['image_size'], config['image_size']),
         batch_size=config['image_size'],
         class_mode='categorical')
+
+    # test_generator = test_datagen.flow_from_directory(
+    #     'data/4_tfds_dataset/train',
+    #     batch_size=config['batch_size'],
+    #     seed=42,
+    #     color_mode='rgb',
+    #     shuffle=True,
+    #     class_mode="categorical",
+    #     # preprocessing_function=custom_augmentation,
+    #     target_size=(
+    #         config['image_size'],
+    #         config['image_size']))
 
     return train_dataset, val_dataset
 
