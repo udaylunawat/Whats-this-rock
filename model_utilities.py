@@ -1,11 +1,9 @@
+import os
 import numpy as np
-
 from tensorflow.keras import optimizers
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
 from sklearn.utils import class_weight
 import models
-
 import tensorflow as tf
 
 
