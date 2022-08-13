@@ -136,17 +136,17 @@ def limit_data(data_dir,n=100):
 ####################################### ImageDataGenerator Utilities ###################################
 
 
+def scalar(img):
+    return img / 127.5 - 1  # scale pixel between -1 and +1
+
+
 def get_generators(config):
     if config.augment:
-        print("Augmentation is True!")
+        print("Augmentation is True! With scalar this time - img / 127.5 - 1")
         train_datagen = ImageDataGenerator(
-            rescale=1. / 255,
-            zoom_range=0.2,
             horizontal_flip=True,
-            rotation_range=20,
-            width_shift_range=0.2,
-            height_shift_range=0.2,
-            preprocessing_function=preprocess_input)
+            vertical_flip=True,
+            preprocessing_function=scalar)
     elif not config.augment:
         print("No Augmentation!")
         train_datagen = ImageDataGenerator(validation_split=0.2, rescale=1. / 255.)
