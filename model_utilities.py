@@ -32,7 +32,8 @@ def get_model(config):
         'baseline': models.get_baseline,
         'mobilenet': models.get_mobilenet,
         'mobilenetv2': models.get_mobilenetv2,
-        'inceptionresnetv2': models.get_inceptionresnetv2
+        'inceptionresnetv2': models.get_inceptionresnetv2,
+        'vgg16': models.get_vgg16
     }
 
     return models_dict[config.model_name](config)

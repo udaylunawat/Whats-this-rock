@@ -1,6 +1,7 @@
 {"root_dir": "data/4_tfds_dataset",
  "project_name": "rock-classification-with-keras-cv",
- "model_name": "resnet",
+ "entity": "udaylunawat",
+ "model_name": "vgg16",
  "num_classes": 7,
  "sample_size": 1.0,
  "augment": true,

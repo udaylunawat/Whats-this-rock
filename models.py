@@ -1,4 +1,4 @@
-from tensorflow.keras.applications import MobileNet, MobileNetV2, EfficientNetV2B0, ResNet50, InceptionResNetV2
+from tensorflow.keras.applications import MobileNet, MobileNetV2, EfficientNetV2B0, ResNet50, InceptionResNetV2, vgg16
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Flatten, GlobalAveragePooling2D, \
     BatchNormalization, LeakyReLU, Input, Lambda
 from tensorflow.keras import regularizers, initializers
@@ -205,4 +205,28 @@ def get_inceptionresnetv2(config):
     x = Dropout(rate=.45, seed=123)(x)
     output = Dense(config["num_classes"], activation='softmax', kernel_initializer=initializers.GlorotUniform(seed=123))(x)
     model = Model(inputs=base_model.input, outputs=output)
+    return model
+
+
+def get_vgg16(config):
+    # Loading VGG16 model
+    base_model = vgg16.VGG16(weights="imagenet", include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
+    base_model.trainable = False  # Not trainable weights
+
+    flatten_layer = Flatten()
+    dense_layer_1 = Dense(50, activation='relu')
+    dense_layer_2 = Dense(20, activation='relu')
+    prediction_layer = Dense(config['num_classes'], activation='softmax')
+    maxpool = MaxPooling2D(pool_size=(2, 2), strides=(2, 2))
+    dropout = Dropout(0.3)
+
+    model = Sequential([
+        base_model,
+        flatten_layer,
+        dense_layer_1,
+        dropout,
+        dense_layer_2,
+        dropout,
+        prediction_layer
+    ])
     return model
