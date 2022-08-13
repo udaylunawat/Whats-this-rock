@@ -39,7 +39,7 @@ def get_model(config):
 
 def get_best_checkpoint():
     max = 0
-    best_model = NotImplementedError
+    best_model = None
     for file_name in os.listdir('checkpoints'):
         val_acc = int(os.path.basename(file_name).split('.')[-2])
         if val_acc > max:
