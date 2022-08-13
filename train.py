@@ -6,9 +6,9 @@ Trains a model on the dataset.
 Designed to show how to do a simple wandb integration with keras.
 """
 
-from data_utilities import get_data_tfds, prepare_dataset
+from data_utilities import get_data_tfds, prepare_dataset, get_generators
 from model_utilities import get_model, get_optimizer
-from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess_for_model, visualize_dataset
+
 
 # from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
@@ -16,7 +16,7 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLRO
 from tensorflow.keras import losses
 from tensorflow.keras.backend import clear_session
 import tensorflow_addons as tfa
-from tensorflow.data import AUTOTUNE
+
 
 from wandb.keras import WandbCallback
 import wandb
@@ -37,11 +37,6 @@ def reset_random_seeds():
     random.seed(1)
 
 
-def load_dataset(split="train"):
-    dataset = data[split]
-    return prepare_dataset(dataset, split)
-
-
 # read config file
 with open('config.json') as config_file:
     config = json.load(config_file)
@@ -54,32 +49,9 @@ if __name__ == "__main__":
     run = wandb.init(config=config)
 
     config = wandb.config
-
-    data, builder = get_data_tfds()
-
-    num_classes = builder.info.features['label'].num_classes
-    config["num_classes"] = num_classes
-
     IMAGE_SIZE = (config["image_size"], config["image_size"])
 
-    if config.augment:
-        train_dataset = (
-            load_dataset()
-            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
-            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
-        )
-    else:
-        train_dataset = load_dataset()
-
-    train_dataset = train_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-    val_dataset = load_dataset(split="val")
-    val_dataset = val_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-    # test_dataset = load_dataset(split="test")
-    # test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-    labels = builder.info.features['label'].names
+    train_dataset, val_dataset = get_generators(config)
 
     # build model
     clear_session()
