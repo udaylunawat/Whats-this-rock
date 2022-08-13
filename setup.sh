@@ -10,7 +10,7 @@ pip install -r requirements-dev.txt
 
 # setting up data dir
 rm -rf data
-mkdir -p data/0_raw data/1_extracted data/2_processed data/3_consume data/4_tfds_dataset data/corrupted_images
+mkdir -p data/0_raw data/1_extracted data/2_processed data/3_consume data/4_tfds_dataset data/corrupted_images checkpoints
 
 # dataset 1 processing
 kaggle datasets download salmaneunus/rock-classification --path data/0_raw/
