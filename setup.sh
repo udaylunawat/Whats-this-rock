@@ -1,9 +1,14 @@
 #!/bin/bash
 
+# setting up kaggle
+wget https://www.dropbox.com/s/9mhxs1p4mgb8gyh/kaggle.json
 mkdir -p ~/.kaggle
-cp kaggle.json ~/.kaggle
+mv kaggle.json ~/.kaggle
 chmod 600 /root/.kaggle/kaggle.json
 
+pip install -r requirements-dev.txt
+
+# setting up data dir
 rm -rf data
 mkdir -p data/0_raw data/1_extracted data/2_processed data/3_consume data/4_tfds_dataset data/corrupted_images
 
