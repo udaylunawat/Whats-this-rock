@@ -57,12 +57,12 @@ if __name__ == "__main__":
     # build model
     clear_session()
 
-    if len(os.listdir('checkpoints')) > 0:
-        best_model = get_best_checkpoint()
+    best_model = get_best_checkpoint()
+    if best_model.split('-')[3] == config['model_name']:
         print(f"Loading {best_model}.")
         model = load_model(os.path.join('checkpoints', best_model))
-        print("Setting learning rate to 0.00001")
-        config.update({"lr":config['lr']/10}, allow_val_change=True)
+        print(f"Setting learning rate to {config['lr']/10}")
+        config.update({"lr": config['lr']/10}, allow_val_change=True)
     else:
         model = get_model(config)
 
