@@ -62,7 +62,7 @@ if __name__ == "__main__":
         print(f"Loading {best_model}.")
         model = load_model(os.path.join('checkpoints', best_model))
         print("Setting learning rate to 0.00001")
-        config.update({"lr":0.00001}, allow_val_change=True)
+        config.update({"lr":config['lr']/10}, allow_val_change=True)
     else:
         model = get_model(config)
 
