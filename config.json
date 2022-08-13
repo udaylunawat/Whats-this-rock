@@ -5,14 +5,14 @@
  "num_classes": 7,
  "sample_size": 1.0,
  "augment": true,
- "optimizer": "adam",
+ "optimizer": "rms",
  "lr": 0.0001,
  "batch_size": 64,
- "max_epochs": 5,
+ "max_epochs": 30,
  "image_size": 224,
  "trainable": false,
- "loss_fn": "categoricalcrossentropy",
+ "loss_fn": "categorical_crossentropy",
  "metrics": ["accuracy"],
  "earlystopping_patience": 5,
  "lr_reduce_patience": 20,
- "notes": "keras-cv augment run"}
+ "notes": "7-classes 3-datasets augment"}
