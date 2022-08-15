@@ -7,7 +7,7 @@ Designed to show how to do a simple wandb integration with keras.
 """
 
 from data_utilities import get_data_tfds, prepare_dataset, get_generators
-from model_utilities import get_model, get_optimizer, get_best_checkpoint
+from model_utilities import get_model, get_optimizer, get_best_checkpoint, get_model_weights, delete_checkpoints, LRA
 
 
 # from sklearn.metrics import classification_report, confusion_matrix
@@ -16,15 +16,18 @@ from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLRO
 from tensorflow.keras import losses
 from tensorflow.keras.backend import clear_session
 import tensorflow_addons as tfa
-from keras.callbacks import Callback
 from keras.models import load_model
 
-from wandb.keras import WandbCallback
 import wandb
+from wandb.keras import WandbCallback
+
+import os
+import argparse
 import random
 import numpy as np
 import json
-import os
+
+
 # import matplotlib.pyplot as plt
 
 # *IMPORANT*: Have to do this line *before* importing tensorflow
@@ -44,9 +47,17 @@ with open('config.json') as config_file:
 
 
 if __name__ == "__main__":
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-n",
+        "--notes",
+        type=str,
+        required=True,
+        help="Wandb Notes")
+    args = parser.parse_args()
     reset_random_seeds()
-    print(f"config:- {config}")
+
+    print(f"config:- {json.dumps(config, indent=2)}")
     run = wandb.init(config=config, allow_val_change=True)
 
     config = wandb.config
@@ -54,15 +65,17 @@ if __name__ == "__main__":
 
     train_dataset, val_dataset = get_generators(config)
     labels = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartzite', 'Sandstone']
+    class_weights = get_model_weights(train_dataset)
+
     # build model
     clear_session()
+    model = get_model(config)
 
     best_model = get_best_checkpoint()
-    if best_model.split('-')[3] == config['model_name']:
-        print(f"Loading {best_model}.")
-        model = load_model(os.path.join('checkpoints', best_model))
-    else:
-        model = get_model(config)
+    if best_model:
+        if best_model.split('-')[3] == config['model_name']:
+            print(f"Loading {best_model}.")
+            model = load_model(os.path.join('checkpoints', best_model))
 
     opt = get_optimizer(config)
 
@@ -77,15 +90,6 @@ if __name__ == "__main__":
     model.compile(loss=config['loss_fn'],
                   optimizer=opt,
                   metrics=config["metrics"])
-
-    # model.summary()
-    # def decay_schedule(epoch, lr):
-    #     # decay by 0.1 every 5 epochs; use `% 1` to decay after each epoch
-    #     if (epoch % 5 == 0) and (epoch != 0):
-    #         lr = lr * 0.1
-    #     return lr
-
-    # lr_scheduler = LearningRateScheduler(decay_schedule)
     model_checkpoint = ModelCheckpoint("checkpoints/"+
                                        f"{wandb.run.name}-"+config["model_name"]+
                                        "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
@@ -94,33 +98,30 @@ if __name__ == "__main__":
         monitor='val_loss', patience=config['earlystopping_patience'], verbose=1, mode='auto', min_delta=config['earlystopping_min_delta'],
         restore_best_weights=True
     )
-
+    # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(monitor="val_loss",
                                   training_data=train_dataset,
                                   validation_data=val_dataset,
                                   input_type="images",
                                   output_type="label",
-                                  labels=labels)
-
-    # Define WandbCallback for experiment tracking
-    class delete_checkpoints(Callback):
-        def on_epoch_end(self, epoch, logs=None):
-            max = 0
-            for file_name in os.listdir('checkpoints'):
-                val_acc = int(os.path.basename(file_name).split('.')[-2])
-                if val_acc > max:
-                    max = val_acc
-                if val_acc < max:
-                    os.remove(os.path.join('checkpoints', file_name))
-
-    callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, delete_checkpoints()]
+                                  labels=labels,
+                                  save_model=(False),
+                                  save_graph=(False)
+                                  )
+    # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, delete_checkpoints()]
+    callbacks=[LRA(model=model,patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience , threshold=.9,
+    factor=config.lr_reduce_factor,dwell=False, model_name=config.model_name, freeze=False, initial_epoch=0),
+    wandbcallback]
+    LRA.tepochs=config.max_epochs  # used to determine value of last epoch for printing
 
     history = model.fit(
         train_dataset,
         epochs=config["max_epochs"],
         validation_data=val_dataset,
         callbacks=callbacks,
-        workers=-1
+        class_weight=class_weights,
+        workers=-1,
+        verbose=0,
     )
 
     # scores = model.evaluate_generator(generator=test_generator)
