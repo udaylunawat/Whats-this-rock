@@ -142,27 +142,29 @@ def scalar(img):
 
 def get_generators(config):
     if config.augment:
-        print("Augmentation is True! With scalar this time - img / 127.5 - 1")
+        print("Augmentation is True! With scalar (img / 127.5 - 1)")
         train_datagen = ImageDataGenerator(
             horizontal_flip=True,
             vertical_flip=True,
             preprocessing_function=scalar)
     elif not config.augment:
         print("No Augmentation!")
-        train_datagen = ImageDataGenerator(validation_split=0.2, rescale=1. / 255.)
+        train_datagen = ImageDataGenerator(preprocessing_function=scalar, horizontal_flip=True, vertical_flip=True)
     else:
         print("Error in config.augment. Stop Training!")
 
-    test_datagen = ImageDataGenerator(rescale=1. / 255)
+    test_datagen = ImageDataGenerator(preprocessing_function=scalar)
     train_dataset = train_datagen.flow_from_directory(
         'data/4_tfds_dataset/train',
         target_size=(config['image_size'], config['image_size']),
         batch_size=config['batch_size'],
-        shuffle=True,
+        shuffle=False,
+        color_mode='rgb',
         class_mode='categorical')
     val_dataset = test_datagen.flow_from_directory(
         'data/4_tfds_dataset/val',
         shuffle=False,
+        color_mode='rgb',
         target_size=(config['image_size'], config['image_size']),
         batch_size=config['image_size'],
         class_mode='categorical')
