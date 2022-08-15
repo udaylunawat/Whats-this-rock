@@ -39,7 +39,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # create_classes_dir(args)
-    # remove_corrupted_images('data/2_processed')
+    remove_corrupted_images('data/2_processed')
     print(get_df().info())
     print(get_df()['class'].value_counts())
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
