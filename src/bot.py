@@ -18,19 +18,19 @@ def get_keys(path):
 
 
 def start(update, context):
-    update.message.reply_text("""
+    update.message.reply_text('''
     Welcome!\nI am a rock classification bot.\n
 Send me a photo of a rock and I will tell you what kind of rock it is.\n
-I can classify rocks from in these categories Basalt, Granite, Quartz, Sandstone, Marble, Coal, and Granite.
-You can visit https://github.com/udaylunawat/Whats-this-rock to check my source code!""")
+I can classify rocks from in these categories Basalt, Granite, Quartz, Sandstone, Marble, Coal, and Granite.\n\n
+You can visit [here](https://github.com/udaylunawat/Whats-this-rock) to check my source code!''')
 
 
 def help(update, context):
-    update.message.reply_text("""
-    /start - Starts conversation
-    /help - Shows this message
-    /train - Trains neural networks
-    """)
+    update.message.reply_text('''
+    /start - Starts conversation\n
+/help - Shows this message\n
+/train - Trains neural networks
+''')
 
 
 def train(update, context):
@@ -41,9 +41,9 @@ def train(update, context):
 
 
 def handle_message(update, context):
-    update.message.reply_text("""Please send a picture of a rock!
-    Or type /help to learn more.
-    """)
+    update.message.reply_text('''Please send a picture of a rock!\n
+Or type /help to learn more.
+''')
 
 
 def handle_photo(update, context):
