@@ -180,6 +180,7 @@ class LRA(Callback):
         acc=logs.get('accuracy')  # get training accuracy
         v_acc=logs.get('val_accuracy')
         loss=logs.get('loss')
+        color= (0,255,0)
         #print ( '\n',v_loss, self.lowest_vloss, acc, self.highest_tracc)
         if acc < self.threshold: # if training accuracy is below threshold adjust lr based on training accuracy
             monitor='accuracy'
