@@ -39,15 +39,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # create_classes_dir(args)
-    remove_corrupted_images('data/2_processed')
-    print(get_df().info)
+    # remove_corrupted_images('data/2_processed')
+    print(get_df().info())
+    print(get_df()['class'].value_counts())
     print("Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/")
     if args.oversample:
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
         scc = min(get_df()['class'].value_counts())
         print(f"Smallest class count is {scc}\n")
-        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=((100)),
+        splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset", oversample=True, fixed=((scc//2, scc//2)),
                            seed=42)
     elif args.undersample:
         splitfolders.fixed('data/2_processed', output="data/4_tfds_dataset",
