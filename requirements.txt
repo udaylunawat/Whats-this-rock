@@ -1,5 +1,5 @@
 python-telegram-bot
-opencv-python-headless==4.1.2.30
+opencv-python-headless
 numpy
 tensorflow-cpu
 tensorflow-addons
