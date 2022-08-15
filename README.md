@@ -22,7 +22,7 @@
 <!-- - [Contact](#contact) -->
 # Instructions
 ## Use the Telegram Bot
-You can try the bot [here](t.me/test7385_bot) on Telegram.
+You can try the bot [here](https://t.me/test7385_bot) on Telegram.
 
 Type `/help` to get instructions.
 ## Deploy Telegram Bot
@@ -59,7 +59,7 @@ python train.py
 <br></br>
 
 ## Bug / Feature Request
-If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/prasanna) by including your search query and the expected result.
+If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
 
 If you'd like to request a new function, feel free to do so by opening an issue [here](https://github.com/). Please include sample queries and their corresponding results.
 
