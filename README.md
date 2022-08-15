@@ -28,7 +28,7 @@ Type `/help` to get instructions.
 ## Deploy Telegram Bot
 ```
 pip install -r requirements-prod.txt
-python bot.py
+python src/bot.py
 ```
 
 ## Train Model
@@ -39,8 +39,8 @@ Run these commands
 ```
 pip install -r requirements-dev.txt
 sh setup.sh
-python preprocess.py
-python train.py
+python src/preprocess.py
+python src/train.py
 ```
 
 
