@@ -47,14 +47,14 @@ with open('config.json') as config_file:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-n",
-        "--notes",
-        type=str,
-        required=True,
-        help="Wandb Notes")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument(
+    #     "-n",
+    #     "--notes",
+    #     type=str,
+    #     required=True,
+    #     help="Wandb Notes")
+    # args = parser.parse_args()
     reset_random_seeds()
 
     print(f"config:- {json.dumps(config, indent=2)}")
