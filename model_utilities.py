@@ -180,6 +180,7 @@ class LRA(Callback):
         acc=logs.get('accuracy')  # get training accuracy
         v_acc=logs.get('val_accuracy')
         loss=logs.get('loss')
+        color= (0,255,0)
         #print ( '\n',v_loss, self.lowest_vloss, acc, self.highest_tracc)
         if acc < self.threshold: # if training accuracy is below threshold adjust lr based on training accuracy
             monitor='accuracy'
@@ -231,7 +232,7 @@ class LRA(Callback):
                 if acc>self.highest_tracc:
                     self.highest_tracc= acc
         msg=f'{str(epoch+1):^3s}/{str(LRA.tepochs):4s} {loss:^9.3f}{acc*100:^9.3f}{v_loss:^9.5f}{v_acc*100:^9.3f}{current_lr:^9.5f}{self.lr:^9.5f}{monitor:^11s}{duration:^8.2f}'
-        print_in_color (msg,color, (55,65,80))
+        print_in_color (msg, color, (55,65,80))
         if self.stop_count> self.stop_patience - 1: # check if learning rate has been adjusted stop_count times with no improvement
             msg=f' training has been halted at epoch {epoch + 1} after {self.stop_patience} adjustments of learning rate with no improvement'
             print_in_color(msg, (0,255,0), (55,65,80))
