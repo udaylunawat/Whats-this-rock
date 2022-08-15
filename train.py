@@ -6,14 +6,13 @@ Trains a model on the dataset.
 Designed to show how to do a simple wandb integration with keras.
 """
 
-from data_utilities import get_data_tfds, prepare_dataset, get_generators
+from data_utilities import get_generators
 from model_utilities import get_model, get_optimizer, get_best_checkpoint, get_model_weights, delete_checkpoints, LRA
 
 
 # from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, LearningRateScheduler
-from tensorflow.keras import losses
 from tensorflow.keras.backend import clear_session
 import tensorflow_addons as tfa
 from keras.models import load_model
@@ -90,8 +89,7 @@ if __name__ == "__main__":
     model.compile(loss=config['loss_fn'],
                   optimizer=opt,
                   metrics=config["metrics"])
-    model_checkpoint = ModelCheckpoint("checkpoints/"+
-                                       f"{wandb.run.name}-"+config["model_name"]+
+    model_checkpoint = ModelCheckpoint("checkpoints/"+f"{wandb.run.name}-"+config["model_name"]+
                                        "-epoch-{epoch}_val_accuracy-{val_accuracy:.2f}.hdf5", save_best_only=True)
     reduce_lr = ReduceLROnPlateau(monitor="val_loss", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1)
     earlystopper = EarlyStopping(
@@ -106,10 +104,9 @@ if __name__ == "__main__":
                                   save_graph=(False)
                                   )
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, delete_checkpoints()]
-    callbacks=[LRA(model=model,patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience , threshold=.75,
-    factor=config.lr_reduce_factor,dwell=False, model_name=config.model_name, freeze=False, initial_epoch=0),
-    wandbcallback]
-    LRA.tepochs=config.max_epochs  # used to determine value of last epoch for printing
+    callbacks = [LRA(model=model, patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience, threshold=.75,
+                     factor=config.lr_reduce_factor, dwell=False, model_name=config.model_name, freeze=False, initial_epoch=0), wandbcallback]
+    LRA.tepochs = config.max_epochs  # used to determine value of last epoch for printing
 
     history = model.fit(
         train_dataset,

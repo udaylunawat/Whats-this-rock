@@ -1,11 +1,14 @@
-import numpy as np
 import json
-from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
-from io import BytesIO
 import os
 import cv2
+import requests
+import numpy as np
+from io import BytesIO
+
+from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
+
 from tensorflow.data import AUTOTUNE
-from tensorflow.keras import layers, models
+from tensorflow.keras import layers, models, optimizers
 import tensorflow_addons as tfa
 
 
@@ -52,6 +55,7 @@ def handle_photo(update, context):
     prediction = model.predict(np.array([img / 255]))
     update.message.reply_text(f"In this image I see {class_names[np.argmax(prediction)]}!")
 
+
 if __name__ == "__main__":
 
     # read config file
@@ -60,6 +64,11 @@ if __name__ == "__main__":
 
     print("Bot started!")
     print("Downloading model...")
+
+    # url = 'https://www.dropbox.com/s/msqkqjabo807stl/charmed-sweep-1-efficientnet-epoch-16_val_accuracy-0.52.hdf5'
+    # r = requests.get(url, allow_redirects=True)
+    # open('model.hdf5', 'wb').write(r.content)
+
     os.system('wget -O model.hdf5 https://www.dropbox.com/s/msqkqjabo807stl/charmed-sweep-1-efficientnet-epoch-16_val_accuracy-0.52.hdf5')
     TOKEN = get_keys("secrets.json")['TOKEN']
     normalization_layer = layers.Rescaling(1. / 255)
@@ -73,16 +82,15 @@ if __name__ == "__main__":
     class_names = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartz', 'Sandstone']
 
     model = models.load_model('model.hdf5')
-    optimizer = tf.keras.optimizers.Adam()
+    optimizer = optimizers.Adam()
     f1_score = tfa.metrics.F1Score(
         num_classes=config['num_classes'],
         average='macro',
         threshold=0.5)
-    model.compile(optimizer=optimizer, loss=tf.losses.CategoricalCrossentropy(), metrics=['accuracy', f1_score])
+    model.compile(optimizer=optimizer, loss="categorical_crossentropy", metrics=['accuracy', f1_score])
 
     print("Model loaded!")
     print("Please visit {} to start using me!".format("t.me/test7385_bot"))
-
 
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher

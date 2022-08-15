@@ -7,6 +7,18 @@ from tensorflow.keras import backend as K
 from tensorflow.image import resize
 
 
+def get_baseline(config):
+    input = Input(shape=(config.image_size, config.image_size, 3))
+    flt_1 = Flatten(input_shape=(config.image_size, config.image_size, 3))(input)
+    Dense_1 = Dense(128, activation="relu")(flt_1)
+    D_out_1 = Dropout(0.1)(Dense_1)
+    Dense_2 = Dense(64, activation="relu")(D_out_1)
+    output = Dense(config['num_classes'], activation="softmax")(Dense_2)
+    model = Model(input, output)
+
+    return model
+
+
 def get_small_cnn(config):
     inputs = Input(shape=(config.image_size, config.image_size, 3))
     x = Conv2D(filters=32,
@@ -119,18 +131,6 @@ def get_mobilenetv2(config):
             Dense(config['num_classes'], activation="softmax"),
         ]
     )
-    return model
-
-
-def get_baseline(config):
-    input = Input(shape=(config.image_size, config.image_size, 3))
-    flt_1 = Flatten(input_shape=(config.image_size, config.image_size, 3))(input)
-    Dense_1 = Dense(128, activation="relu")(flt_1)
-    D_out_1 = Dropout(0.1)(Dense_1)
-    Dense_2 = Dense(64, activation="relu")(D_out_1)
-    output = Dense(config['num_classes'], activation="softmax")(Dense_2)
-    model = Model(input, output)
-
     return model
 
 
