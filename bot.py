@@ -21,7 +21,8 @@ def start(update, context):
     update.message.reply_text("""
     Welcome!\nI am a rock classification bot.\n
 Send me a photo of a rock and I will tell you what kind of rock it is.\n
-I can classify rocks from basalt, granite, quartz, sandstone, marble, coal, and granite.""")
+I can classify rocks from in these categories Basalt, Granite, Quartz, Sandstone, Marble, Coal, and Granite.
+You can visit https://github.com/udaylunawat/Whats-this-rock to check my source code!""")
 
 
 def help(update, context):
@@ -40,7 +41,9 @@ def train(update, context):
 
 
 def handle_message(update, context):
-    update.message.reply_text("Please send a picture of a rock!")
+    update.message.reply_text("""Please send a picture of a rock!
+    Or type /help to learn more.
+    """)
 
 
 def handle_photo(update, context):
@@ -53,7 +56,7 @@ def handle_photo(update, context):
     # prediction=model.predict(img)[0]
     # print(prediction)
     prediction = model.predict(np.array([img / 255]))
-    update.message.reply_text(f"In this image I see {class_names[np.argmax(prediction)]}!")
+    update.message.reply_text(f"In this image I see {class_names[np.argmax(prediction)]} ({np.argmax(prediction)} confidence)")
 
 
 if __name__ == "__main__":
