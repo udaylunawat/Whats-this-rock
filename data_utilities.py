@@ -158,7 +158,7 @@ def get_generators(config):
         'data/4_tfds_dataset/train',
         target_size=(config['image_size'], config['image_size']),
         batch_size=config['batch_size'],
-        shuffle=False,
+        shuffle=True,
         color_mode='rgb',
         class_mode='categorical')
     val_dataset = test_datagen.flow_from_directory(
