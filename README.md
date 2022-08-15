@@ -21,7 +21,10 @@
 - [License](#license)
 <!-- - [Contact](#contact) -->
 # Instructions
+## Use the Telegram Bot
+You can try the bot [here](t.me/test7385_bot) on Telegram.
 
+Type `/help` to get instructions.
 ## Deploy Telegram Bot
 ```
 pip install -r requirements-prod.txt
@@ -30,13 +33,13 @@ python bot.py
 
 ## Train Model
 - Paste your kaggle.json file in the root directory
+- You can try different models and parameters by editing `config.json`
 
 Run these commands
 ```
 pip install -r requirements-dev.txt
 sh setup.sh
-python preprocess.py --root data/1_extracted/Rock_Dataset/ \
-                      --oversample
+python preprocess.py
 python train.py
 ```
 
@@ -67,6 +70,7 @@ If you'd like to request a new function, feel free to do so by opening an issue 
 - [Tensorflow](https://www.tensorflow.org/)
 - [Weights and Biases](https://wandb.ai/site)
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
+- [Heroku](https://heroku.com)
 
 <!-- CONTRIBUTING -->
 ## Contributing
