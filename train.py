@@ -109,7 +109,7 @@ if __name__ == "__main__":
                                   save_graph=(False)
                                   )
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, delete_checkpoints()]
-    callbacks=[LRA(model=model,patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience , threshold=.9,
+    callbacks=[LRA(model=model,patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience , threshold=.75,
     factor=config.lr_reduce_factor,dwell=False, model_name=config.model_name, freeze=False, initial_epoch=0),
     wandbcallback]
     LRA.tepochs=config.max_epochs  # used to determine value of last epoch for printing
