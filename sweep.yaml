@@ -8,21 +8,21 @@ parameters:
   num_classes:
     value: 7
   augment:
-    value: true
+    values: [true]
   batch_size:
-    value: 64
+    value: 32
   metrics:
     value: ["accuracy"]
   max_epochs:
-    value: 50
+    value: 3
   loss_fn:
-    value: "categoricalcrossentropy"
+    value: "categorical_crossentropy"
   lr:
-    values: [0.01, 0.0001, 0.0005, 0.00005, 0.00001]
+    values: [0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
   model_name:
-    values: ["mobilenet", "efficientnet", "inceptionresnetv2"]
+    values: ["mobilenet", "inceptionresnetv2"]
   optimizer:
-    values: ["adam", "adamax"]
+    values: ["adamax"]
   sample_size:
     value: 1.0
   image_size:
@@ -34,5 +34,5 @@ parameters:
   lr_reduce_patience:
     value: 3
   lr_reduce_factor:
-    value: 0.1
+    value: 0.5
 program: train.py
