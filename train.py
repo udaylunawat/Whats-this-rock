@@ -102,9 +102,6 @@ if __name__ == "__main__":
     wandbcallback = WandbCallback(monitor="val_loss",
                                   training_data=train_dataset,
                                   validation_data=val_dataset,
-                                  input_type="images",
-                                  output_type="label",
-                                  labels=labels,
                                   save_model=(False),
                                   save_graph=(False)
                                   )
