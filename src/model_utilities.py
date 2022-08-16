@@ -2,7 +2,7 @@ import os
 import time
 import numpy as np
 
-from keras.callbacks import Callback
+from tensorflow.keras.callbacks import Callback
 from sklearn.utils import class_weight
 
 from tensorflow.keras import optimizers
