@@ -73,7 +73,7 @@ if __name__ == "__main__":
     # open('model.hdf5', 'wb').write(r.content)
 
     os.system('wget -O model.hdf5 https://www.dropbox.com/s/t9cj6s8tg850cbn/copper-sound-262-inceptionresnetv2-epoch-1_val_accuracy-0.76.h5')
-    TOKEN = get_keys("secrets.json")['TOKEN']
+    TOKEN = os.environ['TOKEN']
     normalization_layer = layers.Rescaling(1. / 255)
     AUTOTUNE = AUTOTUNE
 
