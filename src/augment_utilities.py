@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
-import tensorflow as tf
-# import keras_cv
+from tensorflow import cast, float32
 
 
 def visualize_dataset(dataset, title):
@@ -12,9 +11,10 @@ def visualize_dataset(dataset, title):
         plt.axis("off")
     plt.show()
 
-
+# Notice that we use label_smoothing=0.1 in the loss function.
+# When using MixUp, label smoothing is highly recommended.
 def apply_rand_augment(inputs):
-
+    import keras_cv
     rand_augment = keras_cv.layers.RandAugment(
         value_range=(0, 255),
         augmentations_per_image=3,
@@ -27,6 +27,7 @@ def apply_rand_augment(inputs):
 
 
 def cut_mix_and_mix_up(samples):
+    import keras_cv
     cut_mix = keras_cv.layers.CutMix()
     mix_up = keras_cv.layers.MixUp()
     samples = cut_mix(samples, training=True)
@@ -36,5 +37,5 @@ def cut_mix_and_mix_up(samples):
 
 def preprocess_for_model(inputs):
     images, labels = inputs["images"], inputs["labels"]
-    images = tf.cast(images, tf.float32) / 255.0
+    images = cast(images, float32) / 255.0
     return images, labels
