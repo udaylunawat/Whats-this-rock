@@ -5,6 +5,7 @@
  "num_classes": 7,
  "sample_size": 1.0,
  "augment": true,
+ "freeze": false,
  "optimizer": "adam",
  "lr": 0.01,
  "batch_size": 64,

@@ -9,6 +9,8 @@ parameters:
     value: 7
   augment:
     values: [true]
+  freeze:
+    values: [true, false]
   batch_size:
     value: 32
   metrics:
