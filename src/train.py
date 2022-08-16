@@ -15,7 +15,7 @@ from tensorflow.random import set_seed
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, LearningRateScheduler
 from tensorflow.keras.backend import clear_session
 import tensorflow_addons as tfa
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 import wandb
 from wandb.keras import WandbCallback
