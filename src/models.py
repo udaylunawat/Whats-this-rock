@@ -8,8 +8,8 @@ from tensorflow.image import resize
 
 
 def get_baseline(config):
-    input = Input(shape=(config.image_size, config.image_size, 3))
-    flt_1 = Flatten(input_shape=(config.image_size, config.image_size, 3))(input)
+    input = Input(shape=(config['image_size'], config['image_size'], 3))
+    flt_1 = Flatten(input_shape=(config['image_size'], config['image_size'], 3))(input)
     Dense_1 = Dense(128, activation="relu")(flt_1)
     D_out_1 = Dropout(0.1)(Dense_1)
     Dense_2 = Dense(64, activation="relu")(D_out_1)
@@ -20,7 +20,7 @@ def get_baseline(config):
 
 
 def get_small_cnn(config):
-    inputs = Input(shape=(config.image_size, config.image_size, 3))
+    inputs = Input(shape=(config['image_size'], config['image_size'], 3))
     x = Conv2D(filters=32,
                kernel_size=(3, 3),
                strides=(1, 1),
@@ -47,7 +47,7 @@ def get_small_cnn(config):
 
 def get_large_cnn(config):
     model = Sequential([
-        Conv2D(16, kernel_size=(3, 3), input_shape=(config.image_size, config.image_size, 3)),
+        Conv2D(16, kernel_size=(3, 3), input_shape=(config['image_size'], config['image_size'], 3)),
         BatchNormalization(),
         LeakyReLU(),
 
@@ -90,7 +90,7 @@ def get_large_cnn(config):
 
 def get_mobilenet(config):
     model = Sequential()
-    BaseModel = MobileNet(weights='imagenet', include_top=False, input_shape=(config.image_size, config.image_size, 3))
+    BaseModel = MobileNet(weights='imagenet', include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
     model.add(BaseModel)
 
     model.add(Flatten())
@@ -108,8 +108,8 @@ def get_mobilenet(config):
 def get_mobilenetv2(config):
     mobilenet_pretrained = MobileNetV2(
         input_shape=(
-            config.image_size,
-            config.image_size,
+            config['image_size'],
+            config['image_size'],
             3),
         weights="imagenet",
         include_top=False)
@@ -137,9 +137,9 @@ def get_mobilenetv2(config):
 def get_efficientnet(config):
     """Construct a simple categorical CNN following the Keras tutorial"""
     if K.image_data_format() == 'channels_first':
-        input_shape = (3, config.image_size, config.image_size)
+        input_shape = (3, config['image_size'], config['image_size'])
     else:
-        input_shape = (config.image_size, config.image_size, 3)
+        input_shape = (config['image_size'], config['image_size'], 3)
 
     feature_extractor = EfficientNetV2B0(
         include_top=False,

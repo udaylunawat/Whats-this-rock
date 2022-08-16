@@ -141,13 +141,13 @@ def scalar(img):
 
 
 def get_generators(config):
-    if config.augment:
+    if config['augment']:
         print("Augmentation is True! rescale=1./255")
         train_datagen = ImageDataGenerator(
             horizontal_flip=True,
             vertical_flip=True,
             rescale=1./255) # preprocessing_function=scalar
-    elif not config.augment:
+    elif not config['augment']:
         print("No Augmentation!")
         train_datagen = ImageDataGenerator(rescale=1./255, horizontal_flip=True, vertical_flip=True)
     else:
@@ -169,19 +169,18 @@ def get_generators(config):
         batch_size=config['image_size'],
         class_mode='categorical')
 
-    # test_generator = test_datagen.flow_from_directory(
-    #     'data/4_tfds_dataset/train',
-    #     batch_size=config['batch_size'],
-    #     seed=42,
-    #     color_mode='rgb',
-    #     shuffle=True,
-    #     class_mode="categorical",
-    #     # preprocessing_function=custom_augmentation,
-    #     target_size=(
-    #         config['image_size'],
-    #         config['image_size']))
+    test_generator = test_datagen.flow_from_directory(
+        'data/4_tfds_dataset/test',
+        batch_size=config['batch_size'],
+        seed=42,
+        color_mode='rgb',
+        shuffle=False,
+        class_mode="categorical",
+        target_size=(
+            config['image_size'],
+            config['image_size']))
 
-    return train_dataset, val_dataset
+    return train_dataset, val_dataset, test_generator
 
 
 ######################################## TFDS Dataset Utilities ########################################
@@ -202,7 +201,7 @@ def get_data_tfds():
         dataset = data[split]
         return prepare_dataset(dataset, split)
 
-    if config.augment:
+    if config['augment']:
         train_dataset = (
             load_dataset()
             .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
