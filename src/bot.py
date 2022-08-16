@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # r = requests.get(url, allow_redirects=True)
     # open('model.hdf5', 'wb').write(r.content)
 
-    os.system('wget -O model.hdf5 https://www.dropbox.com/s/t9cj6s8tg850cbn/copper-sound-262-inceptionresnetv2-epoch-1_val_accuracy-0.76.h5')
+    os.system('wget -O model.h5 https://www.dropbox.com/s/t9cj6s8tg850cbn/copper-sound-262-inceptionresnetv2-epoch-1_val_accuracy-0.76.h5')
     TOKEN = os.environ['TOKEN']
     normalization_layer = layers.Rescaling(1. / 255)
     AUTOTUNE = AUTOTUNE
@@ -84,7 +84,7 @@ if __name__ == "__main__":
 
     class_names = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartz', 'Sandstone']
 
-    model = models.load_model('model.hdf5')
+    model = models.load_model('model.h5')
     optimizer = optimizers.Adam()
     f1_score = tfa.metrics.F1Score(
         num_classes=config['num_classes'],
