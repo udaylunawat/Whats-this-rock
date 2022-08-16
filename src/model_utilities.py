@@ -46,10 +46,11 @@ def get_best_checkpoint():
     max = 0
     best_model = None
     for file_name in os.listdir('checkpoints'):
-        val_acc = int(os.path.basename(file_name).split('.')[-2])
-        if val_acc > max:
-            max = val_acc
-            best_model = file_name
+        if file_name.endswith('5'):
+            val_acc = int(os.path.basename(file_name).split('.')[-2])
+            if val_acc > max:
+                max = val_acc
+                best_model = file_name
     return best_model
 
 
