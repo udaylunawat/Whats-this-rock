@@ -90,8 +90,9 @@ def get_large_cnn(config):
 
 def get_mobilenet(config):
     model = Sequential()
-    BaseModel = MobileNet(weights='imagenet', include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
-    model.add(BaseModel)
+    base_model = MobileNet(weights='imagenet', include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
+    base_model.trainable = not config['Freeze']
+    model.add(base_model)
 
     model.add(Flatten())
     model.add(BatchNormalization())
@@ -106,7 +107,7 @@ def get_mobilenet(config):
 
 
 def get_mobilenetv2(config):
-    mobilenet_pretrained = MobileNetV2(
+    base_model = MobileNetV2(
         input_shape=(
             config['image_size'],
             config['image_size'],
@@ -115,12 +116,12 @@ def get_mobilenetv2(config):
         include_top=False)
 
     # Freeze layers
-    mobilenet_pretrained.trainable = True
+    base_model.trainable = not config['Freeze']
 
     # Add untrained final layers
     model = Sequential(
         [
-            mobilenet_pretrained,
+            base_model,
             GlobalAveragePooling2D(),
             Dense(1024),
             Dropout(0.3),
@@ -141,7 +142,7 @@ def get_efficientnet(config):
     else:
         input_shape = (config['image_size'], config['image_size'], 3)
 
-    feature_extractor = EfficientNetV2B0(
+    base_model = EfficientNetV2B0(
         include_top=False,
         weights="imagenet",
         input_shape=input_shape,
@@ -150,11 +151,11 @@ def get_efficientnet(config):
     )
 
     # Freeze layers
-    feature_extractor.trainable = False
+    base_model.trainable = not config['Freeze']
     # Add untrained final layers
     model = Sequential(
         [
-            feature_extractor,
+            base_model,
             GlobalAveragePooling2D(),
             Dense(1024),
             Dropout(0.3),
@@ -172,15 +173,15 @@ def get_efficientnet(config):
 def get_resnet(config):
     IMAGE_SIZE = (config["image_size"], config["image_size"])
     input_t = Input(shape=(config["image_size"], config["image_size"], 3))
-    res_model = ResNet50(include_top=False,
+    base_model = ResNet50(include_top=False,
                          weights="imagenet",
                          input_tensor=input_t)
-
+    base_model.trainable = not config['Freeze']
     to_res = IMAGE_SIZE
 
     model = Sequential()
     model.add(Lambda(lambda image: resize(image, to_res)))
-    model.add(res_model)
+    model.add(base_model)
     model.add(Flatten())
     model.add(BatchNormalization())
     model.add(Dense(256, activation='relu'))
@@ -198,6 +199,7 @@ def get_resnet(config):
 
 def get_inceptionresnetv2(config):
     base_model = InceptionResNetV2(include_top=False, weights="imagenet", input_shape=(config["image_size"], config["image_size"], 3), pooling='max')
+    base_model.trainable = not config['Freeze']
     x = base_model.output
     x = BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001)(x)
     x = Dense(256, kernel_regularizer=regularizers.l2(l=0.016), activity_regularizer=regularizers.l1(0.006),
@@ -211,7 +213,7 @@ def get_inceptionresnetv2(config):
 def get_vgg16(config):
     # Loading VGG16 model
     base_model = vgg16.VGG16(weights="imagenet", include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
-    base_model.trainable = False  # Not trainable weights
+    base_model.trainable = not config['Freeze']  # Not trainable weights
 
     flatten_layer = Flatten()
     dense_layer_1 = Dense(50, activation='relu')
