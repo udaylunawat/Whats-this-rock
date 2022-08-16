@@ -11,6 +11,7 @@ from tensorflow import image
 
 import models
 
+
 def get_optimizer(config):
     if config.optimizer == 'adam':
         opt = optimizers.Adam(learning_rate=config["lr"])
@@ -140,9 +141,10 @@ class LRA(Callback):
     count=0
     stop_count=0
     tepochs=0
-    def __init__(self,model, patience,stop_patience, threshold, factor, dwell, model_name, freeze, initial_epoch):
+    def __init__(self,wandb, model, patience, stop_patience, threshold, factor, dwell, model_name, freeze, initial_epoch):
         super(LRA, self).__init__()
         self.model=model
+        self.wandb=wandb
         self.patience=patience # specifies how many epochs without improvement before learning rate is adjusted
         self.stop_patience=stop_patience
         self.threshold=threshold # specifies training accuracy threshold when lr will be adjusted based on validation loss
@@ -175,6 +177,7 @@ class LRA(Callback):
             print_in_color(msg, (244,252,3), (55,65,80))
 
         lr=float(K.get_value(self.model.optimizer.lr)) # get the current learning rate
+        self.wandb.log({'lr':lr})
         current_lr=lr
         v_loss=logs.get('val_loss')  # get the validation loss for this epoch
         acc=logs.get('accuracy')  # get training accuracy

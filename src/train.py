@@ -42,23 +42,16 @@ def reset_random_seeds():
 
 # read config file
 with open('config.json') as config_file:
-    config = json.load(config_file)
+    default = json.load(config_file)
 
 
 if __name__ == "__main__":
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument(
-    #     "-n",
-    #     "--notes",
-    #     type=str,
-    #     required=True,
-    #     help="Wandb Notes")
-    # args = parser.parse_args()
+
     reset_random_seeds()
-
-    print(f"config:- {json.dumps(config, indent=2)}")
-    run = wandb.init(config=config, allow_val_change=True)
-
+    print(f"Default config:- {json.dumps(default, indent=2)}\n P.S - Not used in sweeps.\n\n")
+    run = wandb.init(project_name="Whats-this-rock",
+                     entity="rock-classifiers",
+                     config=default, allow_val_change=True)
     config = wandb.config
     IMAGE_SIZE = (config["image_size"], config["image_size"])
 
@@ -75,16 +68,13 @@ if __name__ == "__main__":
         if best_model.split('-')[3] == config['model_name']:
             print(f"Loading {best_model}.")
             model = load_model(os.path.join('checkpoints', best_model))
-
+            print("Finetuning...\n\n")
     opt = get_optimizer(config)
 
     config.metrics.append(tfa.metrics.F1Score(
         num_classes=config.num_classes,
         average='macro',
         threshold=0.5))
-
-    # Notice that we use label_smoothing=0.1 in the loss function.
-    # When using MixUp, label smoothing is highly recommended.
 
     model.compile(loss=config['loss_fn'],
                   optimizer=opt,
@@ -98,14 +88,12 @@ if __name__ == "__main__":
     )
     # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(monitor="val_loss",
-                                  training_data=train_dataset,
-                                  validation_data=val_dataset,
-                                  save_model=(False),
+                                  save_model=(True),
                                   save_graph=(False)
                                   )
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, delete_checkpoints()]
-    callbacks = [LRA(model=model, patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience, threshold=.75,
-                     factor=config.lr_reduce_factor, dwell=False, model_name=config.model_name, freeze=False, initial_epoch=0), wandbcallback]
+    callbacks = [LRA(wandb=wandb, model=model, patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience, threshold=.75,
+                     factor=config.lr_reduce_factor, dwell=False, model_name=config.model_name, freeze=config.freeze, initial_epoch=0), wandbcallback]
     LRA.tepochs = config.max_epochs  # used to determine value of last epoch for printing
 
     history = model.fit(
