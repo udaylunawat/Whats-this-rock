@@ -1,5 +1,7 @@
 # Whats-this-rock
+
 ## Rock Classification Telegram Bot!
+
 ![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock) ![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock) ![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
 <p align="left">
     <img src="imgs/marie.jpg " alt="What's my name?" width="200"/>
@@ -20,23 +22,30 @@
 - [Contributing](#contributing)
 - [License](#license)
 <!-- - [Contact](#contact) -->
-# Instructions
+
+## Instructions
+
 ## Use the Telegram Bot
+
 You can try the bot [here](https://t.me/test7385_bot) on Telegram.
 
 Type `/help` to get instructions.
+
 ## Deploy Telegram Bot
-```
+
+```bash
 pip install -r requirements-prod.txt
 python src/bot.py
 ```
 
 ## Train Model
+
 - Paste your kaggle.json file in the root directory
 - You can try different models and parameters by editing `config.json`
 
 Run these commands
-```
+
+```bash
 pip install -r requirements-dev.txt
 sh setup.sh
 python src/preprocess.py
