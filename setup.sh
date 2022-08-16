@@ -41,3 +41,14 @@ mv --backup=t data/1_extracted/dataset/*/Marble/* data/2_processed/Marble/
 mv --backup=t data/1_extracted/dataset/*/Quartzite/* data/2_processed/Quartzite/
 mv --backup=t data/1_extracted/dataset/*/Limestone/* data/2_processed/Limestone/
 mv --backup=t data/1_extracted/dataset/*/Sandstone/* data/2_processed/Sandstone/
+
+# dataset 4 processing
+kaggle datasets download neelgajare/rocks-dataset --path data/0_raw/
+unzip -q rocks-dataset.zip -d data/1_extracted/
+!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Basalt/* data/2_processed/Basalt/
+!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Granite/* data/2_processed/Granite/
+!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Marble/* data/2_processed/Marble/
+!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Quartzite/* data/2_processed/Quartzite/
+!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Coal/* data/2_processed/Coal/
+!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Limestone/* data/2_processed/Limestone/
+!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Sandstone/* data/2_processed/Sandstone/
