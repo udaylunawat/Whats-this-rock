@@ -142,7 +142,7 @@ def scalar(img):
 
 def get_generators(config):
     if config.augment:
-        print("Augmentation is True! With scalar (img / 127.5 - 1)")
+        print("Augmentation is True! rescale=1./255")
         train_datagen = ImageDataGenerator(
             horizontal_flip=True,
             vertical_flip=True,
