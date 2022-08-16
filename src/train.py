@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     reset_random_seeds()
     print(f"Default config:- {json.dumps(default, indent=2)}\n P.S - Not used in sweeps.\n\n")
-    run = wandb.init(project_name="Whats-this-rock",
+    run = wandb.init(project="Whats-this-rock",
                      entity="rock-classifiers",
                      config=default, allow_val_change=True)
     config = wandb.config
