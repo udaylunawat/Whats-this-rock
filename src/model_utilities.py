@@ -242,12 +242,3 @@ class LRA(Callback):
             print_in_color(msg, (0,255,0), (55,65,80))
             self.model.stop_training = True # stop training
 
-class delete_checkpoints(Callback):
-    def on_epoch_end(self, epoch, logs=None):
-        max = 0
-        for file_name in os.listdir('checkpoints'):
-            val_acc = int(os.path.basename(file_name).split('.')[-2])
-            if val_acc > max:
-                max = val_acc
-            if val_acc < max:
-                os.remove(os.path.join('checkpoints', file_name))
