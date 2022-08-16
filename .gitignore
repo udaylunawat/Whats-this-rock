@@ -141,3 +141,4 @@ kaggle.json
 data/*
 wandb/*
 linux-packages.txt
+secrets.json
