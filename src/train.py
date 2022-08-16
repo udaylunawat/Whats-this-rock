@@ -8,9 +8,9 @@ Designed to show how to do a simple wandb integration with keras.
 
 from data_utilities import get_generators
 from model_utilities import get_model, get_optimizer, get_best_checkpoint, get_model_weights, delete_checkpoints, LRA
+import plot
 
-
-# from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow.random import set_seed
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau, LearningRateScheduler
 from tensorflow.keras.backend import clear_session
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     config = wandb.config
     IMAGE_SIZE = (config["image_size"], config["image_size"])
 
-    train_dataset, val_dataset = get_generators(config)
+    train_dataset, val_dataset, test_dataset = get_generators(config)
     labels = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartzite', 'Sandstone']
     class_weights = get_model_weights(train_dataset)
 
@@ -62,16 +62,13 @@ if __name__ == "__main__":
     clear_session()
     model = get_model(config)
 
-    best_model = get_best_checkpoint()
-    if best_model:
-        if best_model.split('-')[3] == config['model_name']:
-            print(f"Loading {best_model}.")
-            model = load_model(os.path.join('checkpoints', best_model))
-            print("Finetuning...\n\n")
+    best_model = wandb.restore('model-best.h5', run_path="rock-classifiers/Whats-this-rock/x8ttovvo")
+    model.load_weights(best_model.name)
+
     opt = get_optimizer(config)
 
-    config.metrics.append(tfa.metrics.F1Score(
-        num_classes=config.num_classes,
+    config['metrics'].append(tfa.metrics.F1Score(
+        num_classes=config['num_classes'],
         average='macro',
         threshold=0.5))
 
@@ -79,7 +76,7 @@ if __name__ == "__main__":
                   optimizer=opt,
                   metrics=config["metrics"])
     model_checkpoint = ModelCheckpoint("checkpoints/"+f"{wandb.run.name}-"+config["model_name"]+
-                                       "-epoch-{epoch}_val_f1_score-{val_f1_score:.2f}.hdf5", save_best_only=True)
+                                       "-epoch-{epoch}-val_f1_score-{val_f1_score:.2f}.hdf5", save_best_only=True)
     reduce_lr = ReduceLROnPlateau(monitor="val_f1_score", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1)
     earlystopper = EarlyStopping(
         monitor='val_f1_score', patience=config['earlystopping_patience'], verbose=1, mode='auto', min_delta=config['earlystopping_min_delta'],
@@ -91,9 +88,9 @@ if __name__ == "__main__":
                                   save_graph=(False)
                                   )
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, delete_checkpoints()]
-    callbacks = [LRA(wandb=wandb, model=model, patience=config.lr_reduce_patience, stop_patience=config.earlystopping_patience, threshold=.75,
-                     factor=config.lr_reduce_factor, dwell=False, model_name=config.model_name, freeze=config.freeze, initial_epoch=0), wandbcallback]
-    LRA.tepochs = config.max_epochs  # used to determine value of last epoch for printing
+    callbacks = [LRA(wandb=wandb, model=model, patience=config['lr_reduce_patience'], stop_patience=config['earlystopping_patience'], threshold=.75,
+                     factor=config['lr_reduce_factor'], dwell=False, model_name=config['model_name'], freeze=config['freeze'], initial_epoch=0), wandbcallback]
+    LRA.tepochs = config['max_epochs']  # used to determine value of last epoch for printing
 
     history = model.fit(
         train_dataset,
@@ -105,24 +102,24 @@ if __name__ == "__main__":
         verbose=0,
     )
 
-    # scores = model.evaluate_generator(generator=test_generator)
-    # print('Accuracy: ', scores)
+    scores = model.evaluate(generator=test_dataset)
+    print('Accuracy: ', scores)
 
-    # filenames = test_generator.filenames
-    # nb_samples = len(filenames)
-    # pred = model.predict_generator(test_generator, steps=nb_samples, verbose=1)
-    # predicted_class_indices = np.argmax(pred, axis=1)
-    # test_acc = sum([predicted_class_indices[i] == test_generator.classes[i] for i in range(len(test_df))]) / len(test_df)
-    # # Confution Matrix and Classification Report
-    # # print('Confusion Matrix')
-    # # print(confusion_matrix(test_generator.classes, predicted_class_indices))
+    filenames = test_dataset.filenames
+    nb_samples = len(filenames)
+    pred = model.predict(test_dataset, steps=nb_samples, verbose=1)
+    predicted_class_indices = np.argmax(pred, axis=1)
+    test_acc = sum([predicted_class_indices[i] == test_dataset.classes[i] for i in range(len(test_dataset))]) / len(test_dataset)
+    # Confution Matrix and Classification Report
+    # print('Confusion Matrix')
+    # print(confusion_matrix(test_dataset.classes, predicted_class_indices))
 
-    # confusion_matrix = plot.confusion_matrix(labels, test_generator.classes, predicted_class_indices)
-    # wandb.log({"test_accuracy": test_acc, "Confusion Matrix": confusion_matrix})
+    cm = plot.confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
+    wandb.log({"test_accuracy": test_acc, "Confusion Matrix": cm})
 
-    # cl_report = classification_report(test_generator.classes, predicted_class_indices)
-    # print('Classification Report')
-    # print(cl_report)
-    # wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
+    cl_report = classification_report(test_dataset.classes, predicted_class_indices)
+    print('Classification Report')
+    print(cl_report)
+    wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
 
     run.finish()
