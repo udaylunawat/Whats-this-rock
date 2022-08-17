@@ -106,7 +106,7 @@ if __name__ == "__main__":
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, custom_callback()]
     callbacks = [LRA(wandb=wandb, model=model, patience=config['lr_reduce_patience'], stop_patience=config['earlystopping_patience'], threshold=.75,
                      factor=config['lr_reduce_factor'], dwell=False, model_name=config['model_name'], freeze=config['freeze'], initial_epoch=0),
-                     model_checkpoint, wandbcallback, custom_callback]
+                     model_checkpoint, wandbcallback, custom_callback()]
     LRA.tepochs = config['max_epochs']  # used to determine value of last epoch for printing
 
     history = model.fit(
