@@ -78,8 +78,8 @@ if __name__ == "__main__":
     K.clear_session()
     model = get_model(config)
 
-    best_model = wandb.restore('model-best.h5', run_path="rock-classifiers/Whats-this-rock/x8ttovvo")
-    model.load_weights(best_model.name)
+    # best_model = wandb.restore('model-best.h5', run_path="rock-classifiers/Whats-this-rock/x8ttovvo")
+    # model.load_weights(best_model.name)
 
     opt = get_optimizer(config)
 
