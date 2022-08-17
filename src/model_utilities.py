@@ -214,7 +214,7 @@ class LRA(Callback):
                 else:
                     self.count=self.count +1 # increment patience counter
         else: # training accuracy is above threshold so adjust learning rate based on validation loss
-            monitor='val_loss'
+            monitor='val_f1_score'
             if v_loss< self.lowest_vloss: # check if the validation loss improved
                 self.lowest_vloss=v_loss # replace lowest validation loss with new validation loss
                 LRA.best_weights=self.model.get_weights() # validation loss improved so save the weights
