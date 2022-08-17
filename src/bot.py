@@ -56,7 +56,7 @@ def handle_photo(update, context):
     # prediction=model.predict(img)[0]
     # print(prediction)
     prediction = model.predict(np.array([img / 255]))
-    update.message.reply_text(f"In this image I see {class_names[np.argmax(prediction)]} ({np.argmax(prediction)} confidence)")
+    update.message.reply_text(f"In this image I see {class_names[np.argmax(prediction)]} (with {(max(prediction[0]))*100:.3f}% confidence!)")
 
 
 if __name__ == "__main__":
@@ -67,10 +67,6 @@ if __name__ == "__main__":
 
     print("Bot started!")
     print("Downloading model...")
-
-    # url = 'https://www.dropbox.com/s/msqkqjabo807stl/charmed-sweep-1-efficientnet-epoch-16_val_accuracy-0.52.hdf5'
-    # r = requests.get(url, allow_redirects=True)
-    # open('model.hdf5', 'wb').write(r.content)
 
     os.system('wget -O model.h5 https://www.dropbox.com/s/t9cj6s8tg850cbn/copper-sound-262-inceptionresnetv2-epoch-1_val_accuracy-0.76.h5')
     TOKEN = os.environ['TOKEN']
