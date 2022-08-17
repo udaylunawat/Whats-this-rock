@@ -1,8 +1,11 @@
+%%writefile sweep.yaml
 method: bayes
 metric:
-  goal: minimize
-  name: val_loss
+  goal: maximize
+  name: val_f1_score
 parameters:
+  notes:
+    value: "Datasets:[1,2,3,4], train shuffle :True, Augment: 1./255, hflip, vflip, sampling: None, removing_corrupt: False"
   root_dir:
     value: "data/4_tfds_dataset"
   num_classes:
@@ -10,31 +13,31 @@ parameters:
   augment:
     values: [true]
   freeze:
-    values: [true, false]
+    values: [false]
   batch_size:
-    value: 32
+    values: [64]
   metrics:
     value: ["accuracy"]
   max_epochs:
-    value: 3
+    value: 30
   loss_fn:
     value: "categorical_crossentropy"
   lr:
-    values: [0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
+    values: [0.0002, 0.00007, 0.00001]
   model_name:
-    values: ["mobilenet", "inceptionresnetv2"]
+    values: ["inceptionresnetv2", "efficientnet"]
   optimizer:
-    values: ["adamax"]
+    values: ["adam"]
   sample_size:
     value: 1.0
   image_size:
     value: 224
   earlystopping_patience:
-    value: 5
+    value: 10
   earlystopping_min_delta:
-    value: 0.04
+    value: 0.02
   lr_reduce_patience:
-    value: 3
+    value: 2
   lr_reduce_factor:
     value: 0.5
-program: train.py
+program: src/train.py
