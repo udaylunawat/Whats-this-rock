@@ -91,7 +91,7 @@ def get_large_cnn(config):
 def get_mobilenet(config):
     model = Sequential()
     base_model = MobileNet(weights='imagenet', include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
-    base_model.trainable = not config['Freeze']
+    base_model.trainable = not config['freeze']
     model.add(base_model)
 
     model.add(Flatten())
@@ -115,8 +115,8 @@ def get_mobilenetv2(config):
         weights="imagenet",
         include_top=False)
 
-    # Freeze layers
-    base_model.trainable = not config['Freeze']
+    # freeze layers
+    base_model.trainable = not config['freeze']
 
     # Add untrained final layers
     model = Sequential(
@@ -150,8 +150,8 @@ def get_efficientnet(config):
         include_preprocessing=False,
     )
 
-    # Freeze layers
-    base_model.trainable = not config['Freeze']
+    # freeze layers
+    base_model.trainable = not config['freeze']
     # Add untrained final layers
     model = Sequential(
         [
@@ -176,7 +176,7 @@ def get_resnet(config):
     base_model = ResNet50(include_top=False,
                          weights="imagenet",
                          input_tensor=input_t)
-    base_model.trainable = not config['Freeze']
+    base_model.trainable = not config['freeze']
     to_res = IMAGE_SIZE
 
     model = Sequential()
@@ -199,7 +199,7 @@ def get_resnet(config):
 
 def get_inceptionresnetv2(config):
     base_model = InceptionResNetV2(include_top=False, weights="imagenet", input_shape=(config["image_size"], config["image_size"], 3), pooling='max')
-    base_model.trainable = not config['Freeze']
+    base_model.trainable = not config['freeze']
     x = base_model.output
     x = BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001)(x)
     x = Dense(256, kernel_regularizer=regularizers.l2(l=0.016), activity_regularizer=regularizers.l1(0.006),
@@ -213,7 +213,7 @@ def get_inceptionresnetv2(config):
 def get_vgg16(config):
     # Loading VGG16 model
     base_model = vgg16.VGG16(weights="imagenet", include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
-    base_model.trainable = not config['Freeze']  # Not trainable weights
+    base_model.trainable = not config['freeze']  # Not trainable weights
 
     flatten_layer = Flatten()
     dense_layer_1 = Dense(50, activation='relu')
