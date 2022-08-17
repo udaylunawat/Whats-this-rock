@@ -9,7 +9,7 @@ chmod 600 /root/.kaggle/kaggle.json
 pip install -r requirements-dev.txt
 
 # setting up data dir
-rm -rf data
+rm -rf data/1_extracted data/2_processed data/3_consume data/4_tfds_dataset data/corrupted_images checkpoints
 mkdir -p data/0_raw data/1_extracted data/2_processed data/3_consume data/4_tfds_dataset data/corrupted_images checkpoints
 
 # dataset 1 processing
@@ -44,11 +44,11 @@ mv --backup=t data/1_extracted/dataset/*/Sandstone/* data/2_processed/Sandstone/
 
 # dataset 4 processing
 kaggle datasets download neelgajare/rocks-dataset --path data/0_raw/
-unzip -q rocks-dataset.zip -d data/1_extracted/
-!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Basalt/* data/2_processed/Basalt/
-!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Granite/* data/2_processed/Granite/
-!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Marble/* data/2_processed/Marble/
-!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Quartzite/* data/2_processed/Quartzite/
-!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Coal/* data/2_processed/Coal/
-!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Limestone/* data/2_processed/Limestone/
-!cp -r --backup=t data/1_extracted/rocks-dataset/Rocks/Sandstone/* data/2_processed/Sandstone/
+unzip -q data/0_raw/rocks-dataset.zip -d data/1_extracted/
+cp -r --backup=t data/1_extracted/Rocks/Basalt/* data/2_processed/Basalt/
+cp -r --backup=t data/1_extracted/Rocks/Granite/* data/2_processed/Granite/
+cp -r --backup=t data/1_extracted/Rocks/Marble/* data/2_processed/Marble/
+cp -r --backup=t data/1_extracted/Rocks/Quartzite/* data/2_processed/Quartzite/
+cp -r --backup=t data/1_extracted/Rocks/Coal/* data/2_processed/Coal/
+cp -r --backup=t data/1_extracted/Rocks/Limestone/* data/2_processed/Limestone/
+cp -r --backup=t data/1_extracted/Rocks/Sandstone/* data/2_processed/Sandstone/
