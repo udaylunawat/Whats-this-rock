@@ -78,6 +78,8 @@ if __name__ == "__main__":
     K.clear_session()
     model = get_model(config)
 
+    # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
+    # print("Model loaded: visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5")
     # best_model = wandb.restore('model-best.h5', run_path="rock-classifiers/Whats-this-rock/x8ttovvo")
     # model.load_weights(best_model.name)
 
@@ -119,7 +121,7 @@ if __name__ == "__main__":
         verbose=0,
     )
 
-    scores = model.evaluate(generator=test_dataset)
+    scores = model.evaluate(test_dataset)
     print('Accuracy: ', scores)
 
     filenames = test_dataset.filenames
