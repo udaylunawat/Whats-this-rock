@@ -6,12 +6,10 @@ metric:
 parameters:
   notes:
     value: "Datasets:[1,2,3,4], train shuffle :True, Augment: 1./255, hflip, vflip, sampling: None, removing_corrupt: False"
-  root_dir:
-    value: "data/4_tfds_dataset"
-  num_classes:
-    value: 7
   augment:
     values: [true]
+  finetune:
+    values: [false]
   freeze:
     values: [false]
   batch_size:
@@ -25,7 +23,7 @@ parameters:
   lr:
     values: [0.0002, 0.00007, 0.00001]
   model_name:
-    values: ["inceptionresnetv2", "efficientnet"]
+    values: ["inceptionresnetv2", "efficientnetv2m"]
   optimizer:
     values: ["adam"]
   sample_size:
