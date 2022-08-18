@@ -67,7 +67,7 @@ if __name__ == "__main__":
 
     reset_random_seeds()
     print(f"Default config:- {json.dumps(default, indent=2)}\n P.S - Not used in sweeps.\n\n")
-    run = wandb.init(project="Whats-this-rock",
+    run = wandb.init(project="Whats-this-rockv2",
                      entity="rock-classifiers",
                      config=default, allow_val_change=True)
     config = wandb.config
@@ -99,7 +99,7 @@ if __name__ == "__main__":
     model.compile(loss=config['loss_fn'],
                   optimizer=opt,
                   metrics=config["metrics"])
-    model_checkpoint = ModelCheckpoint("checkpoints/"+f"{wandb.run.name}-"+config["model_name"]+
+    model_checkpoint = ModelCheckpoint("checkpoints/"+f"{wandb.run.name}-" + config["model_name"]+
                                        "-epoch-{epoch}-val_f1_score-{val_f1_score:.2f}.hdf5", save_best_only=True)
     reduce_lr = ReduceLROnPlateau(monitor="val_f1_score", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1, min_lr=0.0000001)
     earlystopper = EarlyStopping(
@@ -129,9 +129,9 @@ if __name__ == "__main__":
 
     # Scores
     scores = model.evaluate(test_dataset, return_dict=True)
-    print('Accuracy: ', scores)
-    wandb.log({'Test Accuracy':scores['accuracy']})
-    wandb.log({'Test F1 Score':scores['f1_score']})
+    print('Scores: ', scores)
+    wandb.log({'Test Accuracy': scores['accuracy']})
+    wandb.log({'Test F1 Score': scores['f1_score']})
 
     # Predict
     pred = model.predict(test_dataset, verbose=1)
@@ -139,29 +139,18 @@ if __name__ == "__main__":
 
     # Confusion Matrix
     cm = plot.confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
-    wandb.log({"Confusion Matrix":cm})
-
-    cm = wandb.plot.confusion_matrix(
-        y_true=test_dataset.classes,
-        preds=predicted_class_indices,
-        class_names=labels)
-    wandb.log({"conf_mat": cm})
+    wandb.log({"Confusion Matrix": cm})
 
     # Classification Report
     cl_report = classification_report(test_dataset.classes,
-                                    predicted_class_indices,
-                                    labels=[0,1,2,3,4,5,6],
-                                    target_names=labels,
-                                    output_dict=True)
-
-    df = pd.DataFrame(cl_report)
-    wandb.Table(dataframe=df)
-    wandb.log({"Classification Report: cl_report"})
-
-    cl_bar_plot = df.iloc[:3, :3].T.plot(kind='bar')
-    wandb.log({"CR Bar Plot": wandb.Plotly(cl_bar_plot)})
+                                      predicted_class_indices,
+                                      labels=[0, 1, 2, 3, 4, 5, 6],
+                                      target_names=labels,
+                                      output_dict=True)
+    print(cl_report)
 
     cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
-    wandb.log({"Classification Report": wandb.Plotly(cr)})
-    plt.savefig('cr.png', dpi=400)
+    plt.savefig('imgs/cr.png', dpi=400)
+    wandb.log({"Classification Report Image:": wandb.Image('imgs/cr.png', caption="Classification Report")})
+
     run.finish()
