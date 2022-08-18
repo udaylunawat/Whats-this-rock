@@ -35,6 +35,4 @@ def confusion_matrix(labels, y, _y):
     fig.add_annotation(dict(font=dict(color="#094973",size=16), x = -0.17, y = 0.5, showarrow = False, text="Predicted Class", textangle=-90, xref="paper", yref="paper"))
 
     fig.show()
-    fig.savefig("cfm.png")
-
     return fig
