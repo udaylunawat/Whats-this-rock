@@ -136,7 +136,7 @@ def get_mobilenetv2(config):
 
 
 def get_efficientnet(config):
-    """Construct a simple categorical CNN following the Keras tutorial"""
+    """Construct a simple categorical CNN following the Keras tutorial."""
 
     base_model = applications.EfficientNetV2B0(
         include_top=False,
@@ -251,27 +251,21 @@ def get_vgg16(config):
 
 
 def get_efficientnetv2m(config):
-    base_model = applications.EfficientNetV2M(
-        include_top=False,
-        weights="imagenet",
-        input_shape=(config['image_size'], config['image_size'], 3))
+    inputs = Input(shape=(config['image_size'], config['image_size'], 3))
+    model = applications.EfficientNetV2M(include_top=False, input_tensor=inputs, weights="imagenet")
 
-    base_model.trainable = not config['freeze']
+    # Freeze the pretrained weights
+    model.trainable = not config['freeze']
 
-    model = Sequential(
-        [
-            base_model,
-            BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001),
-            Dense(256, kernel_regularizer=regularizers.l2(l=0.016),
-                  activity_regularizer=regularizers.l1(0.006),
-                  bias_regularizer=regularizers.l1(0.006),
-                  activation='relu',
-                  kernel_initializer=initializers.GlorotUniform(seed=123)),
-            Dropout(rate=.45, seed=123),
-            Dense(config["num_classes"],
-                  activation='softmax',
-                  kernel_initializer=initializers.GlorotUniform(seed=123)),
-        ]
-    )
+    # Rebuild top
+    x = GlobalAveragePooling2D(name="avg_pool")(model.output)
+    x = BatchNormalization()(x)
+
+    top_dropout_rate = 0.2
+    x = Dropout(top_dropout_rate, name="top_dropout")(x)
+    outputs = Dense(config['num_classes'], activation="softmax", name="pred")(x)
+
+    # Compile
+    model = Model(inputs, outputs, name="EfficientNet")
 
     return model
