@@ -75,20 +75,23 @@ if __name__ == "__main__":
 
     train_dataset, val_dataset, test_dataset = get_generators(config)
     labels = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartzite', 'Sandstone']
+    config['num_classes'] = len(labels)
+    wandb.log({'num_classes':len(labels)})
+
     class_weights = get_model_weights(train_dataset)
 
     # build model
     K.clear_session()
     model = get_model(config)
-
+    # print(model.summary())
     # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
 
-    api = wandb.Api()
-    run = api.run("rock-classifiers/Whats-this-rock/3hvgnqas")
-    run.file("model-best.h5").download()
-    model = load_model('model-best.h5')
+    # api = wandb.Api()
+    # run = api.run("rock-classifiers/Whats-this-rock/3hvgnqas")
+    # run.file("model-best.h5").download()
+    # model = load_model('model-best.h5')
 
-    print(f"Model loaded: {model.name}")
+    print(f"Model loaded: {model.name}\n\n")
     opt = get_optimizer(config)
 
     config['metrics'].append(tfa.metrics.F1Score(
