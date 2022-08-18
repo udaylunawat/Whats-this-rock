@@ -125,66 +125,67 @@ def get_model_weights(train_generator):
 ############################## Training #####################################
 
 
-def print_in_color(txt_msg,fore_tupple,back_tupple,):
+def print_in_color(txt_msg, fore_tupple, back_tupple,):
     # prints the text_msg in the foreground color specified by fore_tupple with the background specified by back_tupple
     # text_msg is the text, fore_tupple is foregroud color tupple (r,g,b), back_tupple is background tupple (r,g,b)
     rf, gf, bf = fore_tupple
     rb, gb, bb = back_tupple
     msg = '{0}' + txt_msg
-    mat = '\33[38;2;' + str(rf) +';' + str(gf) + ';' + str(bf) + ';48;2;' + str(rb) + ';' +str(gb) + ';' + str(bb) +'m'
+    mat = '\33[38;2;' + str(rf) + ';' + str(gf) + ';' + str(bf) + ';48;2;' + str(rb) + ';' +str(gb) + ';' + str(bb) + 'm'
     print(msg .format(mat), flush=True)
     print('\33[0m', flush=True)  # returns default print color to back to black
     return
 
 
 class LRA(Callback):
-    reset=False
-    count=0
-    stop_count=0
-    tepochs=0
-    def __init__(self,wandb, model, patience, stop_patience, threshold, factor, dwell, model_name, freeze, initial_epoch):
+    reset = False
+    count = 0
+    stop_count = 0
+    tepochs = 0
+
+    def __init__(self, wandb, model, patience, stop_patience, threshold, factor, dwell, model_name, freeze, initial_epoch):
         super(LRA, self).__init__()
-        self.model=model
-        self.wandb=wandb
-        self.patience=patience # specifies how many epochs without improvement before learning rate is adjusted
-        self.stop_patience=stop_patience
-        self.threshold=threshold # specifies training accuracy threshold when lr will be adjusted based on validation loss
-        self.factor=factor # factor by which to reduce the learning rate
-        self.dwell=dwell
-        self.lr=float(K.get_value(model.optimizer.lr)) # get the initiallearning rate and save it in self.lr
-        self.highest_tracc=0.0 # set highest training accuracy to 0
-        self.lowest_vloss=np.inf # set lowest validation loss to infinity
-        #self.count=0 # initialize counter that counts epochs with no improvement
-        #self.stop_count=0 # initialize counter that counts how manytimes lr has been adjustd with no improvement
-        self.initial_epoch=initial_epoch
-        #self.epochs=epochs
-        best_weights=self.model.get_weights() # set a class vaiable so weights can be loaded after training is completed
-        msg=' '
-        if freeze==True:
-            msgs=f' Starting training using  base model { model_name} with weights frozen to imagenet weights initializing LRA callback'
+        self.model = model
+        self.wandb = wandb
+        self.patience = patience  # specifies how many epochs without improvement before learning rate is adjusted
+        self.stop_patience = stop_patience
+        self.threshold = threshold  # specifies training accuracy threshold when lr will be adjusted based on validation loss
+        self.factor = factor  # factor by which to reduce the learning rate
+        self.dwell = dwell
+        self.lr = float(K.get_value(model.optimizer.lr))  # get the initiallearning rate and save it in self.lr
+        self.highest_tracc = 0.0  # set highest training accuracy to 0
+        self.lowest_vloss = np.inf  # set lowest validation loss to infinity
+        # self.count=0 # initialize counter that counts epochs with no improvement
+        # self.stop_count=0 # initialize counter that counts how manytimes lr has been adjustd with no improvement
+        self.initial_epoch = initial_epoch
+        # self.epochs = epochs
+        best_weights = self.model.get_weights()  # set a class vaiable so weights can be loaded after training is completed
+        msg = ' '
+        if freeze == True:
+            msgs = f' Starting training using  base model { model_name} with weights frozen to imagenet weights initializing LRA callback'
         else:
-            msgs=f' Starting training using base model { model_name} training all layers '
-        print_in_color (msgs, (244, 252, 3), (55,65,80))
+            msgs = f' Starting training using base model { model_name} training all layers '
+        print_in_color(msgs, (244, 252, 3), (55, 65, 80))
 
     def on_epoch_begin(self,epoch, logs=None):
         self.now= time.time()
 
     def on_epoch_end(self, epoch, logs=None):  # method runs on the end of each epoch
-        later=time.time()
-        duration=later-self.now
-        if epoch== self.initial_epoch or LRA.reset==True:
-            LRA.reset=False
+        later = time.time()
+        duration = later - self.now
+        if epoch == self.initial_epoch or LRA.reset == True:
+            LRA.reset = False
             msg='{0:^8s}{1:^10s}{2:^9s}{3:^9s}{4:^9s}{5:^9s}{6:^9s}{7:^11s}{8:^8s}'.format('Epoch', 'Loss', 'Accuracy','V_loss','V_acc', 'LR', 'Next LR', 'Monitor', 'Duration')
-            print_in_color(msg, (244,252,3), (55,65,80))
+            print_in_color(msg, (244, 252, 3), (55, 65, 80))
 
         lr=float(K.get_value(self.model.optimizer.lr)) # get the current learning rate
         self.wandb.log({'lr':lr})
-        current_lr=lr
-        v_loss=logs.get('val_loss')  # get the validation loss for this epoch
-        acc=logs.get('accuracy')  # get training accuracy
-        v_acc=logs.get('val_accuracy')
-        loss=logs.get('loss')
-        color= (0,255,0)
+        current_lr = lr
+        v_loss = logs.get('val_loss')  # get the validation loss for this epoch
+        acc = logs.get('accuracy')  # get training accuracy
+        v_acc = logs.get('val_accuracy')
+        loss = logs.get('loss')
+        color = (0,255,0)
         #print ( '\n',v_loss, self.lowest_vloss, acc, self.highest_tracc)
         if acc < self.threshold: # if training accuracy is below threshold adjust lr based on training accuracy
             monitor='accuracy'
