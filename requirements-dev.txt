@@ -9,5 +9,5 @@ tensorflow
 keras
 tensorflow-addons
 wandb
-keras-cv
+# keras-cv
 split-folders
