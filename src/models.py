@@ -1,4 +1,4 @@
-from tensorflow.keras.applications import MobileNet, MobileNetV2, EfficientNetV2B0, ResNet50, InceptionResNetV2, vgg16
+from tensorflow.keras import applications
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Flatten, GlobalAveragePooling2D, \
     BatchNormalization, LeakyReLU, Input, Lambda
 from tensorflow.keras import regularizers, initializers
@@ -90,7 +90,7 @@ def get_large_cnn(config):
 
 def get_mobilenet(config):
     model = Sequential()
-    base_model = MobileNet(weights='imagenet', include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
+    base_model = applications.MobileNet(weights='imagenet', include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
     base_model.trainable = not config['freeze']
     model.add(base_model)
 
@@ -107,7 +107,7 @@ def get_mobilenet(config):
 
 
 def get_mobilenetv2(config):
-    base_model = MobileNetV2(
+    base_model = applications.MobileNetV2(
         input_shape=(
             config['image_size'],
             config['image_size'],
@@ -137,15 +137,11 @@ def get_mobilenetv2(config):
 
 def get_efficientnet(config):
     """Construct a simple categorical CNN following the Keras tutorial"""
-    if K.image_data_format() == 'channels_first':
-        input_shape = (3, config['image_size'], config['image_size'])
-    else:
-        input_shape = (config['image_size'], config['image_size'], 3)
 
-    base_model = EfficientNetV2B0(
+    base_model = applications.EfficientNetV2B0(
         include_top=False,
         weights="imagenet",
-        input_shape=input_shape,
+        input_shape=(config['image_size'], config['image_size'], 3),
         classifier_activation="softmax",
         include_preprocessing=False,
     )
@@ -171,48 +167,68 @@ def get_efficientnet(config):
 
 
 def get_resnet(config):
-    IMAGE_SIZE = (config["image_size"], config["image_size"])
-    input_t = Input(shape=(config["image_size"], config["image_size"], 3))
-    base_model = ResNet50(include_top=False,
-                         weights="imagenet",
-                         input_tensor=input_t)
+    base_model = applications.ResNet50(
+        include_top=False,
+        weights="imagenet",
+        input_tensor=(
+            config['image_size'],
+            config['image_size'],
+            3)
+    )
     base_model.trainable = not config['freeze']
-    to_res = IMAGE_SIZE
 
-    model = Sequential()
-    model.add(Lambda(lambda image: resize(image, to_res)))
-    model.add(base_model)
-    model.add(Flatten())
-    model.add(BatchNormalization())
-    model.add(Dense(256, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(BatchNormalization())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(BatchNormalization())
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(BatchNormalization())
-    model.add(Dense(config["num_classes"], activation='softmax'))
+    model = Sequential(
+        [
+            base_model,
+            Flatten(),
+            BatchNormalization(),
+            Dense(256, activation='relu'),
+            Dropout(0.5),
+            BatchNormalization(),
+            Dense(128, activation='relu'),
+            Dropout(0.5),
+            BatchNormalization(),
+            Dense(64, activation='relu'),
+            Dropout(0.5),
+            BatchNormalization(),
+            Dense(config["num_classes"], activation='softmax'),
+        ]
+    )
+
     return model
 
 
 def get_inceptionresnetv2(config):
-    base_model = InceptionResNetV2(include_top=False, weights="imagenet", input_shape=(config["image_size"], config["image_size"], 3), pooling='max')
+    base_model = applications.InceptionResNetV2(
+        include_top=False,
+        weights="imagenet",
+        input_shape=(config["image_size"], config["image_size"], 3),
+        pooling='max')
+
     base_model.trainable = not config['freeze']
-    x = base_model.output
-    x = BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001)(x)
-    x = Dense(256, kernel_regularizer=regularizers.l2(l=0.016), activity_regularizer=regularizers.l1(0.006),
-              bias_regularizer=regularizers.l1(0.006), activation='relu', kernel_initializer=initializers.GlorotUniform(seed=123))(x)
-    x = Dropout(rate=.45, seed=123)(x)
-    output = Dense(config["num_classes"], activation='softmax', kernel_initializer=initializers.GlorotUniform(seed=123))(x)
-    model = Model(inputs=base_model.input, outputs=output)
+
+    model = Sequential(
+        [
+            base_model,
+            BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001),
+            Dense(256, kernel_regularizer=regularizers.l2(l=0.016),
+                  activity_regularizer=regularizers.l1(0.006),
+                  bias_regularizer=regularizers.l1(0.006),
+                  activation='relu',
+                  kernel_initializer=initializers.GlorotUniform(seed=123)),
+            Dropout(rate=.45, seed=123),
+            Dense(config["num_classes"],
+                  activation='softmax',
+                  kernel_initializer=initializers.GlorotUniform(seed=123)),
+        ]
+    )
+
     return model
 
 
 def get_vgg16(config):
     # Loading VGG16 model
-    base_model = vgg16.VGG16(weights="imagenet", include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
+    base_model = applications.vgg16.VGG16(weights="imagenet", include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
     base_model.trainable = not config['freeze']  # Not trainable weights
 
     flatten_layer = Flatten()
@@ -231,4 +247,31 @@ def get_vgg16(config):
         dropout,
         prediction_layer
     ])
+    return model
+
+
+def get_efficientnetv2m(config):
+    base_model = applications.EfficientNetV2M(
+        include_top=False,
+        weights="imagenet",
+        input_shape=(config['image_size'], config['image_size'], 3))
+
+    base_model.trainable = not config['freeze']
+
+    model = Sequential(
+        [
+            base_model,
+            BatchNormalization(axis=-1, momentum=0.99, epsilon=0.001),
+            Dense(256, kernel_regularizer=regularizers.l2(l=0.016),
+                  activity_regularizer=regularizers.l1(0.006),
+                  bias_regularizer=regularizers.l1(0.006),
+                  activation='relu',
+                  kernel_initializer=initializers.GlorotUniform(seed=123)),
+            Dropout(rate=.45, seed=123),
+            Dense(config["num_classes"],
+                  activation='softmax',
+                  kernel_initializer=initializers.GlorotUniform(seed=123)),
+        ]
+    )
+
     return model

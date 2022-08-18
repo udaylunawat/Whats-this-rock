@@ -36,7 +36,8 @@ def get_model(config):
         'mobilenet': models.get_mobilenet,
         'mobilenetv2': models.get_mobilenetv2,
         'inceptionresnetv2': models.get_inceptionresnetv2,
-        'vgg16': models.get_vgg16
+        'vgg16': models.get_vgg16,
+        'efficientnetv2m': models.get_efficientnetv2m,
     }
 
     return models_dict[config['model_name']](config)
