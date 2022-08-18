@@ -25,6 +25,9 @@ import os
 import random
 import numpy as np
 import json
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
 # import matplotlib.pyplot as plt
@@ -45,7 +48,7 @@ class custom_callback(Callback):
 
     def on_epoch_end(self, epoch, logs=None):
         lr = float(K.get_value(self.model.optimizer.lr))  # get the current learning rate
-        wandb.log({'lr':lr})
+        wandb.log({'lr': lr})
         max = 0
         for file_name in os.listdir('checkpoints'):
             val_acc = int(os.path.basename(file_name).split('.')[-2])
@@ -79,10 +82,13 @@ if __name__ == "__main__":
     model = get_model(config)
 
     # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
-    # print("Model loaded: visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5")
-    # best_model = wandb.restore('model-best.h5', run_path="rock-classifiers/Whats-this-rock/x8ttovvo")
-    # model.load_weights(best_model.name)
 
+    api = wandb.Api()
+    run = api.run("rock-classifiers/Whats-this-rock/3hvgnqas")
+    run.file("model-best.h5").download()
+    model = load_model('model-best.h5')
+
+    print(f"Model loaded: {model.name}")
     opt = get_optimizer(config)
 
     config['metrics'].append(tfa.metrics.F1Score(
@@ -121,24 +127,41 @@ if __name__ == "__main__":
         verbose=0,
     )
 
-    scores = model.evaluate(test_dataset)
+    # Scores
+    scores = model.evaluate(test_dataset, return_dict=True)
     print('Accuracy: ', scores)
+    wandb.log({'Test Accuracy':scores['accuracy']})
+    wandb.log({'Test F1 Score':scores['f1_score']})
 
-    filenames = test_dataset.filenames
-    nb_samples = len(filenames)
-    pred = model.predict(test_dataset, steps=nb_samples, verbose=1)
+    # Predict
+    pred = model.predict(test_dataset, verbose=1)
     predicted_class_indices = np.argmax(pred, axis=1)
-    test_acc = sum([predicted_class_indices[i] == test_dataset.classes[i] for i in range(len(test_dataset))]) / len(test_dataset)
-    # Confution Matrix and Classification Report
-    # print('Confusion Matrix')
-    # print(confusion_matrix(test_dataset.classes, predicted_class_indices))
 
+    # Confusion Matrix
     cm = plot.confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
-    wandb.log({"test_accuracy": test_acc, "Confusion Matrix": cm})
+    wandb.log({"Confusion Matrix":cm})
 
-    cl_report = classification_report(test_dataset.classes, predicted_class_indices)
-    print('Classification Report')
-    print(cl_report)
-    wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
+    cm = wandb.plot.confusion_matrix(
+        y_true=test_dataset.classes,
+        preds=predicted_class_indices,
+        class_names=labels)
+    wandb.log({"conf_mat": cm})
 
+    # Classification Report
+    cl_report = classification_report(test_dataset.classes,
+                                    predicted_class_indices,
+                                    labels=[0,1,2,3,4,5,6],
+                                    target_names=labels,
+                                    output_dict=True)
+
+    df = pd.DataFrame(cl_report)
+    wandb.Table(dataframe=df)
+    wandb.log({"Classification Report: cl_report"})
+
+    cl_bar_plot = df.iloc[:3, :3].T.plot(kind='bar')
+    wandb.log({"CR Bar Plot": wandb.Plotly(cl_bar_plot)})
+
+    cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+    wandb.log({"Classification Report": wandb.Plotly(cr)})
+    plt.savefig('cr.png', dpi=400)
     run.finish()

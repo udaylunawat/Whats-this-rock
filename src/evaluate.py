@@ -1,22 +1,37 @@
 
-from model_utilities import get_model, get_optimizer, get_best_checkpoint, get_model_weights, delete_checkpoints, LRA
+from model_utilities import get_model, get_optimizer
 from data_utilities import get_generators
 
+import os
 import plot
 import json
+import wandb
+import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 import tensorflow_addons as tfa
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 
-os.system('!wget -O best-model.h5 https://www.dropbox.com/s/t9cj6s8tg850cbn/copper-sound-262-inceptionresnetv2-epoch-1_val_accuracy-0.76.h5')
 with open('config.json') as config_file:
     config = json.load(config_file)
+
+# os.system('wget -O model-best.h5 https://www.dropbox.com/s/x91k9u765urnlai/model-best.h5')
+run = wandb.init(project="Whats-this-rock",
+                 entity="rock-classifiers",
+                 config=config)
+
+if not os.path.exists('model-best.h5'):
+
+    api = wandb.Api()
+    run = api.run("rock-classifiers/Whats-this-rock/3krh6juu")
+    run.file("model-best.h5").download()
 
 train_dataset, val_dataset, test_dataset = get_generators(config)
 labels = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartzite', 'Sandstone']
 
 model = get_model(config)
-model.load_weights('best-model.h5')
+model.load_weights('model-best.h5')
 
 opt = get_optimizer(config)
 
@@ -29,28 +44,40 @@ model.compile(loss=config['loss_fn'],
               optimizer=opt,
               metrics=config["metrics"])
 
-scores = model.evaluate(test_dataset)
+# Scores
+scores = model.evaluate(test_dataset, return_dict=True)
 print('Accuracy: ', scores)
+wandb.log({'Test Accuracy':scores['accuracy']})
+wandb.log({'Test F1 Score':scores['f1_score']})
 
+# Predict
 pred = model.predict(test_dataset, verbose=1)
 predicted_class_indices = np.argmax(pred, axis=1)
-result = confusion_matrix(test_dataset.classes, predicted_class_indices)
-print(result)
 
-cl_report = classification_report(test_dataset.classes, predicted_class_indices)
-print('Classification Report')
-print(cl_report)
-# wandb.log({"test_accuracy": test_acc, "Classification Report": cl_report})
+# Confusion Matrix
+cm = plot.confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
+wandb.log({"Confusion Matrix":cm})
 
+cm = wandb.plot.confusion_matrix(
+    y_true=test_dataset.classes,
+    preds=predicted_class_indices,
+    class_names=labels)
+wandb.log({"conf_mat": cm})
 
-# filenames = test_dataset.filenames
-# nb_samples = len(filenames)
-# pred = model.predict(test_dataset, steps=nb_samples, verbose=1)
+# Classification Report
+cl_report = classification_report(test_dataset.classes,
+                                   predicted_class_indices,
+                                   labels=[0,1,2,3,4,5,6],
+                                   target_names=labels,
+                                   output_dict=True)
 
-# test_acc = sum([predicted_class_indices[i] == test_dataset.classes[i] for i in range(len(test_dataset))]) / len(test_dataset)
-# # Confution Matrix and Classification Report
-# print('Confusion Matrix')
-# print(confusion_matrix(test_dataset.classes, predicted_class_indices))
+df = pd.DataFrame(cl_report)
+wandb.Table(dataframe=df)
+wandb.log({"Classification Report: cl_report"})
 
-# cm = plot.confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
-# wandb.log({"test_accuracy": test_acc, "Confusion Matrix": cm})
+cl_bar_plot = df.iloc[:3, :3].T.plot(kind='bar')
+wandb.log({"CR Bar Plot": wandb.Plotly(cl_bar_plot)})
+
+cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+wandb.log({"Classification Report": wandb.Plotly(cr)})
+plt.savefig('cr.png', dpi=400)
