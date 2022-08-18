@@ -80,18 +80,22 @@ if __name__ == "__main__":
 
     class_weights = get_model_weights(train_dataset)
 
-    # build model
-    K.clear_session()
-    model = get_model(config)
-    # print(model.summary())
-
     # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
 
-    api = wandb.Api()
-    run = api.run("rock-classifiers/Whats-this-rockv2/cvzc7hq0") # different-sweep-24-efficientnet-epoch-3-val_f1_score-0.71.hdf5
-    file_name = "model-best.h5"
-    run.file(file_name).download()
-    model = load_model(file_name)
+    if config['finetune']:
+        if not os.path.exists('model-best.h5'):
+            api = wandb.Api()
+            run = api.run("rock-classifiers/Whats-this-rockv2/cvzc7hq0") # different-sweep-24-efficientnet-epoch-3-val_f1_score-0.71.hdf5
+            file_name = "model-best.h5"
+            run.file(file_name).download()
+        model = load_model(file_name)
+        print("Downloaded Trained model, finetuning...")
+    else:
+        # build model
+        K.clear_session()
+        model = get_model(config)
+
+    # print(model.summary())
 
     print(f"Model loaded: {model.name}\n\n")
     opt = get_optimizer(config)
