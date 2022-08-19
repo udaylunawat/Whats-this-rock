@@ -1,19 +1,17 @@
 method: bayes
+name: inceptionsresnetv2 sweep
 metric:
   goal: maximize
   name: val_f1_score
+
 parameters:
   notes:
-    distribution: constant
     value: "Datasets:[1,2,3,4], train shuffle :True, Augment: 1./255, hflip, vflip, sampling: None, removing_corrupt: False"
   augment:
-    distribution: categorical
     values: [true]
   finetune:
-    distribution: categorical
     values: [false]
   freeze:
-    distribution: categorical
     values: [false]
   batch_size:
     distribution: int_uniform
@@ -22,25 +20,20 @@ parameters:
   metrics:
     value: ["accuracy"]
   max_epochs:
-    distribution: constant
     value: 30
   loss_fn:
-    distribution: constant
     value: "categorical_crossentropy"
   lr:
-    distribution: int_uniform
+    distribution: uniform
     max: 0.001
     min: 0.000005
   model_name:
-    distribution: categorical
-    values: ["inceptionresnetv2", "efficientnetv2m"]
+    values: ["inceptionresnetv2"]
   optimizer:
-    distribution: categorical
     values: ["adam"]
   sample_size:
     value: 1.0
   image_size:
-    distribution: constant
     value: 224
   earlystopping_patience:
     value: 10
@@ -50,9 +43,10 @@ parameters:
     value: 2
   lr_reduce_factor:
     value: 0.5
-  early_terminate:
-   type: hyperband
-   s: 2
-   eta: 3
-   max_iter: 30
+
+early_terminate:
+  type: hyperband
+  s: 2
+  eta: 3
+  max_iter: 30
 program: src/train.py
