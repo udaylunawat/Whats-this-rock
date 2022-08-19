@@ -59,67 +59,66 @@ class custom_callback(Callback):
 
 
 def train():
-    with wandb.init() as run:
 
-        # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
+    # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
 
-        file_name = "model-best.h5"
-        if config['finetune']:
-            os.remove('model-best.h5')
-            api = wandb.Api()
-            run = api.run("rock-classifiers/Whats-this-rockv2/cvzc7hq0")  # different-sweep-34-efficientnet-epoch-3-val_f1_score-0.71.hdf5
-            run.file(file_name).download()
-            model = load_model(file_name)
-            print("Downloaded Trained model, finetuning...")
-        else:
-            # build model
-            K.clear_session()
-            model = get_model(config)
+    file_name = "model-best.h5"
+    if config['finetune']:
+        os.remove('model-best.h5')
+        api = wandb.Api()
+        run = api.run("rock-classifiers/Whats-this-rockv2/cvzc7hq0")  # different-sweep-34-efficientnet-epoch-3-val_f1_score-0.71.hdf5
+        run.file(file_name).download()
+        model = load_model(file_name)
+        print("Downloaded Trained model, finetuning...")
+    else:
+        # build model
+        K.clear_session()
+        model = get_model(config)
 
-        # print(model.summary())
+    # print(model.summary())
 
-        print(f"Model loaded: {model.name}\n\n")
-        opt = get_optimizer(config)
+    print(f"Model loaded: {model.name}\n\n")
+    opt = get_optimizer(config)
 
-        config['metrics'].append(tfa.metrics.F1Score(
-            num_classes=config['num_classes'],
-            average='macro',
-            threshold=0.5))
+    config['metrics'].append(tfa.metrics.F1Score(
+        num_classes=config['num_classes'],
+        average='macro',
+        threshold=0.5))
 
-        class_weights = get_model_weights(train_dataset)
+    class_weights = get_model_weights(train_dataset)
 
-        model.compile(loss=config['loss_fn'],
-                      optimizer=opt,
-                      metrics=config["metrics"])
-        model_checkpoint = ModelCheckpoint("checkpoints/"+f"{wandb.run.name}-" + config["model_name"]+
-                                           "-epoch-{epoch}-val_f1_score-{val_f1_score:.2f}.hdf5", save_best_only=True)
-        reduce_lr = ReduceLROnPlateau(monitor="val_f1_score", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1, min_lr=0.0000001)
-        earlystopper = EarlyStopping(
-            monitor='val_f1_score', patience=config['earlystopping_patience'], verbose=1, mode='auto', min_delta=config['earlystopping_min_delta'],
-            restore_best_weights=True
-        )
-        # Define WandbCallback for experiment tracking
-        wandbcallback = WandbCallback(monitor="val_f1_score",
-                                      save_model=(True),
-                                      save_graph=(False)
-                                      )
-        # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, custom_callback()]
-        callbacks = [LRA(wandb=wandb, model=model, patience=config['lr_reduce_patience'], stop_patience=config['earlystopping_patience'], threshold=.80,
-                         factor=config['lr_reduce_factor'], dwell=False, model_name=config['model_name'], freeze=config['freeze'], initial_epoch=0),
-                     model_checkpoint, wandbcallback, custom_callback()]
-        LRA.tepochs = config['max_epochs']  # used to determine value of last epoch for printing
+    model.compile(loss=config['loss_fn'],
+                    optimizer=opt,
+                    metrics=config["metrics"])
+    model_checkpoint = ModelCheckpoint("checkpoints/"+f"{wandb.run.name}-" + config["model_name"]+
+                                        "-epoch-{epoch}-val_f1_score-{val_f1_score:.2f}.hdf5", save_best_only=True)
+    reduce_lr = ReduceLROnPlateau(monitor="val_f1_score", factor=config['lr_reduce_factor'], patience=config['lr_reduce_patience'], verbose=1, min_lr=0.0000001)
+    earlystopper = EarlyStopping(
+        monitor='val_f1_score', patience=config['earlystopping_patience'], verbose=1, mode='auto', min_delta=config['earlystopping_min_delta'],
+        restore_best_weights=True
+    )
+    # Define WandbCallback for experiment tracking
+    wandbcallback = WandbCallback(monitor="val_f1_score",
+                                    save_model=(True),
+                                    save_graph=(False)
+                                    )
+    # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, custom_callback()]
+    callbacks = [LRA(wandb=wandb, model=model, patience=config['lr_reduce_patience'], stop_patience=config['earlystopping_patience'], threshold=.80,
+                        factor=config['lr_reduce_factor'], dwell=False, model_name=config['model_name'], freeze=config['freeze'], initial_epoch=0),
+                    model_checkpoint, wandbcallback, custom_callback()]
+    LRA.tepochs = config['max_epochs']  # used to determine value of last epoch for printing
 
-        history = model.fit(
-            train_dataset,
-            epochs=config["max_epochs"],
-            validation_data=val_dataset,
-            callbacks=callbacks,
-            class_weight=class_weights,
-            workers=-1,
-            verbose=0,
-        )
+    history = model.fit(
+        train_dataset,
+        epochs=config["max_epochs"],
+        validation_data=val_dataset,
+        callbacks=callbacks,
+        class_weight=class_weights,
+        workers=-1,
+        verbose=0,
+    )
 
-        return model
+    return model
 
 
 def evaluate():
