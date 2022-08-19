@@ -58,7 +58,7 @@ class custom_callback(Callback):
                 os.remove(os.path.join('checkpoints', file_name))
 
 
-def train(config):
+def train():
     with wandb.init() as run:
 
         # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
@@ -122,7 +122,7 @@ def train(config):
         return model
 
 
-def evaluate(config, model, test_dataset):
+def evaluate():
     # Scores
     scores = model.evaluate(test_dataset, return_dict=True)
     print('Scores: ', scores)
@@ -169,7 +169,7 @@ if __name__ == "__main__":
     labels = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartzite', 'Sandstone']
     config['num_classes'] = len(labels)
 
-    model = train(config)
-    evaluate(config, model)
+    model = train()
+    evaluate()
 
     run.finish()
