@@ -81,6 +81,13 @@ If you'd like to request a new function, feel free to do so by opening an issue 
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
 - [Heroku](https://heroku.com)
 
+## Features I'd like to add
+- Accessing the model through FastAPI on
+  - Streamlit (Frontend)
+  - Telegram (Chatbot)
+- Docker
+- nbdev
+
 <!-- CONTRIBUTING -->
 ## Contributing
 
