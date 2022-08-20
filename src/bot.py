@@ -68,22 +68,21 @@ if __name__ == "__main__":
     print("Bot started!")
     print("Downloading model...")
 
-    os.system('wget -O model.h5 https://www.dropbox.com/s/t9cj6s8tg850cbn/copper-sound-262-inceptionresnetv2-epoch-1_val_accuracy-0.76.h5')
+    os.system('wget -O model.h5 https://www.dropbox.com/s/urflwaj6fllr13d/model-best-efficientnet-val-acc-0.74.h5')
     TOKEN = os.environ['TOKEN']
     normalization_layer = layers.Rescaling(1. / 255)
     AUTOTUNE = AUTOTUNE
-
-    num_classes = config['num_classes']
 
     img_height, img_width = (config['image_size'], config['image_size'])
     batch_size = config['batch_size']
 
     class_names = ['Basalt', 'Coal', 'Granite', 'Limestone', 'Marble', 'Quartz', 'Sandstone']
+    num_classes = len(class_names)
 
     model = models.load_model('model.h5')
     optimizer = optimizers.Adam()
     f1_score = tfa.metrics.F1Score(
-        num_classes=config['num_classes'],
+        num_classes=num_classes,
         average='macro',
         threshold=0.5)
     model.compile(optimizer=optimizer, loss="categorical_crossentropy", metrics=['accuracy', f1_score])
