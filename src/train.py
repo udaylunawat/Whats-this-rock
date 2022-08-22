@@ -48,7 +48,7 @@ class custom_callback(Callback):
 
     def on_epoch_end(self, epoch, logs=None):
         lr = float(K.get_value(self.model.optimizer.lr))  # get the current learning rate
-        wandb.log({'lr': lr})
+        wandb.log({'lr': lr}, commit=False)
         max = 0
         for file_name in os.listdir('checkpoints'):
             val_acc = int(os.path.basename(file_name).split('.')[-2])
