@@ -1,5 +1,9 @@
-method: bayes
 name: inceptionsresnetv2 sweep
+method: bayes
+early_terminate:
+  type: hyperband
+  max_iter: 30
+  s: 2
 metric:
   goal: maximize
   name: val_f1_score
@@ -12,11 +16,11 @@ parameters:
   finetune:
     values: [false]
   freeze:
-    values: [false]
+    values: [false, true]
   batch_size:
     distribution: int_uniform
-    max: 128
-    min: 32
+    max: 64
+    min: 16
   metrics:
     value: ["accuracy"]
   max_epochs:
@@ -28,7 +32,7 @@ parameters:
     max: 0.001
     min: 0.000005
   model_name:
-    values: ["inceptionresnetv2"]
+    values: ["efficientnet"]
   optimizer:
     values: ["adam"]
   sample_size:
@@ -40,13 +44,8 @@ parameters:
   earlystopping_min_delta:
     value: 0.02
   lr_reduce_patience:
-    value: 2
+    values: [1, 2, 3, 4]
   lr_reduce_factor:
-    value: 0.5
+    values: [.7, .3]
 
-early_terminate:
-  type: hyperband
-  s: 2
-  eta: 3
-  max_iter: 30
 program: src/train.py
