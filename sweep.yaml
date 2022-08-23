@@ -1,42 +1,33 @@
-name: inceptionsresnetv2 sweep
 method: bayes
-early_terminate:
-  type: hyperband
-  max_iter: 30
-  s: 2
 metric:
   goal: maximize
   name: val_f1_score
-
 parameters:
   notes:
-    value: "Datasets:[1,2,3,4], train shuffle :True, Augment: 1./255, hflip, vflip, sampling: None, removing_corrupt: False"
+    value: "Datasets:[1,2,3,4], train shuffle :True, Augment: 9 augmentations,
+            sampling: None, removing_corrupt: False"
   augment:
     values: [true]
   finetune:
     values: [false]
   freeze:
-    values: [false, true]
+    values: [true, false]
   batch_size:
-    distribution: int_uniform
-    max: 64
-    min: 16
+    values: [16, 32, 64]
   metrics:
     value: ["accuracy"]
   max_epochs:
-    value: 30
+    value: 50
   loss_fn:
     value: "categorical_crossentropy"
   lr:
     distribution: uniform
-    max: 0.001
+    max: 0.05
     min: 0.000005
   model_name:
     values: ["efficientnet"]
   optimizer:
     values: ["adam"]
-  sample_size:
-    value: 1.0
   image_size:
     value: 224
   earlystopping_patience:
@@ -47,5 +38,9 @@ parameters:
     values: [1, 2, 3, 4]
   lr_reduce_factor:
     values: [.7, .3]
-
+early_terminate:
+  type: hyperband
+  s: 2
+  eta: 3
+  max_iter: 30
 program: src/train.py
