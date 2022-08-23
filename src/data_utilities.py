@@ -166,6 +166,8 @@ def get_generators(config):
         shuffle=True,
         color_mode='rgb',
         class_mode='categorical')
+
+    test_datagen = ImageDataGenerator(rescale=1./255) # preprocessing_function=scalar
     val_dataset = test_datagen.flow_from_directory(
         'data/4_tfds_dataset/val',
         shuffle=False,
@@ -174,7 +176,6 @@ def get_generators(config):
         batch_size=config['image_size'],
         class_mode='categorical')
 
-    test_datagen = ImageDataGenerator(rescale=1./255) # preprocessing_function=scalar
     test_generator = test_datagen.flow_from_directory(
         'data/4_tfds_dataset/test',
         batch_size=config['batch_size'],
