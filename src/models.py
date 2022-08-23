@@ -165,7 +165,38 @@ def get_efficientnet(config):
 
     return model
 
+def get_efficientnet_bn(config):
+    """Construct a simple categorical CNN following the Keras tutorial."""
 
+    base_model = applications.EfficientNetV2B0(
+        include_top=False,
+        weights="imagenet",
+        input_shape=(config['image_size'], config['image_size'], 3),
+        classifier_activation="softmax",
+        include_preprocessing=False,
+    )
+
+    # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
+    for layer in base_model.layers[-20:]:
+        if not isinstance(layer, base_model.layers.BatchNormalization):
+            layer.trainable = True
+            
+    # Add untrained final layers
+    model = Sequential(
+        [
+            base_model,
+            GlobalAveragePooling2D(),
+            Dense(1024),
+            Dropout(0.3),
+            Dense(256),
+            Dropout(0.3),
+            Dense(64),
+            Dropout(0.3),
+            Dense(config['num_classes'], activation="softmax"),
+        ]
+    )
+
+    return model
 def get_resnet(config):
     base_model = applications.ResNet50(
         include_top=False,
