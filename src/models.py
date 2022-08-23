@@ -144,6 +144,7 @@ def get_efficientnet(config):
         input_shape=(config['image_size'], config['image_size'], 3),
         classifier_activation="softmax",
         include_preprocessing=False,
+        drop_connect_rate=0.4,
     )
 
     # freeze layers
