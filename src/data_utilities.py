@@ -146,14 +146,19 @@ def get_generators(config):
         train_datagen = ImageDataGenerator(
             horizontal_flip=True,
             vertical_flip=True,
-            rescale=1./255) # preprocessing_function=scalar
+            rotation_range=20,
+            width_shift_range=0.2,
+            height_shift_range=0.2,
+            brightness_range=(0.4, 0.9),
+            zoom_range=[0.5, 1.5],
+            channel_shift_range=150.0,
+            rescale=1./255)  # preprocessing_function=scalar
     elif not config['augment']:
         print("No Augmentation!")
-        train_datagen = ImageDataGenerator(rescale=1./255, horizontal_flip=True, vertical_flip=True)
+        train_datagen = ImageDataGenerator(rescale=1./255)
     else:
         print("Error in config.augment. Stop Training!")
 
-    test_datagen = ImageDataGenerator(rescale=1./255) # preprocessing_function=scalar
     train_dataset = train_datagen.flow_from_directory(
         'data/4_tfds_dataset/train',
         target_size=(config['image_size'], config['image_size']),
@@ -169,6 +174,7 @@ def get_generators(config):
         batch_size=config['image_size'],
         class_mode='categorical')
 
+    test_datagen = ImageDataGenerator(rescale=1./255) # preprocessing_function=scalar
     test_generator = test_datagen.flow_from_directory(
         'data/4_tfds_dataset/test',
         batch_size=config['batch_size'],
