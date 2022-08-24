@@ -254,11 +254,3 @@ def prepare_dataset(dataset, split):
             dataset.map(to_dict, num_parallel_calls=AUTOTUNE)
             .batch(config["batch_size"])
         )
-
-
-# make some random data
-# reset_random_seeds()
-
-# default config/hyperparameter values
-# you can modify these below or via command line
-# https://github.com/wandb/examples/blob/master/examples/keras/keras-cnn-fashion/cnn_train.py
