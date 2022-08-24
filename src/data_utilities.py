@@ -149,9 +149,7 @@ def get_generators(config):
             rotation_range=20,
             width_shift_range=0.2,
             height_shift_range=0.2,
-            brightness_range=(0.4, 0.9),
             zoom_range=[0.5, 1.5],
-            channel_shift_range=150.0,
             rescale=1./255)  # preprocessing_function=scalar
     elif not config['augment']:
         print("No Augmentation!")
