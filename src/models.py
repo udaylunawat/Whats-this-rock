@@ -1,10 +1,8 @@
 from tensorflow.keras import applications
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Dense, Flatten, GlobalAveragePooling2D, \
-    BatchNormalization, LeakyReLU, Input, Lambda
+    BatchNormalization, LeakyReLU, Input
 from tensorflow.keras import regularizers, initializers
 from tensorflow.keras.models import Sequential, Model
-from tensorflow.keras import backend as K
-from tensorflow.image import resize
 
 
 def get_baseline(config):
@@ -137,7 +135,6 @@ def get_mobilenetv2(config):
 
 def get_efficientnet(config):
     """Construct a simple categorical CNN following the Keras tutorial."""
-
     base_model = applications.EfficientNetV2B0(
         include_top=False,
         weights="imagenet",
@@ -198,6 +195,27 @@ def get_resnet(config):
     return model
 
 
+def get_efficientnetv2m(config):
+    inputs = Input(shape=(config['image_size'], config['image_size'], 3))
+    model = applications.EfficientNetV2M(include_top=False, input_tensor=inputs, weights="imagenet")
+
+    # Freeze the pretrained weights
+    model.trainable = not config['freeze']
+
+    # Rebuild top
+    x = GlobalAveragePooling2D(name="avg_pool")(model.output)
+    x = BatchNormalization()(x)
+
+    top_dropout_rate = 0.2
+    x = Dropout(top_dropout_rate, name="top_dropout")(x)
+    outputs = Dense(config['num_classes'], activation="softmax", name="pred")(x)
+
+    # Compile
+    model = Model(inputs, outputs, name="EfficientNet")
+
+    return model
+
+
 def get_inceptionresnetv2(config):
     base_model = applications.InceptionResNetV2(
         include_top=False,
@@ -222,50 +240,5 @@ def get_inceptionresnetv2(config):
                   kernel_initializer=initializers.GlorotUniform(seed=123)),
         ]
     )
-
-    return model
-
-
-def get_vgg16(config):
-    # Loading VGG16 model
-    base_model = applications.vgg16.VGG16(weights="imagenet", include_top=False, input_shape=(config['image_size'], config['image_size'], 3))
-    base_model.trainable = not config['freeze']  # Not trainable weights
-
-    flatten_layer = Flatten()
-    dense_layer_1 = Dense(50, activation='relu')
-    dense_layer_2 = Dense(20, activation='relu')
-    prediction_layer = Dense(config['num_classes'], activation='softmax')
-    maxpool = MaxPooling2D(pool_size=(2, 2), strides=(2, 2))
-    dropout = Dropout(0.3)
-
-    model = Sequential([
-        base_model,
-        flatten_layer,
-        dense_layer_1,
-        dropout,
-        dense_layer_2,
-        dropout,
-        prediction_layer
-    ])
-    return model
-
-
-def get_efficientnetv2m(config):
-    inputs = Input(shape=(config['image_size'], config['image_size'], 3))
-    model = applications.EfficientNetV2M(include_top=False, input_tensor=inputs, weights="imagenet")
-
-    # Freeze the pretrained weights
-    model.trainable = not config['freeze']
-
-    # Rebuild top
-    x = GlobalAveragePooling2D(name="avg_pool")(model.output)
-    x = BatchNormalization()(x)
-
-    top_dropout_rate = 0.2
-    x = Dropout(top_dropout_rate, name="top_dropout")(x)
-    outputs = Dense(config['num_classes'], activation="softmax", name="pred")(x)
-
-    # Compile
-    model = Model(inputs, outputs, name="EfficientNet")
 
     return model
