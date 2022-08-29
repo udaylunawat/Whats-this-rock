@@ -90,8 +90,8 @@ def custom_augmentation(np_tensor):
         cutout_height_point = np.random.randint(np_tensor.shape[0] - cutout_height)
         cutout_width_point = np.random.randint(np_tensor.shape[1] - cutout_width)
         np_tensor[
-            cutout_height_point : cutout_height_point + cutout_height,
-            cutout_width_point : cutout_width_point + cutout_width,
+            cutout_height_point:cutout_height_point + cutout_height,
+            cutout_width_point:cutout_width_point + cutout_width,
             :,
         ] = 127
         return np_tensor

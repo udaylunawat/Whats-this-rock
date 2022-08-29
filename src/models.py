@@ -253,13 +253,13 @@ def get_inceptionresnetv2(config):
                 activity_regularizer=regularizers.l1(0.006),
                 bias_regularizer=regularizers.l1(0.006),
                 activation="relu",
-                kernel_initializer=initializers.GlorotUniform(seed=123),
+                kernel_initializer=initializers.GlorotUniform(), # seed=123
             ),
             Dropout(rate=0.45, seed=123),
             Dense(
                 config["num_classes"],
                 activation="softmax",
-                kernel_initializer=initializers.GlorotUniform(seed=123),
+                kernel_initializer=initializers.GlorotUniform(), # seed=123
             ),
         ]
     )
