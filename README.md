@@ -87,6 +87,8 @@ If you'd like to request a new function, feel free to do so by opening an issue 
   - Telegram (Chatbot)
 - Docker
 - nbdev
+- Group Runs
+    - kfold cross validation
 
 <!-- CONTRIBUTING -->
 ## Contributing
