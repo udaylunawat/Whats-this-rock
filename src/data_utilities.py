@@ -9,10 +9,15 @@ from tensorflow.data import AUTOTUNE
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications.vgg16 import preprocess_input
 
-from augment_utilities import apply_rand_augment, cut_mix_and_mix_up, preprocess_for_model, visualize_dataset
+from augment_utilities import (
+    apply_rand_augment,
+    cut_mix_and_mix_up,
+    preprocess_for_model,
+    visualize_dataset,
+)
 
 # load config from config.json file
-with open('config.json') as config_file:
+with open("config.json") as config_file:
     config = json.load(config_file)
 
 IMAGE_SIZE = (config["image_size"], config["image_size"])
@@ -35,24 +40,24 @@ def remove_corrupted_images(root_folder):
     del_count = 0
     for filepath in filepaths:
         try:
-            fobj = open(filepath, 'rb')
-            is_JFIF = b'JFIF' in fobj.peek(10)
+            fobj = open(filepath, "rb")
+            is_JFIF = b"JFIF" in fobj.peek(10)
         finally:
             fobj.close()
         if not is_JFIF:
             del_count += 1
-            shutil.move(filepath, os.path.join('data', 'corrupted_images', os.path.basename(filepath)))
+            shutil.move(
+                filepath,
+                os.path.join("data", "corrupted_images", os.path.basename(filepath)),
+            )
     print(f"Total {del_count} corrupted image moved to 'corrupted_images' folder\n")
     return None
 
 
 # https://towardsdatascience.com/stratified-sampling-you-may-have-been-splitting-your-dataset-all-wrong-8cfdd0d32502
 def get_stratified_dataset_partitions_pd(
-        df,
-        train_split=0.8,
-        val_split=0.1,
-        test_split=0.1,
-        target_variable=None):
+    df, train_split=0.8, val_split=0.1, test_split=0.1, target_variable=None
+):
     assert (train_split + test_split + val_split) == 1
 
     # Only allows for equal validation and test splits
@@ -65,10 +70,10 @@ def get_stratified_dataset_partitions_pd(
     # If target variable is provided, generate stratified sets
     if target_variable is not None:
         grouped_df = df_sample.groupby(target_variable)
-        arr_list = [np.split(g,
-                             [int(train_split * len(g)),
-                              int((1 - val_split) * len(g))]) for i,
-                    g in grouped_df]
+        arr_list = [
+            np.split(g, [int(train_split * len(g)), int((1 - val_split) * len(g))])
+            for i, g in grouped_df
+        ]
 
         train_ds = pd.concat([t[0] for t in arr_list])
         val_ds = pd.concat([t[1] for t in arr_list])
@@ -76,7 +81,9 @@ def get_stratified_dataset_partitions_pd(
 
     else:
         indices_or_sections = [
-            int(train_split * len(df)), int((1 - val_split) * len(df))]
+            int(train_split * len(df)),
+            int((1 - val_split) * len(df)),
+        ]
         train_ds, val_ds, test_ds = np.split(df_sample, indices_or_sections)
 
     return train_ds, val_ds, test_ds
@@ -87,7 +94,8 @@ def get_data(sample_size):
     data = data.sample(frac=sample_size).reset_index(drop=True)
     # Splitting data into train, val and test samples using stratified splits
     train_df, val_df, test_df = get_stratified_dataset_partitions_pd(
-        data, 0.8, 0.1, 0.1)
+        data, 0.8, 0.1, 0.1
+    )
     train_df = pd.concat([train_df, val_df])
     return train_df, test_df
 
@@ -110,7 +118,11 @@ def get_df(root="data/2_processed"):
                 file_names.append(file_name)
 
     import pandas as pd
-    df = pd.DataFrame(list(zip(file_names, class_names, images_paths)), columns=['file_name', 'class', 'file_path'])
+
+    df = pd.DataFrame(
+        list(zip(file_names, class_names, images_paths)),
+        columns=["file_name", "class", "file_path"],
+    )
 
     return df
 
@@ -118,20 +130,24 @@ def get_df(root="data/2_processed"):
 def undersample_df(data, class_name):
     merged_df = pd.DataFrame()
     for rock_type in data[class_name].unique():
-        temp = data[data[class_name] == rock_type].sample(n=min(data[class_name].value_counts()))
+        temp = data[data[class_name] == rock_type].sample(
+            n=min(data[class_name].value_counts())
+        )
         merged_df = pd.concat([merged_df, temp])
 
     return merged_df
 
 
-def limit_data(data_dir,n=100):
+def limit_data(data_dir, n=100):
     # https://stackoverflow.com/a/65966877/9292995
     a = []
     for i in os.listdir(data_dir):
-        for k, j in enumerate(os.listdir(data_dir + '/' + i)):
-            if k > n:continue
-            a.append((f'{data_dir}/{i}/{j}',i))
-    return pd.DataFrame(a,columns=['filename','class'])
+        for k, j in enumerate(os.listdir(data_dir + "/" + i)):
+            if k > n:
+                continue
+            a.append((f"{data_dir}/{i}/{j}", i))
+    return pd.DataFrame(a, columns=["filename", "class"])
+
 
 ####################################### ImageDataGenerator Utilities ###################################
 
@@ -141,7 +157,7 @@ def scalar(img):
 
 
 def get_generators(config):
-    if config['augment']:
+    if config["augment"]:
         print("Augmentation is True! rescale=1./255")
         train_datagen = ImageDataGenerator(
             horizontal_flip=True,
@@ -150,40 +166,44 @@ def get_generators(config):
             width_shift_range=0.2,
             height_shift_range=0.2,
             zoom_range=[0.5, 1.5],
-            rescale=1./255)  # preprocessing_function=scalar
-    elif not config['augment']:
+            rescale=1.0 / 255,
+        )  # preprocessing_function=scalar
+    elif not config["augment"]:
         print("No Augmentation!")
-        train_datagen = ImageDataGenerator(rescale=1./255)
+        train_datagen = ImageDataGenerator(rescale=1.0 / 255)
     else:
         print("Error in config.augment. Stop Training!")
 
     train_dataset = train_datagen.flow_from_directory(
-        'data/4_tfds_dataset/train',
-        target_size=(config['image_size'], config['image_size']),
-        batch_size=config['batch_size'],
+        "data/4_tfds_dataset/train",
+        target_size=(config["image_size"], config["image_size"]),
+        batch_size=config["batch_size"],
         shuffle=True,
-        color_mode='rgb',
-        class_mode='categorical')
+        color_mode="rgb",
+        class_mode="categorical",
+    )
 
-    test_datagen = ImageDataGenerator(rescale=1./255) # preprocessing_function=scalar
+    test_datagen = ImageDataGenerator(
+        rescale=1.0 / 255
+    )  # preprocessing_function=scalar
     val_dataset = test_datagen.flow_from_directory(
-        'data/4_tfds_dataset/val',
+        "data/4_tfds_dataset/val",
         shuffle=False,
-        color_mode='rgb',
-        target_size=(config['image_size'], config['image_size']),
-        batch_size=config['image_size'],
-        class_mode='categorical')
+        color_mode="rgb",
+        target_size=(config["image_size"], config["image_size"]),
+        batch_size=config["image_size"],
+        class_mode="categorical",
+    )
 
     test_generator = test_datagen.flow_from_directory(
-        'data/4_tfds_dataset/test',
-        batch_size=config['batch_size'],
+        "data/4_tfds_dataset/test",
+        batch_size=config["batch_size"],
         seed=42,
-        color_mode='rgb',
+        color_mode="rgb",
         shuffle=False,
         class_mode="categorical",
-        target_size=(
-            config['image_size'],
-            config['image_size']))
+        target_size=(config["image_size"], config["image_size"]),
+    )
 
     return train_dataset, val_dataset, test_generator
 
@@ -199,14 +219,14 @@ def get_data_tfds():
 
     data, builder = get_data_tfds()
 
-    num_classes = builder.info.features['label'].num_classes
+    num_classes = builder.info.features["label"].num_classes
     config["num_classes"] = num_classes
 
     def load_dataset(split="train"):
         dataset = data[split]
         return prepare_dataset(dataset, split)
 
-    if config['augment']:
+    if config["augment"]:
         train_dataset = (
             load_dataset()
             .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
@@ -223,7 +243,7 @@ def get_data_tfds():
     # test_dataset = load_dataset(split="test")
     # test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
 
-    labels = builder.info.features['label'].names
+    labels = builder.info.features["label"].names
 
     return train_dataset, val_dataset
 
@@ -248,7 +268,6 @@ def prepare_dataset(dataset, split):
             .batch(config["batch_size"])
         )
     elif split == "val" or split == "test":
-        return (
-            dataset.map(to_dict, num_parallel_calls=AUTOTUNE)
-            .batch(config["batch_size"])
+        return dataset.map(to_dict, num_parallel_calls=AUTOTUNE).batch(
+            config["batch_size"]
         )
