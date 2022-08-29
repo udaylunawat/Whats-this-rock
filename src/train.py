@@ -137,7 +137,7 @@ def train():
             model=model,
             patience=config["lr_reduce_patience"],
             stop_patience=config["earlystopping_patience"],
-            threshold=0.9,
+            threshold=config['threshold'],
             factor=config["lr_reduce_factor"],
             dwell=False,
             model_name=config["model_name"],
