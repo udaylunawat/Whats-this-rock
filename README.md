@@ -13,17 +13,15 @@
 - [Table of Contents](#table-of-contents)
 <!-- - [Motivation](#motivation) -->
 - [Getting Started](#getting-started)
-  - [Installation](#installation)
-- [Notebooks](#instructions)
-
-- [Usage](#usage)
+  - [Installation](#deploy-telegram-bot)
+- [Features I'd like to add](#features-id-like-to-add)
+- [Notebooks](#notebooks)
 - [Technologies Used](#technologies-used)
-<!-- - [Roadmap](#roadmap) -->
 - [Contributing](#contributing)
 - [License](#license)
 <!-- - [Contact](#contact) -->
 
-## Instructions
+## Getting Started
 
 ## Use the Telegram Bot
 
@@ -67,11 +65,45 @@ python src/train.py
 </table>
 <br></br>
 
-## Bug / Feature Request
-If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
+## Features I'd like to add
 
-If you'd like to request a new function, feel free to do so by opening an issue [here](https://github.com/). Please include sample queries and their corresponding results.
-
+- [x] Wandb
+  - [x] Config
+  - [x] Sweeps
+- [x] Datasets
+  - [x] 4 Datasets
+- [x] Augmentation
+- [x] Sampling
+  - [x] Oversampling
+  - [x] Undersampling
+  - [x] class weights
+- [x] Remove Corrupted Images
+- [x] Try Multiple Optimizers
+- [x] TFDS datasets
+- [x] ImageDataGenerator
+- [x] Models
+  - [x] BaselineCNN
+  - [x] Efficientnet
+  - [x] Resnet101
+  - [x] MobileNetv1
+  - [x] MobileNetv2
+  - [x] Xception
+- [x] LRScheduleer, LRDecay
+- [x] Model Checkpoint, Resume Training
+- [x] Evaluation
+  - [x] Confusion Matrix
+  - [x] Classification Report
+- [x] Telegram Bot Deployed
+  - [x] Heroku
+- [ ] Accessing the model through FastAPI (Backend)
+- [ ] Streamlit (Frontend)
+- [ ] Docker
+- [ ] nbdev
+- [ ] Group Runs
+    - [ ] kfold cross validation
+- [ ] [WandB Tables](https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&t=VRL-ZXzznXV_Hg2h7QnjuA)
+  - [ ] find the long tail examples or hard examples,
+  - [ ] find the classes that the model is performing terribly on,
 
 ## Technologies Used
 - [Google Colab](https://colab.research.google.com/?utm_source=scs-index)
@@ -81,14 +113,12 @@ If you'd like to request a new function, feel free to do so by opening an issue 
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
 - [Heroku](https://heroku.com)
 
-## Features I'd like to add
-- Accessing the model through FastAPI on
-  - Streamlit (Frontend)
-  - Telegram (Chatbot)
-- Docker
-- nbdev
-- Group Runs
-    - kfold cross validation
+
+## Bug / Feature Request
+If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
+
+If you'd like to request a new function, feel free to do so by opening an issue [here](https://github.com/). Please include sample queries and their corresponding results.
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
