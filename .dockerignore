@@ -1,0 +1,13 @@
+venv
+*.pyc
+staticfiles
+.env
+db.sqlite3
+getting-started/*
+kaggle.json
+*.h5
+.vscode
+data/*
+wandb/*
+linux-packages.txt
+secrets.json
