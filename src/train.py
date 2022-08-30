@@ -166,7 +166,7 @@ def train():
         verbose=0,
     )
 
-    return model
+    return model, history
 
 
 def evaluate():
@@ -195,6 +195,9 @@ def evaluate():
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
     wandb.log({"Test F1 Score": scores["f1_score"]})
+
+    # average of val and test f1 score
+    wandb.log({"Avg VT F1 Score": (scores["f1_score"] + max(history.history['val_f1_score'])) / 2})
     wandb.log({"Confusion Matrix": cm})
     wandb.log(
         {
@@ -237,7 +240,7 @@ if __name__ == "__main__":
     ]
     config["num_classes"] = len(labels)
 
-    model = train()
+    model, history = train()
     evaluate()
 
     del model
