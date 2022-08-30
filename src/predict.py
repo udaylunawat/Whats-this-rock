@@ -1,6 +1,7 @@
 import json
 import os
 import cv2
+import wandb
 import numpy as np
 from io import BytesIO
 
@@ -13,10 +14,16 @@ with open("config.json") as config_file:
     config = json.load(config_file)
 
 print("Downloading model...")
-
-os.system(
-    "wget -O model.h5 https://www.dropbox.com/s/urflwaj6fllr13d/model-best-efficientnet-val-acc-0.74.h5"
+file_name = "model.h5"
+api = wandb.Api()
+run = api.run(
+    "rock-classifiers/Whats-this-rockv2/cvzc7hq0"
 )
+run.file(file_name).download()
+
+# os.system(
+#     "wget -O model.h5 https://www.dropbox.com/s/urflwaj6fllr13d/model-best-efficientnet-val-acc-0.74.h5"
+# )
 
 normalization_layer = layers.Rescaling(1.0 / 255)
 AUTOTUNE = AUTOTUNE
