@@ -33,6 +33,7 @@ import wandb
 from wandb.keras import WandbCallback
 
 import os
+import gc
 import random
 import numpy as np
 import json
@@ -46,12 +47,12 @@ import matplotlib.pyplot as plt
 # *IMPORANT*: Have to do this line *before* importing tensorflow
 # os.environ['PYTHONHASHSEED'] = str(1)
 
-
-def reset_random_seeds():
-    os.environ["PYTHONHASHSEED"] = str(1)
+def seed_everything(seed=42):
+    os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
+    os.environ["PYTHONHASHSEED"] = str(seed)
+    random.seed(seed)
+    np.random.seed(seed)
     set_seed(1)
-    np.random.seed(1)
-    random.seed(1)
 
 
 class custom_callback(Callback):
@@ -177,7 +178,7 @@ def evaluate():
     predicted_class_indices = np.argmax(pred, axis=1)
 
     # Confusion Matrix
-    cm = plot.confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
+    cm = plot.plot_confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
     wandb.log({"Confusion Matrix": cm})
 
     # Classification Report
@@ -208,7 +209,7 @@ with open("config.json") as config_file:
 
 if __name__ == "__main__":
 
-    reset_random_seeds()
+    seed_everything(42)
     print(
         f"Default config:- {json.dumps(default, indent=2)}\n P.S - Not used in sweeps.\n\n"
     )
@@ -235,5 +236,8 @@ if __name__ == "__main__":
 
     model = train()
     evaluate()
+
+    del model
+    _ = gc.collect()
 
     run.finish()

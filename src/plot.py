@@ -1,7 +1,7 @@
 import plotly.figure_factory as ff
 
 
-def confusion_matrix(labels, y, _y):
+def plot_confusion_matrix(labels, y, _y):
 
     l = [0 for _ in range(len(labels))]
     z = [[0 for _ in range(len(labels))] for _ in range(len(labels))]

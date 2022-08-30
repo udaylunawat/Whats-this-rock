@@ -30,7 +30,7 @@ class_names = [
     "Granite",
     "Limestone",
     "Marble",
-    "Quartz",
+    "Quartzite",
     "Sandstone",
 ]
 num_classes = len(class_names)
