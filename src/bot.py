@@ -7,9 +7,9 @@ from predict import get_prediction
 def start(update, context):
     update.message.reply_text(
         """
-    Welcome!\nI am a rock classification bot.\n
+    Welcome!\nI am a rock classification bot.
 Send me a photo of a rock and I will tell you what kind of rock it is.\n
-I can classify rocks from in these categories Basalt, Granite, Quartz, Sandstone, Marble, Coal, and Granite.\n\n
+I can classify rocks from in these categories Basalt, Granite, Quartz, Sandstone, Marble, Coal, and Granite.\n
 You can visit [here](https://github.com/udaylunawat/Whats-this-rock) to check my source code!"""
     )
 
@@ -17,7 +17,7 @@ You can visit [here](https://github.com/udaylunawat/Whats-this-rock) to check my
 def help(update, context):
     update.message.reply_text(
         """
-    /start - Starts conversation\n
+    /start - Starts conversation
 /help - Shows this message\n
 """
     )
@@ -43,7 +43,6 @@ if __name__ == "__main__":
         config = json.load(config_file)
 
     print("Bot started!")
-
     print("Please visit {} to start using me!".format("t.me/test7385_bot"))
 
     TOKEN = os.environ["TOKEN"]
