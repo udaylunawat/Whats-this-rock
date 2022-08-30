@@ -170,8 +170,6 @@ def evaluate():
     # Scores
     scores = model.evaluate(test_dataset, return_dict=True)
     print("Scores: ", scores)
-    wandb.log({"Test Accuracy": scores["accuracy"]})
-    wandb.log({"Test F1 Score": scores["f1_score"]})
 
     # Predict
     pred = model.predict(test_dataset, verbose=1)
@@ -179,7 +177,6 @@ def evaluate():
 
     # Confusion Matrix
     cm = plot.plot_confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
-    wandb.log({"Confusion Matrix": cm})
 
     # Classification Report
     cl_report = classification_report(
@@ -192,7 +189,10 @@ def evaluate():
     print(cl_report)
 
     cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
-    plt.savefig("imgs/cr.png", dpi=400)
+
+    wandb.log({"Test Accuracy": scores["accuracy"]})
+    wandb.log({"Test F1 Score": scores["f1_score"]})
+    wandb.log({"Confusion Matrix": cm})
     wandb.log(
         {
             "Classification Report Image:": wandb.Image(
