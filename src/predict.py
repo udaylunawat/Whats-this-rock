@@ -14,12 +14,15 @@ with open("config.json") as config_file:
     config = json.load(config_file)
 
 print("Downloading model...")
-file_name = "model.h5"
+file_name = "model-best.h5"
 api = wandb.Api()
 run = api.run(
     config["pretrained_model_link"]
 )
-run.file(file_name).download()
+run.file(file_name).download(replace=True)
+model = models.load_model(file_name)
+pml = config["pretrained_model_link"]
+print(f"Downloaded Trained model: {pml}.")
 
 # os.system(
 #     "wget -O model.h5 https://www.dropbox.com/s/urflwaj6fllr13d/model-best-efficientnet-val-acc-0.74.h5"
@@ -42,7 +45,7 @@ class_names = [
 ]
 num_classes = len(class_names)
 
-model = models.load_model("model.h5")
+model = models.load_model(file_name)
 optimizer = optimizers.Adam()
 f1_score = tfa.metrics.F1Score(num_classes=num_classes, average="macro", threshold=0.5)
 model.compile(

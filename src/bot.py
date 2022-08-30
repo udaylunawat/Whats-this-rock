@@ -3,6 +3,10 @@ import json
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from predict import get_prediction
 
+# read config file
+with open("config.json") as config_file:
+    config = json.load(config_file)
+
 
 def start(update, context):
     update.message.reply_text(
@@ -19,6 +23,14 @@ def help(update, context):
         """
     /start - Starts conversation
 /help - Shows this message\n
+/model - Show model details
+"""
+    )
+
+
+def model_details(update, context):
+    update.message.reply_text(
+        f"""Model details can be found at {config["pretrained_model_link"]}
 """
     )
 
@@ -50,6 +62,7 @@ if __name__ == "__main__":
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler("model", model_details))
     dp.add_handler(MessageHandler(Filters.text, handle_message))
     dp.add_handler(MessageHandler(Filters.photo, handle_photo))
 
