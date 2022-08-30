@@ -17,7 +17,7 @@ print("Downloading model...")
 file_name = "model.h5"
 api = wandb.Api()
 run = api.run(
-    "rock-classifiers/Whats-this-rockv2/cvzc7hq0"
+    config["pretrained_model_link"]
 )
 run.file(file_name).download()
 

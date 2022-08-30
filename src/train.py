@@ -81,7 +81,7 @@ def train():
         os.remove("model-best.h5")
         api = wandb.Api()
         run = api.run(
-            "rock-classifiers/Whats-this-rockv2/cvzc7hq0"
+            config["pretrained_model_link"]
         )  # different-sweep-34-efficientnet-epoch-3-val_f1_score-0.71.hdf5
         run.file(file_name).download()
         model = load_model(file_name)
