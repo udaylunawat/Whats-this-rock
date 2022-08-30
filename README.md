@@ -95,9 +95,12 @@ python src/train.py
   - [x] Classification Report
 - [x] Telegram Bot Deployed
   - [x] Heroku
+  - [ ] Show CM and CL in bot
 - [ ] Accessing the model through FastAPI (Backend)
 - [ ] Streamlit (Frontend)
-- [ ] Docker
+- [x] Docker
+- [x] GitHub Actions
+  - [x] Deploy Bot when bot.py is updated.
 - [ ] nbdev
 - [ ] Group Runs
     - [ ] kfold cross validation
