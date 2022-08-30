@@ -1,8 +1,6 @@
-import json
 import os
-
+import json
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
-
 from predict import get_prediction
 
 
