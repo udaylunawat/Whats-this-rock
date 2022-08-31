@@ -22,7 +22,7 @@ def help(update, context):
     update.message.reply_text(
         """
     /start - Starts conversation
-/help - Shows this message\n
+/help - Shows this message
 /model - Show model details
 """
     )
@@ -30,7 +30,7 @@ def help(update, context):
 
 def model_details(update, context):
     update.message.reply_text(
-        f"""Model details can be found at {config["pretrained_model_link"]}
+        f"""Model details can be found at https://wandb.ai/{config["pretrained_model_link"]}/
 """
     )
 
