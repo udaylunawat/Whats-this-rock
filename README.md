@@ -3,6 +3,7 @@
 ## Rock Classification Telegram Bot!
 
 ![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock) ![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock) ![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
+[![Deploy to heroku.](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/main.yaml/badge.svg)](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/main.yaml)
 <p align="left">
     <img src="imgs/marie.jpg " alt="What's my name?" width="200"/>
 </p>
