@@ -1,5 +1,4 @@
 import os
-import cv2
 import json
 import telegram
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
@@ -11,9 +10,12 @@ with open("config.json") as config_file:
 
 
 def start(update, context):
+    user = update.effective_user
+    name = user['first_name']
     update.message.reply_text(
-        """
-    Welcome!\nI am a rock classification bot.
+        f"""
+Hi {name}! Welcome!
+I am a rock classification bot.
 Send me a photo of a rock and I will tell you what kind of rock it is.\n
 I can classify rocks from in these categories Basalt, Granite, Quartz, Sandstone, Marble, Coal, and Granite.\n
 You can visit [here](https://github.com/udaylunawat/Whats-this-rock) to check my source code!"""
@@ -35,15 +37,13 @@ def model_details(update, context):
         f"""Model details can be found at https://wandb.ai/{config["pretrained_model_link"]}/
 """
     )
-    for img in os.listdir('media/images'):
-        if img.endswith('png'):
-            cr = img
-
-    cr_path = os.path.join('media', 'images', cr)
+    dir = os.listdir('media/images')
+    cr = os.path.join('media', 'images', dir[0])
     update.message.reply_text("Confusion report for model.")
     print(cr)
-    img = cv2.imread(cr)
-    bot.send_photo(photo=open(cr_path, 'rb'))
+    user = update.effective_user
+    chat_id = user['id']
+    bot.send_photo(chat_id, photo=open(cr, 'rb'))
 
 
 def handle_message(update, context):
@@ -69,8 +69,8 @@ if __name__ == "__main__":
     print("Please visit {} to start using me!".format("t.me/test7385_bot"))
 
     TOKEN = os.environ["TOKEN"]
-    bot = telegram.Bot(token=TOKEN)
     updater = Updater(TOKEN, use_context=True)
+    bot = updater.bot
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
