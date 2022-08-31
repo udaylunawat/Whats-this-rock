@@ -11,19 +11,19 @@ parameters:
   finetune:
     values: [false]
   freeze:
-    values: [true, false]
+    values: [false]
+  pretrained_model_link:
+    value: "rock-classifiers/Whats-this-rockv2/cvzc7hq0"
   batch_size:
-    values: [16, 32, 64]
+    values: [32]
   metrics:
     value: ["accuracy"]
   max_epochs:
-    value: 50
+    value: 100
   loss_fn:
     value: "categorical_crossentropy"
   lr:
-    distribution: uniform
-    max: 0.05
-    min: 0.000005
+    values: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
   model_name:
     values: ["efficientnet"]
   optimizer:
@@ -37,10 +37,12 @@ parameters:
   lr_reduce_patience:
     values: [1, 2, 3, 4]
   lr_reduce_factor:
-    values: [.7, .3]
+    values: [.9, .7]
+  threshold:
+    value: 0.7
 early_terminate:
   type: hyperband
   s: 2
   eta: 3
-  max_iter: 30
+  max_iter: 100
 program: src/train.py

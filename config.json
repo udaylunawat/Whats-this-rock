@@ -14,5 +14,6 @@
     "earlystopping_patience": 5,
     "earlystopping_min_delta": 0.02,
     "lr_reduce_patience": 20,
-    "lr_reduce_factor": 0.2
+    "lr_reduce_factor": 0.2,
+    "threshold": 0.7,
 }
