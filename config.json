@@ -3,7 +3,7 @@
     "augment": true,
     "finetune": false,
     "freeze": false,
-    "pretrained_model_link": "rock-classifiers/Whats-this-rockv2/cvzc7hq0",
+    "pretrained_model_link": "rock-classifiers/Whats-this-rockv2/6ffnwb6c",
     "optimizer": "adam",
     "lr": 0.01,
     "batch_size": 32,
