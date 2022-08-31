@@ -117,8 +117,6 @@ def get_df(root="data/2_processed"):
                 class_names.append(class_name)
                 file_names.append(file_name)
 
-    import pandas as pd
-
     df = pd.DataFrame(
         list(zip(file_names, class_names, images_paths)),
         columns=["file_name", "class", "file_path"],
