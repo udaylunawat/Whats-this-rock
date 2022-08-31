@@ -1,5 +1,7 @@
 import os
+import cv2
 import json
+import telegram
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from predict import get_prediction
 
@@ -33,6 +35,15 @@ def model_details(update, context):
         f"""Model details can be found at https://wandb.ai/{config["pretrained_model_link"]}/
 """
     )
+    for img in os.listdir('media/images'):
+        if img.endswith('png'):
+            cr = img
+
+    cr_path = os.path.join('media', 'images', cr)
+    update.message.reply_text("Confusion report for model.")
+    print(cr)
+    img = cv2.imread(cr)
+    bot.send_photo(photo=open(cr_path, 'rb'))
 
 
 def handle_message(update, context):
@@ -58,6 +69,7 @@ if __name__ == "__main__":
     print("Please visit {} to start using me!".format("t.me/test7385_bot"))
 
     TOKEN = os.environ["TOKEN"]
+    bot = telegram.Bot(token=TOKEN)
     updater = Updater(TOKEN, use_context=True)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", start))

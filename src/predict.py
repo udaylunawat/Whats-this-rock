@@ -28,6 +28,12 @@ print(f"Downloaded Trained model: {pml}.")
 #     "wget -O model.h5 https://www.dropbox.com/s/urflwaj6fllr13d/model-best-efficientnet-val-acc-0.74.h5"
 # )
 
+# when importing download classification report
+for f in run.files():
+    if f.name.endswith('png'):
+        print(os.path.basename(f.name))
+        run.file(f.name).download(replace=True)
+
 normalization_layer = layers.Rescaling(1.0 / 255)
 AUTOTUNE = AUTOTUNE
 
