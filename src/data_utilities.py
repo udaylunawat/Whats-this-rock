@@ -43,16 +43,21 @@ def remove_corrupted_images(root_folder):
             del_count += 1
             shutil.move(
                 filepath,
-                os.path.join("data", "corrupted_images", os.path.basename(filepath)),
+                os.path.join("data", "corrupted_images",
+                             os.path.basename(filepath)),
             )
-    print(f"Total {del_count} corrupted image moved to 'corrupted_images' folder\n")
+    print(
+        f"Total {del_count} corrupted image moved to 'corrupted_images' folder\n"
+    )
     return None
 
 
 # https://towardsdatascience.com/stratified-sampling-you-may-have-been-splitting-your-dataset-all-wrong-8cfdd0d32502
-def get_stratified_dataset_partitions_pd(
-    df, train_split=0.8, val_split=0.1, test_split=0.1, target_variable=None
-):
+def get_stratified_dataset_partitions_pd(df,
+                                         train_split=0.8,
+                                         val_split=0.1,
+                                         test_split=0.1,
+                                         target_variable=None):
     assert (train_split + test_split + val_split) == 1
 
     # Only allows for equal validation and test splits
@@ -66,8 +71,9 @@ def get_stratified_dataset_partitions_pd(
     if target_variable is not None:
         grouped_df = df_sample.groupby(target_variable)
         arr_list = [
-            np.split(g, [int(train_split * len(g)), int((1 - val_split) * len(g))])
-            for i, g in grouped_df
+            np.split(
+                g, [int(train_split * len(g)),
+                    int((1 - val_split) * len(g))]) for i, g in grouped_df
         ]
 
         train_ds = pd.concat([t[0] for t in arr_list])
@@ -85,12 +91,12 @@ def get_stratified_dataset_partitions_pd(
 
 
 def get_data(sample_size):
-    data = pd.read_csv(os.path.join("data/3_consume/", "image_paths.csv"), index_col=0)
+    data = pd.read_csv(os.path.join("data/3_consume/", "image_paths.csv"),
+                       index_col=0)
     data = data.sample(frac=sample_size).reset_index(drop=True)
     # Splitting data into train, val and test samples using stratified splits
     train_df, val_df, test_df = get_stratified_dataset_partitions_pd(
-        data, 0.8, 0.1, 0.1
-    )
+        data, 0.8, 0.1, 0.1)
     train_df = pd.concat([train_df, val_df])
     return train_df, test_df
 
@@ -124,8 +130,7 @@ def undersample_df(data, class_name):
     merged_df = pd.DataFrame()
     for rock_type in data[class_name].unique():
         temp = data[data[class_name] == rock_type].sample(
-            n=min(data[class_name].value_counts())
-        )
+            n=min(data[class_name].value_counts()))
         merged_df = pd.concat([merged_df, temp])
 
     return merged_df
@@ -150,7 +155,8 @@ def scalar(img):
 
 
 def get_generators(config):
-    IMAGE_SIZE = (config.dataset_config.image_width, config.dataset_config.image_width)
+    IMAGE_SIZE = (config.dataset_config.image_width,
+                  config.dataset_config.image_width)
     if config.train_config.use_augmentations:
         print("\n\nAugmentation is True! rescale=1./255")
         train_datagen = ImageDataGenerator(
@@ -177,9 +183,8 @@ def get_generators(config):
         class_mode="categorical",
     )
 
-    test_datagen = ImageDataGenerator(
-        rescale=1.0 / 255
-    )  # preprocessing_function=scalar
+    test_datagen = ImageDataGenerator(rescale=1.0 /
+                                      255)  # preprocessing_function=scalar
     val_dataset = test_datagen.flow_from_directory(
         "data/4_tfds_dataset/val",
         shuffle=False,
@@ -221,18 +226,19 @@ def get_data_tfds():
         return prepare_dataset(dataset, split)
 
     if config.train_config.use_augmentations:
-        train_dataset = (
-            load_dataset()
-            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
-            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
-        )
+        train_dataset = (load_dataset().map(apply_rand_augment,
+                                            num_parallel_calls=AUTOTUNE).map(
+                                                cut_mix_and_mix_up,
+                                                num_parallel_calls=AUTOTUNE))
     else:
         train_dataset = load_dataset()
 
-    train_dataset = train_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+    train_dataset = train_dataset.map(preprocess_for_model,
+                                      num_parallel_calls=AUTOTUNE)
 
     val_dataset = load_dataset(split="val")
-    val_dataset = val_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+    val_dataset = val_dataset.map(preprocess_for_model,
+                                  num_parallel_calls=AUTOTUNE)
 
     # test_dataset = load_dataset(split="test")
     # test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
@@ -256,12 +262,9 @@ def to_dict(image, label):
 def prepare_dataset(dataset, split):
 
     if split == "train":
-        return (
-            dataset.shuffle(10 * config.dataset_config.batch_size)
-            .map(to_dict, num_parallel_calls=AUTOTUNE)
-            .batch(config.dataset_config.batch_size)
-        )
+        return (dataset.shuffle(10 * config.dataset_config.batch_size).map(
+            to_dict, num_parallel_calls=AUTOTUNE).batch(
+                config.dataset_config.batch_size))
     elif split == "val" or split == "test":
         return dataset.map(to_dict, num_parallel_calls=AUTOTUNE).batch(
-            config.dataset_config.batch_size
-        )
+            config.dataset_config.batch_size)

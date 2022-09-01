@@ -4,6 +4,7 @@ Trains a model on rocks dataset
 """
 
 import os
+
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 import gc
 import random
@@ -38,9 +39,8 @@ FLAGS = flags.FLAGS
 CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
 flags.DEFINE_bool("wandb", False, "MLOps pipeline for our classifier.")
 flags.DEFINE_bool("log_model", False, "Checkpoint model while training.")
-flags.DEFINE_bool(
-    "log_eval", False, "Log model prediction, needs --wandb argument as well."
-)
+flags.DEFINE_bool("log_eval", False,
+                  "Log model prediction, needs --wandb argument as well.")
 
 
 def seed_everything(seed):
@@ -76,10 +76,9 @@ def train(config, train_dataset, val_dataset, labels):
     print(f"\nModel loaded: {config.model_config.backbone}.\n\n")
 
     config.train_config.metrics.append(
-        tfa.metrics.F1Score(
-            num_classes=config.dataset_config.num_classes, average="macro", threshold=0.5
-        )
-    )
+        tfa.metrics.F1Score(num_classes=config.dataset_config.num_classes,
+                            average="macro",
+                            threshold=0.5))
 
     class_weights = get_model_weights(train_dataset)
 
@@ -98,7 +97,8 @@ def train(config, train_dataset, val_dataset, labels):
         save_graph=(False),
         log_evaluation=True,
         generator=val_dataset,
-        validation_steps=val_dataset.samples // config.dataset_config.batch_size,
+        validation_steps=val_dataset.samples //
+        config.dataset_config.batch_size,
     )
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr,]
     # verbose=1
@@ -146,9 +146,8 @@ def evaluate(config, model, history, test_dataset, labels):
     predicted_class_indices = np.argmax(pred, axis=1)
 
     # Confusion Matrix
-    cm = plot.plot_confusion_matrix(
-        labels, test_dataset.classes, predicted_class_indices
-    )
+    cm = plot.plot_confusion_matrix(labels, test_dataset.classes,
+                                    predicted_class_indices)
 
     # Classification Report
     cl_report = classification_report(
@@ -167,28 +166,21 @@ def evaluate(config, model, history, test_dataset, labels):
     wandb.log({"Test F1 Score": scores["f1_score"]})
 
     # average of val and test f1 score
-    wandb.log(
-        {
-            "Avg VT F1 Score": (
-                scores["f1_score"] + max(history.history["val_f1_score"])
-            )
-            / 2
-        }
-    )
+    wandb.log({
+        "Avg VT F1 Score":
+        (scores["f1_score"] + max(history.history["val_f1_score"])) / 2
+    })
     wandb.log({"Confusion Matrix": cm})
-    wandb.log(
-        {
-            "Classification Report Image:": wandb.Image(
-                "cr.png", caption="Classification Report"
-            )
-        }
-    )
+    wandb.log({
+        "Classification Report Image:":
+        wandb.Image("cr.png", caption="Classification Report")
+    })
 
 
 def main(_):
     # Get configs from the config file.
     config = CONFIG.value
-
+    print(config)
     seed_everything(config.seed)
 
     if FLAGS.wandb:
@@ -208,7 +200,7 @@ def main(_):
         "Quartzite",
         "Sandstone",
     ]
-     ## Update the `num_classes` and update wandb config
+    ## Update the `num_classes` and update wandb config
     config.dataset_config.num_classes = len(set(train_dataset.classes))
     if wandb.run is not None:
         wandb.config.update(

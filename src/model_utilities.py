@@ -16,9 +16,10 @@ def get_optimizer(config):
     if config.train_config.optimizer == "adam":
         opt = optimizers.Adam(learning_rate=config.train_config.lr)
     elif config.train_config.optimizer == "rms":
-        opt = optimizers.RMSprop(
-            learning_rate=config.train_config.lr, rho=0.9, epsilon=1e-08, decay=0.0
-        )
+        opt = optimizers.RMSprop(learning_rate=config.train_config.lr,
+                                 rho=0.9,
+                                 epsilon=1e-08,
+                                 decay=0.0)
     elif config.train_config.optimizer == "sgd":
         opt = optimizers.SGD(learning_rate=config.train_config.lr)
     elif config.train_config.optimizer == "adamax":
@@ -73,7 +74,8 @@ def custom_augmentation(np_tensor):
         # cropped width between 70% to 130% of an original width
         new_width = int(np.random.uniform(0.7, 1.30) * np_tensor.shape[1])
         # resize to new height and width
-        cropped = image.resize_with_crop_or_pad(np_tensor, new_height, new_width)
+        cropped = image.resize_with_crop_or_pad(np_tensor, new_height,
+                                                new_width)
         return np.array(image.resize(cropped, np_tensor.shape[:2]))
 
     def gaussian_noise(np_tensor):
@@ -81,19 +83,19 @@ def custom_augmentation(np_tensor):
         # variance: randomly between 1 to 25
         var = np.random.randint(1, 26)
         # sigma is square root of the variance value
-        noise = np.random.normal(mean, var ** 0.5, np_tensor.shape)
+        noise = np.random.normal(mean, var**0.5, np_tensor.shape)
         return np.clip(np_tensor + noise, 0, 255).astype("int")
 
     def cutout(np_tensor):
         cutout_height = int(np.random.uniform(0.1, 0.2) * np_tensor.shape[0])
         cutout_width = int(np.random.uniform(0.1, 0.2) * np_tensor.shape[1])
-        cutout_height_point = np.random.randint(np_tensor.shape[0] - cutout_height)
-        cutout_width_point = np.random.randint(np_tensor.shape[1] - cutout_width)
-        np_tensor[
-            cutout_height_point:cutout_height_point + cutout_height,
-            cutout_width_point:cutout_width_point + cutout_width,
-            :,
-        ] = 127
+        cutout_height_point = np.random.randint(np_tensor.shape[0] -
+                                                cutout_height)
+        cutout_width_point = np.random.randint(np_tensor.shape[1] -
+                                               cutout_width)
+        np_tensor[cutout_height_point:cutout_height_point + cutout_height,
+                  cutout_width_point:cutout_width_point +
+                  cutout_width, :, ] = 127
         return np_tensor
 
     if np.random.uniform() < 0.1:
@@ -128,28 +130,17 @@ def get_model_weights(train_generator):
 
 
 def print_in_color(
-    txt_msg, fore_tupple, back_tupple,
+    txt_msg,
+    fore_tupple,
+    back_tupple,
 ):
     # prints the text_msg in the foreground color specified by fore_tupple with the background specified by back_tupple
     # text_msg is the text, fore_tupple is foregroud color tupple (r,g,b), back_tupple is background tupple (r,g,b)
     rf, gf, bf = fore_tupple
     rb, gb, bb = back_tupple
     msg = "{0}" + txt_msg
-    mat = (
-        "\33[38;2;"
-        + str(rf)
-        + ";"
-        + str(gf)
-        + ";"
-        + str(bf)
-        + ";48;2;"
-        + str(rb)
-        + ";"
-        + str(gb)
-        + ";"
-        + str(bb)
-        + "m"
-    )
+    mat = ("\33[38;2;" + str(rf) + ";" + str(gf) + ";" + str(bf) + ";48;2;" +
+           str(rb) + ";" + str(gb) + ";" + str(bb) + "m")
     print(msg.format(mat), flush=True)
     print("\33[0m", flush=True)  # returns default print color to back to black
     return
@@ -204,7 +195,9 @@ class LRA(Callback):
     def on_epoch_begin(self, epoch, logs=None):
         self.now = time.time()
 
-    def on_epoch_end(self, epoch, logs=None):  # method runs on the end of each epoch
+    def on_epoch_end(self,
+                     epoch,
+                     logs=None):  # method runs on the end of each epoch
         later = time.time()
         duration = later - self.now
         if epoch == self.initial_epoch or LRA.reset == True:
@@ -222,9 +215,8 @@ class LRA(Callback):
             )
             print_in_color(msg, (244, 252, 3), (55, 65, 80))
 
-        lr = float(
-            K.get_value(self.model.optimizer.lr)
-        )  # get the current learning rate
+        lr = float(K.get_value(
+            self.model.optimizer.lr))  # get the current learning rate
         self.wandb.log({"lr": lr})
         current_lr = lr
         v_loss = logs.get("val_loss")  # get the validation loss for this epoch
@@ -234,7 +226,7 @@ class LRA(Callback):
         color = (0, 255, 0)
         # print ( '\n',v_loss, self.lowest_vloss, acc, self.highest_tracc)
         if (
-            acc < self.threshold
+                acc < self.threshold
         ):  # if training accuracy is below threshold adjust lr based on training accuracy
             monitor = "accuracy"
             if acc > self.highest_tracc:  # training accuracy improved in the epoch
@@ -255,8 +247,8 @@ class LRA(Callback):
                     color = (255, 0, 0)
                     self.lr = lr * self.factor  # adjust the learning by factor
                     K.set_value(
-                        self.model.optimizer.lr, self.lr
-                    )  # set the learning rate in the optimizer
+                        self.model.optimizer.lr,
+                        self.lr)  # set the learning rate in the optimizer
                     self.count = 0  # reset the count to 0
                     self.stop_count = self.stop_count + 1
                     if self.dwell:
@@ -290,8 +282,8 @@ class LRA(Callback):
                     )  # increment stop counter because lr was adjusted
                     self.count = 0  # reset counter
                     K.set_value(
-                        self.model.optimizer.lr, self.lr
-                    )  # set the learning rate in the optimizer
+                        self.model.optimizer.lr,
+                        self.lr)  # set the learning rate in the optimizer
                     if self.dwell:
                         self.model.set_weights(
                             LRA.best_weights
@@ -303,7 +295,7 @@ class LRA(Callback):
         msg = f"{str(epoch+1):^3s}/{str(LRA.tepochs):4s} {loss:^9.3f}{acc*100:^9.3f}{v_loss:^9.5f}{v_acc*100:^9.3f}{current_lr:^9.5f}{self.lr:^9.5f}{monitor:^11s}{duration:^8.2f}"
         print_in_color(msg, color, (55, 65, 80))
         if (
-            self.stop_count > self.stop_patience - 1
+                self.stop_count > self.stop_patience - 1
         ):  # check if learning rate has been adjusted stop_count times with no improvement
             msg = f" training has been halted at epoch {epoch + 1} after {self.stop_patience} adjustments of learning rate with no improvement"
             print_in_color(msg, (0, 255, 0), (55, 65, 80))

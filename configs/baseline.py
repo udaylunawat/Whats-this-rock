@@ -35,9 +35,9 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.model_img_height = 224
     configs.model_img_width = 224
     configs.model_img_channels = 3
-    configs.backbone = "inceptionresnetv2"
+    configs.backbone = "efficientnet"
     configs.use_pretrained_weights = True
-    configs.dropout_rate = 0.5
+    configs.dropout_rate = 0.3
     configs.post_gap_dropout = False
 
     return configs
@@ -65,8 +65,8 @@ def get_callback_configs() -> ml_collections.ConfigDict:
 def get_train_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.epochs = 50
-    configs.lr = 0.01
-    configs.use_augmentations = False
+    configs.lr = 0.00007
+    configs.use_augmentations = True
     configs.use_class_weights = True
     configs.optimizer = "adam"
     configs.sgd_momentum = 0.9

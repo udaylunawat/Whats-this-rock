@@ -10,7 +10,8 @@ def create_classes_dir(args):
     for dataset in os.listdir(args.root):
         class_dirs = os.listdir(os.path.join(args.root, dataset))
         for class_name in class_dirs:
-            sub_classes = os.listdir(os.path.join(args.root, dataset, class_name))
+            sub_classes = os.listdir(
+                os.path.join(args.root, dataset, class_name))
             for subclass in sub_classes:
                 shutil.move(
                     os.path.join(args.root, dataset, class_name, subclass),
@@ -18,6 +19,7 @@ def create_classes_dir(args):
                 )
 
     shutil.rmtree(args.root)
+
 
 def process_data(config):
 
@@ -37,32 +39,29 @@ def process_data(config):
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
         print(f"Smallest class count is {scc}\n")
-        splitfolders.fixed(
-            "data/2_processed",
-            output="data/4_tfds_dataset",
-            oversample=True,
-            fixed=(((scc // 2) - 1, (scc // 2) - 1)),
-            seed=args.seed,
-        )
+        splitfolders.fixed("data/2_processed",
+                           output="data/4_tfds_dataset",
+                           oversample=True,
+                           fixed=(((scc // 2) - 1, (scc // 2) - 1)),
+                           seed=args.seed,
+                           move=True)
     elif args.dataset_config.sampling == 'undersample':
         print(f"Undersampling to {args.dataset_config.sampling} samples.")
-        splitfolders.fixed(
-            "data/2_processed",
-            output="data/4_tfds_dataset",
-            fixed=(
-                int(scc * 0.75),
-                int(scc * 0.125),
-                int(scc * 0.125),
-            ),
-            oversample=False,
-            seed=args.seed,
-        )
+        splitfolders.fixed("data/2_processed",
+                           output="data/4_tfds_dataset",
+                           fixed=(
+                               int(scc * 0.75),
+                               int(scc * 0.125),
+                               int(scc * 0.125),
+                           ),
+                           oversample=False,
+                           seed=args.seed,
+                           move=True)
     elif not args.dataset_config.sampling:
         print("No Sampling.")
-        splitfolders.ratio(
-            "data/2_processed",
-            output="data/4_tfds_dataset",
-            ratio=(0.75, 0.125, 0.125),
-            seed=args.seed,
-        )
+        splitfolders.ratio("data/2_processed",
+                           output="data/4_tfds_dataset",
+                           ratio=(0.75, 0.125, 0.125),
+                           seed=args.seed,
+                           move=True)
     print('\n\n')

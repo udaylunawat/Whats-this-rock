@@ -17,7 +17,6 @@ from ml_collections.config_flags import config_flags
 FLAGS = flags.FLAGS
 CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
 
-
 # print("Downloading model...")
 file_name = "model-best.h5"
 # api = wandb.Api()
@@ -43,7 +42,8 @@ for f in run.files():
 
 normalization_layer = layers.Rescaling(1.0 / 255)
 
-IMAGE_SIZE = (config.dataset_config.image_width, config.dataset_config.image_width)
+IMAGE_SIZE = (config.dataset_config.image_width,
+              config.dataset_config.image_width)
 batch_size = config.dataset_config.batch_size
 
 class_names = [
@@ -59,10 +59,12 @@ num_classes = len(class_names)
 
 model = models.load_model(file_name)
 optimizer = optimizers.Adam()
-f1_score = tfa.metrics.F1Score(num_classes=num_classes, average="macro", threshold=0.5)
-model.compile(
-    optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy", f1_score]
-)
+f1_score = tfa.metrics.F1Score(num_classes=num_classes,
+                               average="macro",
+                               threshold=0.5)
+model.compile(optimizer=optimizer,
+              loss="categorical_crossentropy",
+              metrics=["accuracy", f1_score])
 
 print("Model loaded!")
 
@@ -72,9 +74,7 @@ def preprocess_image(file):
     file_bytes = np.asarray(bytearray(f.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    img = cv2.resize(
-        img, IMAGE_SIZE, interpolation=cv2.INTER_AREA
-    )
+    img = cv2.resize(img, IMAGE_SIZE, interpolation=cv2.INTER_AREA)
     return img
 
 
