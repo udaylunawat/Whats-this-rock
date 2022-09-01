@@ -1,3 +1,5 @@
+-e .
+
 scikit-learn
 opencv-python
 kaggle
