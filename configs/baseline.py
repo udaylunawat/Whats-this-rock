@@ -32,6 +32,7 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.use_pretrained_weights = True
     configs.trainable = False
     configs.dropout_rate = 0.3
+    configs.post_gap_dropout = False
 
     return configs
 
