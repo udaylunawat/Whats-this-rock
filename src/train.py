@@ -1,22 +1,21 @@
 #!/usr/bin/env python
-
 """
 Trains a model on rocks dataset
 """
-import os
 
+import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 import gc
 import random
 import numpy as np
 import pandas as pd
-
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 from models import get_model
 from data_utilities import get_generators
 from model_utilities import (
+    get_optimizer,
     get_model_weights,
     LRA,
 )
@@ -32,6 +31,7 @@ from wandb.keras import WandbCallback
 from absl import app
 from absl import flags
 from ml_collections.config_flags import config_flags
+
 # Config
 FLAGS = flags.FLAGS
 CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
@@ -42,7 +42,7 @@ flags.DEFINE_bool(
 )
 
 
-def seed_everything(seed=config.seed):
+def seed_everything(seed):
     os.environ["TF_CUDNN_DETERMINISTIC"] = "1"
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
@@ -50,7 +50,7 @@ def seed_everything(seed=config.seed):
     tf.random.set_seed(seed)
 
 
-def train(config):
+def train(config, train_dataset, val_dataset, labels):
 
     tf.keras.backend.clear_session()
     # file_name = "model-best.h5"
@@ -82,6 +82,7 @@ def train(config):
 
     class_weights = get_model_weights(train_dataset)
 
+    opt = get_optimizer(config)
     # Compile the model
     model.compile(
         optimizer=config.train_config.optimizer,
@@ -134,7 +135,7 @@ def train(config):
     return model, history
 
 
-def evaluate(config):
+def evaluate(config, model, history, test_dataset, labels):
     # Scores
     scores = model.evaluate(test_dataset, return_dict=True)
     print("Scores: ", scores)
@@ -159,6 +160,7 @@ def evaluate(config):
     print(cl_report)
 
     cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+    os.makedirs('imgs')
     plt.savefig("imgs/cr.png", dpi=400)
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
@@ -186,7 +188,6 @@ def evaluate(config):
 def main(_):
     # Get configs from the config file.
     config = CONFIG.value
-    print(config)
 
     seed_everything(config.seed)
 
@@ -207,8 +208,13 @@ def main(_):
         "Quartzite",
         "Sandstone",
     ]
-    model, history = train(config)
-    evaluate(config)
+     ## Update the `num_classes` and update wandb config
+    config.dataset_config.num_classes = len(set(train_dataset.classes))
+    if wandb.run is not None:
+        wandb.config.update(
+            {"dataset_config.num_classes": config.dataset_config.num_classes})
+    model, history = train(config, train_dataset, val_dataset, labels)
+    evaluate(config, model, history, test_dataset, labels)
 
     del model
     _ = gc.collect()

@@ -8,14 +8,18 @@ from io import BytesIO
 from tensorflow.data import AUTOTUNE
 from tensorflow.keras import layers, models, optimizers
 import tensorflow_addons as tfa
+
 from absl import app
 from absl import flags
 from ml_collections.config_flags import config_flags
+
 # Config
 FLAGS = flags.FLAGS
 CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
+
+
 # print("Downloading model...")
-# file_name = "model-best.h5"
+file_name = "model-best.h5"
 # api = wandb.Api()
 # run = api.run(
 #     config["pretrained_model_link"]
@@ -25,7 +29,7 @@ CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
 # pml = config["pretrained_model_link"]
 # print(f"Downloaded Trained model: {pml}.")
 
-model = models.load_model('model-best.h5')
+model = models.load_model(file_name)
 
 # os.system(
 #     "wget -O model.h5 https://www.dropbox.com/s/urflwaj6fllr13d/model-best-efficientnet-val-acc-0.74.h5"
