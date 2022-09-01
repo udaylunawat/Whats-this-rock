@@ -13,12 +13,12 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from preprocess import process_data
-from models import get_model
-from data_utilities import get_generators
-from model_utilities import (
+from src.preprocess import process_data
+from src.models import get_model
+from src.data_utilities import get_generators
+from src.model_utilities import (
     get_optimizer,
-    get_model_weights,
+    get_model_weights_ds,
     LRA,
 )
 import plot
@@ -120,6 +120,10 @@ def train(config, train_dataset, val_dataset, labels):
     verbose = 0
     LRA.tepochs = config.train_config.epochs  # used to determine value of last epoch for printing
 
+    # AUTOTUNE = tf.data.AUTOTUNE
+    # train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+    # val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+
     # TODO (udaylunawat): add steps_per_epoch and validation_steps
     history = model.fit(
         train_dataset,
@@ -138,6 +142,7 @@ def train(config, train_dataset, val_dataset, labels):
 
 def evaluate(config, model, history, test_dataset, labels):
     # Scores
+    # test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
     scores = model.evaluate(test_dataset, return_dict=True)
     print("Scores: ", scores)
 
