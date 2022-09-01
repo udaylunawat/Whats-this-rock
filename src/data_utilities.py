@@ -207,6 +207,53 @@ def get_generators(config):
     return train_dataset, val_dataset, test_generator
 
 
+def get_tfds_from_dir(config):
+    IMAGE_SIZE = (config.dataset_config.image_width,
+                  config.dataset_config.image_width)
+    train_ds = tf.keras.utils.image_dataset_from_directory(
+        "data/4_tfds_dataset/train",
+        labels='inferred',
+        label_mode='categorical',
+        color_mode='rgb',
+        batch_size=config.dataset_config.batch_size,
+        image_size=IMAGE_SIZE,
+        shuffle=True,
+        seed=config.seed,
+        # subset='training'
+    )
+
+    val_ds = tf.keras.utils.image_dataset_from_directory(
+        "data/4_tfds_dataset/val",
+        labels='inferred',
+        label_mode='categorical',
+        color_mode='rgb',
+        batch_size=config.dataset_config.batch_size,
+        image_size=IMAGE_SIZE,
+        shuffle=False,
+        seed=config.seed,
+        # subset='validation'
+    )
+
+    test_ds = tf.keras.utils.image_dataset_from_directory(
+        "data/4_tfds_dataset/test",
+        labels='inferred',
+        label_mode='categorical',
+        color_mode='rgb',
+        batch_size=config.dataset_config.batch_size,
+        image_size=IMAGE_SIZE,
+        shuffle=False,
+        seed=config.seed,
+        # subset='validation'
+    )
+    AUTOTUNE = tf.data.AUTOTUNE
+
+    train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+    val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+    test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
+
+    return train_ds, val_ds, test_ds
+
+
 ######################################## TFDS Dataset Utilities ########################################
 def get_data_tfds():
     # build the tfds dataset from ImageFolder
