@@ -17,12 +17,12 @@ def get_dataset_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.dataset_name = "rocks"
     configs.root = "data/1_extracted/"
-    configs.sampling = "oversample"
+    configs.sampling = "undersample"
     configs.image_height = 224
     configs.image_width = 224
     configs.channels = 3
     configs.apply_resize = True
-    configs.batch_size = 32
+    configs.batch_size = 64
     configs.num_classes = config_dict.placeholder(int)
     configs.apply_one_hot = False
     configs.do_cache = False
@@ -35,8 +35,9 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.model_img_height = 224
     configs.model_img_width = 224
     configs.model_img_channels = 3
-    configs.backbone = "efficientnet"
+    configs.backbone = "inceptionresnetv2"
     configs.use_pretrained_weights = True
+    configs.trainable = False
     configs.dropout_rate = 0.3
     configs.post_gap_dropout = False
 
@@ -47,11 +48,11 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     # Early stopping
     configs.use_earlystopping = True
-    configs.early_patience = 6
+    configs.early_patience = 15
     # Reduce LR on plateau
-    configs.use_reduce_lr_on_plateau = False
-    configs.rlrp_factor = 0.2
-    configs.rlrp_patience = 3
+    configs.use_reduce_lr_on_plateau = True
+    configs.rlrp_factor = 0.9
+    configs.rlrp_patience = 1
     configs.threshold = 0.7
     # Model checkpointing
     configs.checkpoint_filepath = "wandb/model_{epoch}"
@@ -64,12 +65,12 @@ def get_callback_configs() -> ml_collections.ConfigDict:
 
 def get_train_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
-    configs.epochs = 50
-    configs.lr = 0.00007
+    configs.epochs = 200
+    configs.lr = 0.001
     configs.use_augmentations = True
     configs.use_class_weights = True
     configs.optimizer = "adam"
-    configs.sgd_momentum = 0.9
+    configs.sgd_momentum = 0.7
     configs.loss = "categorical_crossentropy"
     configs.metrics = ["accuracy"]
 
