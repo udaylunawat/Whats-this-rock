@@ -52,7 +52,7 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs.use_reduce_lr_on_plateau = False
     configs.rlrp_factor = 0.2
     configs.rlrp_patience = 3
-    config.threshold = 0.7
+    configs.threshold = 0.7
     # Model checkpointing
     configs.checkpoint_filepath = "wandb/model_{epoch}"
     configs.save_best_only = True
