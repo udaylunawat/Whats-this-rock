@@ -10,17 +10,13 @@ import gc
 import random
 import numpy as np
 import pandas as pd
-from absl import app
-from absl import flags
-from ml_collections.config_flags import config_flags
 
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-
+from models import get_model
 from data_utilities import get_generators
 from model_utilities import (
-    get_model,
     get_model_weights,
     LRA,
 )
@@ -33,10 +29,12 @@ import tensorflow_addons as tfa
 import wandb
 from wandb.keras import WandbCallback
 
-
+from absl import app
+from absl import flags
+from ml_collections.config_flags import config_flags
 # Config
 FLAGS = flags.FLAGS
-CONFIG = config_flags.DEFINE_config_file("config")
+CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
 flags.DEFINE_bool("wandb", False, "MLOps pipeline for our classifier.")
 flags.DEFINE_bool("log_model", False, "Checkpoint model while training.")
 flags.DEFINE_bool(
@@ -44,41 +42,41 @@ flags.DEFINE_bool(
 )
 
 
-def seed_everything(seed=42):
+def seed_everything(seed=config.seed):
     os.environ["TF_CUDNN_DETERMINISTIC"] = "1"
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
-    tf.random.set_seed(1)
+    tf.random.set_seed(seed)
 
 
 def train(config):
 
     tf.keras.backend.clear_session()
-    file_name = "model-best.h5"
-    if config["finetune"]:
-        if os.path.exists(file_name):
-            os.remove("model-best.h5")
+    # file_name = "model-best.h5"
+    # if config["finetune"]:
+    #     if os.path.exists(file_name):
+    #         os.remove("model-best.h5")
 
-        api = wandb.Api()
-        run = api.run(
-            config["pretrained_model_link"]
-        )  # different-sweep-34-efficientnet-epoch-3-val_f1_score-0.71.hdf5
-        run.file(file_name).download()
-        model = tf.keras.models.load_model(file_name)
-        pml = config["pretrained_model_link"]
-        print(f"Downloaded Trained model: {pml},\nfinetuning...")
-    else:
-        # build model
-        model = get_model(config)
+    #     api = wandb.Api()
+    #     run = api.run(
+    #         config["pretrained_model_link"]
+    #     )  # different-sweep-34-efficientnet-epoch-3-val_f1_score-0.71.hdf5
+    #     run.file(file_name).download()
+    #     model = tf.keras.models.load_model(file_name)
+    #     pml = config["pretrained_model_link"]
+    #     print(f"Downloaded Trained model: {pml},\nfinetuning...")
+    # else:
+    #     # build model
+    #     model = get_model(config)
+    model = get_model(config)
+    model.summary()
 
-    # print(model.summary())
+    print(f"Model loaded: {config.model_config.backbone}.\n\n")
 
-    print(f"Model loaded: {pml}.\n\n")
-
-    config["metrics"].append(
+    config.train_config.metrics.append(
         tfa.metrics.F1Score(
-            num_classes=config["num_classes"], average="macro", threshold=0.5
+            num_classes=config.dataset_config.num_classes, average="macro", threshold=0.5
         )
     )
 
@@ -98,7 +96,7 @@ def train(config):
         save_graph=(False),
         log_evaluation=True,
         generator=val_dataset,
-        validation_steps=val_dataset.samples // config["batch_size"],
+        validation_steps=val_dataset.samples // config.dataset_config.batch_size,
     )
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr,]
     # verbose=1
@@ -106,29 +104,27 @@ def train(config):
         LRA(
             wandb=wandb,
             model=model,
-            patience=config["lr_reduce_patience"],
-            stop_patience=config["earlystopping_patience"],
+            patience=config.callback_config.rlrp_patience,
+            stop_patience=config.callback_config.early_patience,
             threshold=0.9,
-            factor=config["lr_reduce_factor"],
+            factor=config.callback_config.rlrp_factor,
             dwell=False,
-            model_name=config["model_name"],
-            freeze=config["freeze"],
+            model_name=config.model_config.backbone,
+            freeze=False,
             initial_epoch=0,
         ),
         wandbcallback,
     ]
     verbose = 0
-    LRA.tepochs = config[
-        "max_epochs"
-    ]  # used to determine value of last epoch for printing
+    LRA.tepochs = config.train_config.epochs  # used to determine value of last epoch for printing
 
     # TODO (udaylunawat): add steps_per_epoch and validation_steps
     history = model.fit(
         train_dataset,
-        # steps_per_epoch=train_dataset.samples // config["batch_size"],
+        # steps_per_epoch=train_dataset.samples // config.dataset_config.batch_size,
         epochs=config.train_config.epochs,
         validation_data=val_dataset,
-        # validation_steps=val_dataset.samples // config["batch_size"],
+        # validation_steps=val_dataset.samples // config.dataset_config.batch_size,
         callbacks=callbacks,
         class_weight=class_weights,
         workers=-1,
@@ -187,7 +183,7 @@ def evaluate(config):
     )
 
 
-def main():
+def main(_):
     # Get configs from the config file.
     config = CONFIG.value
     print(config)

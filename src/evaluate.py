@@ -36,13 +36,13 @@ except:
 
 opt = get_optimizer(config)
 
-config["metrics"].append(
+config.train_config.metrics.append(
     tfa.metrics.F1Score(
-        num_classes=config["num_classes"], average="macro", threshold=0.5
+        num_classes=config.dataset_config.num_classes, average="macro", threshold=0.5
     )
 )
 
-model.compile(loss=config["loss_fn"], optimizer=opt, metrics=config["metrics"])
+model.compile(loss=config.train_config.loss, optimizer=config.train_config.optimizer, metrics=config.train_config.metrics)
 
 # Scores
 scores = model.evaluate(test_dataset, return_dict=True)

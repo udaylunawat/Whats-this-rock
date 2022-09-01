@@ -32,10 +32,10 @@ def help(update, context):
 
 
 def model_details(update, context):
-    update.message.reply_text(
-        f"""Model details can be found at \nhttps://wandb.ai/{config["pretrained_model_link"]}/
-"""
-    )
+#     update.message.reply_text(
+#         f"""Model details can be found at \nhttps://wandb.ai/{config["pretrained_model_link"]}/
+# """
+#     )
     dir = os.listdir('media/images')
     cr = os.path.join('media', 'images', dir[0])
     update.message.reply_text("Here's the Confusion matrix heatmap for the model.")

@@ -17,12 +17,6 @@ from augment_utilities import (
     visualize_dataset,
 )
 
-# load config from config.json file
-with open("config.json") as config_file:
-    config = json.load(config_file)
-
-IMAGE_SIZE = (config["image_size"], config["image_size"])
-
 
 def find_filepaths(root_folder):
     filepaths = []
@@ -156,7 +150,8 @@ def scalar(img):
 
 
 def get_generators(config):
-    if config["augment"]:
+    IMAGE_SIZE = (config.dataset_config.image_width, config.dataset_config.image_width)
+    if config.train_config.use_augmentations:
         print("\n\nAugmentation is True! rescale=1./255")
         train_datagen = ImageDataGenerator(
             horizontal_flip=True,
@@ -167,7 +162,7 @@ def get_generators(config):
             zoom_range=[0.5, 1.5],
             rescale=1.0 / 255,
         )  # preprocessing_function=scalar
-    elif not config["augment"]:
+    elif not config.train_config.use_augmentations:
         print("No Augmentation!")
         train_datagen = ImageDataGenerator(rescale=1.0 / 255)
     else:
@@ -175,8 +170,8 @@ def get_generators(config):
 
     train_dataset = train_datagen.flow_from_directory(
         "data/4_tfds_dataset/train",
-        target_size=(config["image_size"], config["image_size"]),
-        batch_size=config["batch_size"],
+        target_size=IMAGE_SIZE,
+        batch_size=config.dataset_config.batch_size,
         shuffle=True,
         color_mode="rgb",
         class_mode="categorical",
@@ -189,19 +184,19 @@ def get_generators(config):
         "data/4_tfds_dataset/val",
         shuffle=False,
         color_mode="rgb",
-        target_size=(config["image_size"], config["image_size"]),
-        batch_size=config["image_size"],
+        target_size=IMAGE_SIZE,
+        batch_size=config.dataset_config.batch_size,
         class_mode="categorical",
     )
 
     test_generator = test_datagen.flow_from_directory(
         "data/4_tfds_dataset/test",
-        batch_size=config["batch_size"],
-        seed=42,
+        batch_size=config.dataset_config.batch_size,
+        seed=config.seed,
         color_mode="rgb",
         shuffle=False,
         class_mode="categorical",
-        target_size=(config["image_size"], config["image_size"]),
+        target_size=IMAGE_SIZE,
     )
 
     return train_dataset, val_dataset, test_generator
@@ -219,13 +214,13 @@ def get_data_tfds():
     data, builder = get_data_tfds()
 
     num_classes = builder.info.features["label"].num_classes
-    config["num_classes"] = num_classes
+    config.dataset_config.num_classes = num_classes
 
     def load_dataset(split="train"):
         dataset = data[split]
         return prepare_dataset(dataset, split)
 
-    if config["augment"]:
+    if config.train_config.use_augmentations:
         train_dataset = (
             load_dataset()
             .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
@@ -254,7 +249,7 @@ def get_data_tfds():
 def to_dict(image, label):
     image = tf.image.resize(image, IMAGE_SIZE)
     image = cast(image, float32)
-    label = one_hot(label, config["num_classes"])
+    label = one_hot(label, config.dataset_config.num_classes)
     return {"images": image, "labels": label}
 
 
@@ -262,11 +257,11 @@ def prepare_dataset(dataset, split):
 
     if split == "train":
         return (
-            dataset.shuffle(10 * config["batch_size"])
+            dataset.shuffle(10 * config.dataset_config.batch_size)
             .map(to_dict, num_parallel_calls=AUTOTUNE)
-            .batch(config["batch_size"])
+            .batch(config.dataset_config.batch_size)
         )
     elif split == "val" or split == "test":
         return dataset.map(to_dict, num_parallel_calls=AUTOTUNE).batch(
-            config["batch_size"]
+            config.dataset_config.batch_size
         )

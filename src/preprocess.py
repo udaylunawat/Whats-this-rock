@@ -6,6 +6,15 @@ import argparse
 import splitfolders
 from data_utilities import remove_corrupted_images, get_df
 
+from absl import app
+from absl import flags
+from ml_collections.config_flags import config_flags
+from ml_collections import config_dict
+from ml_collections import config_flags
+
+# Config
+FLAGS = flags.FLAGS
+CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
 
 def create_classes_dir(args):
     for dataset in os.listdir(args.root):
@@ -20,27 +29,20 @@ def create_classes_dir(args):
 
     shutil.rmtree(args.root)
 
+def main(_):
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-r", "--root", type=str, default="data/1_extracted/", help="Root Folder"
-    )
-    parser.add_argument("-usample", "--undersample", type=int, help="Undersample Data")
-    parser.add_argument(
-        "-osample", "--oversample", action="store_true", help="Oversample Data"
-    )
-
-    args = parser.parse_args()
+    # Get configs from the config file.
+    args = CONFIG.value
 
     # create_classes_dir(args)
     # remove_corrupted_images('data/2_processed')
-    print(get_df().info())
+    print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
-        "Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
+        "\nSplitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
     )
-    if args.oversample:
+    if args.dataset_config.sampling == 'oversample':
+        print("Oversampling...")
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
         scc = min(get_df()["class"].value_counts())
@@ -50,24 +52,28 @@ if __name__ == "__main__":
             output="data/4_tfds_dataset",
             oversample=True,
             fixed=(((scc // 2) - 1, (scc // 2) - 1)),
-            seed=42,
+            seed=args.seed,
         )
-    elif args.undersample:
+    elif isinstance(args.dataset_config.sampling, (int, float)):
+        print(f"Undersampling to {args.dataset_config.sampling} samples.")
         splitfolders.fixed(
             "data/2_processed",
             output="data/4_tfds_dataset",
             fixed=(
-                int(args.undersample * 0.75),
-                int(args.undersample * 0.125),
-                int(args.undersample * 0.125),
+                int(args.dataset_config.sampling * 0.75),
+                int(args.dataset_config.sampling * 0.125),
+                int(args.dataset_config.sampling * 0.125),
             ),
             oversample=False,
-            seed=42,
+            seed=args.seed,
         )
-    else:
+    elif not args.dataset_config.sampling:
+        print("No Sampling.")
         splitfolders.ratio(
             "data/2_processed",
             output="data/4_tfds_dataset",
             ratio=(0.75, 0.125, 0.125),
-            seed=42,
+            seed=args.seed,
         )
+if __name__ == "__main__":
+    app.run(main)

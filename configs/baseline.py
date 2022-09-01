@@ -16,6 +16,8 @@ def get_wandb_configs() -> ml_collections.ConfigDict:
 def get_dataset_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.dataset_name = "rocks"
+    configs.root = "data/1_extracted/"
+    configs.sampling = False
     configs.image_height = 224
     configs.image_width = 224
     configs.channels = 3
@@ -62,6 +64,7 @@ def get_callback_configs() -> ml_collections.ConfigDict:
 def get_train_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.epochs = 3
+    configs.lr = 0.01
     configs.use_augmentations = False
     configs.use_class_weights = True
     configs.optimizer = "adam"

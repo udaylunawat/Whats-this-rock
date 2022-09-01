@@ -9,48 +9,48 @@ from tensorflow.keras import optimizers
 from tensorflow.keras import backend as K
 from tensorflow import image
 
-import models
+# import models
 
 
 def get_optimizer(config):
-    if config["optimizer"] == "adam":
-        opt = optimizers.Adam(learning_rate=config["lr"])
-    elif config["optimizer"] == "rms":
+    if config.train_config.optimizer == "adam":
+        opt = optimizers.Adam(learning_rate=config.train_config.lr)
+    elif config.train_config.optimizer == "rms":
         opt = optimizers.RMSprop(
-            learning_rate=config["lr"], rho=0.9, epsilon=1e-08, decay=0.0
+            learning_rate=config.train_config.lr, rho=0.9, epsilon=1e-08, decay=0.0
         )
-    elif config["optimizer"] == "sgd":
-        opt = optimizers.SGD(learning_rate=config["lr"])
-    elif config["optimizer"] == "adamax":
-        opt = optimizers.Adamax(learning_rate=config["lr"])
+    elif config.train_config.optimizer == "sgd":
+        opt = optimizers.SGD(learning_rate=config.train_config.lr)
+    elif config.train_config.optimizer == "adamax":
+        opt = optimizers.Adamax(learning_rate=config.train_config.lr)
 
     return opt
 
 
-def get_model(config):
-    models_dict = {
-        "efficientnet": models.get_efficientnet,
-        "resnet": models.get_resnet,
-        "small_cnn": models.get_small_cnn,
-        "large_cnn": models.get_large_cnn,
-        "baseline": models.get_baseline,
-        "mobilenet": models.get_mobilenet,
-        "mobilenetv2": models.get_mobilenetv2,
-        "inceptionresnetv2": models.get_inceptionresnetv2,
-        "efficientnetv2m": models.get_efficientnetv2m,
-    }
+# def get_model(config):
+#     models_dict = {
+#         "efficientnet": models.get_efficientnet,
+#         "resnet": models.get_resnet,
+#         "small_cnn": models.get_small_cnn,
+#         "large_cnn": models.get_large_cnn,
+#         "baseline": models.get_baseline,
+#         "mobilenet": models.get_mobilenet,
+#         "mobilenetv2": models.get_mobilenetv2,
+#         "inceptionresnetv2": models.get_inceptionresnetv2,
+#         "efficientnetv2m": models.get_efficientnetv2m,
+#     }
 
-    return models_dict[config["model_name"]](config)
+#     return models_dict[config.model_config.backbone](config)
 
 
 def get_best_checkpoint():
-    max = 0
+    max_val_acc = 0
     best_model = None
     for file_name in os.listdir("checkpoints"):
         if file_name.endswith("5"):
             val_acc = int(os.path.basename(file_name).split(".")[-2])
-            if val_acc > max:
-                max = val_acc
+            if val_acc > max_val_acc:
+                max_val_acc = val_acc
                 best_model = file_name
     return best_model
 
