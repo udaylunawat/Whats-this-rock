@@ -12,6 +12,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from preprocess import process_data
 from models import get_model
 from data_utilities import get_generators
 from model_utilities import (
@@ -72,7 +73,7 @@ def train(config, train_dataset, val_dataset, labels):
     model = get_model(config)
     model.summary()
 
-    print(f"Model loaded: {config.model_config.backbone}.\n\n")
+    print(f"\nModel loaded: {config.model_config.backbone}.\n\n")
 
     config.train_config.metrics.append(
         tfa.metrics.F1Score(
@@ -85,7 +86,7 @@ def train(config, train_dataset, val_dataset, labels):
     opt = get_optimizer(config)
     # Compile the model
     model.compile(
-        optimizer=config.train_config.optimizer,
+        optimizer=opt,
         loss=config.train_config.loss,
         metrics=config.train_config.metrics,
     )
@@ -107,7 +108,7 @@ def train(config, train_dataset, val_dataset, labels):
             model=model,
             patience=config.callback_config.rlrp_patience,
             stop_patience=config.callback_config.early_patience,
-            threshold=0.9,
+            threshold=config.callback_config.threshold,
             factor=config.callback_config.rlrp_factor,
             dwell=False,
             model_name=config.model_config.backbone,
@@ -160,8 +161,7 @@ def evaluate(config, model, history, test_dataset, labels):
     print(cl_report)
 
     cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
-    os.makedirs('imgs')
-    plt.savefig("imgs/cr.png", dpi=400)
+    plt.savefig("cr.png", dpi=400)
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
     wandb.log({"Test F1 Score": scores["f1_score"]})
@@ -179,7 +179,7 @@ def evaluate(config, model, history, test_dataset, labels):
     wandb.log(
         {
             "Classification Report Image:": wandb.Image(
-                "imgs/cr.png", caption="Classification Report"
+                "cr.png", caption="Classification Report"
             )
         }
     )
@@ -197,7 +197,7 @@ def main(_):
             config=config.to_dict(),
             allow_val_change=True,
         )
-
+    process_data(config)
     train_dataset, val_dataset, test_dataset = get_generators(config)
     labels = [
         "Basalt",
