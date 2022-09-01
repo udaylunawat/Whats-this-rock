@@ -17,14 +17,14 @@ def get_dataset_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.dataset_name = "rocks"
     configs.root = "data/1_extracted/"
-    configs.sampling = False
+    configs.sampling = "oversample"
     configs.image_height = 224
     configs.image_width = 224
     configs.channels = 3
     configs.apply_resize = True
     configs.batch_size = 32
     configs.num_classes = config_dict.placeholder(int)
-    configs.apply_one_hot = True
+    configs.apply_one_hot = False
     configs.do_cache = False
 
     return configs
@@ -35,7 +35,7 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.model_img_height = 224
     configs.model_img_width = 224
     configs.model_img_channels = 3
-    configs.backbone = "efficientnet"
+    configs.backbone = "inceptionresnetv2"
     configs.use_pretrained_weights = True
     configs.dropout_rate = 0.5
     configs.post_gap_dropout = False
@@ -52,6 +52,7 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs.use_reduce_lr_on_plateau = False
     configs.rlrp_factor = 0.2
     configs.rlrp_patience = 3
+    config.threshold = 0.7
     # Model checkpointing
     configs.checkpoint_filepath = "wandb/model_{epoch}"
     configs.save_best_only = True
@@ -63,7 +64,7 @@ def get_callback_configs() -> ml_collections.ConfigDict:
 
 def get_train_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
-    configs.epochs = 3
+    configs.epochs = 50
     configs.lr = 0.01
     configs.use_augmentations = False
     configs.use_class_weights = True
