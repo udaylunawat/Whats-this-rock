@@ -115,11 +115,22 @@ def custom_augmentation(np_tensor):
     return np.array(np_tensor)
 
 
-def get_model_weights(train_generator):
+def get_model_weights_gen(train_generator):
     class_weights = class_weight.compute_class_weight(
         class_weight="balanced",
         classes=np.unique(train_generator.classes),
         y=train_generator.classes,
+    )
+
+    train_class_weights = dict(enumerate(class_weights))
+    return train_class_weights
+
+
+def get_model_weights_ds(train_ds):
+    class_weights = class_weight.compute_class_weight(
+        class_weight="balanced",
+        classes=np.unique(train_ds.class_names),
+        y=train_ds.class_names,
     )
 
     train_class_weights = dict(enumerate(class_weights))
