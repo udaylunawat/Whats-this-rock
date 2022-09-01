@@ -163,10 +163,10 @@ def get_tfds_from_dir(config):
         seed=config.seed,
         # subset='validation'
     )
-    AUTOTUNE = tf.data.AUTOTUNE
 
-    train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
-    val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
-    test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
+    # AUTOTUNE = tf.data.AUTOTUNE
+    # train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+    # val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+    # test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
     return train_ds, val_ds, test_ds
