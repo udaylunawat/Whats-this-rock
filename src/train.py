@@ -93,7 +93,7 @@ def train(config, train_dataset, val_dataset, labels):
     # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(
         monitor="val_f1_score",
-        save_model=(True),
+        save_model=(config.callback_config.save_model),
         save_graph=(False),
         log_evaluation=True,
         generator=val_dataset,
