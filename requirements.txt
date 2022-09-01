@@ -1,9 +1,10 @@
-python-telegram-bot
-opencv-python-headless
 numpy
-tensorflow-cpu
-tensorflow-addons
+wandb
 kaggle
 pandas
 scikit-learn
-wandb
+ml-collections
+tensorflow-cpu
+tensorflow-addons
+python-telegram-bot
+opencv-python-headless

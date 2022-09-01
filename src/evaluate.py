@@ -1,7 +1,6 @@
 from model_utilities import get_model, get_optimizer
 from data_utilities import get_generators
 
-import os
 import plot
 import json
 
@@ -11,11 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import tensorflow_addons as tfa
-from sklearn.metrics import (
-    classification_report,
-    confusion_matrix,
-    ConfusionMatrixDisplay,
-)
+from sklearn.metrics import classification_report
 
 with open("config.json") as config_file:
     config = json.load(config_file)
@@ -71,3 +66,4 @@ cl_report = classification_report(
 print(cl_report)
 
 cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+plt.savefig('imgs/cr.png', dpi=400)

@@ -3,7 +3,8 @@ import numpy as np
 import os
 import shutil
 import json
-from tensorflow import image, cast, one_hot, float32
+import tensorflow as tf
+from tensorflow import cast, one_hot, float32
 import tensorflow_datasets as tfds
 from tensorflow.data import AUTOTUNE
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -251,14 +252,14 @@ def get_data_tfds():
 
 
 def to_dict(image, label):
-    image = image.resize(image, IMAGE_SIZE)
+    image = tf.image.resize(image, IMAGE_SIZE)
     image = cast(image, float32)
     label = one_hot(label, config["num_classes"])
     return {"images": image, "labels": label}
 
 
 def prepare_dataset(dataset, split):
-    AUTOTUNE = AUTOTUNE
+
     if split == "train":
         return (
             dataset.shuffle(10 * config["batch_size"])

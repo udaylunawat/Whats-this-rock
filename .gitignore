@@ -142,3 +142,6 @@ data/*
 wandb/*
 linux-packages.txt
 secrets.json
+requirements-docker.txt
+Dockerfile_train
+archived/*

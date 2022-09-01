@@ -10,3 +10,4 @@ tensorflow-addons
 wandb
 # keras-cv
 split-folders
+ml-collections
