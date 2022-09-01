@@ -6,10 +6,6 @@ def get_wandb_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.project = "Whats-this-rock"
     configs.log_data_type = "train"
-    configs.log_num_samples = -1  # passing -1 will upload the complete dataset
-    configs.log_evaluation_table = False
-    # configs.entity = "wandb_fc"
-
     return configs
 
 
@@ -17,15 +13,12 @@ def get_dataset_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.dataset_name = "rocks"
     configs.root = "data/1_extracted/"
-    configs.sampling = "undersample"
+    configs.sampling = None
     configs.image_height = 224
     configs.image_width = 224
     configs.channels = 3
-    configs.apply_resize = True
     configs.batch_size = 64
     configs.num_classes = config_dict.placeholder(int)
-    configs.apply_one_hot = False
-    configs.do_cache = False
 
     return configs
 
@@ -39,7 +32,6 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.use_pretrained_weights = True
     configs.trainable = False
     configs.dropout_rate = 0.3
-    configs.post_gap_dropout = False
 
     return configs
 
@@ -56,9 +48,8 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs.threshold = 0.7
     # Model checkpointing
     configs.checkpoint_filepath = "wandb/model_{epoch}"
+    configs.save_model = False
     configs.save_best_only = True
-    # Model Prediction Viz
-    configs.viz_num_images = 100
 
     return configs
 
@@ -70,7 +61,6 @@ def get_train_configs() -> ml_collections.ConfigDict:
     configs.use_augmentations = True
     configs.use_class_weights = True
     configs.optimizer = "adam"
-    configs.sgd_momentum = 0.7
     configs.loss = "categorical_crossentropy"
     configs.metrics = ["accuracy"]
 
