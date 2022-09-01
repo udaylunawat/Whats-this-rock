@@ -1,6 +1,6 @@
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
-from data_utilities import remove_corrupted_images, get_df
+from src.data_utilities import remove_corrupted_images, get_df
 
 
 def process_data(config):
@@ -26,7 +26,7 @@ def process_data(config):
                            oversample=True,
                            fixed=(((scc // 2) - 1, (scc // 2) - 1)),
                            seed=args.seed,
-                           move=True)
+                           move=False)
     elif args.dataset_config.sampling == 'undersample':
         print(f"Undersampling to {args.dataset_config.sampling} samples.")
         splitfolders.fixed("data/2_processed",
@@ -38,12 +38,12 @@ def process_data(config):
                            ),
                            oversample=False,
                            seed=args.seed,
-                           move=True)
+                           move=False)
     elif not args.dataset_config.sampling:
         print("No Sampling.")
         splitfolders.ratio("data/2_processed",
                            output="data/4_tfds_dataset",
                            ratio=(0.75, 0.125, 0.125),
                            seed=args.seed,
-                           move=True)
+                           move=False)
     print('\n\n')
