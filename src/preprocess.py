@@ -1,24 +1,6 @@
-import os
-import shutil
-
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
 from data_utilities import remove_corrupted_images, get_df
-
-
-def create_classes_dir(args):
-    for dataset in os.listdir(args.root):
-        class_dirs = os.listdir(os.path.join(args.root, dataset))
-        for class_name in class_dirs:
-            sub_classes = os.listdir(
-                os.path.join(args.root, dataset, class_name))
-            for subclass in sub_classes:
-                shutil.move(
-                    os.path.join(args.root, dataset, class_name, subclass),
-                    "data/2_processed",
-                )
-
-    shutil.rmtree(args.root)
 
 
 def process_data(config):
@@ -27,7 +9,7 @@ def process_data(config):
     args = config
 
     # create_classes_dir(args)
-    # remove_corrupted_images('data/2_processed')
+    remove_corrupted_images('data/2_processed')
     print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
