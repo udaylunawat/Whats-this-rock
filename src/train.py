@@ -16,10 +16,11 @@ import matplotlib.pyplot as plt
 
 from src.preprocess import process_data
 from src.models import get_model
-from src.data_utilities import get_generators
+from src.data_utilities import get_generators, get_tfds_from_dir
 from src.model_utilities import (
     get_optimizer,
     get_model_weights_ds,
+    get_model_weights_gen,
     LRA,
 )
 from src.download_data import get_data
@@ -28,6 +29,10 @@ import plot
 from sklearn.metrics import classification_report
 import tensorflow as tf
 import tensorflow_addons as tfa
+
+# speed improvements
+from tensorflow.keras import mixed_precision
+mixed_precision.set_global_policy('mixed_float16')
 
 import wandb
 from wandb.keras import WandbCallback
@@ -82,12 +87,19 @@ def train(config, train_dataset, val_dataset, labels):
                             average="macro",
                             threshold=0.5))
 
-    class_weights = get_model_weights(train_dataset)
+    class_weights = None
+    if config.train_config.use_class_weights:
+        if config.dataset_config.dataset_type == 'generator':
+            class_weights = get_model_weights_gen(train_dataset)
+        elif config.dataset_config.dataset_type == 'dataset':
+            class_weights = get_model_weights_ds(train_dataset)
 
-    opt = get_optimizer(config)
+    optimizer = get_optimizer(config)
+    # speed improvements
+    optimizer = mixed_precision.LossScaleOptimizer(optimizer)
     # Compile the model
     model.compile(
-        optimizer=opt,
+        optimizer=optimizer,
         loss=config.train_config.loss,
         metrics=config.train_config.metrics,
     )
@@ -149,12 +161,23 @@ def evaluate(config, model, history, test_dataset, labels):
     print("Scores: ", scores)
 
     # Predict
-    pred = model.predict(test_dataset, verbose=1)
-    predicted_class_indices = np.argmax(pred, axis=1)
+    if config.dataset_config.dataset_type == 'generator':
+        pred = model.predict(test_dataset, verbose=1)
+        predicted_class_indices = np.argmax(pred, axis=1)
+        # Confusion Matrix
+        cm = plot.plot_confusion_matrix(labels, test_dataset.classes,
+                                        predicted_class_indices)
+    elif config.dataset_config.dataset_type == 'dataset':
+        # Predict
+        pred = model.predict(test_dataset, verbose=1)
+        predicted_categories = tf.argmax(y_pred, axis=1)
+        # https://stackoverflow.com/a/64622975/9292995
+        # CM and classification report using tf.Data.Dataset
+        true_categories = tf.argmax(tf.concat([y for x, y in test_dataset], axis=0), axis=1)
+        # Confusion Matrix
+        cm = plot.plot_confusion_matrix(labels, true_categories,
+                                    predicted_categories)
 
-    # Confusion Matrix
-    cm = plot.plot_confusion_matrix(labels, test_dataset.classes,
-                                    predicted_class_indices)
 
     # Classification Report
     cl_report = classification_report(
@@ -197,12 +220,15 @@ def main(_):
             allow_val_change=True,
         )
 
-    subprocess.run("sh scripts/setup.sh", shell=True, check=True)
+    print(f"\nDatasets used for Training:- {config.dataset_config.train_dataset}")
     for dataset_id in config.dataset_config.train_dataset:
         get_data(dataset_id)
     process_data(config)
 
-    train_dataset, val_dataset, test_dataset = get_generators(config)
+    if config.dataset_config.dataset_type == 'generator':
+        train_dataset, val_dataset, test_dataset = get_generators(config)
+    elif config.dataset_config.dataset_type == 'dataset':
+        train_dataset, val_dataset, test_dataset = get_tfds_from_dir(config)
     labels = [
         "Basalt",
         "Coal",
