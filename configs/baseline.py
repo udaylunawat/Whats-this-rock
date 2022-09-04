@@ -12,6 +12,8 @@ def get_wandb_configs() -> ml_collections.ConfigDict:
 def get_dataset_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.dataset_name = "rocks"
+    configs.train_dataset = [1,2,3]
+    configs.test_dataset = [4]
     configs.root = "data/1_extracted/"
     configs.sampling = None
     configs.image_height = 224
@@ -30,7 +32,7 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.model_img_channels = 3
     configs.backbone = "inceptionresnetv2"
     configs.use_pretrained_weights = True
-    configs.trainable = False
+    configs.trainable = True
     configs.dropout_rate = 0.3
     configs.post_gap_dropout = False
 
@@ -57,8 +59,8 @@ def get_callback_configs() -> ml_collections.ConfigDict:
 
 def get_train_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
-    configs.epochs = 200
-    configs.lr = 0.001
+    configs.epochs = 100
+    configs.lr = 0.0007
     configs.use_augmentations = True
     configs.use_class_weights = True
     configs.optimizer = "adam"
