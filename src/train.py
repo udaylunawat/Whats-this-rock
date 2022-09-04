@@ -4,9 +4,10 @@ Trains a model on rocks dataset
 """
 
 import os
-
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 import gc
+import subprocess
 import random
 import numpy as np
 import pandas as pd
@@ -21,6 +22,7 @@ from src.model_utilities import (
     get_model_weights_ds,
     LRA,
 )
+from src.download_data import get_data
 import plot
 
 from sklearn.metrics import classification_report
@@ -194,7 +196,12 @@ def main(_):
             config=config.to_dict(),
             allow_val_change=True,
         )
+
+    subprocess.run("sh scripts/setup.sh", shell=True, check=True)
+    for dataset_id in config.dataset_config.train_dataset:
+        get_data(dataset_id)
     process_data(config)
+
     train_dataset, val_dataset, test_dataset = get_generators(config)
     labels = [
         "Basalt",
