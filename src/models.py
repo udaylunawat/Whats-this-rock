@@ -89,14 +89,17 @@ def get_model(args):
                                  args.model_config.model_img_width,
                                  args.model_config.model_img_channels))
 
-    x = data_augmentation(inputs)
-    x = preprocess_input(x)
+    if args.train_config.use_augmentations:
+        x = data_augmentation(inputs)
+    if args.model_config.preprocess:
+        x = preprocess_input(x)
 
     x = base_model(inputs, training=args.model_config.trainable)
     x = layers.GlobalAveragePooling2D()(x)
     if args.model_config.post_gap_dropout:
         x = layers.Dropout(args.model_config.dropout_rate)(x)
+
     outputs = layers.Dense(args.dataset_config.num_classes,
-                           activation='softmax')(x)
+                           activation='softmax', dtype='float32')(x)
 
     return models.Model(inputs, outputs)
