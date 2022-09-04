@@ -20,6 +20,7 @@ def get_dataset_configs() -> ml_collections.ConfigDict:
     configs.image_width = 224
     configs.channels = 3
     configs.batch_size = 64
+    configs.dataset_type = 'dataset'
     configs.num_classes = config_dict.placeholder(int)
 
     return configs
@@ -33,6 +34,7 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.backbone = "inceptionresnetv2"
     configs.use_pretrained_weights = True
     configs.trainable = True
+    configs.preprocess = True
     configs.dropout_rate = 0.3
     configs.post_gap_dropout = False
 
