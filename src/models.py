@@ -83,7 +83,7 @@ def get_model(args):
     )
     # Backbone
     base_model = get_backbone(args)
-    preprocess_input = get_preprocess(args)
+
     # Stack layers
     inputs = layers.Input(shape=(args.model_config.model_img_height,
                                  args.model_config.model_img_width,
@@ -92,18 +92,22 @@ def get_model(args):
     if args.train_config.use_augmentations:
         x = data_augmentation(inputs)
     if args.model_config.preprocess:
+        preprocess_input = get_preprocess(args)
         x = preprocess_input(x)
+    else:
+        rescale = tf.keras.layers.Rescaling(1./255, offset=-1)
+        x = rescale(x)
 
     x = base_model(inputs, training=args.model_config.trainable)
     x = layers.GlobalAveragePooling2D()(x)
     if args.model_config.post_gap_dropout:
         x = layers.Dropout(args.model_config.dropout_rate)(x)
 
-    x = layers.Dense(256, activation='softmax', dtype='float32')(x)
+    x = layers.Dense(256, dtype='float32')(x)
     x = layers.Dropout(args.model_config.dropout_rate)(x)
-    x = layers.Dense(128, activation='softmax', dtype='float32')(x)
+    x = layers.Dense(128, dtype='float32')(x)
     x = layers.Dropout(args.model_config.dropout_rate)(x)
-    x = layers.Dense(64, activation='softmax', dtype='float32')(x)
+    x = layers.Dense(64, dtype='float32')(x)
     x = layers.Dropout(args.model_config.dropout_rate)(x)
     outputs = layers.Dense(args.dataset_config.num_classes,
                            activation='softmax', dtype='float32')(x)
