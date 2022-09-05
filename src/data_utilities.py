@@ -105,7 +105,7 @@ def get_generators(config):
                                       255)  # preprocessing_function=scalar
     val_dataset = test_datagen.flow_from_directory(
         "data/4_tfds_dataset/val",
-        shuffle=False,
+        shuffle=True,
         color_mode="rgb",
         target_size=IMAGE_SIZE,
         batch_size=config.dataset_config.batch_size,
@@ -147,7 +147,7 @@ def get_tfds_from_dir(config):
         color_mode='rgb',
         batch_size=config.dataset_config.batch_size,
         image_size=IMAGE_SIZE,
-        shuffle=False,
+        shuffle=True,
         seed=config.seed,
         # subset='validation'
     )
