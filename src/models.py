@@ -99,6 +99,12 @@ def get_model(args):
     if args.model_config.post_gap_dropout:
         x = layers.Dropout(args.model_config.dropout_rate)(x)
 
+    x = layers.Dense(256, activation='softmax', dtype='float32')(x)
+    x = layers.Dropout(args.model_config.dropout_rate)(x)
+    x = layers.Dense(128, activation='softmax', dtype='float32')(x)
+    x = layers.Dropout(args.model_config.dropout_rate)(x)
+    x = layers.Dense(64, activation='softmax', dtype='float32')(x)
+    x = layers.Dropout(args.model_config.dropout_rate)(x)
     outputs = layers.Dense(args.dataset_config.num_classes,
                            activation='softmax', dtype='float32')(x)
 
