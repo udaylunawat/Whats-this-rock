@@ -223,7 +223,8 @@ def main(_):
     print(f"\nDatasets used for Training:- {config.dataset_config.train_dataset}")
     for dataset_id in config.dataset_config.train_dataset:
         get_data(dataset_id)
-    process_data(config)
+    if not os.path.exists('data/4_tfds_dataset/train'):
+        process_data(config)
 
     if config.dataset_config.dataset_type == 'generator':
         train_dataset, val_dataset, test_dataset = get_generators(config)
