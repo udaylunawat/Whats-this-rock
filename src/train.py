@@ -111,9 +111,9 @@ def train(config, train_dataset, val_dataset, labels):
         save_model=(config.callback_config.save_model),
         save_graph=(False),
         log_evaluation=True,
-        generator=val_dataset,
-        validation_steps=val_dataset.samples //
-        config.dataset_config.batch_size,
+        # generator=val_dataset,
+        # validation_steps=val_dataset.samples //
+        # config.dataset_config.batch_size,
     )
     # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr,]
     # verbose=1
