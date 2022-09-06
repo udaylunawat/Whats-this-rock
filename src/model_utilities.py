@@ -47,6 +47,14 @@ def get_model_weights_ds(train_ds):
     return train_class_weights
 
 
+def configure_for_performance(ds, config):
+    ds = ds.cache()
+    ds = ds.shuffle(buffer_size=1000)
+    ds = ds.batch(config.dataset_config.batch_size)
+    ds = ds.prefetch(buffer_size=tf.data.AUTOTUNE)
+    return ds
+
+
 ############################## Training #####################################
 
 
