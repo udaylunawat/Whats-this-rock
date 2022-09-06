@@ -1,9 +1,9 @@
 import time
 import numpy as np
-
-from tensorflow.keras.callbacks import Callback
 from sklearn.utils import class_weight
 
+import tensorflow as tf
+from tensorflow.keras.callbacks import Callback
 from tensorflow.keras import optimizers
 from tensorflow.keras import backend as K
 # import models
