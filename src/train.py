@@ -19,6 +19,7 @@ from src.models import get_model
 from src.data_utilities import get_generators, get_tfds_from_dir
 from src.model_utilities import (
     get_optimizer,
+    configure_for_performance,
     get_model_weights_ds,
     get_model_weights_gen,
     LRA,
@@ -134,9 +135,8 @@ def train(config, train_dataset, val_dataset, labels):
     verbose = 0
     LRA.tepochs = config.train_config.epochs  # used to determine value of last epoch for printing
 
-    # AUTOTUNE = tf.data.AUTOTUNE
-    # train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
-    # val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+    train_dataset = configure_for_performance(train_dataset, config)
+    val_dataset = configure_for_performance(val_dataset, config)
 
     # TODO (udaylunawat): add steps_per_epoch and validation_steps
     history = model.fit(
@@ -161,22 +161,19 @@ def evaluate(config, model, history, test_dataset, labels):
     print("Scores: ", scores)
 
     # Predict
+    pred = model.predict(test_dataset, verbose=1)
+    predicted_class_indices = np.argmax(pred, axis=1)
     if config.dataset_config.dataset_type == 'generator':
-        pred = model.predict(test_dataset, verbose=1)
-        predicted_class_indices = np.argmax(pred, axis=1)
         # Confusion Matrix
         cm = plot.plot_confusion_matrix(labels, test_dataset.classes,
                                         predicted_class_indices)
     elif config.dataset_config.dataset_type == 'dataset':
-        # Predict
-        pred = model.predict(test_dataset, verbose=1)
-        predicted_categories = tf.argmax(y_pred, axis=1)
         # https://stackoverflow.com/a/64622975/9292995
         # CM and classification report using tf.Data.Dataset
         true_categories = tf.argmax(tf.concat([y for x, y in test_dataset], axis=0), axis=1)
         # Confusion Matrix
         cm = plot.plot_confusion_matrix(labels, true_categories,
-                                    predicted_categories)
+                                    predicted_class_indices)
 
 
     # Classification Report
@@ -221,8 +218,10 @@ def main(_):
         )
 
     print(f"\nDatasets used for Training:- {config.dataset_config.train_dataset}")
+    # TODO (udaylunawat): update unzip so that it skips existing files or overwrites it
     for dataset_id in config.dataset_config.train_dataset:
         get_data(dataset_id)
+
     if not os.path.exists('data/4_tfds_dataset/train'):
         process_data(config)
 
@@ -239,8 +238,8 @@ def main(_):
         "Quartzite",
         "Sandstone",
     ]
-    ## Update the `num_classes` and update wandb config
-    config.dataset_config.num_classes = len(set(train_dataset.classes))
+    # TODO (udaylunawat): Update the `num_classes` to train_dataset.classes (not working)
+    config.dataset_config.num_classes = 7
     if wandb.run is not None:
         wandb.config.update(
             {"dataset_config.num_classes": config.dataset_config.num_classes})
