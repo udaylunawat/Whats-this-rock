@@ -2,7 +2,7 @@
 
 # dataset 4 processing
 kaggle datasets download neelgajare/rocks-dataset --path data/0_raw/
-unzip -q data/0_raw/rocks-dataset.zip -d data/1_extracted/
+unzip -qn data/0_raw/rocks-dataset.zip -d data/1_extracted/
 cp -r --backup=t data/1_extracted/Rocks/Basalt/* data/2_processed/Basalt/
 cp -r --backup=t data/1_extracted/Rocks/Granite/* data/2_processed/Granite/
 cp -r --backup=t data/1_extracted/Rocks/Marble/* data/2_processed/Marble/
