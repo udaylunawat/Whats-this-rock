@@ -1,6 +1,7 @@
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
-from src.data_utilities import remove_corrupted_images, get_df
+import os
+from src.data_utilities import remove_unsupported_images, get_df
 
 
 def process_data(config):
@@ -8,8 +9,10 @@ def process_data(config):
     # Get configs from the config file.
     args = config
 
-    # create_classes_dir(args)
-    remove_corrupted_images('data/2_processed')
+    print("\nFiles other than .jpg.")
+    os.system("ls data/2_processed/ -I "*.jpg"  -R"))
+
+    remove_unsupported_images('data/2_processed')
     print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(

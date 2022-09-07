@@ -16,6 +16,21 @@ def find_filepaths(root_folder):
     return filepaths
 
 
+def remove_unsupported_images(root_folder):
+    print("\n\nRemoving unsupported images...")
+    count = 1
+    filepaths = find_filepaths(root_folder)
+    for filepath in filepaths:
+        if filepath.endswith(('JFIF', 'webp', 'jfif')):
+            shutil.move(
+                            filepath,
+                            os.path.join("data", "corrupted_images",
+                                        os.path.basename(filepath)),
+                        )
+            count += 1
+    print(f"Removed {count} unsupported files.")
+
+
 def remove_corrupted_images(root_folder):
     print("\n\nRemoving corrupted images...")
 
