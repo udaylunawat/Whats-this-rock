@@ -3,7 +3,8 @@ import splitfolders
 import os
 import subprocess
 
-from src.data_utilities import remove_unsupported_images, remove_corrupted_images2, get_df
+from src.data_utilities import *
+
 
 
 def process_data(config):
@@ -14,8 +15,15 @@ def process_data(config):
     print("\nFiles other than .jpg.")
     print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg",  "-R"], capture_output=True))
 
+    datasets = os.listdir('data/1_extracted')
+    for dataset in datasets:
+        for main_class in os.listdir(os.path.join('data/1_extracted', dataset)):
+            main_class_path = os.path.join('data/1_extracted/',dataset, main_class)
+            print(f"Processing {dataset}")
+            move_and_rename(main_class_path)
+
     remove_unsupported_images('data/2_processed')
-    remove_corrupted_images2('data/2_processed')
+    remove_corrupted_images('data/2_processed')
     print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
