@@ -178,7 +178,7 @@ def evaluate(config, model, history, test_dataset, labels):
     elif config.dataset_config.dataset_type == 'dataset':
         # https://stackoverflow.com/a/64622975/9292995
         # CM and classification report using tf.Data.Dataset
-        true_categories = tf.concat([y for x, y in val_ds], axis=0)
+        true_categories = tf.concat([y for x, y in test_dataset], axis=0)
         # Confusion Matrix
         cm = plot.plot_confusion_matrix(labels, true_categories,
                                     predicted_class_indices)
