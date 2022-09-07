@@ -169,6 +169,7 @@ def evaluate(config, model, history, test_dataset, labels):
 
     # Predict
     pred = model.predict(test_dataset, verbose=1)
+    # TODO (udaylunawat): CM and CR giving wrong results
     predicted_class_indices = np.argmax(pred, axis=1)
     if config.dataset_config.dataset_type == 'generator':
         # Confusion Matrix
@@ -177,7 +178,7 @@ def evaluate(config, model, history, test_dataset, labels):
     elif config.dataset_config.dataset_type == 'dataset':
         # https://stackoverflow.com/a/64622975/9292995
         # CM and classification report using tf.Data.Dataset
-        true_categories = tf.argmax(tf.concat([y for x, y in test_dataset], axis=0), axis=1)
+        true_categories = tf.concat([y for x, y in val_ds], axis=0)
         # Confusion Matrix
         cm = plot.plot_confusion_matrix(labels, true_categories,
                                     predicted_class_indices)
