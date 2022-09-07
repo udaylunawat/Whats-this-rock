@@ -12,15 +12,15 @@ def process_data(config):
     # Get configs from the config file.
     args = config
 
-    print("\nFiles other than jpg and png.")
-    print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg", "-I", "*.png"  "-R"], capture_output=True).stdout.decode())
-
     datasets = os.listdir('data/1_extracted')
     for dataset in datasets:
         for main_class in os.listdir(os.path.join('data/1_extracted', dataset)):
             main_class_path = os.path.join('data/1_extracted/',dataset, main_class)
             print(f"Processing {dataset}")
             move_and_rename(main_class_path)
+
+    print("\nFiles other than jpg and png.")
+    print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg", "-I", "*.png"  "-R"], capture_output=True).stdout.decode())
 
     print("\nFile types before cleaning:")
     print(get_df('data/2_processed')['file_name'].apply(lambda x: x.split('.')[-1]).value_counts())
