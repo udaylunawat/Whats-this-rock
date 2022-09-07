@@ -12,8 +12,8 @@ def get_wandb_configs() -> ml_collections.ConfigDict:
 def get_dataset_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.dataset_name = "rocks"
-    configs.train_dataset = [1,2,3]
-    configs.test_dataset = [4]
+    configs.train_dataset = [1,2,3,4]
+    configs.test_dataset = [0]
     configs.root = "data/1_extracted/"
     configs.sampling = None
     configs.image_height = 224
