@@ -4,7 +4,8 @@ import shutil
 import tensorflow as tf
 import tensorflow_datasets as tfds
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
+from os import listdir
+from PIL import Image
 
 def find_filepaths(root_folder):
     filepaths = []
@@ -28,6 +29,9 @@ def remove_unsupported_images(root_folder):
                                         os.path.basename(filepath)),
                         )
             count += 1
+        if filepath.endswith(('JPEG', 'jpeg')):
+            name, extension = os.path.splitext(filepath)
+            os.rename(filepath, name+'.jpg')
     print(f"Removed {count} unsupported files.")
 
 
@@ -37,22 +41,59 @@ def remove_corrupted_images(root_folder):
     filepaths = find_filepaths(root_folder)
     del_count = 0
     for filepath in filepaths:
+        # https://stackoverflow.com/a/59181995/9292995
         try:
-            fobj = open(filepath, "rb")
-            is_JFIF = b"JFIF" in fobj.peek(10)
-        finally:
-            fobj.close()
-        if not is_JFIF:
+            img = Image.open(filepath) # open the image file
+            img.verify() # verify that it is, in fact an image
+        except (IOError, SyntaxError) as e:
+            print('Bad file:', filename) # print out the names of corrupt files
             del_count += 1
             shutil.move(
                 filepath,
                 os.path.join("data", "corrupted_images",
                              os.path.basename(filepath)),
             )
+
     print(
         f"Total {del_count} corrupted image moved to 'corrupted_images' folder\n"
     )
     return None
+
+
+def remove_corrupted_images2( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp' ]):
+    print("\n\nRemoving corrupted images...")
+    bad_images=[]
+    bad_ext=[]
+    s_list= os.listdir(s_dir)
+    for klass in s_list:
+        klass_path=os.path.join (s_dir, klass)
+        print ('processing class directory ', klass)
+        if os.path.isdir(klass_path):
+            file_list=os.listdir(klass_path)
+            for f in file_list:
+                f_path=os.path.join (klass_path,f)
+                index=f.rfind('.')
+                ext=f[index+1:].lower()
+                if ext not in ext_list:
+                    print('file ', f_path, ' has an invalid extension ', ext)
+                    bad_ext.append(f_path)
+                if os.path.isfile(f_path):
+                    try:
+                        img=cv2.imread(f_path)
+                        shape=img.shape
+                    except:
+                        shutil.move(
+                            f_path,
+                            os.path.join("data", "corrupted_images",
+                                        os.path.basename(f_path)),
+                        )
+                        print('file ', f_path, ' is not a valid image file')
+                        bad_images.append(f_path)
+                else:
+                    print('*** fatal error, you a sub directory ', f, ' in class directory ', klass)
+        else:
+            print ('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
+    print(f"removed {len(bad_images)} bad images.\n")
 
 
 def get_df(root="data/2_processed"):
