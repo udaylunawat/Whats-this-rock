@@ -21,7 +21,7 @@ def get_reduce_lr_on_plateau(args):
         monitor='val_loss',
         factor=args.rlrp_factor,
         patience=args.rlrp_patience,
-        min_lr=0.00001,
+        min_lr=args.min_lr,
         )
 
     return reduce_lr_on_plateau

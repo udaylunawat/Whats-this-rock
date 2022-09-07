@@ -12,7 +12,7 @@ def get_wandb_configs() -> ml_collections.ConfigDict:
 def get_dataset_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.dataset_name = "rocks"
-    configs.train_dataset = [1,2,3,4]
+    configs.train_dataset = [1]
     configs.test_dataset = [0]
     configs.root = "data/1_extracted/"
     configs.sampling = None
@@ -50,7 +50,8 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs.use_reduce_lr_on_plateau = True
     configs.rlrp_factor = 0.4
     configs.rlrp_patience = 2
-    configs.threshold = 0.7
+    configs.threshold = None
+    configs.min_lr = 0.00001
     # Model checkpointing
     configs.checkpoint_filepath = "wandb/model_{epoch}"
     configs.save_model = False
