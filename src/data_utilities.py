@@ -64,10 +64,6 @@ def remove_corrupted_images( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp'
         else:
             print ('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
 
-    bad_images.extend(['data/2_processed/Granite/Granite_7.png',
-                       'data/2_processed/Granite/Granite_101.png',
-                       'data/2_processed/Granite/Granite_31.png'
-                        ])
     for f_path in bad_images:
         shutil.move(
             f_path,
