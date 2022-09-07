@@ -20,6 +20,8 @@ def get_reduce_lr_on_plateau(args):
     reduce_lr_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(
         monitor='val_loss',
         factor=args.rlrp_factor,
-        patience=args.rlrp_patience)
+        patience=args.rlrp_patience,
+        min_lr=0.00001,
+        )
 
     return reduce_lr_on_plateau
