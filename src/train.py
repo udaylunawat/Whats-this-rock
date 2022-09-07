@@ -25,6 +25,7 @@ from src.model_utilities import (
     LRA,
 )
 from src.download_data import get_data
+from src.builtin_callbacks import get_earlystopper, get_reduce_lr_on_plateau
 import plot
 
 from sklearn.metrics import classification_report
@@ -115,25 +116,31 @@ def train(config, train_dataset, val_dataset, labels):
         # validation_steps=val_dataset.samples //
         # config.dataset_config.batch_size,
     )
-    # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr,]
-    # verbose=1
-    callbacks = [
-        LRA(
-            wandb=wandb,
-            model=model,
-            patience=config.callback_config.rlrp_patience,
-            stop_patience=config.callback_config.early_patience,
-            threshold=config.callback_config.threshold,
-            factor=config.callback_config.rlrp_factor,
-            dwell=False,
-            model_name=config.model_config.backbone,
-            freeze=False,
-            initial_epoch=0,
-        ),
-        wandbcallback,
-    ]
-    verbose = 0
-    LRA.tepochs = config.train_config.epochs  # used to determine value of last epoch for printing
+    if config.callback_config.use_earlystopping:
+        earlystopper = get_earlystopper(config)
+
+    if config.callback_config.use_reduce_lr_on_plateau:
+        reduce_lr = get_reduce_lr_on_plateau(config)
+
+    callbacks = [wandbcallback, earlystopper, reduce_lr,]
+    verbose=1
+    # callbacks = [
+    #     LRA(
+    #         wandb=wandb,
+    #         model=model,
+    #         patience=config.callback_config.rlrp_patience,
+    #         stop_patience=config.callback_config.early_patience,
+    #         threshold=config.callback_config.threshold,
+    #         factor=config.callback_config.rlrp_factor,
+    #         dwell=False,
+    #         model_name=config.model_config.backbone,
+    #         freeze=False,
+    #         initial_epoch=0,
+    #     ),
+    #     wandbcallback,
+    # ]
+    # verbose = 0
+    # LRA.tepochs = config.train_config.epochs  # used to determine value of last epoch for printing
 
     train_dataset = configure_for_performance(train_dataset, config)
     val_dataset = configure_for_performance(val_dataset, config)
