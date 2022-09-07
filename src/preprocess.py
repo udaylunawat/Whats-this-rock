@@ -3,7 +3,7 @@ import splitfolders
 import os
 import subprocess
 
-from src.data_utilities import remove_unsupported_images, get_df
+from src.data_utilities import remove_unsupported_images, remove_corrupted_images2, get_df
 
 
 def process_data(config):
@@ -15,6 +15,7 @@ def process_data(config):
     print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg",  "-R"], capture_output=True))
 
     remove_unsupported_images('data/2_processed')
+    remove_corrupted_images2('data/2_processed')
     print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
