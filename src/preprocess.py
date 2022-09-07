@@ -12,8 +12,8 @@ def process_data(config):
     # Get configs from the config file.
     args = config
 
-    print("\nFiles other than .jpg.")
-    print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg",  "-R"], capture_output=True))
+    print("\nFiles other than jpg and png.")
+    print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg", "-I", "*.png"  "-R"], capture_output=True).stdout.decode())
 
     datasets = os.listdir('data/1_extracted')
     for dataset in datasets:
