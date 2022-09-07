@@ -9,6 +9,8 @@ from os import listdir
 from PIL import Image
 from tqdm import tqdm
 
+from pathlib import Path
+import imghdr
 
 def find_filepaths(root_folder):
     filepaths = []
@@ -25,7 +27,7 @@ def remove_unsupported_images(root_folder):
     count = 1
     filepaths = find_filepaths(root_folder)
     for filepath in filepaths:
-        if filepath.endswith(('JFIF', 'webp', 'jfif',)):
+        if filepath.endswith(('JFIF', 'webp', 'jfif')):
             shutil.move(
                             filepath,
                             os.path.join("data", "corrupted_images",
@@ -47,11 +49,9 @@ def remove_corrupted_images( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp'
             file_list=os.listdir(klass_path)
             for f in file_list:
                 f_path=os.path.join (klass_path,f)
-                index=f.rfind('.')
-                ext=f[index+1:].lower()
-                if ext not in ext_list:
-                    print('file ', f_path, ' has an invalid extension ', ext)
-                    bad_ext.append(f_path)
+                tip = imghdr.what(f_path)
+                if ext_list.count(tip) == 0:
+                  bad_images.append(f_path)
                 if os.path.isfile(f_path):
                     try:
                         img=cv2.imread(f_path)
