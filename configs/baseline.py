@@ -31,11 +31,11 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.model_img_height = 224
     configs.model_img_width = 224
     configs.model_img_channels = 3
-    configs.backbone = "inceptionresnetv2"
+    configs.backbone = "EfficientNetV2M"
     configs.use_pretrained_weights = True
     configs.trainable = True
     configs.preprocess = True
-    configs.dropout_rate = 0.3
+    configs.dropout_rate = 0.4
     configs.post_gap_dropout = False
 
     return configs
@@ -48,8 +48,8 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs.early_patience = 15
     # Reduce LR on plateau
     configs.use_reduce_lr_on_plateau = True
-    configs.rlrp_factor = 0.9
-    configs.rlrp_patience = 1
+    configs.rlrp_factor = 0.4
+    configs.rlrp_patience = 2
     configs.threshold = 0.7
     # Model checkpointing
     configs.checkpoint_filepath = "wandb/model_{epoch}"
@@ -62,10 +62,10 @@ def get_callback_configs() -> ml_collections.ConfigDict:
 def get_train_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     configs.epochs = 100
-    configs.lr = 0.0007
+    configs.lr = 0.001
     configs.use_augmentations = True
     configs.use_class_weights = True
-    configs.optimizer = "adam"
+    configs.optimizer = "adamax"
     configs.loss = "categorical_crossentropy"
     configs.metrics = ["accuracy"]
 
