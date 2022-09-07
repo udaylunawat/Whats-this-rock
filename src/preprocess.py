@@ -22,8 +22,12 @@ def process_data(config):
             print(f"Processing {dataset}")
             move_and_rename(main_class_path)
 
+    print("\nFile types before cleaning:")
+    print(get_df('data/2_processed')['file_name'].apply(lambda x: x.split('.')[-1]).value_counts())
     remove_unsupported_images('data/2_processed')
     remove_corrupted_images('data/2_processed')
+    print("\nFile types after cleaning:")
+    print(get_df('data/2_processed')['file_name'].apply(lambda x: x.split('.')[-1]).value_counts())
     print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
