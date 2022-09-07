@@ -25,20 +25,17 @@ def remove_unsupported_images(root_folder):
     count = 1
     filepaths = find_filepaths(root_folder)
     for filepath in filepaths:
-        if filepath.endswith(('JFIF', 'webp', 'jfif')):
+        if filepath.endswith(('JFIF', 'webp', 'jfif',)):
             shutil.move(
                             filepath,
                             os.path.join("data", "corrupted_images",
                                         os.path.basename(filepath)),
                         )
             count += 1
-        if filepath.endswith(('JPEG', 'jpeg')):
-            name, extension = os.path.splitext(filepath)
-            os.rename(filepath, name+'.jpg')
     print(f"Removed {count} unsupported files.")
 
 
-def remove_corrupted_images( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp' ]):
+def remove_corrupted_images( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp', 'JPEG' ]):
     print("\n\nRemoving corrupted images...")
     bad_images=[]
     bad_ext=[]
@@ -60,17 +57,23 @@ def remove_corrupted_images( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp'
                         img=cv2.imread(f_path)
                         shape=img.shape
                     except:
-                        shutil.move(
-                            f_path,
-                            os.path.join("data", "corrupted_images",
-                                        os.path.basename(f_path)),
-                        )
                         print('file ', f_path, ' is not a valid image file')
                         bad_images.append(f_path)
                 else:
                     print('*** fatal error, you a sub directory ', f, ' in class directory ', klass)
         else:
             print ('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
+
+    bad_images.extend(['data/2_processed/Granite/Granite_7.png',
+                       'data/2_processed/Granite/Granite_101.png',
+                       'data/2_processed/Granite/Granite_31.png'
+                        ])
+    for f_path in bad_images:
+        shutil.move(
+            f_path,
+            os.path.join("data", "corrupted_images",
+                        os.path.basename(f_path)),
+        )
     print(f"removed {len(bad_images)} bad images.\n")
 
 
@@ -209,11 +212,6 @@ def get_tfds_from_dir(config):
         # subset='validation'
     )
 
-    # AUTOTUNE = tf.data.AUTOTUNE
-    # train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
-    # val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
-    # test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
-
     return train_ds, val_ds, test_ds
 
 
@@ -234,6 +232,7 @@ def rename_files(source_dir:str="data/2_processed/tmp"):
             new_path = os.path.join(dest_path, new_name)
             shutil.copy(old_path, new_path)
             count += 1
+
 
 def move_files(src_dir: str, dest_dir:str ='data/2_processed/tmp'):
     '''Moves files to tmp directory in 2_processed
