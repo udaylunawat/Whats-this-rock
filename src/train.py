@@ -175,7 +175,7 @@ def evaluate(config, model, history, test_dataset, labels):
         cm = plot.plot_confusion_matrix(labels, true_categories,
                                     predicted_class_indices)
 
-
+    # TODO (udaylunawat): AttributeError: 'BatchDataset' object has no attribute 'classes'
     # Classification Report
     cl_report = classification_report(
         test_dataset.classes,
@@ -218,7 +218,7 @@ def main(_):
         )
 
     print(f"\nDatasets used for Training:- {config.dataset_config.train_dataset}")
-    # TODO (udaylunawat): update unzip so that it skips existing files or overwrites it
+
     for dataset_id in config.dataset_config.train_dataset:
         get_data(dataset_id)
 
