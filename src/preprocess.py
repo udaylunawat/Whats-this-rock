@@ -1,6 +1,8 @@
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
 import os
+import subprocess
+
 from src.data_utilities import remove_unsupported_images, get_df
 
 
@@ -10,7 +12,7 @@ def process_data(config):
     args = config
 
     print("\nFiles other than .jpg.")
-    os.system("ls data/2_processed/ -I "*.jpg"  -R"))
+    print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg",  "-R"], capture_output=True))
 
     remove_unsupported_images('data/2_processed')
     print("\n", get_df().info(), "\n")
