@@ -8,9 +8,10 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from os import listdir
 from PIL import Image
 from tqdm import tqdm
-
+import numpy as np
 from pathlib import Path
 import imghdr
+
 
 def find_filepaths(root_folder):
     filepaths = []
@@ -29,46 +30,50 @@ def remove_unsupported_images(root_folder):
     for filepath in filepaths:
         if filepath.endswith(('JFIF', 'webp', 'jfif')):
             shutil.move(
-                            filepath,
-                            os.path.join("data", "corrupted_images",
-                                        os.path.basename(filepath)),
-                        )
+                filepath,
+                os.path.join("data", "corrupted_images",
+                             os.path.basename(filepath)),
+            )
             count += 1
     print(f"Removed {count} unsupported files.")
 
 
-def remove_corrupted_images( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp', 'JPEG' ]):
+def remove_corrupted_images(s_dir,
+                            ext_list=[
+                                'jpg', 'png', 'jpeg', 'gif', 'bmp', 'JPEG'
+                            ]):
     print("\n\nRemoving corrupted images...")
-    bad_images=[]
-    bad_ext=[]
-    s_list= os.listdir(s_dir)
+    bad_images = []
+    bad_ext = []
+    s_list = os.listdir(s_dir)
     for klass in s_list:
-        klass_path=os.path.join (s_dir, klass)
-        print ('processing class directory ', klass)
+        klass_path = os.path.join(s_dir, klass)
+        print('processing class directory ', klass)
         if os.path.isdir(klass_path):
-            file_list=os.listdir(klass_path)
+            file_list = os.listdir(klass_path)
             for f in file_list:
-                f_path=os.path.join (klass_path,f)
+                f_path = os.path.join(klass_path, f)
                 tip = imghdr.what(f_path)
                 if ext_list.count(tip) == 0:
-                  bad_images.append(f_path)
+                    bad_images.append(f_path)
                 if os.path.isfile(f_path):
                     try:
-                        img=cv2.imread(f_path)
-                        shape=img.shape
+                        img = cv2.imread(f_path)
+                        shape = img.shape
                     except:
                         print('file ', f_path, ' is not a valid image file')
                         bad_images.append(f_path)
                 else:
-                    print('*** fatal error, you a sub directory ', f, ' in class directory ', klass)
+                    print('*** fatal error, you a sub directory ', f,
+                          ' in class directory ', klass)
         else:
-            print ('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
+            print('*** WARNING*** you have files in ', s_dir,
+                  ' it should only contain sub directories')
 
     for f_path in bad_images:
         shutil.move(
             f_path,
-            os.path.join("data", "corrupted_images",
-                        os.path.basename(f_path)),
+            os.path.join("data", "corrupted_images", os.path.basename(f_path)),
         )
     print(f"removed {len(bad_images)} bad images.\n")
 
@@ -79,12 +84,12 @@ def get_dims(file):
     if im is not None:
         arr = np.array(im)
         h, w = arr.shape[0], arr.shape[1]
-        return h,w
+        return h, w
     elif im is None:
         return None
 
 
-def get_df(root:str="data/2_processed"):
+def get_df(root: str = "data/2_processed"):
     """
     root: a folder present inside data dir, which contains classes containing images
     """
@@ -114,6 +119,32 @@ def get_df(root:str="data/2_processed"):
 
 def scalar(img):
     return img / 127.5 - 1  # scale pixel between -1 and +1
+
+
+def prepare(ds, config, shuffle=False, augment=False):
+    rescale = tf.keras.Sequential([tf.keras.layers.Rescaling(1. / 255)])
+    data_augmentation = tf.keras.Sequential([
+        layers.RandomFlip(
+            "horizontal",
+            input_shape=(config.model_config.model_img_height,
+                         config.model_config.model_img_width,
+                         config.model_config.model_img_channels)),
+        layers.RandomRotation(0.1),
+        layers.RandomZoom(0.1),
+    ])
+
+    # Resize and rescale all datasets.
+    ds = ds.map(lambda x, y: (rescale(x), y),
+                num_parallel_calls=tf.data.AUTOTUNE)
+    ds = ds.cache()
+    if shuffle:
+        ds = ds.shuffle(buffer_size=1000)
+    ds = ds.batch(config.dataset_config.batch_size)
+    # Use data augmentation only on the training set.
+    if augment:
+        ds = ds.map(lambda x, y: (data_augmentation(x, training=True), y),
+                    num_parallel_calls=tf.data.AUTOTUNE)
+    return ds.prefetch(buffer_size=tf.data.AUTOTUNE)
 
 
 def get_tfds_from_dir(config):
@@ -158,12 +189,12 @@ def get_tfds_from_dir(config):
     return train_ds, val_ds, test_ds
 
 
-def rename_files(source_dir:str="data/2_processed/tmp"):
+def rename_files(source_dir: str = "data/2_processed/tmp"):
     '''Renames files in classes and moves to 2_processed
 
 
     '''
-    class_names =  os.listdir(source_dir)
+    class_names = os.listdir(source_dir)
     for class_name in class_names:
         class_path = os.path.join(source_dir, class_name)
         dest_path = os.path.join('data/2_processed', class_name)
@@ -177,7 +208,7 @@ def rename_files(source_dir:str="data/2_processed/tmp"):
             count += 1
 
 
-def move_files(src_dir: str, dest_dir:str ='data/2_processed/tmp'):
+def move_files(src_dir: str, dest_dir: str = 'data/2_processed/tmp'):
     '''Moves files to tmp directory in 2_processed
 
     src_dir: directory of rock subclass with files [Basalt, Marble, Coal, ...]
@@ -192,12 +223,15 @@ def move_files(src_dir: str, dest_dir:str ='data/2_processed/tmp'):
 
     files = os.listdir(src_dir)
     total = len(files)
-    for index, filename in tqdm(enumerate(files), desc=f"Moving {src_dir_name}", total=total):
+    for index, filename in tqdm(enumerate(files),
+                                desc=f"Moving {src_dir_name}",
+                                total=total):
         src_path = os.path.join(src_dir, filename)
         dest_path = os.path.join(dest_dir_path, filename)
         # print("Copying", src_path, dest_path)
         shutil.copy(src_path, dest_path)
         # print(f"Moved {index+1} files from {src_dir} to {dest_dir_path}")
+
 
 def move_and_rename(class_dir: str):
     '''Moves files from class_dir to tmp, renames them there based on count, and moves back to 2_processed
