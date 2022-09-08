@@ -1,6 +1,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras import models
+from tensorflow.keras import regularizers, initializers
 
 
 def get_backbone(args):
@@ -43,28 +44,6 @@ def get_backbone(args):
     return base_model
 
 
-def get_preprocess(args):
-
-    if args.model_config.backbone == 'vgg16':
-        preprocess_input = tf.keras.applications.vgg16.preprocess_input
-
-    elif args.model_config.backbone == 'resnet':
-        preprocess_input = tf.keras.applications.resnet.preprocess_input
-
-    elif args.model_config.backbone == 'inceptionresnetv2':
-        preprocess_input = tf.keras.applications.inception_resnet_v2.preprocess_input
-
-    elif args.model_config.backbone == 'mobilenetv2':
-        preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
-
-    elif args.model_config.backbone == 'efficientnet':
-        preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
-
-    elif args.model_config.backbone == 'EfficientNetV2M':
-        preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
-    return preprocess_input
-
-
 def get_model(args):
     """Get an image classifier with a CNN based backbone.
 
@@ -80,23 +59,52 @@ def get_model(args):
                                  args.model_config.model_img_width,
                                  args.model_config.model_img_channels))
 
-    if args.model_config.preprocess:
-        preprocess_input = get_preprocess(args)
-        x = preprocess_input(x)
-
     x = base_model(inputs, training=args.model_config.trainable)
     x = layers.GlobalAveragePooling2D()(x)
     if args.model_config.post_gap_dropout:
         x = layers.Dropout(args.model_config.dropout_rate)(x)
 
-    x = layers.Dense(256, dtype='float32', activation='relu')(x)
+    # x = layers.Dense(256, dtype='float32', activation='relu')(x)
+    # x = layers.Dropout(args.model_config.dropout_rate)(x)
+    # x = layers.Dense(128, dtype='float32', activation='relu')(x)
+    # x = layers.Dropout(args.model_config.dropout_rate)(x)
+    # x = layers.Dense(64, dtype='float32', activation='relu')(x)
+    # x = layers.Dropout(args.model_config.dropout_rate)(x)
+    # outputs = layers.Dense(args.dataset_config.num_classes,
+    #                        activation='softmax',
+    #                        dtype='float32')(x)
+
+    x = layers.Dense(
+        256,
+        dtype='float32',
+        kernel_regularizer=regularizers.l2(l=0.016),
+        activity_regularizer=regularizers.l1(0.006),
+        bias_regularizer=regularizers.l1(0.006),
+        activation='relu',
+        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
     x = layers.Dropout(args.model_config.dropout_rate)(x)
-    x = layers.Dense(128, dtype='float32', activation='relu')(x)
+    x = layers.Dense(
+        128,
+        dtype='float32',
+        kernel_regularizer=regularizers.l2(l=0.016),
+        activity_regularizer=regularizers.l1(0.006),
+        bias_regularizer=regularizers.l1(0.006),
+        activation='relu',
+        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
     x = layers.Dropout(args.model_config.dropout_rate)(x)
-    x = layers.Dense(64, dtype='float32', activation='relu')(x)
+    x = layers.Dense(
+        64,
+        dtype='float32',
+        kernel_regularizer=regularizers.l2(l=0.016),
+        activity_regularizer=regularizers.l1(0.006),
+        bias_regularizer=regularizers.l1(0.006),
+        activation='relu',
+        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
     x = layers.Dropout(args.model_config.dropout_rate)(x)
-    outputs = layers.Dense(args.dataset_config.num_classes,
-                           activation='softmax',
-                           dtype='float32')(x)
+    outputs = layers.Dense(
+        args.dataset_config.num_classes,
+        activation='softmax',
+        dtype='float32',
+        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
 
     return models.Model(inputs, outputs)
