@@ -1,73 +1,67 @@
-import os
-import shutil
-import argparse
-
 # https://stackoverflow.com/a/64006242/9292995
 import splitfolders
-from data_utilities import remove_corrupted_images, get_df
+import os
+import subprocess
+
+from src.data_utilities import *
 
 
-def create_classes_dir(args):
-    for dataset in os.listdir(args.root):
-        class_dirs = os.listdir(os.path.join(args.root, dataset))
-        for class_name in class_dirs:
-            sub_classes = os.listdir(os.path.join(args.root, dataset, class_name))
-            for subclass in sub_classes:
-                shutil.move(
-                    os.path.join(args.root, dataset, class_name, subclass),
-                    "data/2_processed",
-                )
 
-    shutil.rmtree(args.root)
+def process_data(config):
 
+    # Get configs from the config file.
+    args = config
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-r", "--root", type=str, default="data/1_extracted/", help="Root Folder"
-    )
-    parser.add_argument("-usample", "--undersample", type=int, help="Undersample Data")
-    parser.add_argument(
-        "-osample", "--oversample", action="store_true", help="Oversample Data"
-    )
+    datasets = os.listdir('data/1_extracted')
+    for dataset in datasets:
+        for main_class in os.listdir(os.path.join('data/1_extracted', dataset)):
+            main_class_path = os.path.join('data/1_extracted/',dataset, main_class)
+            print(f"Processing {dataset}")
+            move_and_rename(main_class_path)
 
-    args = parser.parse_args()
+    print("\nFiles other than jpg and png.")
+    print(subprocess.run(["ls", "data/2_processed/", "-I", "*.jpg", "-I", "*.png"  "-R"], capture_output=True).stdout.decode())
 
-    # create_classes_dir(args)
-    # remove_corrupted_images('data/2_processed')
-    print(get_df().info())
+    print("\nFile types before cleaning:")
+    print(get_df('data/2_processed')['file_name'].apply(lambda x: x.split('.')[-1]).value_counts())
+    remove_unsupported_images('data/2_processed')
+    remove_corrupted_images('data/2_processed')
+    print("\nFile types after cleaning:")
+    print(get_df('data/2_processed')['file_name'].apply(lambda x: x.split('.')[-1]).value_counts())
+    print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
-        "Splitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
+        "\nSplitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
     )
-    if args.oversample:
+    scc = min(get_df()["class"].value_counts())
+    if args.dataset_config.sampling == 'oversample':
+        print("\nOversampling...")
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
-        scc = min(get_df()["class"].value_counts())
         print(f"Smallest class count is {scc}\n")
-        splitfolders.fixed(
-            "data/2_processed",
-            output="data/4_tfds_dataset",
-            oversample=True,
-            fixed=(((scc // 2) - 1, (scc // 2) - 1)),
-            seed=42,
-        )
-    elif args.undersample:
-        splitfolders.fixed(
-            "data/2_processed",
-            output="data/4_tfds_dataset",
-            fixed=(
-                int(args.undersample * 0.75),
-                int(args.undersample * 0.125),
-                int(args.undersample * 0.125),
-            ),
-            oversample=False,
-            seed=42,
-        )
-    else:
-        splitfolders.ratio(
-            "data/2_processed",
-            output="data/4_tfds_dataset",
-            ratio=(0.75, 0.125, 0.125),
-            seed=42,
-        )
+        splitfolders.fixed("data/2_processed",
+                           output="data/4_tfds_dataset",
+                           oversample=True,
+                           fixed=(((scc // 2) - 1, (scc // 2) - 1)),
+                           seed=args.seed,
+                           move=False)
+    elif args.dataset_config.sampling == 'undersample':
+        print(f"Undersampling to {args.dataset_config.sampling} samples.")
+        splitfolders.fixed("data/2_processed",
+                           output="data/4_tfds_dataset",
+                           fixed=(
+                               int(scc * 0.75),
+                               int(scc * 0.125),
+                               int(scc * 0.125),
+                           ),
+                           oversample=False,
+                           seed=args.seed,
+                           move=False)
+    elif not args.dataset_config.sampling:
+        print("No Sampling.")
+        splitfolders.ratio("data/2_processed",
+                           output="data/4_tfds_dataset",
+                           ratio=(0.75, 0.125, 0.125),
+                           seed=args.seed,
+                           move=False)
+    print('\n\n')

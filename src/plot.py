@@ -19,30 +19,16 @@ def plot_confusion_matrix(labels, y, _y):
     for i in range(len(labels)):
         for j in range(len(labels)):
             if i == j:
-                h[i][j] = (
-                    "Correctly predicted "
-                    + str(z[i][j])
-                    + " out of "
-                    + str(l[i])
-                    + " "
-                    + labels[i]
-                    + " with accuracy "
-                    + str(z[i][j] / l[i])
-                )
+                h[i][j] = ("Correctly predicted " + str(z[i][j]) + " out of " +
+                           str(l[i]) + " " + labels[i] + " with accuracy " +
+                           str(z[i][j] / l[i]))
             else:
                 if z[j][i] == 0:
                     h[j][i] = ""
                 else:
-                    h[j][i] = (
-                        "Incorrectly predicted "
-                        + str(z[j][i])
-                        + " out of "
-                        + str(l[i])
-                        + " "
-                        + labels[i]
-                        + " as "
-                        + labels[j]
-                    )
+                    h[j][i] = ("Incorrectly predicted " + str(z[j][i]) +
+                               " out of " + str(l[i]) + " " + labels[i] +
+                               " as " + labels[j])
 
     fig = ff.create_annotated_heatmap(
         z,
@@ -66,8 +52,7 @@ def plot_confusion_matrix(labels, y, _y):
             text="True Class",
             xref="paper",
             yref="paper",
-        )
-    )
+        ))
     fig.add_annotation(
         dict(
             font=dict(color="#094973", size=16),
@@ -78,8 +63,7 @@ def plot_confusion_matrix(labels, y, _y):
             textangle=-90,
             xref="paper",
             yref="paper",
-        )
-    )
+        ))
 
     fig.show()
     return fig

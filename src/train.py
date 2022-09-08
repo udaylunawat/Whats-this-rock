@@ -1,189 +1,150 @@
 #!/usr/bin/env python
-
 """
-Trains a model on the dataset.
-
-Designed to show how to do a simple wandb integration with keras.
+Trains a model on rocks dataset
 """
-
-from data_utilities import get_generators
-from model_utilities import (
-    get_model,
-    get_optimizer,
-    get_best_checkpoint,
-    get_model_weights,
-    LRA,
-)
-import plot
-
-from sklearn.metrics import classification_report, confusion_matrix
-from tensorflow.random import set_seed
-from tensorflow.keras.callbacks import (
-    ModelCheckpoint,
-    EarlyStopping,
-    ReduceLROnPlateau,
-    LearningRateScheduler,
-)
-import tensorflow_addons as tfa
-from tensorflow.keras import backend as K
-from tensorflow.keras.models import load_model
-from tensorflow.keras.callbacks import Callback
-
-import wandb
-from wandb.keras import WandbCallback
 
 import os
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+
 import gc
+import subprocess
 import random
 import numpy as np
-import json
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import classification_report
+import tensorflow as tf
+import tensorflow_addons as tfa
 
-# import matplotlib.pyplot as plt
+# speed improvements
+from tensorflow.keras import mixed_precision
+mixed_precision.set_global_policy('mixed_float16')
 
-# *IMPORANT*: Have to do this line *before* importing tensorflow
-# os.environ['PYTHONHASHSEED'] = str(1)
+import wandb
+from wandb.keras import WandbCallback
 
-def seed_everything(seed=42):
-    os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
+from absl import app
+from absl import flags
+from ml_collections.config_flags import config_flags
+
+from src.preprocess import process_data
+from src.models import get_model
+from src.data_utilities import get_tfds_from_dir
+from src.model_utilities import (
+    get_optimizer,
+    configure_for_performance,
+    get_model_weights_ds,
+)
+from src.download_data import get_data
+from src.builtin_callbacks import get_earlystopper, get_reduce_lr_on_plateau
+import plot
+
+# Config
+FLAGS = flags.FLAGS
+CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
+flags.DEFINE_bool("wandb", False, "MLOps pipeline for our classifier.")
+flags.DEFINE_bool("log_model", False, "Checkpoint model while training.")
+flags.DEFINE_bool("log_eval", False,
+                  "Log model prediction, needs --wandb argument as well.")
+
+
+def seed_everything(seed):
+    os.environ["TF_CUDNN_DETERMINISTIC"] = "1"
     os.environ["PYTHONHASHSEED"] = str(seed)
     random.seed(seed)
     np.random.seed(seed)
-    set_seed(1)
+    tf.random.set_seed(seed)
 
 
-class custom_callback(Callback):
-    """log lr and clear checkpoints."""
+def train(config, train_dataset, val_dataset, labels):
 
-    def on_epoch_end(self, epoch, logs=None):
-        lr = float(
-            K.get_value(self.model.optimizer.lr)
-        )  # get the current learning rate
-        wandb.log({"lr": lr}, commit=False)
-        max = 0
-        for file_name in os.listdir("checkpoints"):
-            val_acc = int(os.path.basename(file_name).split(".")[-2])
-            if val_acc > max:
-                max = val_acc
-            if val_acc < max:
-                os.remove(os.path.join("checkpoints", file_name))
+    tf.keras.backend.clear_session()
 
+    model = get_model(config)
+    model.summary()
 
-def train():
+    print(f"\nModel loaded: {config.model_config.backbone}.\n\n")
 
-    # model = load_model('checkpoints/visionary-sweep-10-efficientnet-epoch-2-val_f1_score-0.65.hdf5')
+    config.train_config.metrics.append(
+        tfa.metrics.F1Score(num_classes=config.dataset_config.num_classes,
+                            average="macro",
+                            threshold=0.5))
 
-    file_name = "model-best.h5"
-    if config["finetune"]:
-        if os.path.exists(file_name):
-            os.remove("model-best.h5")
+    class_weights = None
+    if config.train_config.use_class_weights:
+        class_weights = get_model_weights_ds(train_dataset)
 
-        api = wandb.Api()
-        run = api.run(
-            config["pretrained_model_link"]
-        )  # different-sweep-34-efficientnet-epoch-3-val_f1_score-0.71.hdf5
-        run.file(file_name).download()
-        model = load_model(file_name)
-        pml = config["pretrained_model_link"]
-        print(f"Downloaded Trained model: {pml},\nfinetuning...")
-    else:
-        # build model
-        K.clear_session()
-        model = get_model(config)
-
-    # print(model.summary())
-
-    print(f"Model loaded: {pml}.\n\n")
-    opt = get_optimizer(config)
-
-    config["metrics"].append(
-        tfa.metrics.F1Score(
-            num_classes=config["num_classes"], average="macro", threshold=0.5
-        )
+    optimizer = get_optimizer(config)
+    # speed improvements
+    optimizer = mixed_precision.LossScaleOptimizer(optimizer)
+    # Compile the model
+    model.compile(
+        optimizer=optimizer,
+        loss=config.train_config.loss,
+        metrics=config.train_config.metrics,
     )
 
-    class_weights = get_model_weights(train_dataset)
-
-    model.compile(loss=config["loss_fn"], optimizer=opt, metrics=config["metrics"])
-    model_checkpoint = ModelCheckpoint(
-        "checkpoints/"
-        + f"{wandb.run.name}-"
-        + config["model_name"]
-        + "-epoch-{epoch}-val_f1_score-{val_f1_score:.2f}.hdf5",
-        save_best_only=True,
-    )
-    reduce_lr = ReduceLROnPlateau(
-        monitor="val_f1_score",
-        factor=config["lr_reduce_factor"],
-        patience=config["lr_reduce_patience"],
-        verbose=1,
-        min_lr=0.000001,
-    )
-    earlystopper = EarlyStopping(
-        monitor="val_f1_score",
-        patience=config["earlystopping_patience"],
-        verbose=1,
-        mode="auto",
-        min_delta=config["earlystopping_min_delta"],
-        restore_best_weights=True,
-    )
     # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(
-        monitor="val_f1_score", save_model=(True), save_graph=(False)
+        monitor="val_f1_score",
+        save_model=(config.callback_config.save_model),
+        save_graph=(False),
+        log_evaluation=True,
+        # generator=val_dataset,
+        # validation_steps=val_dataset.samples //
+        # config.dataset_config.batch_size,
     )
-    # callbacks = [wandbcallback, earlystopper, model_checkpoint, reduce_lr, custom_callback()]
-    callbacks = [
-        LRA(
-            wandb=wandb,
-            model=model,
-            patience=config["lr_reduce_patience"],
-            stop_patience=config["earlystopping_patience"],
-            threshold=config['threshold'],
-            factor=config["lr_reduce_factor"],
-            dwell=False,
-            model_name=config["model_name"],
-            freeze=config["freeze"],
-            initial_epoch=0,
-        ),
-        model_checkpoint,
-        wandbcallback,
-        custom_callback(),
-    ]
-    LRA.tepochs = config[
-        "max_epochs"
-    ]  # used to determine value of last epoch for printing
+    if config.callback_config.use_earlystopping:
+        earlystopper = get_earlystopper(config)
 
+    if config.callback_config.use_reduce_lr_on_plateau:
+        reduce_lr = get_reduce_lr_on_plateau(config)
+
+    callbacks = [wandbcallback, earlystopper, reduce_lr,]
+    verbose=1
+    #
+    train_dataset = configure_for_performance(train_dataset, config)
+    val_dataset = configure_for_performance(val_dataset, config)
+
+    # TODO (udaylunawat): add steps_per_epoch and validation_steps
     history = model.fit(
         train_dataset,
-        epochs=config["max_epochs"],
+        # steps_per_epoch=train_dataset.samples // config.dataset_config.batch_size,
+        epochs=config.train_config.epochs,
         validation_data=val_dataset,
+        # validation_steps=val_dataset.samples // config.dataset_config.batch_size,
         callbacks=callbacks,
         class_weight=class_weights,
         workers=-1,
-        verbose=0,
+        verbose=verbose,
     )
 
     return model, history
 
 
-def evaluate():
+def evaluate(config, model, history, test_dataset, labels):
     # Scores
+    # test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
     scores = model.evaluate(test_dataset, return_dict=True)
     print("Scores: ", scores)
 
     # Predict
     pred = model.predict(test_dataset, verbose=1)
+    # TODO (udaylunawat): CM and CR giving wrong results, try changing labels=infered
     predicted_class_indices = np.argmax(pred, axis=1)
 
+    # https://stackoverflow.com/a/64622975/9292995
+    # CM and classification report using tf.Data.Dataset
+    true_categories = tf.concat([y for x, y in test_dataset], axis=0)
     # Confusion Matrix
-    cm = plot.plot_confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
+    cm = plot.plot_confusion_matrix(labels, true_categories,
+                                predicted_class_indices)
 
     # Classification Report
     cl_report = classification_report(
-        test_dataset.classes,
+        true_categories,
         predicted_class_indices,
         labels=[0, 1, 2, 3, 4, 5, 6],
         target_names=labels,
@@ -192,43 +153,45 @@ def evaluate():
     print(cl_report)
 
     cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+    plt.savefig("cr.png", dpi=400)
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
     wandb.log({"Test F1 Score": scores["f1_score"]})
 
     # average of val and test f1 score
-    wandb.log({"Avg VT F1 Score": (scores["f1_score"] + max(history.history['val_f1_score'])) / 2})
+    wandb.log({
+        "Avg VT F1 Score":
+        (scores["f1_score"] + max(history.history["val_f1_score"])) / 2
+    })
     wandb.log({"Confusion Matrix": cm})
-    wandb.log(
-        {
-            "Classification Report Image:": wandb.Image(
-                "imgs/cr.png", caption="Classification Report"
-            )
-        }
-    )
+    wandb.log({
+        "Classification Report Image:":
+        wandb.Image("cr.png", caption="Classification Report")
+    })
 
 
-# read config file
-with open("config.json") as config_file:
-    default = json.load(config_file)
+def main(_):
+    # Get configs from the config file.
+    config = CONFIG.value
+    print(config)
+    seed_everything(config.seed)
 
+    if FLAGS.wandb:
+        run = wandb.init(
+            project=CONFIG.value.wandb_config.project,
+            config=config.to_dict(),
+            allow_val_change=True,
+        )
 
-if __name__ == "__main__":
+    print(f"\nDatasets used for Training:- {config.dataset_config.train_dataset}")
 
-    seed_everything(42)
-    print(
-        f"Default config:- {json.dumps(default, indent=2)}\n P.S - Not used in sweeps.\n\n"
-    )
-    run = wandb.init(
-        project="Whats-this-rockv2",
-        entity="rock-classifiers",
-        config=default,
-        allow_val_change=True,
-    )
-    config = wandb.config
-    IMAGE_SIZE = (config["image_size"], config["image_size"])
+    for dataset_id in config.dataset_config.train_dataset:
+        get_data(dataset_id)
 
-    train_dataset, val_dataset, test_dataset = get_generators(config)
+    if not os.path.exists('data/4_tfds_dataset/train'):
+        process_data(config)
+
+    train_dataset, val_dataset, test_dataset = get_tfds_from_dir(config)
     labels = [
         "Basalt",
         "Coal",
@@ -238,12 +201,19 @@ if __name__ == "__main__":
         "Quartzite",
         "Sandstone",
     ]
-    config["num_classes"] = len(labels)
-
-    model, history = train()
-    evaluate()
+    # TODO (udaylunawat): Update the `num_classes` to train_dataset.classes (not working)
+    config.dataset_config.num_classes = 7
+    if wandb.run is not None:
+        wandb.config.update(
+            {"dataset_config.num_classes": config.dataset_config.num_classes})
+    model, history = train(config, train_dataset, val_dataset, labels)
+    evaluate(config, model, history, test_dataset, labels)
 
     del model
     _ = gc.collect()
 
     run.finish()
+
+
+if __name__ == "__main__":
+    app.run(main)

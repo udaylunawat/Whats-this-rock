@@ -1,27 +1,16 @@
-import pandas as pd
-import numpy as np
 import os
+import cv2
 import shutil
-import json
-from tensorflow import image, cast, one_hot, float32
+import pandas as pd
+import tensorflow as tf
 import tensorflow_datasets as tfds
-from tensorflow.data import AUTOTUNE
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications.vgg16 import preprocess_input
+from os import listdir
+from PIL import Image
+from tqdm import tqdm
 
-from augment_utilities import (
-    apply_rand_augment,
-    cut_mix_and_mix_up,
-    preprocess_for_model,
-    visualize_dataset,
-)
-
-# load config from config.json file
-with open("config.json") as config_file:
-    config = json.load(config_file)
-
-IMAGE_SIZE = (config["image_size"], config["image_size"])
-
+from pathlib import Path
+import imghdr
 
 def find_filepaths(root_folder):
     filepaths = []
@@ -33,74 +22,69 @@ def find_filepaths(root_folder):
     return filepaths
 
 
-def remove_corrupted_images(root_folder):
-    print("\n\nRemoving corrupted images...")
-
+def remove_unsupported_images(root_folder):
+    print("\n\nRemoving unsupported images...")
+    count = 1
     filepaths = find_filepaths(root_folder)
-    del_count = 0
     for filepath in filepaths:
-        try:
-            fobj = open(filepath, "rb")
-            is_JFIF = b"JFIF" in fobj.peek(10)
-        finally:
-            fobj.close()
-        if not is_JFIF:
-            del_count += 1
+        if filepath.endswith(('JFIF', 'webp', 'jfif')):
             shutil.move(
-                filepath,
-                os.path.join("data", "corrupted_images", os.path.basename(filepath)),
-            )
-    print(f"Total {del_count} corrupted image moved to 'corrupted_images' folder\n")
-    return None
+                            filepath,
+                            os.path.join("data", "corrupted_images",
+                                        os.path.basename(filepath)),
+                        )
+            count += 1
+    print(f"Removed {count} unsupported files.")
 
 
-# https://towardsdatascience.com/stratified-sampling-you-may-have-been-splitting-your-dataset-all-wrong-8cfdd0d32502
-def get_stratified_dataset_partitions_pd(
-    df, train_split=0.8, val_split=0.1, test_split=0.1, target_variable=None
-):
-    assert (train_split + test_split + val_split) == 1
+def remove_corrupted_images( s_dir, ext_list=['jpg', 'png', 'jpeg', 'gif', 'bmp', 'JPEG' ]):
+    print("\n\nRemoving corrupted images...")
+    bad_images=[]
+    bad_ext=[]
+    s_list= os.listdir(s_dir)
+    for klass in s_list:
+        klass_path=os.path.join (s_dir, klass)
+        print ('processing class directory ', klass)
+        if os.path.isdir(klass_path):
+            file_list=os.listdir(klass_path)
+            for f in file_list:
+                f_path=os.path.join (klass_path,f)
+                tip = imghdr.what(f_path)
+                if ext_list.count(tip) == 0:
+                  bad_images.append(f_path)
+                if os.path.isfile(f_path):
+                    try:
+                        img=cv2.imread(f_path)
+                        shape=img.shape
+                    except:
+                        print('file ', f_path, ' is not a valid image file')
+                        bad_images.append(f_path)
+                else:
+                    print('*** fatal error, you a sub directory ', f, ' in class directory ', klass)
+        else:
+            print ('*** WARNING*** you have files in ', s_dir, ' it should only contain sub directories')
 
-    # Only allows for equal validation and test splits
-    assert val_split == test_split
-
-    # Shuffle
-    df_sample = df.sample(frac=1, random_state=12)
-
-    # Specify seed to always have the same split distribution between runs
-    # If target variable is provided, generate stratified sets
-    if target_variable is not None:
-        grouped_df = df_sample.groupby(target_variable)
-        arr_list = [
-            np.split(g, [int(train_split * len(g)), int((1 - val_split) * len(g))])
-            for i, g in grouped_df
-        ]
-
-        train_ds = pd.concat([t[0] for t in arr_list])
-        val_ds = pd.concat([t[1] for t in arr_list])
-        test_ds = pd.concat([v[2] for v in arr_list])
-
-    else:
-        indices_or_sections = [
-            int(train_split * len(df)),
-            int((1 - val_split) * len(df)),
-        ]
-        train_ds, val_ds, test_ds = np.split(df_sample, indices_or_sections)
-
-    return train_ds, val_ds, test_ds
-
-
-def get_data(sample_size):
-    data = pd.read_csv(os.path.join("data/3_consume/", "image_paths.csv"), index_col=0)
-    data = data.sample(frac=sample_size).reset_index(drop=True)
-    # Splitting data into train, val and test samples using stratified splits
-    train_df, val_df, test_df = get_stratified_dataset_partitions_pd(
-        data, 0.8, 0.1, 0.1
-    )
-    train_df = pd.concat([train_df, val_df])
-    return train_df, test_df
+    for f_path in bad_images:
+        shutil.move(
+            f_path,
+            os.path.join("data", "corrupted_images",
+                        os.path.basename(f_path)),
+        )
+    print(f"removed {len(bad_images)} bad images.\n")
 
 
-def get_df(root="data/2_processed"):
+def get_dims(file):
+    '''Returns dimenstions for an RBG image'''
+    im = cv2.imread(file)
+    if im is not None:
+        arr = np.array(im)
+        h, w = arr.shape[0], arr.shape[1]
+        return h,w
+    elif im is None:
+        return None
+
+
+def get_df(root:str="data/2_processed"):
     """
     root: a folder present inside data dir, which contains classes containing images
     """
@@ -125,28 +109,6 @@ def get_df(root="data/2_processed"):
     return df
 
 
-def undersample_df(data, class_name):
-    merged_df = pd.DataFrame()
-    for rock_type in data[class_name].unique():
-        temp = data[data[class_name] == rock_type].sample(
-            n=min(data[class_name].value_counts())
-        )
-        merged_df = pd.concat([merged_df, temp])
-
-    return merged_df
-
-
-def limit_data(data_dir, n=100):
-    # https://stackoverflow.com/a/65966877/9292995
-    a = []
-    for i in os.listdir(data_dir):
-        for k, j in enumerate(os.listdir(data_dir + "/" + i)):
-            if k > n:
-                continue
-            a.append((f"{data_dir}/{i}/{j}", i))
-    return pd.DataFrame(a, columns=["filename", "class"])
-
-
 ####################################### ImageDataGenerator Utilities ###################################
 
 
@@ -154,118 +116,102 @@ def scalar(img):
     return img / 127.5 - 1  # scale pixel between -1 and +1
 
 
-def get_generators(config):
-    if config["augment"]:
-        print("\n\nAugmentation is True! rescale=1./255")
-        train_datagen = ImageDataGenerator(
-            horizontal_flip=True,
-            vertical_flip=True,
-            rotation_range=20,
-            width_shift_range=0.2,
-            height_shift_range=0.2,
-            zoom_range=[0.5, 1.5],
-            rescale=1.0 / 255,
-        )  # preprocessing_function=scalar
-    elif not config["augment"]:
-        print("No Augmentation!")
-        train_datagen = ImageDataGenerator(rescale=1.0 / 255)
-    else:
-        print("Error in config.augment. Stop Training!")
-
-    train_dataset = train_datagen.flow_from_directory(
+def get_tfds_from_dir(config):
+    IMAGE_SIZE = (config.dataset_config.image_width,
+                  config.dataset_config.image_width)
+    train_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/train",
-        target_size=(config["image_size"], config["image_size"]),
-        batch_size=config["batch_size"],
+        labels='inferred',
+        label_mode='categorical',
+        color_mode='rgb',
+        batch_size=config.dataset_config.batch_size,
+        image_size=IMAGE_SIZE,
         shuffle=True,
-        color_mode="rgb",
-        class_mode="categorical",
+        seed=config.seed,
+        # subset='training'
     )
 
-    test_datagen = ImageDataGenerator(
-        rescale=1.0 / 255
-    )  # preprocessing_function=scalar
-    val_dataset = test_datagen.flow_from_directory(
+    val_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/val",
-        shuffle=False,
-        color_mode="rgb",
-        target_size=(config["image_size"], config["image_size"]),
-        batch_size=config["image_size"],
-        class_mode="categorical",
+        labels='inferred',
+        label_mode='categorical',
+        color_mode='rgb',
+        batch_size=config.dataset_config.batch_size,
+        image_size=IMAGE_SIZE,
+        shuffle=True,
+        seed=config.seed,
+        # subset='validation'
     )
 
-    test_generator = test_datagen.flow_from_directory(
+    test_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/test",
-        batch_size=config["batch_size"],
-        seed=42,
-        color_mode="rgb",
+        labels='inferred',
+        label_mode='categorical',
+        color_mode='rgb',
+        batch_size=config.dataset_config.batch_size,
+        image_size=IMAGE_SIZE,
         shuffle=False,
-        class_mode="categorical",
-        target_size=(config["image_size"], config["image_size"]),
+        seed=config.seed,
+        # subset='validation'
     )
 
-    return train_dataset, val_dataset, test_generator
+    return train_ds, val_ds, test_ds
 
 
-######################################## TFDS Dataset Utilities ########################################
-def get_data_tfds():
-    # build the tfds dataset from ImageFolder
-    # https://www.tensorflow.org/datasets/api_docs/python/tfds/image/ImageFolder
-
-    builder = tfds.ImageFolder("data/4_tfds_dataset")
-    print(builder.info)  # number of images, number of classes, etc.
-    data = builder.as_dataset(split=None, as_supervised=True)
-
-    data, builder = get_data_tfds()
-
-    num_classes = builder.info.features["label"].num_classes
-    config["num_classes"] = num_classes
-
-    def load_dataset(split="train"):
-        dataset = data[split]
-        return prepare_dataset(dataset, split)
-
-    if config["augment"]:
-        train_dataset = (
-            load_dataset()
-            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
-            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
-        )
-    else:
-        train_dataset = load_dataset()
-
-    train_dataset = train_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-    val_dataset = load_dataset(split="val")
-    val_dataset = val_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-    # test_dataset = load_dataset(split="test")
-    # test_dataset = test_dataset.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
-    labels = builder.info.features["label"].names
-
-    return train_dataset, val_dataset
+def rename_files(source_dir:str="data/2_processed/tmp"):
+    '''Renames files in classes and moves to 2_processed
 
 
-# # https://stackoverflow.com/a/37343690/9292995
-# # https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/
+    '''
+    class_names =  os.listdir(source_dir)
+    for class_name in class_names:
+        class_path = os.path.join(source_dir, class_name)
+        dest_path = os.path.join('data/2_processed', class_name)
+        count = len(os.listdir(dest_path)) + 1
+        for filename in os.listdir(class_path):
+            old_path = os.path.join(source_dir, class_name, filename)
+            _, extension = os.path.splitext(filename)
+            new_name = f"{class_name}_{count}{extension}"
+            new_path = os.path.join(dest_path, new_name)
+            shutil.copy(old_path, new_path)
+            count += 1
 
 
-def to_dict(image, label):
-    image = image.resize(image, IMAGE_SIZE)
-    image = cast(image, float32)
-    label = one_hot(label, config["num_classes"])
-    return {"images": image, "labels": label}
+def move_files(src_dir: str, dest_dir:str ='data/2_processed/tmp'):
+    '''Moves files to tmp directory in 2_processed
 
+    src_dir: directory of rock subclass with files [Basalt, Marble, Coal, ...]
+    '''
+    if os.path.exists(dest_dir):
+        shutil.rmtree(dest_dir)
+    os.makedirs(dest_dir, exist_ok=True)
 
-def prepare_dataset(dataset, split):
-    AUTOTUNE = AUTOTUNE
-    if split == "train":
-        return (
-            dataset.shuffle(10 * config["batch_size"])
-            .map(to_dict, num_parallel_calls=AUTOTUNE)
-            .batch(config["batch_size"])
-        )
-    elif split == "val" or split == "test":
-        return dataset.map(to_dict, num_parallel_calls=AUTOTUNE).batch(
-            config["batch_size"]
-        )
+    src_dir_name = os.path.basename(src_dir)
+    dest_dir_path = os.path.join(dest_dir, src_dir_name.capitalize())
+    os.makedirs(dest_dir_path, exist_ok=True)
+
+    files = os.listdir(src_dir)
+    total = len(files)
+    for index, filename in tqdm(enumerate(files), desc=f"Moving {src_dir_name}", total=total):
+        src_path = os.path.join(src_dir, filename)
+        dest_path = os.path.join(dest_dir_path, filename)
+        # print("Copying", src_path, dest_path)
+        shutil.copy(src_path, dest_path)
+        # print(f"Moved {index+1} files from {src_dir} to {dest_dir_path}")
+
+def move_and_rename(class_dir: str):
+    '''Moves files from class_dir to tmp, renames them there based on count, and moves back to 2_processed
+
+    class_dir: A class dir of supporting classes (Marble, Coal, ...), which contains image files
+    '''
+    target_classes = os.listdir('data/2_processed/')
+    if 'tmp' in target_classes:
+        target_classes.remove('tmp')
+    target_classes_lower = list(map(lambda x: x.lower(), target_classes))
+
+    for subclass_dir in os.listdir(class_dir):
+        if subclass_dir.lower() in target_classes_lower:
+            subclass_dir_path = os.path.join(class_dir, subclass_dir)
+            move_files(subclass_dir_path)
+            rename_files()
+            shutil.rmtree('data/2_processed/tmp')

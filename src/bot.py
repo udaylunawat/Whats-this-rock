@@ -1,6 +1,5 @@
 import os
 import json
-import telegram
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
 from predict import get_prediction
 
@@ -12,46 +11,43 @@ with open("config.json") as config_file:
 def start(update, context):
     user = update.effective_user
     name = user['first_name']
-    update.message.reply_text(
-        f"""
+    update.message.reply_text(f"""
 Hi {name}! Welcome!
 I am a rock classification bot.
 Send me a photo of a rock and I will tell you what kind of rock it is.\n
 I can classify rocks from in these categories Basalt, Granite, Quartz, Sandstone, Marble, Coal, and Granite.\n
-You can visit [here](https://github.com/udaylunawat/Whats-this-rock) to check my source code!"""
-    )
+You can visit \n(https://github.com/udaylunawat/Whats-this-rock)\n to check my source code!"""
+                              )
 
 
 def help(update, context):
-    update.message.reply_text(
-        """
-    /start - Starts conversation
+    update.message.reply_text("""
+/start - Starts conversation
 /help - Shows this message
 /model - Show model details
-"""
-    )
+""")
 
 
 def model_details(update, context):
-    update.message.reply_text(
-        f"""Model details can be found at https://wandb.ai/{config["pretrained_model_link"]}/
-"""
-    )
+    #     update.message.reply_text(
+    #         f"""Model details can be found at \nhttps://wandb.ai/{config["pretrained_model_link"]}/
+    # """
+    #     )
     dir = os.listdir('media/images')
     cr = os.path.join('media', 'images', dir[0])
-    update.message.reply_text("Confusion report for model.")
-    print(cr)
+    update.message.reply_text(
+        "Here's the Confusion matrix heatmap for the model.")
     user = update.effective_user
+    print(cr)
+    print(user)
     chat_id = user['id']
     bot.send_photo(chat_id, photo=open(cr, 'rb'))
 
 
 def handle_message(update, context):
-    update.message.reply_text(
-        """Please send a picture of a rock!\n
+    update.message.reply_text("""Please send a picture of a rock!\n
 Or type /help to learn more.
-"""
-    )
+""")
 
 
 def handle_photo(update, context):

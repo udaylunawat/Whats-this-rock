@@ -1,3 +1,5 @@
+-e .
+
 scikit-learn
 opencv-python
 kaggle
@@ -10,3 +12,4 @@ tensorflow-addons
 wandb
 # keras-cv
 split-folders
+ml-collections
