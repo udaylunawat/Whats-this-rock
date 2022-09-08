@@ -116,59 +116,6 @@ def scalar(img):
     return img / 127.5 - 1  # scale pixel between -1 and +1
 
 
-def get_generators(config):
-    IMAGE_SIZE = (config.dataset_config.image_width,
-                  config.dataset_config.image_width)
-    if config.train_config.use_augmentations:
-        print("\n\nAugmentation is True! rescale=1./255")
-        train_datagen = ImageDataGenerator(
-            horizontal_flip=True,
-            vertical_flip=True,
-            rotation_range=20,
-            width_shift_range=0.2,
-            height_shift_range=0.2,
-            zoom_range=[0.5, 1.5],
-            rescale=1.0 / 255,
-        )  # preprocessing_function=scalar
-    elif not config.train_config.use_augmentations:
-        print("No Augmentation!")
-        train_datagen = ImageDataGenerator(rescale=1.0 / 255)
-    else:
-        print("Error in config.augment. Stop Training!")
-
-    train_dataset = train_datagen.flow_from_directory(
-        "data/4_tfds_dataset/train",
-        target_size=IMAGE_SIZE,
-        batch_size=config.dataset_config.batch_size,
-        shuffle=True,
-        color_mode="rgb",
-        class_mode="categorical",
-    )
-
-    test_datagen = ImageDataGenerator(rescale=1.0 /
-                                      255)  # preprocessing_function=scalar
-    val_dataset = test_datagen.flow_from_directory(
-        "data/4_tfds_dataset/val",
-        shuffle=True,
-        color_mode="rgb",
-        target_size=IMAGE_SIZE,
-        batch_size=config.dataset_config.batch_size,
-        class_mode="categorical",
-    )
-
-    test_generator = test_datagen.flow_from_directory(
-        "data/4_tfds_dataset/test",
-        batch_size=config.dataset_config.batch_size,
-        seed=config.seed,
-        color_mode="rgb",
-        shuffle=False,
-        class_mode="categorical",
-        target_size=IMAGE_SIZE,
-    )
-
-    return train_dataset, val_dataset, test_generator
-
-
 def get_tfds_from_dir(config):
     IMAGE_SIZE = (config.dataset_config.image_width,
                   config.dataset_config.image_width)
