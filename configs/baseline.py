@@ -20,7 +20,6 @@ def get_dataset_configs() -> ml_collections.ConfigDict:
     configs.image_width = 224
     configs.channels = 3
     configs.batch_size = 64
-    configs.dataset_type = 'dataset'
     configs.num_classes = config_dict.placeholder(int)
 
     return configs
@@ -62,7 +61,7 @@ def get_callback_configs() -> ml_collections.ConfigDict:
 
 def get_train_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
-    configs.epochs = 100
+    configs.epochs = 3
     configs.lr = 0.001
     configs.use_augmentations = True
     configs.use_class_weights = True
