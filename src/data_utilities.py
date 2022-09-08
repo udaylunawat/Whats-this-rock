@@ -2,9 +2,10 @@ import os
 import cv2
 import shutil
 import pandas as pd
+
 import tensorflow as tf
-from tensorflow.keras import layers
 import tensorflow_datasets as tfds
+from tensorflow.keras import layers
 
 from os import listdir
 from PIL import Image
@@ -120,11 +121,34 @@ def get_value_counts(dataset_path):
     vc = data['file_name'].apply(lambda x: x.split('.')[-1]).value_counts()
     print(vc)
 
+
 ####################################### tf.data Utilities ###################################
 
 
 def scalar(img):
     return img / 127.5 - 1  # scale pixel between -1 and +1
+
+
+def get_preprocess(args):
+
+    if args.model_config.backbone == 'vgg16':
+        preprocess_input = tf.keras.applications.vgg16.preprocess_input
+
+    elif args.model_config.backbone == 'resnet':
+        preprocess_input = tf.keras.applications.resnet.preprocess_input
+
+    elif args.model_config.backbone == 'inceptionresnetv2':
+        preprocess_input = tf.keras.applications.inception_resnet_v2.preprocess_input
+
+    elif args.model_config.backbone == 'mobilenetv2':
+        preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
+
+    elif args.model_config.backbone == 'efficientnet':
+        preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
+
+    elif args.model_config.backbone == 'EfficientNetV2M':
+        preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
+    return preprocess_input
 
 
 def prepare(ds, config, shuffle=False, augment=False):
@@ -139,9 +163,15 @@ def prepare(ds, config, shuffle=False, augment=False):
         layers.RandomZoom(0.1),
     ])
 
-    # Resize and rescale all datasets.
-    ds = ds.map(lambda x, y: (rescale(x), y),
+    if config.model_config.preprocess:
+        preprocess_input = get_preprocess(config)
+        ds = ds.map(lambda x, y: (preprocess_input(x), y),
                 num_parallel_calls=tf.data.AUTOTUNE)
+    else:
+         # Resize and rescale all datasets.
+        ds = ds.map(lambda x, y: (rescale(x), y),
+                num_parallel_calls=tf.data.AUTOTUNE)
+
     ds = ds.cache()
     if shuffle:
         ds = ds.shuffle(buffer_size=1000)
