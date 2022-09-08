@@ -3,8 +3,9 @@ import cv2
 import shutil
 import pandas as pd
 import tensorflow as tf
+from tensorflow.keras import layers
 import tensorflow_datasets as tfds
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
 from os import listdir
 from PIL import Image
 from tqdm import tqdm
@@ -119,7 +120,7 @@ def get_value_counts(dataset_path):
     vc = data['file_name'].apply(lambda x: x.split('.')[-1]).value_counts()
     print(vc)
 
-####################################### ImageDataGenerator Utilities ###################################
+####################################### tf.data Utilities ###################################
 
 
 def scalar(img):
@@ -144,7 +145,7 @@ def prepare(ds, config, shuffle=False, augment=False):
     ds = ds.cache()
     if shuffle:
         ds = ds.shuffle(buffer_size=1000)
-    ds = ds.batch(config.dataset_config.batch_size)
+    # ds = ds.batch(config.dataset_config.batch_size)
     # Use data augmentation only on the training set.
     if augment:
         ds = ds.map(lambda x, y: (data_augmentation(x, training=True), y),
