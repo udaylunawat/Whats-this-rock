@@ -14,20 +14,6 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from src.preprocess import process_data
-from src.models import get_model
-from src.data_utilities import get_generators, get_tfds_from_dir
-from src.model_utilities import (
-    get_optimizer,
-    configure_for_performance,
-    get_model_weights_ds,
-    get_model_weights_gen,
-    LRA,
-)
-from src.download_data import get_data
-from src.builtin_callbacks import get_earlystopper, get_reduce_lr_on_plateau
-import plot
-
 from sklearn.metrics import classification_report
 import tensorflow as tf
 import tensorflow_addons as tfa
@@ -42,6 +28,20 @@ from wandb.keras import WandbCallback
 from absl import app
 from absl import flags
 from ml_collections.config_flags import config_flags
+
+from src.preprocess import process_data
+from src.models import get_model
+from src.data_utilities import get_tfds_from_dir
+from src.model_utilities import (
+    get_optimizer,
+    configure_for_performance,
+    get_model_weights_ds,
+    get_model_weights_gen,
+    LRA,
+)
+from src.download_data import get_data
+from src.builtin_callbacks import get_earlystopper, get_reduce_lr_on_plateau
+import plot
 
 # Config
 FLAGS = flags.FLAGS
@@ -63,22 +63,7 @@ def seed_everything(seed):
 def train(config, train_dataset, val_dataset, labels):
 
     tf.keras.backend.clear_session()
-    # file_name = "model-best.h5"
-    # if config["finetune"]:
-    #     if os.path.exists(file_name):
-    #         os.remove("model-best.h5")
 
-    #     api = wandb.Api()
-    #     run = api.run(
-    #         config["pretrained_model_link"]
-    #     )  # different-sweep-34-efficientnet-epoch-3-val_f1_score-0.71.hdf5
-    #     run.file(file_name).download()
-    #     model = tf.keras.models.load_model(file_name)
-    #     pml = config["pretrained_model_link"]
-    #     print(f"Downloaded Trained model: {pml},\nfinetuning...")
-    # else:
-    #     # build model
-    #     model = get_model(config)
     model = get_model(config)
     model.summary()
 
@@ -91,10 +76,7 @@ def train(config, train_dataset, val_dataset, labels):
 
     class_weights = None
     if config.train_config.use_class_weights:
-        if config.dataset_config.dataset_type == 'generator':
-            class_weights = get_model_weights_gen(train_dataset)
-        elif config.dataset_config.dataset_type == 'dataset':
-            class_weights = get_model_weights_ds(train_dataset)
+        class_weights = get_model_weights_ds(train_dataset)
 
     optimizer = get_optimizer(config)
     # speed improvements
@@ -124,24 +106,7 @@ def train(config, train_dataset, val_dataset, labels):
 
     callbacks = [wandbcallback, earlystopper, reduce_lr,]
     verbose=1
-    # callbacks = [
-    #     LRA(
-    #         wandb=wandb,
-    #         model=model,
-    #         patience=config.callback_config.rlrp_patience,
-    #         stop_patience=config.callback_config.early_patience,
-    #         threshold=config.callback_config.threshold,
-    #         factor=config.callback_config.rlrp_factor,
-    #         dwell=False,
-    #         model_name=config.model_config.backbone,
-    #         freeze=False,
-    #         initial_epoch=0,
-    #     ),
-    #     wandbcallback,
-    # ]
-    # verbose = 0
-    # LRA.tepochs = config.train_config.epochs  # used to determine value of last epoch for printing
-
+    #
     train_dataset = configure_for_performance(train_dataset, config)
     val_dataset = configure_for_performance(val_dataset, config)
 
@@ -169,35 +134,20 @@ def evaluate(config, model, history, test_dataset, labels):
 
     # Predict
     pred = model.predict(test_dataset, verbose=1)
-    y = []
-
-    for _, labels in test_dataset:
-        for label in labels:
-            y.append(label.numpy())
-
-    threshold = 0.009770811
-    predictions_prob = model.predict(test_dataset)
-    predictions = predictions_prob >= threshold
-    predictions = predictions.flatten()
-
-    # TODO (udaylunawat): CM and CR giving wrong results
+    # TODO (udaylunawat): CM and CR giving wrong results, try changing labels=infered
     predicted_class_indices = np.argmax(pred, axis=1)
-    if config.dataset_config.dataset_type == 'generator':
-        # Confusion Matrix
-        cm = plot.plot_confusion_matrix(labels, test_dataset.classes,
-                                        predicted_class_indices)
-    elif config.dataset_config.dataset_type == 'dataset':
-        # https://stackoverflow.com/a/64622975/9292995
-        # CM and classification report using tf.Data.Dataset
-        true_categories = tf.concat([y for x, y in test_dataset], axis=0)
-        # Confusion Matrix
-        cm = plot.plot_confusion_matrix(labels, y,
-                                    predictions)
+
+    # https://stackoverflow.com/a/64622975/9292995
+    # CM and classification report using tf.Data.Dataset
+    true_categories = tf.concat([y for x, y in test_dataset], axis=0)
+    # Confusion Matrix
+    cm = plot.plot_confusion_matrix(labels, true_categories,
+                                predicted_class_indices)
 
     # Classification Report
     cl_report = classification_report(
-        y,
-        predictions,
+        true_categories,
+        predicted_class_indices,
         labels=[0, 1, 2, 3, 4, 5, 6],
         target_names=labels,
         output_dict=True,
@@ -243,10 +193,7 @@ def main(_):
     if not os.path.exists('data/4_tfds_dataset/train'):
         process_data(config)
 
-    if config.dataset_config.dataset_type == 'generator':
-        train_dataset, val_dataset, test_dataset = get_generators(config)
-    elif config.dataset_config.dataset_type == 'dataset':
-        train_dataset, val_dataset, test_dataset = get_tfds_from_dir(config)
+    train_dataset, val_dataset, test_dataset = get_tfds_from_dir(config)
     labels = [
         "Basalt",
         "Coal",
