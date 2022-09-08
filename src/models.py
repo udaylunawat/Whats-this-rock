@@ -71,16 +71,7 @@ def get_model(args):
     Args:
         args (ml_collections.ConfigDict): Configuration.
     """
-    data_augmentation = tf.keras.Sequential(
-    [
-        layers.RandomFlip("horizontal",
-                        input_shape=(args.model_config.model_img_height,
-                                     args.model_config.model_img_width,
-                                     args.model_config.model_img_channels)),
-        layers.RandomRotation(0.1),
-        layers.RandomZoom(0.1),
-    ]
-    )
+
     # Backbone
     base_model = get_backbone(args)
 
@@ -89,14 +80,9 @@ def get_model(args):
                                  args.model_config.model_img_width,
                                  args.model_config.model_img_channels))
 
-    if args.train_config.use_augmentations:
-        x = data_augmentation(inputs)
     if args.model_config.preprocess:
         preprocess_input = get_preprocess(args)
         x = preprocess_input(x)
-    else:
-        rescale = tf.keras.layers.Rescaling(1./255, offset=-1)
-        x = rescale(x)
 
     x = base_model(inputs, training=args.model_config.trainable)
     x = layers.GlobalAveragePooling2D()(x)
@@ -110,6 +96,7 @@ def get_model(args):
     x = layers.Dense(64, dtype='float32', activation='relu')(x)
     x = layers.Dropout(args.model_config.dropout_rate)(x)
     outputs = layers.Dense(args.dataset_config.num_classes,
-                           activation='softmax', dtype='float32')(x)
+                           activation='softmax',
+                           dtype='float32')(x)
 
     return models.Model(inputs, outputs)
