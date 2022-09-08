@@ -3,10 +3,8 @@ import numpy as np
 from sklearn.utils import class_weight
 
 import tensorflow as tf
+from tensorflow.keras import layers, optimizers, backend as K
 from tensorflow.keras.callbacks import Callback
-from tensorflow.keras import optimizers
-from tensorflow.keras import backend as K
-# import models
 
 
 def get_optimizer(config):
@@ -34,12 +32,3 @@ def get_model_weights_ds(train_ds):
 
     train_class_weights = dict(enumerate(class_weights))
     return train_class_weights
-
-
-def configure_for_performance(ds, config):
-    ds = ds.cache()
-    ds = ds.shuffle(buffer_size=1000)
-    # ds = ds.batch(config.dataset_config.batch_size)
-    ds = ds.prefetch(buffer_size=tf.data.AUTOTUNE)
-    return ds
-
