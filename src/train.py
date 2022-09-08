@@ -31,11 +31,11 @@ from ml_collections.config_flags import config_flags
 
 from src.preprocess import process_data
 from src.models import get_model
-from src.data_utilities import get_tfds_from_dir
+from src.data_utilities import get_tfds_from_dir, prepare
 from src.model_utilities import (
     get_optimizer,
-    configure_for_performance,
     get_model_weights_ds,
+    prepare,
 )
 from src.download_data import get_data
 from src.builtin_callbacks import get_earlystopper, get_reduce_lr_on_plateau
@@ -105,8 +105,8 @@ def train(config, train_dataset, val_dataset, labels):
     callbacks = [wandbcallback, earlystopper, reduce_lr,]
     verbose=1
     #
-    train_dataset = configure_for_performance(train_dataset, config)
-    val_dataset = configure_for_performance(val_dataset, config)
+    train_dataset = prepare(train_dataset, config, shuffle=True, augment=config.train_config.use_augmentations)
+    val_dataset = prepare(val_dataset, config)
 
     # TODO (udaylunawat): add steps_per_epoch and validation_steps
     history = model.fit(
@@ -126,26 +126,24 @@ def train(config, train_dataset, val_dataset, labels):
 
 def evaluate(config, model, history, test_dataset, labels):
     # Scores
-    # test_ds = test_ds.cache().prefetch(buffer_size=AUTOTUNE)
+    test_dataset = prepare(test_dataset, config)
     scores = model.evaluate(test_dataset, return_dict=True)
     print("Scores: ", scores)
 
     # Predict
-    pred = model.predict(test_dataset, verbose=1)
     # TODO (udaylunawat): CM and CR giving wrong results, try changing labels=infered
-    predicted_class_indices = np.argmax(pred, axis=1)
-
-    # https://stackoverflow.com/a/64622975/9292995
-    # CM and classification report using tf.Data.Dataset
-    true_categories = tf.concat([y for x, y in test_dataset], axis=0)
+    y_true = tf.concat([y for x, y in test_dataset], axis=0)
+    true_categories = tf.argmax(y_true, axis=1)
+    y_pred = model.predict(test_dataset, verbose=1)
+    predicted_categories = tf.argmax(y_pred, axis=1)
     # Confusion Matrix
     cm = plot.plot_confusion_matrix(labels, true_categories,
-                                predicted_class_indices)
+                                    predicted_categories)
 
     # Classification Report
     cl_report = classification_report(
         true_categories,
-        predicted_class_indices,
+        predicted_categories,
         labels=[0, 1, 2, 3, 4, 5, 6],
         target_names=labels,
         output_dict=True,
