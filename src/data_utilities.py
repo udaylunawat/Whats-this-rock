@@ -114,6 +114,11 @@ def get_df(root: str = "data/2_processed"):
     return df
 
 
+def get_value_counts(dataset_path):
+    data = get_df(dataset_path)
+    vc = data['file_name'].apply(lambda x: x.split('.')[-1]).value_counts()
+    print(vc)
+
 ####################################### ImageDataGenerator Utilities ###################################
 
 
