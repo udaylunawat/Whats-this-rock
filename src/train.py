@@ -90,11 +90,6 @@ def train(config, train_dataset, val_dataset, labels):
     wandbcallback = WandbCallback(
         monitor="val_f1_score",
         save_model=(config.callback_config.save_model),
-        # save_graph=(False),
-        # log_evaluation=False,
-        # generator=val_dataset,
-        # validation_steps=val_dataset.samples //
-        # config.dataset_config.batch_size,
     )
     if config.callback_config.use_earlystopping:
         earlystopper = get_earlystopper(config)
@@ -108,13 +103,10 @@ def train(config, train_dataset, val_dataset, labels):
     train_dataset = prepare(train_dataset, config, shuffle=True, augment=config.train_config.use_augmentations)
     val_dataset = prepare(val_dataset, config)
 
-    # TODO (udaylunawat): add steps_per_epoch and validation_steps
     history = model.fit(
         train_dataset,
-        # steps_per_epoch=train_dataset.samples // config.dataset_config.batch_size,
         epochs=config.train_config.epochs,
         validation_data=val_dataset,
-        # validation_steps=val_dataset.samples // config.dataset_config.batch_size,
         callbacks=callbacks,
         class_weight=class_weights,
         workers=-1,
