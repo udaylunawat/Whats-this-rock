@@ -43,7 +43,7 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
     # Early stopping
     configs.use_earlystopping = True
-    configs.early_patience = 15
+    configs.early_patience = 10
     # Reduce LR on plateau
     configs.use_reduce_lr_on_plateau = True
     configs.rlrp_factor = 0.4
@@ -54,6 +54,7 @@ def get_callback_configs() -> ml_collections.ConfigDict:
     configs.checkpoint_filepath = "wandb/model_{epoch}"
     configs.save_model = False
     configs.save_best_only = True
+    configs.monitor = 'val_f1_score'
 
     return configs
 
