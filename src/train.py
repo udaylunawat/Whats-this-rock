@@ -90,8 +90,8 @@ def train(config, train_dataset, val_dataset, labels):
     wandbcallback = WandbCallback(
         monitor="val_f1_score",
         save_model=(config.callback_config.save_model),
-        save_graph=(False),
-        log_evaluation=True,
+        # save_graph=(False),
+        # log_evaluation=False,
         # generator=val_dataset,
         # validation_steps=val_dataset.samples //
         # config.dataset_config.batch_size,
