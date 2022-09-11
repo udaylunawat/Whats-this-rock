@@ -31,9 +31,10 @@ def get_model_configs() -> ml_collections.ConfigDict:
     configs.backbone = "EfficientNetV2M"
     configs.use_pretrained_weights = True
     configs.trainable = True
-    configs.preprocess = False
+    configs.preprocess = True
     configs.dropout_rate = 0.4
     configs.post_gap_dropout = False
+    configs.regularize_more = False
 
     return configs
 

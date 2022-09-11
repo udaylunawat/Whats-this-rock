@@ -61,50 +61,53 @@ def get_model(args):
 
     x = base_model(inputs, training=args.model_config.trainable)
     x = layers.GlobalAveragePooling2D()(x)
+
     if args.model_config.post_gap_dropout:
         x = layers.Dropout(args.model_config.dropout_rate)(x)
 
-    # x = layers.Dense(256, dtype='float32', activation='relu')(x)
-    # x = layers.Dropout(args.model_config.dropout_rate)(x)
-    # x = layers.Dense(128, dtype='float32', activation='relu')(x)
-    # x = layers.Dropout(args.model_config.dropout_rate)(x)
-    # x = layers.Dense(64, dtype='float32', activation='relu')(x)
-    # x = layers.Dropout(args.model_config.dropout_rate)(x)
-    # outputs = layers.Dense(args.dataset_config.num_classes,
-    #                        activation='softmax',
-    #                        dtype='float32')(x)
 
-    x = layers.Dense(
-        256,
-        dtype='float32',
-        kernel_regularizer=regularizers.l2(l=0.016),
-        activity_regularizer=regularizers.l1(0.006),
-        bias_regularizer=regularizers.l1(0.006),
-        activation='relu',
-        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
-    x = layers.Dropout(args.model_config.dropout_rate)(x)
-    x = layers.Dense(
-        128,
-        dtype='float32',
-        kernel_regularizer=regularizers.l2(l=0.016),
-        activity_regularizer=regularizers.l1(0.006),
-        bias_regularizer=regularizers.l1(0.006),
-        activation='relu',
-        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
-    x = layers.Dropout(args.model_config.dropout_rate)(x)
-    x = layers.Dense(
-        64,
-        dtype='float32',
-        kernel_regularizer=regularizers.l2(l=0.016),
-        activity_regularizer=regularizers.l1(0.006),
-        bias_regularizer=regularizers.l1(0.006),
-        activation='relu',
-        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
-    x = layers.Dropout(args.model_config.dropout_rate)(x)
-    outputs = layers.Dense(
-        args.dataset_config.num_classes,
-        activation='softmax',
-        dtype='float32',
-        kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
+    if args.model_config.regularize_more:
+        x = layers.Dense(
+            256,
+            dtype='float32',
+            kernel_regularizer=regularizers.l2(l=0.016),
+            activity_regularizer=regularizers.l1(0.006),
+            bias_regularizer=regularizers.l1(0.006),
+            activation='relu',
+            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
+        x = layers.Dropout(args.model_config.dropout_rate)(x)
+        x = layers.Dense(
+            128,
+            dtype='float32',
+            kernel_regularizer=regularizers.l2(l=0.016),
+            activity_regularizer=regularizers.l1(0.006),
+            bias_regularizer=regularizers.l1(0.006),
+            activation='relu',
+            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
+        x = layers.Dropout(args.model_config.dropout_rate)(x)
+        x = layers.Dense(
+            64,
+            dtype='float32',
+            kernel_regularizer=regularizers.l2(l=0.016),
+            activity_regularizer=regularizers.l1(0.006),
+            bias_regularizer=regularizers.l1(0.006),
+            activation='relu',
+            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
+        x = layers.Dropout(args.model_config.dropout_rate)(x)
+        outputs = layers.Dense(
+            args.dataset_config.num_classes,
+            activation='softmax',
+            dtype='float32',
+            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
+    else:
+        x = layers.Dense(256, dtype='float32', activation='relu')(x)
+        x = layers.Dropout(args.model_config.dropout_rate)(x)
+        x = layers.Dense(128, dtype='float32', activation='relu')(x)
+        x = layers.Dropout(args.model_config.dropout_rate)(x)
+        x = layers.Dense(64, dtype='float32', activation='relu')(x)
+        x = layers.Dropout(args.model_config.dropout_rate)(x)
+        outputs = layers.Dense(args.dataset_config.num_classes,
+                            activation='softmax',
+                            dtype='float32')(x)
 
     return models.Model(inputs, outputs)
