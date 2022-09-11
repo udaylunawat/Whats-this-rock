@@ -152,7 +152,6 @@ def get_preprocess(args):
 
 
 def prepare(ds, config, shuffle=False, augment=False):
-    rescale = tf.keras.Sequential([tf.keras.layers.Rescaling(1. / 255)])
     data_augmentation = tf.keras.Sequential([
         layers.RandomFlip(
             "horizontal",
@@ -166,10 +165,6 @@ def prepare(ds, config, shuffle=False, augment=False):
     if config.model_config.preprocess:
         preprocess_input = get_preprocess(config)
         ds = ds.map(lambda x, y: (preprocess_input(x), y),
-                num_parallel_calls=tf.data.AUTOTUNE)
-    else:
-         # Resize and rescale all datasets.
-        ds = ds.map(lambda x, y: (rescale(x), y),
                 num_parallel_calls=tf.data.AUTOTUNE)
 
     ds = ds.cache()
