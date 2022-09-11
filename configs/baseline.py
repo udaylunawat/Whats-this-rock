@@ -27,8 +27,6 @@ def get_dataset_configs() -> ml_collections.ConfigDict:
 
 def get_model_configs() -> ml_collections.ConfigDict:
     configs = ml_collections.ConfigDict()
-    configs.model_img_height = 224
-    configs.model_img_width = 224
     configs.model_img_channels = 3
     configs.backbone = "EfficientNetV2M"
     configs.use_pretrained_weights = True

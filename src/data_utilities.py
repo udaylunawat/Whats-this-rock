@@ -156,9 +156,9 @@ def prepare(ds, config, shuffle=False, augment=False):
     data_augmentation = tf.keras.Sequential([
         layers.RandomFlip(
             "horizontal",
-            input_shape=(config.model_config.model_img_height,
-                         config.model_config.model_img_width,
-                         config.model_config.model_img_channels)),
+            input_shape=(config.dataset_config.image_height,
+                         config.dataset_config.image_width,
+                         config.dataset_config.channels)),
         layers.RandomRotation(0.1),
         layers.RandomZoom(0.1),
     ])
@@ -185,7 +185,7 @@ def prepare(ds, config, shuffle=False, augment=False):
 
 def get_tfds_from_dir(config):
     IMAGE_SIZE = (config.dataset_config.image_width,
-                  config.dataset_config.image_width)
+                  config.dataset_config.image_height)
     train_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/train",
         labels='inferred',
