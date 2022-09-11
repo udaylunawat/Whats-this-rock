@@ -55,9 +55,9 @@ def get_model(args):
     base_model = get_backbone(args)
 
     # Stack layers
-    inputs = layers.Input(shape=(args.model_config.model_img_height,
-                                 args.model_config.model_img_width,
-                                 args.model_config.model_img_channels))
+    inputs = layers.Input(shape=(args.dataset_config.image_height,
+                                 args.dataset_config.image_width,
+                                 args.dataset_config.channels))
 
     x = base_model(inputs, training=args.model_config.trainable)
     x = layers.GlobalAveragePooling2D()(x)
