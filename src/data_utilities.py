@@ -5,7 +5,7 @@ import pandas as pd
 
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from tensorflow.keras import layers
+from tensorflow.keras import layers, applications
 
 from os import listdir
 from PIL import Image
@@ -130,25 +130,16 @@ def scalar(img):
 
 
 def get_preprocess(args):
+    preprocess_dict = {
+        'vgg16': applications.vgg16.preprocess_input,
+        'resnet': applications.resnet.preprocess_input,
+        'inceptionresnetv2': applications.inception_resnet_v2.preprocess_input,
+        'mobilenetv2': applications.mobilenet_v2.preprocess_input,
+        'efficientnetv2': applications.efficientnet_v2.preprocess_input,
+        'efficientnetv2m': applications.efficientnet_v2.preprocess_input
+    }
 
-    if args.model_config.backbone == 'vgg16':
-        preprocess_input = tf.keras.applications.vgg16.preprocess_input
-
-    elif args.model_config.backbone == 'resnet':
-        preprocess_input = tf.keras.applications.resnet.preprocess_input
-
-    elif args.model_config.backbone == 'inceptionresnetv2':
-        preprocess_input = tf.keras.applications.inception_resnet_v2.preprocess_input
-
-    elif args.model_config.backbone == 'mobilenetv2':
-        preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
-
-    elif args.model_config.backbone == 'efficientnet':
-        preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
-
-    elif args.model_config.backbone == 'EfficientNetV2M':
-        preprocess_input = tf.keras.applications.efficientnet_v2.preprocess_input
-    return preprocess_input
+    return preprocess_dict[args.model_config.backbone]
 
 
 def prepare(ds, config, shuffle=False, augment=False):
