@@ -21,18 +21,20 @@ def process_data(config):
             move_and_rename(main_class_path)
 
     print("\nFiles other than jpg and png.")
-    print(
-        subprocess.run(
-            ["ls", "data/2_processed/", "-I", "*.jpg", "-I", "*.png"
-             "-R"],
-            capture_output=True).stdout.decode())
+    result = subprocess.run(
+        ['ls', 'data/2_processed', '-I', '*.jpg', '-I', '*.png', '-R'],
+        stdout=subprocess.PIPE).stdout.decode('utf-8')
+    print(result)
 
     print("\nFile types before cleaning:")
     get_value_counts('data/2_processed')
+
     remove_unsupported_images('data/2_processed')
     remove_corrupted_images('data/2_processed')
+
     print("\nFile types after cleaning:")
     get_value_counts('data/2_processed')
+
     print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
