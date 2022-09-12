@@ -34,12 +34,11 @@ from src.models import get_model
 from src.data_utilities import get_tfds_from_dir, prepare
 from src.model_utilities import (
     get_optimizer,
-    get_model_weights_ds,
-    prepare,
+    get_model_weights_ds
 )
 from src.download_data import get_data
 from src.builtin_callbacks import get_earlystopper, get_reduce_lr_on_plateau
-import plot
+from src import plot
 
 # Config
 FLAGS = flags.FLAGS
@@ -88,7 +87,7 @@ def train(config, train_dataset, val_dataset, labels):
 
     # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(
-        monitor="val_f1_score",
+        monitor=config.callback_config.monitor,
         save_model=(config.callback_config.save_model),
     )
     if config.callback_config.use_earlystopping:
@@ -172,6 +171,10 @@ def main(_):
             config=config.to_dict(),
             allow_val_change=True,
         )
+
+    artifact = wandb.Artifact('rocks', type='files')
+    artifact.add_dir('src/')
+    wandb.log_artifact(artifact)
 
     print(f"\nDatasets used for Training:- {config.dataset_config.train_dataset}")
 
