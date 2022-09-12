@@ -54,60 +54,18 @@ def get_model(args):
     # Backbone
     base_model = get_backbone(args)
 
-    # Stack layers
-    inputs = layers.Input(shape=(args.dataset_config.image_height,
-                                 args.dataset_config.image_width,
-                                 args.dataset_config.channels))
+    model = tf.keras.Sequential(
+        [
+            base_model,
+            layers.GlobalAveragePooling2D(),
+            layers.Dense(1024),
+            layers.Dropout(args.model_config.dropout_rate),
+            layers.Dense(256),
+            layers.Dropout(args.model_config.dropout_rate),
+            layers.Dense(64),
+            layers.Dropout(args.model_config.dropout_rate),
+            layers.Dense(args.dataset_config.num_classes, activation="softmax"),
+        ]
+    )
 
-    x = base_model(inputs, training=args.model_config.trainable)
-    x = layers.GlobalAveragePooling2D()(x)
-
-    if args.model_config.post_gap_dropout:
-        x = layers.Dropout(args.model_config.dropout_rate)(x)
-
-
-    if args.model_config.regularize_more:
-        x = layers.Dense(
-            256,
-            dtype='float32',
-            kernel_regularizer=regularizers.l2(l=0.016),
-            activity_regularizer=regularizers.l1(0.006),
-            bias_regularizer=regularizers.l1(0.006),
-            activation='relu',
-            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
-        x = layers.Dropout(args.model_config.dropout_rate)(x)
-        x = layers.Dense(
-            128,
-            dtype='float32',
-            kernel_regularizer=regularizers.l2(l=0.016),
-            activity_regularizer=regularizers.l1(0.006),
-            bias_regularizer=regularizers.l1(0.006),
-            activation='relu',
-            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
-        x = layers.Dropout(args.model_config.dropout_rate)(x)
-        x = layers.Dense(
-            64,
-            dtype='float32',
-            kernel_regularizer=regularizers.l2(l=0.016),
-            activity_regularizer=regularizers.l1(0.006),
-            bias_regularizer=regularizers.l1(0.006),
-            activation='relu',
-            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
-        x = layers.Dropout(args.model_config.dropout_rate)(x)
-        outputs = layers.Dense(
-            args.dataset_config.num_classes,
-            activation='softmax',
-            dtype='float32',
-            kernel_initializer=initializers.GlorotUniform(seed=args.seed))(x)
-    else:
-        x = layers.Dense(256, dtype='float32', activation='relu')(x)
-        x = layers.Dropout(args.model_config.dropout_rate)(x)
-        x = layers.Dense(128, dtype='float32', activation='relu')(x)
-        x = layers.Dropout(args.model_config.dropout_rate)(x)
-        x = layers.Dense(64, dtype='float32', activation='relu')(x)
-        x = layers.Dropout(args.model_config.dropout_rate)(x)
-        outputs = layers.Dense(args.dataset_config.num_classes,
-                            activation='softmax',
-                            dtype='float32')(x)
-
-    return models.Model(inputs, outputs)
+    return model
