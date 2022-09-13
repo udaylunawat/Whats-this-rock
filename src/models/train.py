@@ -81,7 +81,7 @@ def train(cfg, train_dataset, val_dataset, labels):
     # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(
         monitor=cfg.callback.monitor,
-        save_model=(cfg.model.sabe_model),
+        save_model=(cfg.model.save_model),
     )
     earlystopper = get_earlystopper(cfg)
     reduce_lr = get_reduce_lr_on_plateau(cfg)
