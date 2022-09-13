@@ -31,6 +31,7 @@ def get_callbacks(cfg):
     # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(
         monitor=cfg.callback.monitor,
+        mode='min',
         save_model=(cfg.model.save_model),
     )
 
