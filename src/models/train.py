@@ -24,7 +24,6 @@ from tensorflow.keras import mixed_precision
 mixed_precision.set_global_policy('mixed_float16')
 
 import wandb
-from wandb.keras import WandbCallback
 
 # from absl import app  # app.run(main)
 import hydra
@@ -36,7 +35,7 @@ from src.models.models import get_model
 from src.data.utils import get_tfds_from_dir, prepare
 from src.models.utils import get_optimizer, get_model_weights_ds
 from src.data.download import get_data
-from src.callbacks.callbacks import get_earlystopper, get_reduce_lr_on_plateau
+from src.callbacks.callbacks import get_callbacks
 from src.visualization import plot
 
 
@@ -78,21 +77,10 @@ def train(cfg, train_dataset, val_dataset, labels):
         metrics=["accuracy", f1_score_metrics],
     )
 
-    # Define WandbCallback for experiment tracking
-    wandbcallback = WandbCallback(
-        monitor=cfg.callback.monitor,
-        save_model=(cfg.model.save_model),
-    )
-    earlystopper = get_earlystopper(cfg)
-    reduce_lr = get_reduce_lr_on_plateau(cfg)
+    callbacks = get_callbacks(cfg)
 
-    callbacks = [
-        wandbcallback,
-        earlystopper,
-        reduce_lr,
-    ]
     verbose = 1
-    #
+
     train_dataset = prepare(train_dataset,
                             cfg,
                             shuffle=True,

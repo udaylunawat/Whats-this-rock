@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+from wandb.keras import WandbCallback
 
 def get_earlystopper(cfg):
     cfg = cfg.callback
@@ -25,3 +25,21 @@ def get_reduce_lr_on_plateau(cfg):
         )
 
     return reduce_lr_on_plateau
+
+
+def get_callbacks(cfg):
+    # Define WandbCallback for experiment tracking
+    wandbcallback = WandbCallback(
+        monitor=cfg.callback.monitor,
+        save_model=(cfg.model.save_model),
+    )
+
+    callbacks = [wandbcallback]
+    if cfg.callback.earlystopper.use:
+        earlystopper = get_earlystopper(cfg)
+        callbacks.append(earlystopper)
+    if cfg.callback.reduce_lr.use:
+        reduce_lr = get_reduce_lr_on_plateau(cfg)
+        callbacks.append(reduce_lr)
+
+    return callbacks
