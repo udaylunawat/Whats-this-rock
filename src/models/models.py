@@ -47,11 +47,11 @@ def get_model(cfg):
         base_model,
         layers.GlobalAveragePooling2D(),
         layers.Dense(1024),
-        layers.Dropout(cfg.model.trainable.dropout_rate),
+        layers.Dropout(cfg.model.dropout_rate),
         layers.Dense(256),
-        layers.Dropout(cfg.model.trainable.dropout_rate),
+        layers.Dropout(cfg.model.dropout_rate),
         layers.Dense(64),
-        layers.Dropout(cfg.model.trainable.dropout_rate),
+        layers.Dropout(cfg.model.dropout_rate),
         layers.Dense(cfg.num_classes, activation="softmax"),
     ])
 

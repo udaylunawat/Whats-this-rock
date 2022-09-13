@@ -61,7 +61,7 @@ def process_data(cfg):
                            oversample=False,
                            seed=cfg.seed,
                            move=False)
-    elif not cfg.dataset.sampling:
+    else:
         print("No Sampling.")
         splitfolders.ratio("data/2_processed",
                            output="data/4_tfds_dataset",

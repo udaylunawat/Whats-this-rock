@@ -46,9 +46,15 @@ Run these commands
 
 ```bash
 pip install -r requirements-dev.txt
-sh setup.sh
-python src/preprocess.py
-python src/train.py
+sh src/scripts/setup.sh
+sh src/scripts/clean_dir.sh
+python src/models/train.py
+```
+
+By using Hydra it's now much more easier to override parameters like this
+
+```
+python src/models/train.py dataset.id=[1]
 ```
 
 ## Notebooks

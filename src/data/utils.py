@@ -144,19 +144,18 @@ def get_preprocess(cfg):
 
 def prepare(ds, cfg, shuffle=False, augment=False):
     data_augmentation = tf.keras.Sequential([
-        layers.RandomFlip(
-            "horizontal",
-            input_shape=(cfg.dataset.image.size,
-                         cfg.dataset.image.size,
-                         cfg.dataset.image.channels)),
+        layers.RandomFlip("horizontal",
+                          input_shape=(cfg.dataset.image.size,
+                                       cfg.dataset.image.size,
+                                       cfg.dataset.image.channels)),
         layers.RandomRotation(0.1),
         layers.RandomZoom(0.1),
     ])
 
-    if cfg.model.preprocess.preprocess:
+    if cfg.model.preprocess:
         preprocess_input = get_preprocess(cfg)
         ds = ds.map(lambda x, y: (preprocess_input(x), y),
-                num_parallel_calls=tf.data.AUTOTUNE)
+                    num_parallel_calls=tf.data.AUTOTUNE)
 
     ds = ds.cache()
     if shuffle:
@@ -170,8 +169,7 @@ def prepare(ds, cfg, shuffle=False, augment=False):
 
 
 def get_tfds_from_dir(cfg):
-    IMAGE_SIZE = (cfg.dataset.image.size,
-                  cfg.dataset.image.size)
+    IMAGE_SIZE = (cfg.dataset.image.size, cfg.dataset.image.size)
     train_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/train",
         labels='inferred',

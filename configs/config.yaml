@@ -13,6 +13,9 @@ metrics: ["accuracy"]
 batch_size: 64
 num_classes: 7
 
+paths:
+  data: ${hydra:runtime.cwd}/data/4_tfds_dataset/
+
 wandb:
   use: True
   project: Whats-this-rock

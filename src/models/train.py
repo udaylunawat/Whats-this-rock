@@ -7,31 +7,28 @@ import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-import gc
 import subprocess
 import random
-import click
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import classification_report
 import tensorflow as tf
 import tensorflow_addons as tfa
+from sklearn.metrics import classification_report
 
 # speed improvements
 from tensorflow.keras import mixed_precision
-
 mixed_precision.set_global_policy('mixed_float16')
 
 import wandb
 from wandb.keras import WandbCallback
 
-from absl import app
-
+# from absl import app  # app.run(main)
 import hydra
 from omegaconf import DictConfig
+from omegaconf import OmegaConf
 
 from src.data.preprocess import process_data
 from src.models.models import get_model
@@ -59,23 +56,22 @@ def train(cfg, train_dataset, val_dataset, labels):
 
     print(f"\nModel loaded: {cfg.model.backbone}.\n\n")
 
-    cfg.metrics.append(
-        tfa.metrics.F1Score(num_classes=cfg.num_classes,
-                            average="macro",
-                            threshold=0.5))
-
     class_weights = None
     if cfg.class_weights:
         class_weights = get_model_weights_ds(train_dataset)
 
     optimizer = get_optimizer(cfg)
-    # speed improvements
-    optimizer = mixed_precision.LossScaleOptimizer(optimizer)
+    optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
+
+    f1_score_metrics = [tfa.metrics.F1Score(num_classes=cfg.num_classes,
+                            average="macro",
+                            threshold=0.5)]
+
     # Compile the model
     model.compile(
         optimizer=optimizer,
         loss=cfg.loss,
-        metrics=cfg.metrics,
+        metrics=["accuracy", f1_score_metrics],
     )
 
     # Define WandbCallback for experiment tracking
@@ -156,15 +152,18 @@ def evaluate(cfg, model, history, test_dataset, labels):
     })
 
 
-@hydra.main(config_path="configs/config.yaml")
+@hydra.main(config_path="../../configs/",
+            config_name="config.yaml",
+            version_base='1.2')
 def main(cfg: DictConfig) -> None:
-    print(cfg.pretty())
+    print(OmegaConf.to_yaml(cfg))
+    print(cfg.paths.data)
     seed_everything(cfg.seed)
 
     if cfg.wandb.use:
         run = wandb.init(
             project=cfg.wandb.project,
-            config=cfg.to_dict(),
+            config=cfg,
             allow_val_change=True,
         )
 
@@ -172,9 +171,7 @@ def main(cfg: DictConfig) -> None:
     artifact.add_dir('src/')
     wandb.log_artifact(artifact)
 
-    print(
-        f"\nDatasets used for Training:- {cfg.dataset.id}"
-    )
+    print(f"\nDatasets used for Training:- {cfg.dataset.id}")
 
     for dataset_id in cfg.dataset.id:
         get_data(dataset_id)
@@ -192,19 +189,12 @@ def main(cfg: DictConfig) -> None:
         "Quartzite",
         "Sandstone",
     ]
-    # TODO (udaylunawat): Update the `num_classes` to train_dataset.classes (not working)
-    cfg.num_classes = 7
-    if wandb.run is not None:
-        wandb.config.update(
-            {"num_classes": cfg.num_classes})
+
     model, history = train(cfg, train_dataset, val_dataset, labels)
     evaluate(cfg, model, history, test_dataset, labels)
-
-    del model
-    _ = gc.collect()
 
     run.finish()
 
 
 if __name__ == "__main__":
-    app.run(main)
+    main()
