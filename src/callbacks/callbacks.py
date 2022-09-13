@@ -35,7 +35,7 @@ def get_callbacks(cfg):
     )
 
     callbacks = [wandbcallback]
-    if cfg.callback.earlystopper.use:
+    if cfg.callback.earlystopping.use:
         earlystopper = get_earlystopper(cfg)
         callbacks.append(earlystopper)
     if cfg.callback.reduce_lr.use:
