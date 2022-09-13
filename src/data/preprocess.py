@@ -10,11 +10,11 @@ def process_data(cfg):
 
     datasets = os.listdir('data/1_extracted')
     for dataset in datasets:
+        print(f"\nProcessing {dataset}")
         for main_class in os.listdir(os.path.join('data/1_extracted',
                                                   dataset)):
             main_class_path = os.path.join('data/1_extracted/', dataset,
                                            main_class)
-            print(f"Processing {dataset}")
             move_and_rename(main_class_path)
 
     print("\nFiles other than jpg and png.")
