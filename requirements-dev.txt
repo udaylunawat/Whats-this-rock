@@ -9,5 +9,4 @@ tensorflow
 tensorflow-addons
 wandb
 split-folders
-ml-collections
 hydra-core
