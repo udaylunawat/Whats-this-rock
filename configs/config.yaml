@@ -2,6 +2,7 @@
 #   - dataset: [1, 2, 3, 4]
 #   - optimizer: adamax
 
+notes: ""
 seed: 42
 lr: 0.001
 epochs: 30
