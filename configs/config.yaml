@@ -36,6 +36,7 @@ model:
   trainable: True
   preprocess: True
   dropout_rate: 0.3
+  save_model: False
 
 callback:
   monitor: "val_f1_score"
