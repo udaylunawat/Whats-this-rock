@@ -19,7 +19,7 @@ paths:
 
 wandb:
   use: True
-  project: Whats-this-rock
+  project: Whats-this-rockv1
 
 dataset:
   id: [1, 2, 3, 4]
@@ -41,8 +41,10 @@ model:
 callback:
   monitor: "val_f1_score"
   earlystopping:
+    use: True
     patience: 10
   reduce_lr:
+    use: True
     factor: 0.4
     min_lr: 0.00001
     patience: 2
