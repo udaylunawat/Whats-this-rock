@@ -4,45 +4,80 @@ metric:
   name: val_f1_score
 parameters:
   notes:
-    value: "Datasets:[1,2,3,4], train shuffle :True, Augment: 9 augmentations,
-            sampling: None, removing_corrupt: False"
-  augment:
-    values: [true]
-  finetune:
-    values: [false]
-  freeze:
-    values: [false]
-  pretrained_model_link:
-    value: "rock-classifiers/Whats-this-rockv2/cvzc7hq0"
-  batch_size:
-    values: [32]
-  metrics:
-    value: ["accuracy"]
-  max_epochs:
-    value: 100
-  loss_fn:
-    value: "categorical_crossentropy"
+    value: ""
+  seed:
+    value: 42
   lr:
     values: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
-  model_name:
-    values: ["efficientnet"]
+  epochs:
+    value: 30
+  augmentation:
+    value: True
+  class_weights:
+    value: True
   optimizer:
-    values: ["adam"]
-  image_size:
-    value: 224
-  earlystopping_patience:
-    value: 10
-  earlystopping_min_delta:
-    value: 0.02
-  lr_reduce_patience:
-    values: [1, 2, 3, 4]
-  lr_reduce_factor:
-    values: [.9, .7]
-  threshold:
-    value: 0.7
-early_terminate:
-  type: hyperband
-  s: 2
-  eta: 3
-  max_iter: 100
-program: src/train.py
+    value: adam
+  loss:
+    value: categorical_crossentropy
+  metrics:
+    value: ["accuracy"]
+  batch_size:
+    value: 64
+  num_classes:
+    value: 7
+  paths:
+    - data:
+        value: ${hydra:runtime.cwd}/data/4_tfds_dataset/
+
+wandb:
+  - use:
+      value: True
+    project:
+      value: Whats-this-rock
+
+dataset:
+  - id:
+      value: [1, 2, 3, 4]
+    dir:
+      value: data/3_consume/
+    image:
+      size:
+        value: 124
+      channels:
+        value: 3
+    classes:
+      value: 10
+    sampling:
+      value: None
+
+model:
+  - backbone:
+      value: efficientnetv2m
+    use_pretrained_weights:
+      value: True
+    trainable:
+      value: True
+    preprocess:
+      value: True
+    dropout_rate:
+      value: 0.3
+
+callback:
+  - monitor:
+      value: "val_f1_score"
+    earlystopping:
+      patience:
+        value: 10
+    reduce_lr:
+      factor:
+        values: [.9, .7, .5]
+      min_lr: 0.00001
+      patience:
+        values: [1, 2, 3, 4]
+    save_model:
+      status:
+        value: True
+      best_only:
+        value: True
+
+program: src/models/train.py
