@@ -25,7 +25,7 @@ dataset:
   id: [1, 2, 3, 4]
   dir: data/3_consume/
   image:
-    size: 124
+    size: 224
     channels: 3
   classes: 10
   sampling: None
