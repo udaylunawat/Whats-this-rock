@@ -7,7 +7,7 @@ def get_earlystopper(cfg):
     earlystopper = tf.keras.callbacks.EarlyStopping(
         monitor=cfg.monitor,
         patience=cfg.earlystopping.patience,
-        verbose=0,
+        verbose=1,
         mode='auto',
         restore_best_weights=True)
 
