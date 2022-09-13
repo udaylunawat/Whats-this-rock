@@ -19,7 +19,10 @@ def get_optimizer(cfg):
         opt = optimizers.SGD(learning_rate=cfg.lr)
     elif cfg.optimizer == "adamax":
         opt = optimizers.Adamax(learning_rate=cfg.lr)
-
+    else:
+        print(
+            f"\n{cfg.optimizer} not present, using default (adam optimizer)\n")
+        opt = optimizers.Adam(learning_rate=cfg.lr)
     return opt
 
 
