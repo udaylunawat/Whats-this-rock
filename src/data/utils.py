@@ -129,7 +129,7 @@ def scalar(img):
     return img / 127.5 - 1  # scale pixel between -1 and +1
 
 
-def get_preprocess(args):
+def get_preprocess(cfg):
     preprocess_dict = {
         'vgg16': applications.vgg16.preprocess_input,
         'resnet': applications.resnet.preprocess_input,
@@ -139,29 +139,29 @@ def get_preprocess(args):
         'efficientnetv2m': applications.efficientnet_v2.preprocess_input
     }
 
-    return preprocess_dict[args.model_config.backbone]
+    return preprocess_dict[cfg.model.backbone]
 
 
-def prepare(ds, config, shuffle=False, augment=False):
+def prepare(ds, cfg, shuffle=False, augment=False):
     data_augmentation = tf.keras.Sequential([
         layers.RandomFlip(
             "horizontal",
-            input_shape=(config.dataset_config.image_height,
-                         config.dataset_config.image_width,
-                         config.dataset_config.channels)),
+            input_shape=(cfg.dataset.image.size,
+                         cfg.dataset.image.size,
+                         cfg.dataset.image.channels)),
         layers.RandomRotation(0.1),
         layers.RandomZoom(0.1),
     ])
 
-    if config.model_config.preprocess:
-        preprocess_input = get_preprocess(config)
+    if cfg.model.preprocess.preprocess:
+        preprocess_input = get_preprocess(cfg)
         ds = ds.map(lambda x, y: (preprocess_input(x), y),
                 num_parallel_calls=tf.data.AUTOTUNE)
 
     ds = ds.cache()
     if shuffle:
         ds = ds.shuffle(buffer_size=1000)
-    # ds = ds.batch(config.dataset_config.batch_size)
+    # ds = ds.batch(cfg.batch_size)
     # Use data augmentation only on the training set.
     if augment:
         ds = ds.map(lambda x, y: (data_augmentation(x, training=True), y),
@@ -169,18 +169,18 @@ def prepare(ds, config, shuffle=False, augment=False):
     return ds.prefetch(buffer_size=tf.data.AUTOTUNE)
 
 
-def get_tfds_from_dir(config):
-    IMAGE_SIZE = (config.dataset_config.image_width,
-                  config.dataset_config.image_height)
+def get_tfds_from_dir(cfg):
+    IMAGE_SIZE = (cfg.dataset.image.size,
+                  cfg.dataset.image.size)
     train_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/train",
         labels='inferred',
         label_mode='categorical',
         color_mode='rgb',
-        batch_size=config.dataset_config.batch_size,
+        batch_size=cfg.batch_size,
         image_size=IMAGE_SIZE,
         shuffle=True,
-        seed=config.seed,
+        seed=cfg.seed,
         # subset='training'
     )
 
@@ -189,10 +189,10 @@ def get_tfds_from_dir(config):
         labels='inferred',
         label_mode='categorical',
         color_mode='rgb',
-        batch_size=config.dataset_config.batch_size,
+        batch_size=cfg.batch_size,
         image_size=IMAGE_SIZE,
         shuffle=True,
-        seed=config.seed,
+        seed=cfg.seed,
         # subset='validation'
     )
 
@@ -201,10 +201,10 @@ def get_tfds_from_dir(config):
         labels='inferred',
         label_mode='categorical',
         color_mode='rgb',
-        batch_size=config.dataset_config.batch_size,
+        batch_size=cfg.batch_size,
         image_size=IMAGE_SIZE,
         shuffle=False,
-        seed=config.seed,
+        seed=cfg.seed,
         # subset='validation'
     )
 

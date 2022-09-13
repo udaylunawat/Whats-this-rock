@@ -96,13 +96,13 @@ def get_data_tfds():
     data, builder = get_data_tfds()
 
     num_classes = builder.info.features["label"].num_classes
-    config.dataset_config.num_classes = num_classes
+    cfg.num_classes = num_classes
 
     def load_dataset(split="train"):
         dataset = data[split]
         return prepare_dataset(dataset, split)
 
-    if config.train_config.use_augmentations:
+    if cfg.augmentation:
         train_dataset = (load_dataset().map(apply_rand_augment,
                                             num_parallel_calls=AUTOTUNE).map(
                                                 cut_mix_and_mix_up,
@@ -132,25 +132,25 @@ def get_data_tfds():
 def to_dict(image, label):
     image = tf.image.resize(image, IMAGE_SIZE)
     image = cast(image, float32)
-    label = one_hot(label, config.dataset_config.num_classes)
+    label = one_hot(label, cfg.num_classes)
     return {"images": image, "labels": label}
 
 
 def prepare_dataset(dataset, split):
 
     if split == "train":
-        return (dataset.shuffle(10 * config.dataset_config.batch_size).map(
+        return (dataset.shuffle(10 * cfg.batch_size).map(
             to_dict, num_parallel_calls=AUTOTUNE).batch(
-                config.dataset_config.batch_size))
+                cfg.batch_size))
     elif split == "val" or split == "test":
         return dataset.map(to_dict, num_parallel_calls=AUTOTUNE).batch(
-            config.dataset_config.batch_size)
+            cfg.batch_size)
 
 
 def get_generators(config):
-    IMAGE_SIZE = (config.dataset_config.image_width,
-                  config.dataset_config.image_width)
-    if config.train_config.use_augmentations:
+    IMAGE_SIZE = (cfg.dataset.image.size,
+                  cfg.dataset.image.size)
+    if cfg.augmentation:
         print("\n\nAugmentation is True! rescale=1./255")
         train_datagen = ImageDataGenerator(
             horizontal_flip=True,
@@ -161,7 +161,7 @@ def get_generators(config):
             zoom_range=[0.5, 1.5],
             rescale=1.0 / 255,
         )  # preprocessing_function=scalar
-    elif not config.train_config.use_augmentations:
+    elif not cfg.augmentation:
         print("No Augmentation!")
         train_datagen = ImageDataGenerator(rescale=1.0 / 255)
     else:
@@ -170,7 +170,7 @@ def get_generators(config):
     train_dataset = train_datagen.flow_from_directory(
         "data/4_tfds_dataset/train",
         target_size=IMAGE_SIZE,
-        batch_size=config.dataset_config.batch_size,
+        batch_size=cfg.batch_size,
         shuffle=True,
         color_mode="rgb",
         class_mode="categorical",
@@ -183,14 +183,14 @@ def get_generators(config):
         shuffle=True,
         color_mode="rgb",
         target_size=IMAGE_SIZE,
-        batch_size=config.dataset_config.batch_size,
+        batch_size=cfg.batch_size,
         class_mode="categorical",
     )
 
     test_generator = test_datagen.flow_from_directory(
         "data/4_tfds_dataset/test",
-        batch_size=config.dataset_config.batch_size,
-        seed=config.seed,
+        batch_size=cfg.batch_size,
+        seed=cfg.seed,
         color_mode="rgb",
         shuffle=False,
         class_mode="categorical",

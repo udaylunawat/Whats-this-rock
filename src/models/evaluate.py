@@ -1,5 +1,5 @@
-from model_utilities import get_model, get_optimizer
-from data_utilities import get_generators
+from model.utils import get_model, get_optimizer
+from src.data.utils import get_generators
 
 import plot
 import json
@@ -12,12 +12,9 @@ import seaborn as sns
 import tensorflow_addons as tfa
 from sklearn.metrics import classification_report
 
-with open("config.json") as config_file:
-    config = json.load(config_file)
-
 # run = wandb.init(project="Whats-this-rock-inceptionresnetv2",
 #                  entity="rock-classifiers",
-#                  config=config)
+#                  cfg=cfg)
 
 # os.system('wget -O model-best.h5 https://www.dropbox.com/s/x91k9u765urnlai/model-best.h5')
 # if not os.path.exists('model-best.h5'):
@@ -25,28 +22,28 @@ with open("config.json") as config_file:
 #     run = api.run("rock-classifiers/Whats-this-rock/3hvgnqas")
 #     run.file("model-best.h5").download()
 
-train_dataset, val_dataset, test_dataset = get_generators(config)
+train_dataset, val_dataset, test_dataset = get_generators(cfg)
 labels = [
     "Basalt", "Coal", "Granite", "Limestone", "Marble", "Quartzite",
     "Sandstone"
 ]
 
-model = get_model(config)
+model = get_model(cfg)
 try:
     model.load_weights("model-best.h5")
 except:
     print("model-best.h5 should be present in the checkpoint dir.")
 
-opt = get_optimizer(config)
+opt = get_optimizer(cfg)
 
-config.train_config.metrics.append(
-    tfa.metrics.F1Score(num_classes=config.dataset_config.num_classes,
+cfg.metrics.append(
+    tfa.metrics.F1Score(num_classes=cfg.num_classes,
                         average="macro",
                         threshold=0.5))
 
-model.compile(loss=config.train_config.loss,
-              optimizer=config.train_config.optimizer,
-              metrics=config.train_config.metrics)
+model.compile(loss=cfg.loss,
+              optimizer=cfg.optimizer,
+              metrics=cfg.metrics)
 
 # Scores
 scores = model.evaluate(test_dataset, return_dict=True)

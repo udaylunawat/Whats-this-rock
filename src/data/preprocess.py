@@ -3,13 +3,10 @@ import splitfolders
 import os
 import subprocess
 
-from src.data_utilities import *
+from src.data.utils import *
 
 
-def process_data(config):
-
-    # Get configs from the config file.
-    args = config
+def process_data(cfg):
 
     datasets = os.listdir('data/1_extracted')
     for dataset in datasets:
@@ -41,7 +38,7 @@ def process_data(config):
         "\nSplitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
     )
     scc = min(get_df()["class"].value_counts())
-    if args.dataset_config.sampling == 'oversample':
+    if cfg.dataset.sampling == 'oversample':
         print("\nOversampling...")
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
@@ -50,10 +47,10 @@ def process_data(config):
                            output="data/4_tfds_dataset",
                            oversample=True,
                            fixed=(((scc // 2) - 1, (scc // 2) - 1)),
-                           seed=args.seed,
+                           seed=cfg.seed,
                            move=False)
-    elif args.dataset_config.sampling == 'undersample':
-        print(f"Undersampling to {args.dataset_config.sampling} samples.")
+    elif cfg.dataset.sampling == 'undersample':
+        print(f"Undersampling to {cfg.dataset.sampling} samples.")
         splitfolders.fixed("data/2_processed",
                            output="data/4_tfds_dataset",
                            fixed=(
@@ -62,13 +59,13 @@ def process_data(config):
                                int(scc * 0.125),
                            ),
                            oversample=False,
-                           seed=args.seed,
+                           seed=cfg.seed,
                            move=False)
-    elif not args.dataset_config.sampling:
+    elif not cfg.dataset.sampling:
         print("No Sampling.")
         splitfolders.ratio("data/2_processed",
                            output="data/4_tfds_dataset",
                            ratio=(0.75, 0.125, 0.125),
-                           seed=args.seed,
+                           seed=cfg.seed,
                            move=False)
     print('\n\n')

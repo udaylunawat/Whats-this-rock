@@ -10,12 +10,6 @@ from tensorflow.keras import layers, models, optimizers
 import tensorflow_addons as tfa
 
 from absl import app
-from absl import flags
-from ml_collections.config_flags import config_flags
-
-# Config
-FLAGS = flags.FLAGS
-CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
 
 # print("Downloading model...")
 file_name = "model-best.h5"
@@ -42,9 +36,9 @@ for f in run.files():
 
 normalization_layer = layers.Rescaling(1.0 / 255)
 
-IMAGE_SIZE = (config.dataset_config.image_width,
-              config.dataset_config.image_width)
-batch_size = config.dataset_config.batch_size
+IMAGE_SIZE = (cfg.dataset.image.size,
+              cfg.dataset.image.size)
+batch_size = cfg.batch_size
 
 class_names = [
     "Basalt",

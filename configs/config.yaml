@@ -1,0 +1,46 @@
+# defaults:
+#   - dataset: [1, 2, 3, 4]
+#   - optimizer: adamax
+
+seed: 42
+lr: 0.001
+epochs: 30
+augmentation: True
+class_weights: True
+optimizer: adam
+loss: categorical_crossentropy
+metrics: ["accuracy"]
+batch_size: 64
+num_classes: 7
+
+wandb:
+  use: True
+  project: Whats-this-rock
+
+dataset:
+  id: [1, 2, 3, 4]
+  dir: data/3_consume/
+  image:
+    size: 124
+    channels: 3
+  classes: 10
+  sampling: None
+
+model:
+  backbone: efficientnetv2m
+  use_pretrained_weights: True
+  trainable: True
+  preprocess: True
+  dropout_rate: 0.3
+
+callback:
+  monitor: "val_f1_score"
+  earlystopping:
+    patience: 10
+  reduce_lr:
+    factor: 0.4
+    min_lr: 0.00001
+    patience: 2
+  save_model:
+    status: True
+    best_only: True

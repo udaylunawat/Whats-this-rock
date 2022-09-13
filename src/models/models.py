@@ -3,11 +3,11 @@ from tensorflow.keras import layers, models, applications
 from tensorflow.keras import regularizers, initializers
 
 
-def get_backbone(args):
+def get_backbone(cfg):
     """Get backbone for the model.
 
-    Args:
-        args (ml_collections.ConfigDict): Configuration.
+    cfg:
+        cfg (omegaconf.DictConfig): Configuration.
     """
     weights = None
     models_dict = {
@@ -19,40 +19,40 @@ def get_backbone(args):
         'efficientnetv2m': applications.EfficientNetV2M
     }
 
-    if args.model_config.use_pretrained_weights:
+    if cfg.model.use_pretrained_weights:
         weights = "imagenet"
 
     try:
-        base_model = models_dict[args.model_config.backbone]
+        base_model = models_dict[cfg.model.backbone]
     except:
         raise NotImplementedError("Not implemented for this backbone.")
 
     base_model = base_model(include_top=False, weights=weights)
-    base_model.trainable = args.model_config.trainable
+    base_model.trainable = cfg.model.trainable
 
     return base_model
 
 
-def get_model(args):
+def get_model(cfg):
     """Get an image classifier with a CNN based backbone.
 
-    Args:
-        args (ml_collections.ConfigDict): Configuration.
+    cfg:
+        cfg (omegaconf.DictConfig): Configuration.
     """
 
     # Backbone
-    base_model = get_backbone(args)
+    base_model = get_backbone(cfg)
 
     model = tf.keras.Sequential([
         base_model,
         layers.GlobalAveragePooling2D(),
         layers.Dense(1024),
-        layers.Dropout(args.model_config.dropout_rate),
+        layers.Dropout(cfg.model.trainable.dropout_rate),
         layers.Dense(256),
-        layers.Dropout(args.model_config.dropout_rate),
+        layers.Dropout(cfg.model.trainable.dropout_rate),
         layers.Dense(64),
-        layers.Dropout(args.model_config.dropout_rate),
-        layers.Dense(args.dataset_config.num_classes, activation="softmax"),
+        layers.Dropout(cfg.model.trainable.dropout_rate),
+        layers.Dense(cfg.num_classes, activation="softmax"),
     ])
 
     return model

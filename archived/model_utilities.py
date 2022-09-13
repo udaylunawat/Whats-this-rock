@@ -11,7 +11,7 @@ def get_model(config):
         "efficientnetv2m": models.get_efficientnetv2m,
     }
 
-    return models_dict[config.model_config.backbone](config)
+    return models_dict[cfg.model.backbone](config)
 
 
 def get_best_checkpoint():

@@ -3,8 +3,8 @@ wandb
 kaggle
 pandas
 scikit-learn
-ml-collections
 tensorflow-cpu
 tensorflow-addons
 python-telegram-bot
 opencv-python-headless
+hydra-core

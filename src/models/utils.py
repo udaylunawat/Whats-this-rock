@@ -7,18 +7,18 @@ from tensorflow.keras import layers, optimizers, backend as K
 from tensorflow.keras.callbacks import Callback
 
 
-def get_optimizer(config):
-    if config.train_config.optimizer == "adam":
-        opt = optimizers.Adam(learning_rate=config.train_config.lr)
-    elif config.train_config.optimizer == "rms":
-        opt = optimizers.RMSprop(learning_rate=config.train_config.lr,
+def get_optimizer(cfg):
+    if cfg.optimizer == "adam":
+        opt = optimizers.Adam(learning_rate=cfg.lr)
+    elif cfg.optimizer == "rms":
+        opt = optimizers.RMSprop(learning_rate=cfg.lr,
                                  rho=0.9,
                                  epsilon=1e-08,
                                  decay=0.0)
-    elif config.train_config.optimizer == "sgd":
-        opt = optimizers.SGD(learning_rate=config.train_config.lr)
-    elif config.train_config.optimizer == "adamax":
-        opt = optimizers.Adamax(learning_rate=config.train_config.lr)
+    elif cfg.optimizer == "sgd":
+        opt = optimizers.SGD(learning_rate=cfg.lr)
+    elif cfg.optimizer == "adamax":
+        opt = optimizers.Adamax(learning_rate=cfg.lr)
 
     return opt
 
