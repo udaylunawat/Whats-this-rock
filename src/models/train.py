@@ -119,7 +119,7 @@ def evaluate(cfg, model, history, test_dataset, labels):
     print("Scores: ", scores)
 
     # Predict
-    # TODO (udaylunawat): CM and CR giving wrong results, try changing labels=infered
+
     y_true = tf.concat([y for x, y in test_dataset], axis=0)
     true_categories = tf.argmax(y_true, axis=1)
     y_pred = model.predict(test_dataset, verbose=1)
@@ -176,11 +176,12 @@ def main(cfg: DictConfig) -> None:
 
     print(f"\nDatasets used for Training:- {cfg.dataset.id}")
 
+    subprocess.run(['sh', 'src/scripts/clean_dir.sh'],
+                   stdout=subprocess.PIPE).stdout.decode('utf-8')
     for dataset_id in cfg.dataset.id:
         get_data(dataset_id)
 
-    if not os.path.exists('data/4_tfds_dataset/train'):
-        process_data(cfg)
+    process_data(cfg)
 
     train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)
     labels = [
