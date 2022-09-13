@@ -20,6 +20,7 @@ from sklearn.metrics import classification_report
 
 # speed improvements
 from tensorflow.keras import mixed_precision
+
 mixed_precision.set_global_policy('mixed_float16')
 
 import wandb
@@ -61,11 +62,14 @@ def train(cfg, train_dataset, val_dataset, labels):
         class_weights = get_model_weights_ds(train_dataset)
 
     optimizer = get_optimizer(cfg)
-    optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
+    optimizer = mixed_precision.LossScaleOptimizer(
+        optimizer)  # speed improvements
 
-    f1_score_metrics = [tfa.metrics.F1Score(num_classes=cfg.num_classes,
+    f1_score_metrics = [
+        tfa.metrics.F1Score(num_classes=cfg.num_classes,
                             average="macro",
-                            threshold=0.5)]
+                            threshold=0.5)
+    ]
 
     # Compile the model
     model.compile(
@@ -161,11 +165,10 @@ def main(cfg: DictConfig) -> None:
     seed_everything(cfg.seed)
 
     if cfg.wandb.use:
-        run = wandb.init(
-            project=cfg.wandb.project,
-            config=cfg,
-            allow_val_change=True,
-        )
+        wandb.config = OmegaConf.to_container(cfg,
+                                              resolve=True,
+                                              throw_on_missing=True)
+        run = wandb.init(project=cfg.wandb.project, notes=cfg.notes)
 
     artifact = wandb.Artifact('rocks', type='files')
     artifact.add_dir('src/')
