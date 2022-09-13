@@ -23,11 +23,10 @@ def get_backbone(cfg):
         weights = "imagenet"
 
     try:
-        base_model = models_dict[cfg.model.backbone]
+        base_model = models_dict[cfg.model.backbone](include_top=False, weights=weights)
     except:
         raise NotImplementedError("Not implemented for this backbone.")
 
-    base_model = base_model(include_top=False, weights=weights)
     base_model.trainable = cfg.model.trainable
 
     return base_model
