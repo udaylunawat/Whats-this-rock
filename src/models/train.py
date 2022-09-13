@@ -153,10 +153,11 @@ def main(cfg: DictConfig) -> None:
     seed_everything(cfg.seed)
 
     if cfg.wandb.use:
-        wandb.config = OmegaConf.to_container(cfg,
-                                              resolve=True,
-                                              throw_on_missing=True)
-        run = wandb.init(project=cfg.wandb.project, notes=cfg.notes)
+        run = wandb.init(project=cfg.wandb.project,
+                         notes=cfg.notes,
+                         config=OmegaConf.to_container(cfg,
+                                                       resolve=True,
+                                                       throw_on_missing=True))
 
     artifact = wandb.Artifact('rocks', type='files')
     artifact.add_dir('src/')
