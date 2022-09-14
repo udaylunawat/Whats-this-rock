@@ -17,7 +17,7 @@ def process_data(cfg):
                                            main_class)
             move_and_rename(main_class_path)
 
-    print("\nFiles other than jpg and png.")
+    print("\nFiles other than jpg and png.\n\n")
     result = subprocess.run(
         ['ls', 'data/2_processed', '-I', '*.jpg', '-I', '*.png', '-R'],
         stdout=subprocess.PIPE).stdout.decode('utf-8')
