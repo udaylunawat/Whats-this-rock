@@ -151,7 +151,10 @@ def prepare(ds, cfg, shuffle=False, augment=False):
         layers.RandomRotation(0.1),
         layers.RandomZoom(0.1),
     ])
-
+    if augment:
+        # Use data augmentation only on the training set.
+        ds = ds.map(lambda x, y: (data_augmentation(x, training=True), y),
+                    num_parallel_calls=tf.data.AUTOTUNE)
     if cfg.model.preprocess:
         preprocess_input = get_preprocess(cfg)
         ds = ds.map(lambda x, y: (preprocess_input(x), y),
@@ -160,11 +163,11 @@ def prepare(ds, cfg, shuffle=False, augment=False):
     ds = ds.cache()
     if shuffle:
         ds = ds.shuffle(buffer_size=1000)
-    # ds = ds.batch(cfg.batch_size)
-    # Use data augmentation only on the training set.
-    if augment:
-        ds = ds.map(lambda x, y: (data_augmentation(x, training=True), y),
-                    num_parallel_calls=tf.data.AUTOTUNE)
+
+    # Batch all datasets.
+    ds = ds.batch(cfg.batch_size)
+
+    # Use buffered prefetching on all datasets.
     return ds.prefetch(buffer_size=tf.data.AUTOTUNE)
 
 
