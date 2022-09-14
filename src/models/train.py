@@ -55,9 +55,14 @@ def unfreeze_model(model):
             layer.trainable = True
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
+    f1_score_metrics = [
+    tfa.metrics.F1Score(num_classes=cfg.num_classes,
+                        average="macro",
+                        threshold=0.5)
+    ]
     model.compile(optimizer=optimizer,
                   loss="categorical_crossentropy",
-                  metrics=["accuracy"])
+                  metrics=["accuracy", f1_score_metrics])
 
 
 def train(cfg, train_dataset, val_dataset, class_weights):
@@ -196,17 +201,17 @@ def main(cfg: DictConfig) -> None:
                             augment=cfg.augmentation)
     val_dataset = prepare(val_dataset, cfg)
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
-    evaluate(cfg, model, history, test_dataset, labels)
 
     if cfg.model.trainable == False:
         unfreeze_model(model)
         print("Finetuning model with BatchNorm layers freezed.")
-        epochs = 10
-        hist = model.fit(train_dataset,
+        epochs = 20
+        history = model.fit(train_dataset,
                          epochs=epochs,
                          validation_data=val_dataset,
                          verbose=2)
 
+    evaluate(cfg, model, history, test_dataset, labels)
     run.finish()
 
 
