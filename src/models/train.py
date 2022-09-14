@@ -60,6 +60,15 @@ def unfreeze_model(cfg, model):
     for layer in model.layers[0].layers[-20:]:
         print(layer.name, layer.trainable)
 
+    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
+    f1_score_metrics = [
+    tfa.metrics.F1Score(num_classes=cfg.num_classes,
+                        average="macro",
+                        threshold=0.5)
+    ]
+    model.compile(optimizer=optimizer,
+                  loss="categorical_crossentropy",
+                  metrics=["accuracy", f1_score_metrics])
     print('\n')
     model.summary()
 
