@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 
 import tensorflow as tf
 import tensorflow_addons as tfa
+from tensorflow.keras import layers
 from sklearn.metrics import classification_report
 
 # speed improvements
@@ -54,12 +55,12 @@ def unfreeze_model(model):
             layer.trainable = True
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
-    model.compile(
-        optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"]
-    )
+    model.compile(optimizer=optimizer,
+                  loss="categorical_crossentropy",
+                  metrics=["accuracy"])
 
 
-def train(cfg, train_dataset, val_dataset, labels):
+def train(cfg, train_dataset, val_dataset, class_weights):
 
     tf.keras.backend.clear_session()
 
@@ -194,14 +195,17 @@ def main(cfg: DictConfig) -> None:
                             shuffle=True,
                             augment=cfg.augmentation)
     val_dataset = prepare(val_dataset, cfg)
-    model, history = train(cfg, train_dataset, val_dataset, labels)
+    model, history = train(cfg, train_dataset, val_dataset, class_weights)
     evaluate(cfg, model, history, test_dataset, labels)
 
-    if cfg.model.trainable==False:
+    if cfg.model.trainable == False:
         unfreeze_model(model)
         print("Finetuning model with BatchNorm layers freezed.")
         epochs = 10
-        hist = model.fit(train_dataset, epochs=epochs, validation_data=val_dataset, verbose=2)
+        hist = model.fit(train_dataset,
+                         epochs=epochs,
+                         validation_data=val_dataset,
+                         verbose=2)
 
     run.finish()
 
