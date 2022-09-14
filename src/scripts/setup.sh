@@ -8,4 +8,4 @@ pip install -r requirements-dev.txt --q
 wget -qq https://www.dropbox.com/s/ltp4ly8ilvxlgas/kaggle.json
 mkdir -p ~/.kaggle
 mv -vn kaggle.json ~/.kaggle
-chmod 600 /root/.kaggle/kaggle.json
+chmod 600 ~/.kaggle/kaggle.json
