@@ -11,15 +11,16 @@ class_weights: True
 optimizer: adam
 loss: categorical_crossentropy
 metrics: ["accuracy"]
-batch_size: 64
+batch_size: 16
 num_classes: 7
 
 paths:
-  data: ${hydra:runtime.cwd}/data/4_tfds_dataset/
+  data: data/4_tfds_dataset/
 
 wandb:
   use: True
-  project: Whats-this-rockv1
+  project: Whats-this-rockv3
+  mode: offline
 
 dataset:
   id: [1, 2, 3, 4]
@@ -27,11 +28,10 @@ dataset:
   image:
     size: 224
     channels: 3
-  classes: 7
   sampling: None
 
 model:
-  backbone: efficientnetv2m
+  backbone: resnet
   use_pretrained_weights: True
   trainable: True
   preprocess: True
@@ -39,7 +39,7 @@ model:
   save_model: False
 
 callback:
-  monitor: "val_f1_score"
+  monitor: "val_accuracy"
   earlystopping:
     use: True
     patience: 10
