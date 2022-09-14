@@ -49,10 +49,15 @@ def seed_everything(seed):
 
 
 def unfreeze_model(cfg, model):
+    model.trainable = cfg.model.trainable
     # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
     for layer in model.layers[-20:]:
         if not isinstance(layer, layers.BatchNormalization):
             layer.trainable = True
+
+    for layer in model.layers[-20:]:
+        if isinstance(layer, layers.BatchNormalization):
+            layer.trainable = False
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
     f1_score_metrics = [
@@ -63,6 +68,7 @@ def unfreeze_model(cfg, model):
     model.compile(optimizer=optimizer,
                   loss="categorical_crossentropy",
                   metrics=["accuracy", f1_score_metrics])
+    print("Finetuning model with BatchNorm layers freezed.")
 
 
 def train(cfg, train_dataset, val_dataset, class_weights):
@@ -204,7 +210,6 @@ def main(cfg: DictConfig) -> None:
 
     if cfg.model.trainable == False:
         unfreeze_model(cfg, model)
-        print("Finetuning model with BatchNorm layers freezed.")
         epochs = 20
         history = model.fit(train_dataset,
                          epochs=epochs,
