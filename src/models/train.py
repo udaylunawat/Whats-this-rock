@@ -48,7 +48,7 @@ def seed_everything(seed):
     tf.random.set_seed(seed)
 
 
-def unfreeze_model(model):
+def unfreeze_model(cfg, model):
     # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
     for layer in model.layers[-20:]:
         if not isinstance(layer, layers.BatchNormalization):
@@ -203,7 +203,7 @@ def main(cfg: DictConfig) -> None:
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
     if cfg.model.trainable == False:
-        unfreeze_model(model)
+        unfreeze_model(cfg, model)
         print("Finetuning model with BatchNorm layers freezed.")
         epochs = 20
         history = model.fit(train_dataset,
