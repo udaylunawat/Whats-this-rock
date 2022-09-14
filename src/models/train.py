@@ -15,7 +15,6 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 import tensorflow as tf
-import tensorflow_addons as tfa
 from tensorflow.keras import layers
 from sklearn.metrics import classification_report
 
@@ -61,14 +60,10 @@ def unfreeze_model(cfg, model):
         print(layer.name, layer.trainable)
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
-    f1_score_metrics = [
-    tfa.metrics.F1Score(num_classes=cfg.num_classes,
-                        average="macro",
-                        threshold=0.5)
-    ]
+
     model.compile(optimizer=optimizer,
                   loss="categorical_crossentropy",
-                  metrics=["accuracy", f1_score_metrics])
+                  metrics=["accuracy"])
     print('\n')
     model.summary()
 
@@ -87,17 +82,11 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     optimizer = mixed_precision.LossScaleOptimizer(
         optimizer)  # speed improvements
 
-    f1_score_metrics = [
-        tfa.metrics.F1Score(num_classes=cfg.num_classes,
-                            average="macro",
-                            threshold=0.5)
-    ]
-
     # Compile the model
     model.compile(
         optimizer=optimizer,
         loss=cfg.loss,
-        metrics=["accuracy", f1_score_metrics],
+        metrics=["accuracy",],
     )
 
     callbacks = get_callbacks(cfg)
@@ -190,15 +179,8 @@ def main(cfg: DictConfig) -> None:
     process_data(cfg)
 
     train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)
-    labels = [
-        "Basalt",
-        "Coal",
-        "Granite",
-        "Limestone",
-        "Marble",
-        "Quartzite",
-        "Sandstone",
-    ]
+    labels = train_dataset.class_names
+    cfg.num_classes = len(labels)
 
     class_weights = None
     if cfg.class_weights:
