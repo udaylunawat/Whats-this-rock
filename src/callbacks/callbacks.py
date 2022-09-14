@@ -8,7 +8,7 @@ def get_earlystopper(cfg):
         monitor=cfg.monitor,
         patience=cfg.earlystopping.patience,
         verbose=1,
-        mode='auto',
+        mode='min',
         restore_best_weights=True)
 
     return earlystopper
