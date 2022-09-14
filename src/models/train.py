@@ -211,9 +211,11 @@ def main(cfg: DictConfig) -> None:
     if cfg.model.trainable == False:
         unfreeze_model(cfg, model)
         epochs = 20
+        callbacks = get_callbacks(cfg)
         history = model.fit(train_dataset,
                          epochs=epochs,
                          validation_data=val_dataset,
+                         callbacks=callbacks,
                          verbose=2)
 
     evaluate(cfg, model, history, test_dataset, labels)
