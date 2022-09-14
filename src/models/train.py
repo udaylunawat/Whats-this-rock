@@ -47,6 +47,18 @@ def seed_everything(seed):
     tf.random.set_seed(seed)
 
 
+def unfreeze_model(model):
+    # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
+    for layer in model.layers[-20:]:
+        if not isinstance(layer, layers.BatchNormalization):
+            layer.trainable = True
+
+    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
+    model.compile(
+        optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"]
+    )
+
+
 def train(cfg, train_dataset, val_dataset, labels):
 
     tf.keras.backend.clear_session()
@@ -55,10 +67,6 @@ def train(cfg, train_dataset, val_dataset, labels):
     model.summary()
 
     print(f"\nModel loaded: {cfg.model.backbone}.\n\n")
-
-    class_weights = None
-    if cfg.class_weights:
-        class_weights = get_model_weights_ds(train_dataset)
 
     optimizer = get_optimizer(cfg)
     optimizer = mixed_precision.LossScaleOptimizer(
@@ -80,12 +88,6 @@ def train(cfg, train_dataset, val_dataset, labels):
     callbacks = get_callbacks(cfg)
 
     verbose = 1
-
-    train_dataset = prepare(train_dataset,
-                            cfg,
-                            shuffle=True,
-                            augment=cfg.augmentation)
-    val_dataset = prepare(val_dataset, cfg)
 
     history = model.fit(
         train_dataset,
@@ -183,8 +185,23 @@ def main(cfg: DictConfig) -> None:
         "Sandstone",
     ]
 
+    class_weights = None
+    if cfg.class_weights:
+        class_weights = get_model_weights_ds(train_dataset)
+
+    train_dataset = prepare(train_dataset,
+                            cfg,
+                            shuffle=True,
+                            augment=cfg.augmentation)
+    val_dataset = prepare(val_dataset, cfg)
     model, history = train(cfg, train_dataset, val_dataset, labels)
     evaluate(cfg, model, history, test_dataset, labels)
+
+    if cfg.model.trainable==False:
+        unfreeze_model(model)
+        print("Finetuning model with BatchNorm layers freezed.")
+        epochs = 10
+        hist = model.fit(train_dataset, epochs=epochs, validation_data=val_dataset, verbose=2)
 
     run.finish()
 
