@@ -23,7 +23,11 @@ def get_backbone(cfg):
         weights = "imagenet"
 
     try:
-        base_model = models_dict[cfg.model.backbone](include_top=False, weights=weights)
+        base_model = models_dict[cfg.model.backbone](
+            include_top=False,
+            weights=weights,
+            input_shape=(cfg.dataset.image.size, cfg.dataset.image.size,
+                         cfg.dataset.image.channels))
     except:
         raise NotImplementedError("Not implemented for this backbone.")
 
