@@ -27,7 +27,7 @@ dataset:
   image:
     size: 224
     channels: 3
-  classes: 10
+  classes: 7
   sampling: None
 
 model:
