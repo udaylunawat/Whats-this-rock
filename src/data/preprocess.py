@@ -54,9 +54,9 @@ def process_data(cfg):
         splitfolders.fixed("data/2_processed",
                            output="data/4_tfds_dataset",
                            fixed=(
-                               int(scc * 0.75),
-                               int(scc * 0.125),
-                               int(scc * 0.125),
+                               int(scc * 0.80),
+                               int(scc * 0.10),
+                               int(scc * 0.10),
                            ),
                            oversample=False,
                            seed=cfg.seed,
@@ -65,7 +65,7 @@ def process_data(cfg):
         print("No Sampling.")
         splitfolders.ratio("data/2_processed",
                            output="data/4_tfds_dataset",
-                           ratio=(0.75, 0.125, 0.125),
+                           ratio=(0.80, 0.10, 0.10),
                            seed=cfg.seed,
                            move=False)
     print('\n\n')
