@@ -13,6 +13,19 @@ from tqdm import tqdm
 import numpy as np
 from pathlib import Path
 import imghdr
+from time import time
+
+
+def timer_func(func):
+    # This function shows the execution time of
+    # the function object passed
+    def wrap_func(*args, **kwargs):
+        t1 = time()
+        result = func(*args, **kwargs)
+        t2 = time()
+        print(f'Function {func.__name__!r} executed in {(t2-t1):.4f}s')
+        return result
+    return wrap_func
 
 
 def find_filepaths(root_folder):
@@ -40,6 +53,7 @@ def remove_unsupported_images(root_folder):
     print(f"Removed {count} unsupported files.")
 
 
+@timer_func
 def remove_corrupted_images(s_dir,
                             ext_list=[
                                 'jpg', 'png', 'jpeg', 'gif', 'bmp', 'JPEG'
@@ -164,8 +178,8 @@ def prepare(ds, cfg, shuffle=False, augment=False):
     if shuffle:
         ds = ds.shuffle(buffer_size=1000)
 
-    # Batch all datasets.
-    ds = ds.batch(cfg.batch_size)
+    # # Batch all datasets.
+    # ds = ds.batch(cfg.batch_size)
 
     # Use buffered prefetching on all datasets.
     return ds.prefetch(buffer_size=tf.data.AUTOTUNE)
