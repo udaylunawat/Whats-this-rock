@@ -49,11 +49,11 @@ def get_model(cfg):
     model = tf.keras.Sequential([
         base_model,
         layers.GlobalAveragePooling2D(),
-        layers.Dense(1024),
+        layers.Dense(1024, activation='relu'),
         layers.Dropout(cfg.model.dropout_rate),
-        layers.Dense(256),
+        layers.Dense(256, activation='relu'),
         layers.Dropout(cfg.model.dropout_rate),
-        layers.Dense(64),
+        layers.Dense(64, activation='relu'),
         layers.Dropout(cfg.model.dropout_rate),
         layers.Dense(cfg.num_classes, activation="softmax"),
     ])
