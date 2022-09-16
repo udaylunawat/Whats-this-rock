@@ -136,13 +136,7 @@ def evaluate(cfg, model, history, test_dataset, labels):
     plt.savefig("cr.png", dpi=400)
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
-    wandb.log({"Test F1 Score": scores["f1_score"]})
 
-    # average of val and test f1 score
-    wandb.log({
-        "Avg VT F1 Score":
-        (scores["f1_score"] + max(history.history["val_f1_score"])) / 2
-    })
     wandb.log({"Confusion Matrix": cm})
     wandb.log({
         "Classification Report Image:":

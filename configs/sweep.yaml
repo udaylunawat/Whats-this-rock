@@ -1,7 +1,7 @@
 method: bayes
 metric:
   goal: maximize
-  name: val_f1_score
+  name: val_accuracy
 parameters:
   notes:
     value: ""
@@ -52,7 +52,7 @@ parameters:
   dropout_rate:
     value: 0.3
   monitor:
-    value: "val_f1_score"
+    value: "val_accuracy"
   earlystopping_patience:
     value: 10=
   reduce_lr_factor:
