@@ -43,5 +43,3 @@ use_reduce_lr: True
 reduce_lr_factor: 0.4
 reduce_lr_min_lr: 0.00001
 reduce_lr_patience: 2
-
-save_model: True
