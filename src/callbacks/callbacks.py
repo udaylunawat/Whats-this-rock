@@ -18,8 +18,8 @@ def get_reduce_lr_on_plateau(cfg):
     reduce_lr_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(
         monitor=cfg.monitor,
         factor=cfg.reduce_lr_factor,
-        patience=cfg.callback.reduce_lr_patience,
-        min_lr=cfg.callback.reduce_lr_min_lr,
+        patience=cfg.reduce_lr_patience,
+        min_lr=cfg.reduce_lr_min_lr,
         verbose=1,
         )
 
