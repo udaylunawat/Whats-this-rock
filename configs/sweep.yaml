@@ -54,7 +54,7 @@ parameters:
   monitor:
     value: "val_accuracy"
   earlystopping_patience:
-    value: 10=
+    value: 10
   reduce_lr_factor:
     values: [.9, .7, .5]
   reduce_lr_patience:
