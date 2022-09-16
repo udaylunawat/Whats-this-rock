@@ -2,11 +2,10 @@ import tensorflow as tf
 from wandb.keras import WandbCallback
 
 def get_earlystopper(cfg):
-    cfg = cfg.callback
 
     earlystopper = tf.keras.callbacks.EarlyStopping(
         monitor=cfg.monitor,
-        patience=cfg.earlystopping.patience,
+        patience=cfg.earlystopping_patience,
         verbose=1,
         mode='max',
         restore_best_weights=True)
@@ -15,13 +14,13 @@ def get_earlystopper(cfg):
 
 
 def get_reduce_lr_on_plateau(cfg):
-    cfg = cfg.callback
 
     reduce_lr_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(
         monitor=cfg.monitor,
-        factor=cfg.reduce_lr.factor,
-        patience=cfg.reduce_lr.patience,
-        min_lr=cfg.reduce_lr.min_lr,
+        factor=cfg.reduce_lr_factor,
+        patience=cfg.callback.reduce_lr_patience,
+        min_lr=cfg.callback.reduce_lr_min_lr,
+        verbose=1,
         )
 
     return reduce_lr_on_plateau
@@ -30,16 +29,16 @@ def get_reduce_lr_on_plateau(cfg):
 def get_callbacks(cfg):
     # Define WandbCallback for experiment tracking
     wandbcallback = WandbCallback(
-        monitor=cfg.callback.monitor,
-        mode='min',
-        save_model=(cfg.model.save_model),
+        monitor=cfg.monitor,
+        mode='auto',
+        save_model=(cfg.save_model),
     )
 
     callbacks = [wandbcallback]
-    if cfg.callback.earlystopping.use:
+    if cfg.callback.use_earlystopping:
         earlystopper = get_earlystopper(cfg)
         callbacks.append(earlystopper)
-    if cfg.callback.reduce_lr.use:
+    if cfg.use_reduce_lr:
         reduce_lr = get_reduce_lr_on_plateau(cfg)
         callbacks.append(reduce_lr)
 

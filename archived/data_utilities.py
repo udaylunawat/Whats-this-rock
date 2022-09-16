@@ -148,8 +148,8 @@ def prepare_dataset(dataset, split):
 
 
 def get_generators(config):
-    IMAGE_SIZE = (cfg.dataset.image.size,
-                  cfg.dataset.image.size)
+    IMAGE_SIZE = (cfg.image_size,
+                  cfg.image_size)
     if cfg.augmentation:
         print("\n\nAugmentation is True! rescale=1./255")
         train_datagen = ImageDataGenerator(

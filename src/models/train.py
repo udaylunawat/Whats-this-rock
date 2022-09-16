@@ -76,7 +76,7 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     model = get_model(cfg)
     model.summary()
 
-    print(f"\nModel loaded: {cfg.model.backbone}.\n\n")
+    print(f"\nModel loaded: {cfg.backbone}.\n\n")
 
     optimizer = get_optimizer(cfg)
     optimizer = mixed_precision.LossScaleOptimizer(
@@ -155,11 +155,11 @@ def evaluate(cfg, model, history, test_dataset, labels):
             version_base='1.2')
 def main(cfg: DictConfig) -> None:
     print(OmegaConf.to_yaml(cfg))
-    print(cfg.paths.data)
+    print(cfg.data_path)
     seed_everything(cfg.seed)
 
-    if cfg.wandb.use:
-        run = wandb.init(project=cfg.wandb.project,
+    if cfg.use_wandb:
+        run = wandb.init(project=cfg.project,
                          notes=cfg.notes,
                          config=OmegaConf.to_container(cfg,
                                                        resolve=True,
@@ -169,11 +169,11 @@ def main(cfg: DictConfig) -> None:
     artifact.add_dir('src/')
     wandb.log_artifact(artifact)
 
-    print(f"\nDatasets used for Training:- {cfg.dataset.id}")
+    print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
     subprocess.run(['sh', 'src/scripts/clean_dir.sh'],
                    stdout=subprocess.PIPE).stdout.decode('utf-8')
-    for dataset_id in cfg.dataset.id:
+    for dataset_id in cfg.dataset_id:
         get_data(dataset_id)
 
     process_data(cfg)
@@ -193,7 +193,7 @@ def main(cfg: DictConfig) -> None:
     val_dataset = prepare(val_dataset, cfg)
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
-    if cfg.model.trainable == False:
+    if cfg.trainable == False:
         model = unfreeze_model(cfg, model)
         epochs = cfg.epochs + 10
         callbacks = get_callbacks(cfg)

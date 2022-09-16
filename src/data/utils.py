@@ -153,15 +153,15 @@ def get_preprocess(cfg):
         'efficientnetv2m': applications.efficientnet_v2.preprocess_input
     }
 
-    return preprocess_dict[cfg.model.backbone]
+    return preprocess_dict[cfg.backbone]
 
 
 def prepare(ds, cfg, shuffle=False, augment=False):
     data_augmentation = tf.keras.Sequential([
         layers.RandomFlip("horizontal",
-                          input_shape=(cfg.dataset.image.size,
-                                       cfg.dataset.image.size,
-                                       cfg.dataset.image.channels)),
+                          input_shape=(cfg.image_size,
+                                       cfg.image_size,
+                                       cfg.image_channels)),
         layers.RandomRotation(0.1),
         layers.RandomZoom(0.1),
     ])
@@ -169,7 +169,7 @@ def prepare(ds, cfg, shuffle=False, augment=False):
         # Use data augmentation only on the training set.
         ds = ds.map(lambda x, y: (data_augmentation(x, training=True), y),
                     num_parallel_calls=tf.data.AUTOTUNE)
-    if cfg.model.preprocess:
+    if cfg.preprocess:
         preprocess_input = get_preprocess(cfg)
         ds = ds.map(lambda x, y: (preprocess_input(x), y),
                     num_parallel_calls=tf.data.AUTOTUNE)
@@ -186,7 +186,7 @@ def prepare(ds, cfg, shuffle=False, augment=False):
 
 
 def get_tfds_from_dir(cfg):
-    IMAGE_SIZE = (cfg.dataset.image.size, cfg.dataset.image.size)
+    IMAGE_SIZE = (cfg.image_size, cfg.image_size)
     train_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/train",
         labels='inferred',

@@ -16,7 +16,7 @@ parameters:
   class_weights:
     value: True
   optimizer:
-    value: adam
+    values: [adam, adamax]
   loss:
     value: categorical_crossentropy
   metrics:
@@ -25,59 +25,48 @@ parameters:
     value: 64
   num_classes:
     value: 7
-  paths:
-    - data:
-        value: ${hydra:runtime.cwd}/data/4_tfds_dataset/
-
-wandb:
-  - use:
-      value: True
-    project:
-      value: Whats-this-rock
-
-dataset:
-  - id:
-      value: [1, 2, 3, 4]
-    dir:
-      value: data/3_consume/
-    image:
-      size:
-        value: 124
-      channels:
-        value: 3
-    classes:
-      value: 10
-    sampling:
-      value: None
-
-model:
-  - backbone:
-      value: efficientnetv2m
-    use_pretrained_weights:
-      value: True
-    trainable:
-      value: True
-    preprocess:
-      value: True
-    dropout_rate:
-      value: 0.3
-
-callback:
-  - monitor:
-      value: "val_f1_score"
-    earlystopping:
-      patience:
-        value: 10
-    reduce_lr:
-      factor:
-        values: [.9, .7, .5]
-      min_lr: 0.00001
-      patience:
-        values: [1, 2, 3, 4]
-    save_model:
-      status:
-        value: True
-      best_only:
-        value: True
+  data_path:
+    value: data/4_tfds_dataset/
+  use_wandb:
+    value: True
+  wand_mode:
+    value: online
+  project:
+    value: Whats-this-rockv3
+  dataset_id:
+    value: [1, 2, 3, 4]
+  image_size:
+    value: 224
+  image_channels:
+    value: 3
+  sampling:
+    values: [None, oversampling, undersampling]
+  backbone:
+    values: [efficientnetv2m, efficientnetv2, resnet, mobilenetv2]
+  use_pretrained_weights:
+    values: [True, False]
+  trainable:
+    values: [True, False]
+  preprocess:
+    value: True
+  dropout_rate:
+    value: 0.3
+  monitor:
+    value: "val_f1_score"
+  earlystopping_patience:
+    value: 10=
+  reduce_lr_factor:
+    values: [.9, .7, .5]
+  reduce_lr_patience:
+    values: [1, 2, 3, 4]
+  reduce_lr_min_lr:
+    value: 0.00001
+  save_model:
+    value: True
 
 program: src/models/train.py
+command:
+  - ${env}
+  - python
+  - ${program}
+  - ${args_no_hyphens}

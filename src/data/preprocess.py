@@ -38,7 +38,7 @@ def process_data(cfg):
         "\nSplitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
     )
     scc = min(get_df()["class"].value_counts())
-    if cfg.dataset.sampling == 'oversample':
+    if cfg.sampling == 'oversample':
         print("\nOversampling...")
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
@@ -49,8 +49,8 @@ def process_data(cfg):
                            fixed=(((scc // 2) - 1, (scc // 2) - 1)),
                            seed=cfg.seed,
                            move=False)
-    elif cfg.dataset.sampling == 'undersample':
-        print(f"Undersampling to {cfg.dataset.sampling} samples.")
+    elif cfg.sampling == 'undersample':
+        print(f"Undersampling to {cfg.sampling} samples.")
         splitfolders.fixed("data/2_processed",
                            output="data/4_tfds_dataset",
                            fixed=(

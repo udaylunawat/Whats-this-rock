@@ -19,19 +19,19 @@ def get_backbone(cfg):
         'efficientnetv2m': applications.EfficientNetV2M
     }
 
-    if cfg.model.use_pretrained_weights:
+    if cfg.use_pretrained_weights:
         weights = "imagenet"
 
     try:
-        base_model = models_dict[cfg.model.backbone](
+        base_model = models_dict[cfg.backbone](
             include_top=False,
             weights=weights,
-            input_shape=(cfg.dataset.image.size, cfg.dataset.image.size,
-                         cfg.dataset.image.channels))
+            input_shape=(cfg.image_size, cfg.image_size,
+                         cfg.image_channels))
     except:
         raise NotImplementedError("Not implemented for this backbone.")
 
-    base_model.trainable = cfg.model.trainable
+    base_model.trainable = cfg.trainable
 
     return base_model
 
@@ -50,11 +50,11 @@ def get_model(cfg):
         base_model,
         layers.GlobalAveragePooling2D(),
         layers.Dense(1024, activation='relu'),
-        layers.Dropout(cfg.model.dropout_rate),
+        layers.Dropout(cfg.dropout_rate),
         layers.Dense(256, activation='relu'),
-        layers.Dropout(cfg.model.dropout_rate),
+        layers.Dropout(cfg.dropout_rate),
         layers.Dense(64, activation='relu'),
-        layers.Dropout(cfg.model.dropout_rate),
+        layers.Dropout(cfg.dropout_rate),
         layers.Dense(cfg.num_classes, activation="softmax"),
     ])
 

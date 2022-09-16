@@ -36,8 +36,8 @@ for f in run.files():
 
 normalization_layer = layers.Rescaling(1.0 / 255)
 
-IMAGE_SIZE = (cfg.dataset.image.size,
-              cfg.dataset.image.size)
+IMAGE_SIZE = (cfg.image_size,
+              cfg.image_size)
 batch_size = cfg.batch_size
 
 class_names = [
