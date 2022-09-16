@@ -34,7 +34,7 @@ parameters:
   project:
     value: Whats-this-rockv3
   dataset_id:
-    value: [1, 2, 3, 4]
+    values: [1, 2, 3, 4], [1], [1,2], [1,2,3], [1,2,4]
   image_size:
     value: 224
   image_channels:
@@ -44,7 +44,7 @@ parameters:
   backbone:
     values: [efficientnetv2m, efficientnetv2, resnet, mobilenetv2]
   use_pretrained_weights:
-    values: [True, False]
+    values: [True]
   trainable:
     values: [True, False]
   preprocess:
@@ -60,9 +60,9 @@ parameters:
   use_reduce_lr:
     value: True
   reduce_lr_factor:
-    values: [.9, .7, .5]
+    values: [.9, .7, .5, .3]
   reduce_lr_patience:
-    values: [1, 2, 3, 4]
+    values: [1, 3, 5, 7]
   reduce_lr_min_lr:
     value: 0.00001
   save_model:
