@@ -26,7 +26,10 @@ parameters:
   num_classes:
     value: 7
   train_split:
-    values: [0.7, 0.75, 0.80]
+    values:
+      - 0.70
+      - 0.75
+      - 0.80
   data_path:
     value: data/4_tfds_dataset/
   use_wandb:
