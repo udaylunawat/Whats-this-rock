@@ -34,7 +34,12 @@ parameters:
   project:
     value: Whats-this-rockv3
   dataset_id:
-    values: [1, 2, 3, 4], [1], [1,2], [1,2,3], [1,2,4]
+    values:
+      - [1, 2, 3, 4]
+      - [1]
+      - [1, 2]
+      - [1, 2, 3]
+      - [1, 2, 4]
   image_size:
     value: 224
   image_channels:
