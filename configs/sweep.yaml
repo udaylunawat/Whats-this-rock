@@ -6,7 +6,7 @@ parameters:
   notes:
     value: ""
   seed:
-    value: 42
+    value: [1, 42, 100]
   lr:
     values: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
   epochs:
