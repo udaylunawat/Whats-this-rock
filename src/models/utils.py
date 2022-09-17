@@ -7,22 +7,22 @@ from tensorflow.keras import layers, optimizers, backend as K
 from tensorflow.keras.callbacks import Callback
 
 
-def get_optimizer(cfg):
+def get_optimizer(cfg, lr = cfg.lr):
     if cfg.optimizer == "adam":
-        opt = optimizers.Adam(learning_rate=cfg.lr)
+        opt = optimizers.Adam(learning_rate=lr)
     elif cfg.optimizer == "rms":
-        opt = optimizers.RMSprop(learning_rate=cfg.lr,
+        opt = optimizers.RMSprop(learning_rate=lr,
                                  rho=0.9,
                                  epsilon=1e-08,
                                  decay=0.0)
     elif cfg.optimizer == "sgd":
-        opt = optimizers.SGD(learning_rate=cfg.lr)
+        opt = optimizers.SGD(learning_rate=lr)
     elif cfg.optimizer == "adamax":
-        opt = optimizers.Adamax(learning_rate=cfg.lr)
+        opt = optimizers.Adamax(learning_rate=lr)
     else:
         print(
             f"\n{cfg.optimizer} not present, using default (adam optimizer)\n")
-        opt = optimizers.Adam(learning_rate=cfg.lr)
+        opt = optimizers.Adam(learning_rate=lr)
     return opt
 
 
