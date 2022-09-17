@@ -59,7 +59,9 @@ def unfreeze_model(cfg, model):
     for layer in model.layers[0].layers[-20:]:
         print(layer.name, layer.trainable)
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-5)
+    optimizer = get_optimizer(cfg)
+    optimizer = mixed_precision.LossScaleOptimizer(
+        optimizer)  # speed improvements
 
     model.compile(optimizer=optimizer,
                   loss="categorical_crossentropy",
@@ -68,6 +70,7 @@ def unfreeze_model(cfg, model):
     model.summary()
 
     return model
+
 
 def train(cfg, train_dataset, val_dataset, class_weights):
 
@@ -86,7 +89,9 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     model.compile(
         optimizer=optimizer,
         loss=cfg.loss,
-        metrics=["accuracy",],
+        metrics=[
+            "accuracy",
+        ],
     )
 
     callbacks = get_callbacks(cfg)
@@ -192,11 +197,11 @@ def main(cfg: DictConfig) -> None:
         epochs = cfg.epochs + 10
         callbacks = get_callbacks(cfg)
         history = model.fit(train_dataset,
-                         epochs=epochs,
-                         validation_data=val_dataset,
-                         callbacks=callbacks,
-                         initial_epoch=len(history.history['loss']),
-                         verbose=2)
+                            epochs=epochs,
+                            validation_data=val_dataset,
+                            callbacks=callbacks,
+                            initial_epoch=len(history.history['loss']),
+                            verbose=2)
 
     evaluate(cfg, model, history, test_dataset, labels)
     run.finish()
