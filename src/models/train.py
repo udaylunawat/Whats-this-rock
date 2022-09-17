@@ -81,7 +81,7 @@ def train(cfg, train_dataset, val_dataset, class_weights):
 
     print(f"\nModel loaded: {cfg.backbone}.\n\n")
 
-    optimizer = get_optimizer(cfg)
+    optimizer = get_optimizer(cfg, cfg.lr)
     optimizer = mixed_precision.LossScaleOptimizer(
         optimizer)  # speed improvements
 

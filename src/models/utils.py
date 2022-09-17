@@ -7,7 +7,7 @@ from tensorflow.keras import layers, optimizers, backend as K
 from tensorflow.keras.callbacks import Callback
 
 
-def get_optimizer(cfg, lr = cfg.lr):
+def get_optimizer(cfg, lr):
     if cfg.optimizer == "adam":
         opt = optimizers.Adam(learning_rate=lr)
     elif cfg.optimizer == "rms":
