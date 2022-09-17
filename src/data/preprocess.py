@@ -38,6 +38,7 @@ def process_data(cfg):
         "\nSplitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
     )
     scc = min(get_df()["class"].value_counts())
+    val_split = test_split = 1-(cfg.train_split//2)
     if cfg.sampling == 'oversample':
         print("\nOversampling...")
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
@@ -54,9 +55,9 @@ def process_data(cfg):
         splitfolders.fixed("data/2_processed",
                            output="data/4_tfds_dataset",
                            fixed=(
-                               int(scc * 0.80),
-                               int(scc * 0.10),
-                               int(scc * 0.10),
+                               int(scc * cfg.train_split),
+                               int(scc * val_split),
+                               int(scc * test_split),
                            ),
                            oversample=False,
                            seed=cfg.seed,
@@ -65,7 +66,7 @@ def process_data(cfg):
         print("No Sampling.")
         splitfolders.ratio("data/2_processed",
                            output="data/4_tfds_dataset",
-                           ratio=(0.80, 0.10, 0.10),
+                           ratio=(cfg.train_split, val_split, test_split),
                            seed=cfg.seed,
                            move=False)
     print('\n\n')
