@@ -16,7 +16,8 @@ def get_backbone(cfg):
         'inceptionresnetv2': applications.InceptionResNetV2,
         'mobilenetv2': applications.MobileNetV2,
         'efficientnetv2': applications.EfficientNetV2B0,
-        'efficientnetv2m': applications.EfficientNetV2M
+        'efficientnetv2m': applications.EfficientNetV2M,
+        'xception': applications.Xception,
     }
 
     if cfg.use_pretrained_weights:
