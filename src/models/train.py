@@ -59,11 +59,11 @@ def unfreeze_model(cfg, model):
     for layer in model.layers[0].layers[-20:]:
         print(layer.name, layer.trainable)
 
-    # optimizer = tf.keras.optimizers.Adam(learning_rate=1e-4)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-5)
 
-    # model.compile(optimizer=optimizer,
-    #               loss="categorical_crossentropy",
-    #               metrics=["accuracy"])
+    model.compile(optimizer=optimizer,
+                  loss="categorical_crossentropy",
+                  metrics=["accuracy"])
     print('\n')
     model.summary()
 
