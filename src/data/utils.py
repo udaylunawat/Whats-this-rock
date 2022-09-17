@@ -150,7 +150,8 @@ def get_preprocess(cfg):
         'inceptionresnetv2': applications.inception_resnet_v2.preprocess_input,
         'mobilenetv2': applications.mobilenet_v2.preprocess_input,
         'efficientnetv2': applications.efficientnet_v2.preprocess_input,
-        'efficientnetv2m': applications.efficientnet_v2.preprocess_input
+        'efficientnetv2m': applications.efficientnet_v2.preprocess_input,
+        'xception': applications.xception.preprocess_input
     }
 
     return preprocess_dict[cfg.backbone]
