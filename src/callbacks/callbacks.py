@@ -5,7 +5,7 @@ def get_earlystopper(cfg):
 
     earlystopper = tf.keras.callbacks.EarlyStopping(
         monitor=cfg.monitor,
-        patience=cfg.earlystopping_patience,
+        patience=cfg.earlystopping.patience,
         verbose=1,
         mode='max',
         restore_best_weights=True)
@@ -17,9 +17,9 @@ def get_reduce_lr_on_plateau(cfg):
 
     reduce_lr_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(
         monitor=cfg.monitor,
-        factor=cfg.reduce_lr_factor,
-        patience=cfg.reduce_lr_patience,
-        min_lr=cfg.reduce_lr_min_lr,
+        factor=cfg.reduce_lr.factor,
+        patience=cfg.reduce_lr.patience,
+        min_lr=cfg.reduce_lr.min_lr,
         verbose=1,
         )
 
@@ -35,10 +35,10 @@ def get_callbacks(cfg):
     )
 
     callbacks = [wandbcallback]
-    if cfg.use_earlystopping:
+    if cfg.earlystopping.use:
         earlystopper = get_earlystopper(cfg)
         callbacks.append(earlystopper)
-    if cfg.use_reduce_lr:
+    if cfg.reduce_lr.use:
         reduce_lr = get_reduce_lr_on_plateau(cfg)
         callbacks.append(reduce_lr)
 

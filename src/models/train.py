@@ -157,8 +157,8 @@ def main(cfg: DictConfig) -> None:
     print(cfg.data_path)
     seed_everything(cfg.seed)
 
-    if cfg.use_wandb:
-        run = wandb.init(project=cfg.project,
+    if cfg.wandb.use:
+        run = wandb.init(project=cfg.wandb.project,
                          notes=cfg.notes,
                          config=OmegaConf.to_container(cfg,
                                                        resolve=True,

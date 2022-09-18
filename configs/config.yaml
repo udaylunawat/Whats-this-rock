@@ -16,9 +16,9 @@ num_classes: 7
 train_split: 0.75
 
 # wandb
-use_wandb: True
-project: Whats-this-rockv3
-wand_mode: offline
+wandb.use: True
+wandb.project: Whats-this-rockv3
+wandb.mode: offline
 
 # dataset
 dataset_id: [1, 2, 3, 4]
@@ -37,10 +37,10 @@ save_model: False
 
 # callback
 monitor: "val_accuracy"
-use_earlystopping: True
-earlystopping_patience: 10
+earlystopping.use: True
+earlystopping.patience: 10
 
-use_reduce_lr: True
-reduce_lr_factor: 0.4
-reduce_lr_min_lr: 0.00001
-reduce_lr_patience: 2
+reduce_lr.use: True
+reduce_lr.factor: 0.4
+reduce_lr.min_lr: 0.00001
+reduce_lr.patience: 2
