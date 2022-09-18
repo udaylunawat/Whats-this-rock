@@ -43,5 +43,5 @@ earlystopping:
 reduce_lr:
   use: True
   factor: 0.4
-  min_lr: 0.00001
+  min_lr: 1e-5
   patience: 2

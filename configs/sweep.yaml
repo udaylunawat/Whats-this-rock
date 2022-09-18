@@ -70,9 +70,9 @@ parameters:
   earlystopping.use:
     value: True
   earlystopping.patience:
-    value: 20
+    values: [10]
   reduce_lr.use:
-    values: [True, False]
+    values: [True]
   reduce_lr.factor:
     values: [.9, .7, .5, .3]
   reduce_lr.patience:
