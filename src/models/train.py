@@ -59,7 +59,7 @@ def unfreeze_model(cfg, model):
     for layer in model.layers[0].layers[-20:]:
         print(layer.name, layer.trainable)
 
-    optimizer = get_optimizer(cfg, lr=1e-5)
+    optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr/2)
     optimizer = mixed_precision.LossScaleOptimizer(
         optimizer)  # speed improvements
 
