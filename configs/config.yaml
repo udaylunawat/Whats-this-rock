@@ -13,12 +13,12 @@ loss: categorical_crossentropy
 metrics: ["accuracy"]
 batch_size: 16
 num_classes: 7
-train_split: 0.75
+train_split: 0.70
 
-# wandb
-wandb.use: True
-wandb.project: Whats-this-rockv3
-wandb.mode: offline
+wandb:
+  use: True
+  project: Whats-this-rockv3
+  mode: offline
 
 # dataset
 dataset_id: [1, 2, 3, 4]
@@ -37,10 +37,11 @@ save_model: False
 
 # callback
 monitor: "val_accuracy"
-earlystopping.use: True
-earlystopping.patience: 10
-
-reduce_lr.use: True
-reduce_lr.factor: 0.4
-reduce_lr.min_lr: 0.00001
-reduce_lr.patience: 2
+earlystopping:
+  use: True
+  patience: 10
+reduce_lr:
+  use: True
+  factor: 0.4
+  min_lr: 0.00001
+  patience: 2
