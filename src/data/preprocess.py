@@ -39,7 +39,7 @@ def process_data(cfg):
     )
     scc = min(get_df()["class"].value_counts())
     val_split = test_split = (1-cfg.train_split) / 2
-    print(cfg.train_split, val_split, test_split)
+    print(f"Data Split:- Training {cfg.train_split}, Validation {val_split}, Test {test_split}")
     if cfg.sampling == 'oversample':
         print("\nOversampling...")
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
