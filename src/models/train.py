@@ -47,31 +47,6 @@ def seed_everything(seed):
     tf.random.set_seed(seed)
 
 
-def unfreeze_model(cfg, model):
-    model.layers[0].trainable = True
-    # model.trainable = True
-    # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
-    for layer in model.layers[0].layers[-20:]:
-        if isinstance(layer, layers.BatchNormalization):
-            layer.trainable = False
-
-    print("\nFinetuning model with BatchNorm layers freezed.\n")
-    for layer in model.layers[0].layers[-20:]:
-        print(layer.name, layer.trainable)
-
-    optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr/2)
-    optimizer = mixed_precision.LossScaleOptimizer(
-        optimizer)  # speed improvements
-
-    model.compile(optimizer=optimizer,
-                  loss="categorical_crossentropy",
-                  metrics=["accuracy"])
-    print('\n')
-    model.summary()
-
-    return model
-
-
 def train(cfg, train_dataset, val_dataset, class_weights):
 
     tf.keras.backend.clear_session()
@@ -192,8 +167,33 @@ def main(cfg: DictConfig) -> None:
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
     if cfg.trainable == False:
-        model = unfreeze_model(cfg, model)
-        epochs = cfg.epochs + 10
+        model.layers[0].trainable = True
+        # model.trainable = True
+        for layer in model.layers[0].layers[:20]:
+            layer.trainable = False
+
+        # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
+        for layer in model.layers[0].layers:
+            if isinstance(layer, layers.BatchNormalization):
+                layer.trainable = False
+
+        print("\nFinetuning model with BatchNorm layers freezed.\n")
+        print("\nBackbone layers\n\n")
+        for layer in model.layers[0].layers:
+            print(layer.name, layer.trainable)
+
+        print("\nModel layers\n\n")
+        for layer in model.layers:
+            print(layer.name, layer.trainable)
+
+        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr/2)
+
+        model.compile(optimizer=optimizer,
+                    loss="categorical_crossentropy",
+                    metrics=["accuracy"])
+
+
+        epochs = cfg.epochs + 20
         callbacks = get_callbacks(cfg)
         history = model.fit(train_dataset,
                             epochs=epochs,
