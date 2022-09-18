@@ -154,7 +154,6 @@ def evaluate(cfg, model, history, test_dataset, labels):
             version_base='1.2')
 def main(cfg: DictConfig) -> None:
     print(OmegaConf.to_yaml(cfg))
-    print(cfg.data_path)
     seed_everything(cfg.seed)
 
     if cfg.wandb.use:
