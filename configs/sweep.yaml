@@ -34,9 +34,9 @@ parameters:
     value: data/4_tfds_dataset/
   wandb.use:
     value: True
-  wand_mode:
+  wandb.mode:
     value: online
-  project:
+  wandb.project:
     value: Whats-this-rockv3
   dataset_id:
     values:
