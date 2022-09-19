@@ -1,0 +1,47 @@
+# defaults:
+#   - dataset: [1, 2, 3, 4]
+#   - optimizer: adamax
+
+notes: ""
+seed: 42
+lr: 0.001
+epochs: 30
+augmentation: True
+class_weights: True
+optimizer: adam
+loss: categorical_crossentropy
+metrics: ["accuracy"]
+batch_size: 16
+num_classes: 7
+train_split: 0.70
+
+wandb:
+  use: True
+  project: Whats-this-rockv3
+  mode: offline
+
+# dataset
+dataset_id: [1, 2, 3, 4]
+data_path: data/4_tfds_dataset/
+sampling: None
+image_size: 224
+image_channels: 3
+
+# model
+backbone: resnet
+use_pretrained_weights: True
+trainable: True
+preprocess: True
+dropout_rate: 0.3
+save_model: False
+
+# callback
+monitor: "val_accuracy"
+earlystopping:
+  use: True
+  patience: 10
+reduce_lr:
+  use: True
+  factor: 0.4
+  min_lr: 1e-5
+  patience: 2

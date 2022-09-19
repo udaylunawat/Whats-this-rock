@@ -143,4 +143,7 @@ wandb/*
 linux-packages.txt
 secrets.json
 requirements-docker.txt
+requirements-m1.txt
 Dockerfile_train
+environment.yml
+outputs

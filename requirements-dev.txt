@@ -5,11 +5,10 @@ opencv-python
 kaggle
 pandas
 numpy
-# tf-nightly==2.10.0.dev20220427
-# keras-nightly==2.10.0.dev2022042807
 tensorflow
-tensorflow-addons
 wandb
-# keras-cv
 split-folders
-ml-collections
+hydra-core
+matplotlib
+seaborn
+plotly

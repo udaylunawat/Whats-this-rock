@@ -4,9 +4,11 @@ import tensorflow as tf
 
 class custom_callback(tf.keras.callbacks):
     """log lr and clear checkpoints."""
+
     def on_epoch_end(self, epoch, logs=None):
-        lr = float(tf.keras.backend.get_value(
-            self.model.optimizer.lr))  # get the current learning rate
+        lr = float(
+            tf.keras.backend.get_value(self.model.optimizer.lr)
+        )  # get the current learning rate
         max = 0
         for file_name in os.listdir("checkpoints"):
             val_acc = int(os.path.basename(file_name).split(".")[-2])

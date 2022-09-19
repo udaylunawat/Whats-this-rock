@@ -10,12 +10,6 @@ from tensorflow.keras import layers, models, optimizers
 import tensorflow_addons as tfa
 
 from absl import app
-from absl import flags
-from ml_collections.config_flags import config_flags
-
-# Config
-FLAGS = flags.FLAGS
-CONFIG = config_flags.DEFINE_config_file("config", "configs/baseline.py")
 
 # print("Downloading model...")
 file_name = "model-best.h5"
@@ -36,15 +30,14 @@ model = models.load_model(file_name)
 
 # when importing download classification report
 for f in run.files():
-    if f.name.endswith('png'):
+    if f.name.endswith("png"):
         print(os.path.basename(f.name))
         run.file(f.name).download(replace=True)
 
 normalization_layer = layers.Rescaling(1.0 / 255)
 
-IMAGE_SIZE = (config.dataset_config.image_width,
-              config.dataset_config.image_width)
-batch_size = config.dataset_config.batch_size
+IMAGE_SIZE = (cfg.image_size, cfg.image_size)
+batch_size = cfg.batch_size
 
 class_names = [
     "Basalt",
@@ -59,12 +52,10 @@ num_classes = len(class_names)
 
 model = models.load_model(file_name)
 optimizer = optimizers.Adam()
-f1_score = tfa.metrics.F1Score(num_classes=num_classes,
-                               average="macro",
-                               threshold=0.5)
-model.compile(optimizer=optimizer,
-              loss="categorical_crossentropy",
-              metrics=["accuracy", f1_score])
+f1_score = tfa.metrics.F1Score(num_classes=num_classes, average="macro", threshold=0.5)
+model.compile(
+    optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy", f1_score]
+)
 
 print("Model loaded!")
 

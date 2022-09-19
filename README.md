@@ -1,6 +1,6 @@
 # Whats-this-rock
 
-## Rock Classification Telegram Bot!
+## Rock Classification Telegram Bot
 
 ![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock) ![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock) ![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
 [![Deploy to heroku.](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/main.yaml/badge.svg)](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/main.yaml)
@@ -46,13 +46,21 @@ Run these commands
 
 ```bash
 pip install -r requirements-dev.txt
-sh setup.sh
-python src/preprocess.py
-python src/train.py
+sh src/scripts/setup.sh
+sh src/scripts/clean_dir.sh
+python src/models/train.py
 ```
 
+By using Hydra it's now much more easier to override parameters like this
+
+```bash
+python src/models/train.py  callback.reduce_lr.factor=0.5 \
+                            callback.reduce_lr.patience=4 \
+                            callback.earlystopping.patience=20
+```
 
 ## Notebooks
+
 <table class="tfo-notebook-buttons" align="left">
   <td>
     <a target="_blank" href="https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing"><img src="https://www.tensorflow.org/images/colab_logo_32px.png" />Run in Google Colab</a>
@@ -96,7 +104,7 @@ python src/train.py
   - [x] Classification Report
 - [x] Telegram Bot Deployed
   - [x] Heroku
-  - [ ] Show CM and CL in bot
+  - [x] Show CM and CL in bot
 - [ ] Accessing the model through FastAPI (Backend)
 - [ ] Streamlit (Frontend)
 - [x] Docker
@@ -104,25 +112,31 @@ python src/train.py
   - [x] Deploy Bot when bot.py is updated.
 - [ ] nbdev
 - [ ] Group Runs
-    - [ ] kfold cross validation
+  - [ ] kfold cross validation
 - [ ] [WandB Tables](https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&t=VRL-ZXzznXV_Hg2h7QnjuA)
   - [ ] find the long tail examples or hard examples,
   - [ ] find the classes that the model is performing terribly on,
+- [x] Configuration Management
+  - [x] ml-collections
+  - [x] Hydra
+- [ ] Performance improvement
+  - [x] Convert to tf.data.Dataset
 
 ## Technologies Used
+
 - [Google Colab](https://colab.research.google.com/?utm_source=scs-index)
 - [Python](https://www.python.org/)
 - [Tensorflow](https://www.tensorflow.org/)
 - [Weights and Biases](https://wandb.ai/site)
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
 - [Heroku](https://heroku.com)
-
+- [Hydra - by Facebook](https://hydra.cc)
 
 ## Bug / Feature Request
+
 If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
 
 If you'd like to request a new function, feel free to do so by opening an issue [here](https://github.com/). Please include sample queries and their corresponding results.
-
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -135,8 +149,8 @@ Contributions are what make the open source community such an amazing place to b
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-
 ## License
+
 [![Apache license](https://img.shields.io/badge/license-apache-blue?style=for-the-badge&logo=appveyor)](http://www.apache.org/licenses/LICENSE-2.0e)
 
 Copyright 2020 Uday
@@ -154,25 +168,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 ## Credits
+
 - [Dataset - by Mahmoud Alforawi](https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals)
 
 <br>
 <p align="center"> Walt might be the one who knocks <br> but Hank is the one who rocks. </br> </p>
-
-[contributors-shield]: https://img.shields.io/github/contributors/udaylunawat/Covid-19-Radiology.svg?style=flat-square
-[contributors-url]: https://github.com/udaylunawat/Covid-19-Radiology/graphs/contributors
-
-[forks-shield]: https://img.shields.io/github/forks/udaylunawat/Covid-19-Radiology.svg?style=flat-square
-[forks-url]: https://github.com/udaylunawat/Covid-19-Radiology/network/members
-
-[stars-shield]: https://img.shields.io/github/stars/udaylunawat/Covid-19-Radiology.svg?style=flat-square
-[stars-url]: https://github.com/udaylunawat/Covid-19-Radiology/stargazers
-
-[issues-shield]: https://img.shields.io/github/issues/udaylunawat/Covid-19-Radiology.svg?style=flat-square
-[issues-url]: https://github.com/udaylunawat/Covid-19-Radiology/issues
-
-[license-shield]: https://img.shields.io/github/license/udaylunawat/Covid-19-Radiology.svg?style=flat-square
-[license-url]: https://github.com/udaylunawat/Covid-19-Radiology/blob/master/LICENSE
-
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/uday-lunawat
