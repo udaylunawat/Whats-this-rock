@@ -106,7 +106,7 @@ def evaluate(cfg, model, history, test_dataset, labels):
     cl_report = classification_report(
         true_categories,
         predicted_categories,
-        labels=[0, 1, 2, 3, 4, 5, 6],
+        labels=[i for i in range(cfg.num_classes)],
         target_names=labels,
         output_dict=True,
     )
@@ -128,9 +128,7 @@ def evaluate(cfg, model, history, test_dataset, labels):
             config_name="config.yaml",
             version_base='1.2')
 def main(cfg: DictConfig) -> None:
-    print(OmegaConf.to_yaml(cfg))
     seed_everything(cfg.seed)
-
     if cfg.wandb.use:
         run = wandb.init(project=cfg.wandb.project,
                          notes=cfg.notes,
@@ -141,7 +139,7 @@ def main(cfg: DictConfig) -> None:
     artifact = wandb.Artifact('rocks', type='files')
     artifact.add_dir('src/')
     wandb.log_artifact(artifact)
-
+    print(OmegaConf.to_yaml(cfg))
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
     subprocess.run(['sh', 'src/scripts/clean_dir.sh'],
@@ -166,7 +164,7 @@ def main(cfg: DictConfig) -> None:
     val_dataset = prepare(val_dataset, cfg)
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
-    if cfg.trainable == False:
+    if cfg.trainable == False and history.history['val_accuracy'][-1] > 0.70:
         model.layers[0].trainable = True
         # model.trainable = True
         for layer in model.layers[0].layers[:20]:
@@ -200,7 +198,7 @@ def main(cfg: DictConfig) -> None:
                             validation_data=val_dataset,
                             callbacks=callbacks,
                             initial_epoch=len(history.history['loss']),
-                            verbose=2)
+                            verbose=1)
 
     evaluate(cfg, model, history, test_dataset, labels)
     run.finish()
