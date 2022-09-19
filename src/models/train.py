@@ -15,6 +15,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 import tensorflow as tf
+import tensorflow_addons as tfa
 from tensorflow.keras import layers
 from sklearn.metrics import classification_report
 
@@ -59,9 +60,15 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     optimizer = get_optimizer(cfg, cfg.lr)
     optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
 
+    f1_score_metrics = [
+        tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)
+    ]
+
     # Compile the model
     model.compile(
-        optimizer=optimizer, loss=cfg.loss, metrics=["accuracy",],
+        optimizer=optimizer,
+        loss=cfg.loss,
+        metrics=["accuracy", f1_score_metrics],
     )
 
     callbacks = get_callbacks(cfg)
@@ -158,10 +165,10 @@ def main(cfg: DictConfig) -> None:
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
     if cfg.trainable == False and history.history["val_accuracy"][-1] > 0.70:
-        model.layers[0].trainable = True
+        model.layers[0].trainable = False
         # model.trainable = True
-        for layer in model.layers[0].layers[:20]:
-            layer.trainable = False
+        for layer in model.layers[0].layers[-cfg.last_layers :]:
+            layer.trainable = True
 
         # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
         for layer in model.layers[0].layers:
@@ -177,10 +184,19 @@ def main(cfg: DictConfig) -> None:
         for layer in model.layers:
             print(layer.name, layer.trainable)
 
-        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr / 2)
+        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr)
 
+        f1_score_metrics = [
+            tfa.metrics.F1Score(
+                num_classes=cfg.num_classes, average="macro", threshold=0.5
+            )
+        ]
+
+        # Compile the model
         model.compile(
-            optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"]
+            optimizer=optimizer,
+            loss=cfg.loss,
+            metrics=["accuracy", f1_score_metrics],
         )
 
         epochs = cfg.epochs + 20
