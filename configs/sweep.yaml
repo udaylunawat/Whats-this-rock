@@ -10,13 +10,13 @@ parameters:
   lr:
     values: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
   epochs:
-    value: 100
+    value: 50
   augmentation:
     value: True
   class_weights:
     value: True
   optimizer:
-    values: [adam, adamax]
+    values: [adam]
   loss:
     value: categorical_crossentropy
   metrics:
@@ -37,7 +37,7 @@ parameters:
   wandb.mode:
     value: online
   wandb.project:
-    value: Whats-this-rockv3
+    value: Whats-this-rockv5
   dataset_id:
     values:
       - [1]
@@ -61,14 +61,16 @@ parameters:
     values: [True]
   trainable:
     values: [True, False]
+  last_layers:
+    values: [5, 10, 20, 30, 40, 50]
   preprocess:
     value: True
   dropout_rate:
     values: [0.3]
   monitor:
-    value: "val_accuracy"
+    values: ["val_accuracy", "val_loss"]
   earlystopping.use:
-    value: True
+    values: [False]
   earlystopping.patience:
     values: [10]
   reduce_lr.use:
