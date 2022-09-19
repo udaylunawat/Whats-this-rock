@@ -23,10 +23,7 @@ from sklearn.metrics import classification_report
 #     run.file("model-best.h5").download()
 
 train_dataset, val_dataset, test_dataset = get_generators(cfg)
-labels = [
-    "Basalt", "Coal", "Granite", "Limestone", "Marble", "Quartzite",
-    "Sandstone"
-]
+labels = ["Basalt", "Coal", "Granite", "Limestone", "Marble", "Quartzite", "Sandstone"]
 
 model = get_model(cfg)
 try:
@@ -37,13 +34,10 @@ except:
 opt = get_optimizer(cfg)
 
 cfg.metrics.append(
-    tfa.metrics.F1Score(num_classes=cfg.num_classes,
-                        average="macro",
-                        threshold=0.5))
+    tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)
+)
 
-model.compile(loss=cfg.loss,
-              optimizer=cfg.optimizer,
-              metrics=cfg.metrics)
+model.compile(loss=cfg.loss, optimizer=cfg.optimizer, metrics=cfg.metrics)
 
 # Scores
 scores = model.evaluate(test_dataset, return_dict=True)
@@ -54,8 +48,7 @@ pred = model.predict(test_dataset, verbose=1)
 predicted_class_indices = np.argmax(pred, axis=1)
 
 # Confusion Matrix
-cm = plot.confusion_matrix(labels, test_dataset.classes,
-                           predicted_class_indices)
+cm = plot.confusion_matrix(labels, test_dataset.classes, predicted_class_indices)
 
 # Classification Report
 cl_report = classification_report(
@@ -68,4 +61,4 @@ cl_report = classification_report(
 print(cl_report)
 
 cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
-plt.savefig('imgs/cr.png', dpi=400)
+plt.savefig("imgs/cr.png", dpi=400)

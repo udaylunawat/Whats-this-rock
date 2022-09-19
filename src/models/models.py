@@ -11,13 +11,13 @@ def get_backbone(cfg):
     """
     weights = None
     models_dict = {
-        'vgg16': applications.VGG16,
-        'resnet': applications.ResNet50,
-        'inceptionresnetv2': applications.InceptionResNetV2,
-        'mobilenetv2': applications.MobileNetV2,
-        'efficientnetv2': applications.EfficientNetV2B0,
-        'efficientnetv2m': applications.EfficientNetV2M,
-        'xception': applications.Xception,
+        "vgg16": applications.VGG16,
+        "resnet": applications.ResNet50,
+        "inceptionresnetv2": applications.InceptionResNetV2,
+        "mobilenetv2": applications.MobileNetV2,
+        "efficientnetv2": applications.EfficientNetV2B0,
+        "efficientnetv2m": applications.EfficientNetV2M,
+        "xception": applications.Xception,
     }
 
     if cfg.use_pretrained_weights:
@@ -27,8 +27,8 @@ def get_backbone(cfg):
         base_model = models_dict[cfg.backbone](
             include_top=False,
             weights=weights,
-            input_shape=(cfg.image_size, cfg.image_size,
-                         cfg.image_channels))
+            input_shape=(cfg.image_size, cfg.image_size, cfg.image_channels),
+        )
     except:
         raise NotImplementedError("Not implemented for this backbone.")
 
@@ -47,16 +47,18 @@ def get_model(cfg):
     # Backbone
     base_model = get_backbone(cfg)
 
-    model = tf.keras.Sequential([
-        base_model,
-        layers.GlobalAveragePooling2D(),
-        layers.Dense(1024, activation='relu'),
-        layers.Dropout(cfg.dropout_rate),
-        layers.Dense(256, activation='relu'),
-        layers.Dropout(cfg.dropout_rate),
-        layers.Dense(64, activation='relu'),
-        layers.Dropout(cfg.dropout_rate),
-        layers.Dense(cfg.num_classes, activation="softmax"),
-    ])
+    model = tf.keras.Sequential(
+        [
+            base_model,
+            layers.GlobalAveragePooling2D(),
+            layers.Dense(1024, activation="relu"),
+            layers.Dropout(cfg.dropout_rate),
+            layers.Dense(256, activation="relu"),
+            layers.Dropout(cfg.dropout_rate),
+            layers.Dense(64, activation="relu"),
+            layers.Dropout(cfg.dropout_rate),
+            layers.Dense(cfg.num_classes, activation="softmax"),
+        ]
+    )
 
     return model

@@ -30,14 +30,13 @@ model = models.load_model(file_name)
 
 # when importing download classification report
 for f in run.files():
-    if f.name.endswith('png'):
+    if f.name.endswith("png"):
         print(os.path.basename(f.name))
         run.file(f.name).download(replace=True)
 
 normalization_layer = layers.Rescaling(1.0 / 255)
 
-IMAGE_SIZE = (cfg.image_size,
-              cfg.image_size)
+IMAGE_SIZE = (cfg.image_size, cfg.image_size)
 batch_size = cfg.batch_size
 
 class_names = [
@@ -53,12 +52,10 @@ num_classes = len(class_names)
 
 model = models.load_model(file_name)
 optimizer = optimizers.Adam()
-f1_score = tfa.metrics.F1Score(num_classes=num_classes,
-                               average="macro",
-                               threshold=0.5)
-model.compile(optimizer=optimizer,
-              loss="categorical_crossentropy",
-              metrics=["accuracy", f1_score])
+f1_score = tfa.metrics.F1Score(num_classes=num_classes, average="macro", threshold=0.5)
+model.compile(
+    optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy", f1_score]
+)
 
 print("Model loaded!")
 

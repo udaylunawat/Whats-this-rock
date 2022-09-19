@@ -21,7 +21,7 @@ from sklearn.metrics import classification_report
 # speed improvements
 from tensorflow.keras import mixed_precision
 
-mixed_precision.set_global_policy('mixed_float16')
+mixed_precision.set_global_policy("mixed_float16")
 
 import wandb
 
@@ -57,16 +57,11 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     print(f"\nModel loaded: {cfg.backbone}.\n\n")
 
     optimizer = get_optimizer(cfg, cfg.lr)
-    optimizer = mixed_precision.LossScaleOptimizer(
-        optimizer)  # speed improvements
+    optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
 
     # Compile the model
     model.compile(
-        optimizer=optimizer,
-        loss=cfg.loss,
-        metrics=[
-            "accuracy",
-        ],
+        optimizer=optimizer, loss=cfg.loss, metrics=["accuracy",],
     )
 
     callbacks = get_callbacks(cfg)
@@ -99,8 +94,7 @@ def evaluate(cfg, model, history, test_dataset, labels):
     y_pred = model.predict(test_dataset, verbose=1)
     predicted_categories = tf.argmax(y_pred, axis=1)
     # Confusion Matrix
-    cm = plot.plot_confusion_matrix(labels, true_categories,
-                                    predicted_categories)
+    cm = plot.plot_confusion_matrix(labels, true_categories, predicted_categories)
 
     # Classification Report
     cl_report = classification_report(
@@ -118,32 +112,34 @@ def evaluate(cfg, model, history, test_dataset, labels):
     wandb.log({"Test Accuracy": scores["accuracy"]})
 
     wandb.log({"Confusion Matrix": cm})
-    wandb.log({
-        "Classification Report Image:":
-        wandb.Image("cr.png", caption="Classification Report")
-    })
+    wandb.log(
+        {
+            "Classification Report Image:": wandb.Image(
+                "cr.png", caption="Classification Report"
+            )
+        }
+    )
 
 
-@hydra.main(config_path="../../configs/",
-            config_name="config.yaml",
-            version_base='1.2')
+@hydra.main(config_path="../../configs/", config_name="config.yaml", version_base="1.2")
 def main(cfg: DictConfig) -> None:
     seed_everything(cfg.seed)
     if cfg.wandb.use:
-        run = wandb.init(project=cfg.wandb.project,
-                         notes=cfg.notes,
-                         config=OmegaConf.to_container(cfg,
-                                                       resolve=True,
-                                                       throw_on_missing=True))
+        run = wandb.init(
+            project=cfg.wandb.project,
+            notes=cfg.notes,
+            config=OmegaConf.to_container(cfg, resolve=True, throw_on_missing=True),
+        )
 
-    artifact = wandb.Artifact('rocks', type='files')
-    artifact.add_dir('src/')
+    artifact = wandb.Artifact("rocks", type="files")
+    artifact.add_dir("src/")
     wandb.log_artifact(artifact)
     print(OmegaConf.to_yaml(cfg))
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
-    subprocess.run(['sh', 'src/scripts/clean_dir.sh'],
-                   stdout=subprocess.PIPE).stdout.decode('utf-8')
+    subprocess.run(
+        ["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE
+    ).stdout.decode("utf-8")
     for dataset_id in cfg.dataset_id:
         get_data(dataset_id)
 
@@ -157,14 +153,11 @@ def main(cfg: DictConfig) -> None:
     if cfg.class_weights:
         class_weights = get_model_weights_ds(train_dataset)
 
-    train_dataset = prepare(train_dataset,
-                            cfg,
-                            shuffle=True,
-                            augment=cfg.augmentation)
+    train_dataset = prepare(train_dataset, cfg, shuffle=True, augment=cfg.augmentation)
     val_dataset = prepare(val_dataset, cfg)
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
-    if cfg.trainable == False and history.history['val_accuracy'][-1] > 0.70:
+    if cfg.trainable == False and history.history["val_accuracy"][-1] > 0.70:
         model.layers[0].trainable = True
         # model.trainable = True
         for layer in model.layers[0].layers[:20]:
@@ -184,21 +177,22 @@ def main(cfg: DictConfig) -> None:
         for layer in model.layers:
             print(layer.name, layer.trainable)
 
-        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr/2)
+        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr / 2)
 
-        model.compile(optimizer=optimizer,
-                    loss="categorical_crossentropy",
-                    metrics=["accuracy"])
-
+        model.compile(
+            optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"]
+        )
 
         epochs = cfg.epochs + 20
         callbacks = get_callbacks(cfg)
-        history = model.fit(train_dataset,
-                            epochs=epochs,
-                            validation_data=val_dataset,
-                            callbacks=callbacks,
-                            initial_epoch=len(history.history['loss']),
-                            verbose=1)
+        history = model.fit(
+            train_dataset,
+            epochs=epochs,
+            validation_data=val_dataset,
+            callbacks=callbacks,
+            initial_epoch=len(history.history["loss"]),
+            verbose=1,
+        )
 
     evaluate(cfg, model, history, test_dataset, labels)
     run.finish()

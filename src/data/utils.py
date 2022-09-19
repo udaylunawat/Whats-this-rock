@@ -23,8 +23,9 @@ def timer_func(func):
         t1 = time()
         result = func(*args, **kwargs)
         t2 = time()
-        print(f'Function {func.__name__!r} executed in {(t2-t1):.4f}s')
+        print(f"Function {func.__name__!r} executed in {(t2-t1):.4f}s")
         return result
+
     return wrap_func
 
 
@@ -43,28 +44,26 @@ def remove_unsupported_images(root_folder):
     count = 1
     filepaths = find_filepaths(root_folder)
     for filepath in filepaths:
-        if filepath.endswith(('JFIF', 'webp', 'jfif')):
+        if filepath.endswith(("JFIF", "webp", "jfif")):
             shutil.move(
                 filepath,
-                os.path.join("data", "corrupted_images",
-                             os.path.basename(filepath)),
+                os.path.join("data", "corrupted_images", os.path.basename(filepath)),
             )
             count += 1
     print(f"Removed {count} unsupported files.")
 
 
 @timer_func
-def remove_corrupted_images(s_dir,
-                            ext_list=[
-                                'jpg', 'png', 'jpeg', 'gif', 'bmp', 'JPEG'
-                            ]):
+def remove_corrupted_images(
+    s_dir, ext_list=["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
+):
     print("\n\nRemoving corrupted images...")
     bad_images = []
     bad_ext = []
     s_list = os.listdir(s_dir)
     for klass in s_list:
         klass_path = os.path.join(s_dir, klass)
-        print('processing class directory ', klass)
+        print("processing class directory ", klass)
         if os.path.isdir(klass_path):
             file_list = os.listdir(klass_path)
             for f in file_list:
@@ -77,25 +76,31 @@ def remove_corrupted_images(s_dir,
                         img = cv2.imread(f_path)
                         shape = img.shape
                     except:
-                        print('file ', f_path, ' is not a valid image file')
+                        print("file ", f_path, " is not a valid image file")
                         bad_images.append(f_path)
                 else:
-                    print('*** fatal error, you a sub directory ', f,
-                          ' in class directory ', klass)
+                    print(
+                        "*** fatal error, you a sub directory ",
+                        f,
+                        " in class directory ",
+                        klass,
+                    )
         else:
-            print('*** WARNING*** you have files in ', s_dir,
-                  ' it should only contain sub directories')
+            print(
+                "*** WARNING*** you have files in ",
+                s_dir,
+                " it should only contain sub directories",
+            )
 
     for f_path in bad_images:
         shutil.move(
-            f_path,
-            os.path.join("data", "corrupted_images", os.path.basename(f_path)),
+            f_path, os.path.join("data", "corrupted_images", os.path.basename(f_path)),
         )
     print(f"removed {len(bad_images)} bad images.\n")
 
 
 def get_dims(file):
-    '''Returns dimenstions for an RBG image'''
+    """Returns dimenstions for an RBG image"""
     im = cv2.imread(file)
     if im is not None:
         arr = np.array(im)
@@ -132,7 +137,7 @@ def get_df(root: str = "data/2_processed"):
 
 def get_value_counts(dataset_path):
     data = get_df(dataset_path)
-    vc = data['file_name'].apply(lambda x: x.split('.')[-1]).value_counts()
+    vc = data["file_name"].apply(lambda x: x.split(".")[-1]).value_counts()
     print(vc)
 
 
@@ -145,35 +150,40 @@ def scalar(img):
 
 def get_preprocess(cfg):
     preprocess_dict = {
-        'vgg16': applications.vgg16.preprocess_input,
-        'resnet': applications.resnet.preprocess_input,
-        'inceptionresnetv2': applications.inception_resnet_v2.preprocess_input,
-        'mobilenetv2': applications.mobilenet_v2.preprocess_input,
-        'efficientnetv2': applications.efficientnet_v2.preprocess_input,
-        'efficientnetv2m': applications.efficientnet_v2.preprocess_input,
-        'xception': applications.xception.preprocess_input
+        "vgg16": applications.vgg16.preprocess_input,
+        "resnet": applications.resnet.preprocess_input,
+        "inceptionresnetv2": applications.inception_resnet_v2.preprocess_input,
+        "mobilenetv2": applications.mobilenet_v2.preprocess_input,
+        "efficientnetv2": applications.efficientnet_v2.preprocess_input,
+        "efficientnetv2m": applications.efficientnet_v2.preprocess_input,
+        "xception": applications.xception.preprocess_input,
     }
 
     return preprocess_dict[cfg.backbone]
 
 
 def prepare(ds, cfg, shuffle=False, augment=False):
-    data_augmentation = tf.keras.Sequential([
-        layers.RandomFlip("horizontal",
-                          input_shape=(cfg.image_size,
-                                       cfg.image_size,
-                                       cfg.image_channels)),
-        layers.RandomRotation(0.1),
-        layers.RandomZoom(0.1),
-    ])
+    data_augmentation = tf.keras.Sequential(
+        [
+            layers.RandomFlip(
+                "horizontal",
+                input_shape=(cfg.image_size, cfg.image_size, cfg.image_channels),
+            ),
+            layers.RandomRotation(0.1),
+            layers.RandomZoom(0.1),
+        ]
+    )
     if augment:
         # Use data augmentation only on the training set.
-        ds = ds.map(lambda x, y: (data_augmentation(x, training=True), y),
-                    num_parallel_calls=tf.data.AUTOTUNE)
+        ds = ds.map(
+            lambda x, y: (data_augmentation(x, training=True), y),
+            num_parallel_calls=tf.data.AUTOTUNE,
+        )
     if cfg.preprocess:
         preprocess_input = get_preprocess(cfg)
-        ds = ds.map(lambda x, y: (preprocess_input(x), y),
-                    num_parallel_calls=tf.data.AUTOTUNE)
+        ds = ds.map(
+            lambda x, y: (preprocess_input(x), y), num_parallel_calls=tf.data.AUTOTUNE
+        )
 
     ds = ds.cache()
     if shuffle:
@@ -190,9 +200,9 @@ def get_tfds_from_dir(cfg):
     IMAGE_SIZE = (cfg.image_size, cfg.image_size)
     train_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/train",
-        labels='inferred',
-        label_mode='categorical',
-        color_mode='rgb',
+        labels="inferred",
+        label_mode="categorical",
+        color_mode="rgb",
         batch_size=cfg.batch_size,
         image_size=IMAGE_SIZE,
         shuffle=True,
@@ -202,9 +212,9 @@ def get_tfds_from_dir(cfg):
 
     val_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/val",
-        labels='inferred',
-        label_mode='categorical',
-        color_mode='rgb',
+        labels="inferred",
+        label_mode="categorical",
+        color_mode="rgb",
         batch_size=cfg.batch_size,
         image_size=IMAGE_SIZE,
         shuffle=True,
@@ -214,9 +224,9 @@ def get_tfds_from_dir(cfg):
 
     test_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/test",
-        labels='inferred',
-        label_mode='categorical',
-        color_mode='rgb',
+        labels="inferred",
+        label_mode="categorical",
+        color_mode="rgb",
         batch_size=cfg.batch_size,
         image_size=IMAGE_SIZE,
         shuffle=False,
@@ -228,14 +238,14 @@ def get_tfds_from_dir(cfg):
 
 
 def rename_files(source_dir: str = "data/2_processed/tmp"):
-    '''Renames files in classes and moves to 2_processed
+    """Renames files in classes and moves to 2_processed
 
 
-    '''
+    """
     class_names = os.listdir(source_dir)
     for class_name in class_names:
         class_path = os.path.join(source_dir, class_name)
-        dest_path = os.path.join('data/2_processed', class_name)
+        dest_path = os.path.join("data/2_processed", class_name)
         count = len(os.listdir(dest_path)) + 1
         for filename in os.listdir(class_path):
             old_path = os.path.join(source_dir, class_name, filename)
@@ -246,11 +256,11 @@ def rename_files(source_dir: str = "data/2_processed/tmp"):
             count += 1
 
 
-def move_files(src_dir: str, dest_dir: str = 'data/2_processed/tmp'):
-    '''Moves files to tmp directory in 2_processed
+def move_files(src_dir: str, dest_dir: str = "data/2_processed/tmp"):
+    """Moves files to tmp directory in 2_processed
 
     src_dir: directory of rock subclass with files [Basalt, Marble, Coal, ...]
-    '''
+    """
     if os.path.exists(dest_dir):
         shutil.rmtree(dest_dir)
     os.makedirs(dest_dir, exist_ok=True)
@@ -261,9 +271,9 @@ def move_files(src_dir: str, dest_dir: str = 'data/2_processed/tmp'):
 
     files = os.listdir(src_dir)
     total = len(files)
-    for index, filename in tqdm(enumerate(files),
-                                desc=f"Moving {src_dir_name}",
-                                total=total):
+    for index, filename in tqdm(
+        enumerate(files), desc=f"Moving {src_dir_name}", total=total
+    ):
         src_path = os.path.join(src_dir, filename)
         dest_path = os.path.join(dest_dir_path, filename)
         # print("Copying", src_path, dest_path)
@@ -272,13 +282,13 @@ def move_files(src_dir: str, dest_dir: str = 'data/2_processed/tmp'):
 
 
 def move_and_rename(class_dir: str):
-    '''Moves files from class_dir to tmp, renames them there based on count, and moves back to 2_processed
+    """Moves files from class_dir to tmp, renames them there based on count, and moves back to 2_processed
 
     class_dir: A class dir of supporting classes (Marble, Coal, ...), which contains image files
-    '''
-    target_classes = os.listdir('data/2_processed/')
-    if 'tmp' in target_classes:
-        target_classes.remove('tmp')
+    """
+    target_classes = os.listdir("data/2_processed/")
+    if "tmp" in target_classes:
+        target_classes.remove("tmp")
     target_classes_lower = list(map(lambda x: x.lower(), target_classes))
 
     for subclass_dir in os.listdir(class_dir):
@@ -286,4 +296,4 @@ def move_and_rename(class_dir: str):
             subclass_dir_path = os.path.join(class_dir, subclass_dir)
             move_files(subclass_dir_path)
             rename_files()
-            shutil.rmtree('data/2_processed/tmp')
+            shutil.rmtree("data/2_processed/tmp")
