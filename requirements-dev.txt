@@ -6,6 +6,7 @@ kaggle
 pandas
 numpy
 tensorflow
+tensorflow-addons
 wandb
 split-folders
 hydra-core
