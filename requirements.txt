@@ -3,7 +3,7 @@ wandb
 kaggle
 pandas
 scikit-learn
-tensorflow-cpu
+tensorflow-cpu>=2.9
 tensorflow-addons
 python-telegram-bot
 opencv-python-headless
