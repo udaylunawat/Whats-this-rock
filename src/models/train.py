@@ -198,7 +198,11 @@ def main(cfg: DictConfig) -> None:
         )
 
         epochs = cfg.epochs + 20
+
+        cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
+        cfg.reduce_lr.patience = 2
         callbacks = get_callbacks(cfg)
+
         history = model.fit(
             train_dataset,
             epochs=epochs,
