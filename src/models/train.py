@@ -61,14 +61,14 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
 
     f1_score_metrics = [
-        tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)
-    ]
+            tfa.metrics.F1Score(num_classes=cfg.num_classes,
+                                average="macro",
+                                threshold=0.5)
+        ]
 
     # Compile the model
     model.compile(
-        optimizer=optimizer,
-        loss=cfg.loss,
-        metrics=["accuracy", f1_score_metrics],
+        optimizer=optimizer, loss=cfg.loss, metrics=["accuracy",f1_score_metrics],
     )
 
     callbacks = get_callbacks(cfg)
@@ -164,10 +164,10 @@ def main(cfg: DictConfig) -> None:
     val_dataset = prepare(val_dataset, cfg)
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
-    if cfg.trainable == False and history.history["val_accuracy"][-1] > 0.70:
+    if cfg.trainable == False and history.history["val_accuracy"][-1] > 0.68:
         model.layers[0].trainable = False
         # model.trainable = True
-        for layer in model.layers[0].layers[-cfg.last_layers :]:
+        for layer in model.layers[0].layers[-cfg.last_layers:]:
             layer.trainable = True
 
         # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
@@ -187,16 +187,14 @@ def main(cfg: DictConfig) -> None:
         optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr)
 
         f1_score_metrics = [
-            tfa.metrics.F1Score(
-                num_classes=cfg.num_classes, average="macro", threshold=0.5
-            )
+            tfa.metrics.F1Score(num_classes=cfg.num_classes,
+                                average="macro",
+                                threshold=0.5)
         ]
 
         # Compile the model
         model.compile(
-            optimizer=optimizer,
-            loss=cfg.loss,
-            metrics=["accuracy", f1_score_metrics],
+            optimizer=optimizer, loss=cfg.loss, metrics=["accuracy", f1_score_metrics],
         )
 
         epochs = cfg.epochs + 20
