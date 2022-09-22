@@ -40,14 +40,6 @@ from src.callbacks.callbacks import get_callbacks
 from src.visualization import plot
 
 
-def seed_everything(seed):
-    os.environ["TF_CUDNN_DETERMINISTIC"] = "1"
-    os.environ["PYTHONHASHSEED"] = str(seed)
-    random.seed(seed)
-    np.random.seed(seed)
-    tf.random.set_seed(seed)
-
-
 def train(cfg, train_dataset, val_dataset, class_weights):
 
     tf.keras.backend.clear_session()
@@ -130,7 +122,7 @@ def evaluate(cfg, model, history, test_dataset, labels):
 
 @hydra.main(config_path="../../configs/", config_name="config.yaml", version_base="1.2")
 def main(cfg: DictConfig) -> None:
-    seed_everything(cfg.seed)
+    tf.keras.utils.set_random_seed(cfg.seed)
     if cfg.wandb.use:
         run = wandb.init(
             project=cfg.wandb.project,
@@ -142,6 +134,7 @@ def main(cfg: DictConfig) -> None:
     artifact.add_dir("src/")
     wandb.log_artifact(artifact)
     print(OmegaConf.to_yaml(cfg))
+    wandb.log({'TF version':tf.__version__})
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
     subprocess.run(
