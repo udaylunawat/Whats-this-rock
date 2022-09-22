@@ -5,7 +5,7 @@ opencv-python
 kaggle
 pandas
 numpy
-tensorflow==2.9
+tensorflow
 tensorflow-addons
 wandb
 split-folders
