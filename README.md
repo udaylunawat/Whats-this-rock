@@ -132,6 +132,68 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
 - [Heroku](https://heroku.com)
 - [Hydra - by Facebook](https://hydra.cc)
 
+
+Directory Tree
+------------
+
+    ├── imgs                              <- Images for skill banner, project banner and other images
+    │
+    ├── configs                           <- Configuration files
+    │   ├── configs.yaml                  <- config for single run
+    │   └── sweeps.yaml                   <- confguration file for sweeps hyperparameter tuning
+    │
+    ├── data
+    │   ├── corrupted_images              <- corrupted images will be moved to this directory 
+    │   ├── sample_images                 <- Sample images for inference
+    │   ├── 0_raw                         <- The original, immutable data dump.
+    │   ├── 1_external                    <- Data from third party sources.
+    │   ├── 2_interim                     <- Intermediate data that has been transformed.
+    │   └── 3_processed                   <- The final, canonical data sets for modeling.
+    │
+    ├── notebooks                         <- Jupyter notebooks. Naming convention is a number (for ordering),
+    │                                        the creator's initials, and a short `-` delimited description, e.g.
+    │                                        1.0-jqp-initial-data-exploration`.
+    │
+    │
+    ├── src                               <- Source code for use in this project.
+    │   │
+    │   ├── data                          <- Scripts to download or generate data
+    │   │   ├── download.py
+    │   │   ├── preprocess.py
+    │   │   └── utils.py    
+    │   │
+    │   ├── callbacks                     <- functions that are executed during training at given stages of the training procedure
+    │   │   └── callbacks.py
+    │   │
+    │   ├── models                        <- Scripts to train models and then use trained models to make
+    │   │   │                                predictions
+    │   │   ├── evaluate.py
+    │   │   ├── models.py
+    │   │   ├── predict.py
+    │   │   ├── train.py
+    │   │   └── utils.py
+    │   │
+    │   └── scripts                       <- Scripts to setup dir structure and download datasets
+    │   │   ├── clean_dir.sh
+    │   │   ├── dataset1.sh
+    │   │   ├── dataset2.sh
+    │   │   ├── dataset3.sh
+    │   │   ├── dataset4.sh
+    │       └── setup.sh
+    │
+    │   └── visualization                 <- Scripts for visualizations
+    │
+    ├── .dockerignore                     <- Docker ignore
+    ├── .gitignore                        <- GitHub's excellent Python .gitignore customized for this project
+    ├── LICENSE                           <- Your project's license.
+    ├── Makefile                          <- Makefile with commands like `make data` or `make train`
+    ├── README.md                         <- The top-level README for developers using this project.
+    ├── requirements.txt                  <- The requirements file for reproducing the analysis environment, e.g.
+    │                                        generated with `pip freeze > requirements.txt`
+    └── setup.py                          <- makes project pip installable (pip install -e .) so src can be imported
+
+
+
 ## Bug / Feature Request
 
 If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
