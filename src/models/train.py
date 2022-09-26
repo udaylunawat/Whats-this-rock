@@ -212,7 +212,7 @@ def main(cfg: DictConfig) -> None:
 
     class_weights = None
     if cfg.class_weights:
-        class_weights = get_model_weights_ds(train_dataset)
+        class_weights = get_model_weights(train_dataset)
 
     train_dataset = prepare(train_dataset, cfg, shuffle=True, augment=cfg.augmentation)
     val_dataset = prepare(val_dataset, cfg)
