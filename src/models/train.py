@@ -65,7 +65,7 @@ def train(cfg, train_dataset, val_dataset, class_weights):
         metrics=["accuracy", f1_score_metrics],
     )
 
-    if cfg.custom_callback == True:
+    if cfg.custom_callback == True and cfg.reduce_lr.use == True:
         callbacks = [
             LRA(
                 model=model,
@@ -75,7 +75,7 @@ def train(cfg, train_dataset, val_dataset, class_weights):
                 factor=cfg.reduce_lr.factor,
                 dwell=False,
                 model_name=cfg.backbone,
-                freeze=False,
+                freeze= not cfg.trainable,
                 initial_epoch=0,
             ),
             WandbCallback(
@@ -110,9 +110,9 @@ def train(cfg, train_dataset, val_dataset, class_weights):
                 layer.trainable = False
 
         print("\nFinetuning model with BatchNorm layers freezed.\n")
-        print("\nBackbone layers\n\n")
-        for layer in model.layers[0].layers:
-            print(layer.name, layer.trainable)
+        # print("\nBackbone layers\n\n")
+        # for layer in model.layers[0].layers:
+        #     print(layer.name, layer.trainable)
 
         optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr)
 
