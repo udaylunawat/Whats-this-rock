@@ -7,13 +7,14 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 from tensorflow.keras import layers, applications
 
-from os import listdir
-from PIL import Image
-from tqdm import tqdm
-import numpy as np
-from pathlib import Path
 import imghdr
+import numpy as np
+from PIL import Image
 from time import time
+from tqdm import tqdm
+from os import listdir
+from pathlib import Path
+from typing import Optional
 
 
 def timer_func(func):
@@ -132,7 +133,7 @@ def remove_corrupted_images(
     print(f"removed {len(bad_images)} bad images.\n")
 
 
-def get_dims(file: str) -> Optional[tuple, None]:
+def get_dims(file: str) -> Optional[tuple]:
     """Returns dimenstions for an RBG image
 
     Parameters
