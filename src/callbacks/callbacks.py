@@ -3,7 +3,18 @@ from wandb.keras import WandbCallback
 
 
 def get_earlystopper(cfg):
+    """_summary_
 
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     earlystopper = tf.keras.callbacks.EarlyStopping(
         monitor=cfg.monitor,
         patience=cfg.earlystopping.patience,
@@ -16,7 +27,18 @@ def get_earlystopper(cfg):
 
 
 def get_reduce_lr_on_plateau(cfg):
+    """_summary_
 
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     reduce_lr_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(
         monitor=cfg.monitor,
         factor=cfg.reduce_lr.factor,
@@ -29,7 +51,18 @@ def get_reduce_lr_on_plateau(cfg):
 
 
 def get_callbacks(cfg):
-    # Define WandbCallback for experiment tracking
+    """ Define WandbCallback for experiment tracking
+
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     wandbcallback = WandbCallback(
         monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model),
     )

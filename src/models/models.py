@@ -6,8 +6,20 @@ from tensorflow.keras import regularizers, initializers
 def get_backbone(cfg):
     """Get backbone for the model.
 
-    cfg:
-        cfg (omegaconf.DictConfig): Configuration.
+    Parameters
+    ----------
+    cfg : cfg (omegaconf.DictConfig):
+        Configuration
+
+    Returns
+    -------
+    _type_
+        _description_
+
+    Raises
+    ------
+    NotImplementedError
+        _description_
     """
     weights = None
     models_dict = {
@@ -40,10 +52,16 @@ def get_backbone(cfg):
 def get_model(cfg):
     """Get an image classifier with a CNN based backbone.
 
-    cfg:
-        cfg (omegaconf.DictConfig): Configuration.
-    """
+    Parameters
+    ----------
+    cfg : cfg (omegaconf.DictConfig)
+        Configuration
 
+    Returns
+    -------
+    _type_
+        _description_
+    """
     # Backbone
     base_model = get_backbone(cfg)
 

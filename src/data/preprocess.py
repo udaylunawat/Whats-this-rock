@@ -7,7 +7,13 @@ from src.data.utils import *
 
 
 def process_data(cfg):
+    """_summary_
 
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+    """
     datasets = os.listdir("data/1_extracted")
     for dataset in datasets:
         print(f"\nProcessing {dataset}")

@@ -2,6 +2,13 @@ import os
 
 
 def get_data(dataset_id):
+    """_summary_
+
+    Parameters
+    ----------
+    dataset_id : _type_
+        _description_
+    """
     data_dict = {
         1: "src/scripts/dataset1.sh",
         2: "src/scripts/dataset2.sh",

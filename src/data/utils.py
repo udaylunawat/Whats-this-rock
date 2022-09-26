@@ -17,8 +17,13 @@ from time import time
 
 
 def timer_func(func):
-    # This function shows the execution time of
-    # the function object passed
+    """This function shows the execution time of the function object passed
+
+    Parameters
+    ----------
+    func : _type_
+        _description_
+    """
     def wrap_func(*args, **kwargs):
         t1 = time()
         result = func(*args, **kwargs)
@@ -29,7 +34,19 @@ def timer_func(func):
     return wrap_func
 
 
-def find_filepaths(root_folder):
+def find_filepaths(root_folder: str):
+    """_summary_
+
+    Parameters
+    ----------
+    root_folder : str
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     filepaths = []
     for dirname, _, filenames in os.walk(root_folder):
         for filename in filenames:
@@ -39,7 +56,14 @@ def find_filepaths(root_folder):
     return filepaths
 
 
-def remove_unsupported_images(root_folder):
+def remove_unsupported_images(root_folder: str):
+    """_summary_
+
+    Parameters
+    ----------
+    root_folder : str
+        _description_
+    """
     print("\n\nRemoving unsupported images...")
     count = 1
     filepaths = find_filepaths(root_folder)
@@ -55,8 +79,17 @@ def remove_unsupported_images(root_folder):
 
 @timer_func
 def remove_corrupted_images(
-    s_dir, ext_list=["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
+    s_dir: str, ext_list: list =["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
 ):
+    """_summary_
+
+    Parameters
+    ----------
+    s_dir : str
+        _description_
+    ext_list : list, optional
+        _description_, by default ["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
+    """
     print("\n\nRemoving corrupted images...")
     bad_images = []
     bad_ext = []
@@ -99,8 +132,19 @@ def remove_corrupted_images(
     print(f"removed {len(bad_images)} bad images.\n")
 
 
-def get_dims(file):
-    """Returns dimenstions for an RBG image"""
+def get_dims(file: str) -> Optional[tuple, None]:
+    """Returns dimenstions for an RBG image
+
+    Parameters
+    ----------
+    file : str
+        file path for image
+
+    Returns
+    -------
+    Optional[tuple, None]
+        returns a tuple of heights and width of image or None
+    """
     im = cv2.imread(file)
     if im is not None:
         arr = np.array(im)
@@ -110,10 +154,20 @@ def get_dims(file):
         return None
 
 
-def get_df(root: str = "data/2_processed"):
+def get_df(root: str = "data/2_processed") -> pd.DataFrame :
+    """root: a folder present inside data dir, which contains classes containing images
+
+    Parameters
+    ----------
+    root : str, optional
+        directory to scan for image files, by default "data/2_processed"
+
+    Returns
+    -------
+    pd.DataFrame
+        with columns file_name, class and file_path
     """
-    root: a folder present inside data dir, which contains classes containing images
-    """
+
     classes = os.listdir(root)
 
     class_names = []
@@ -135,7 +189,14 @@ def get_df(root: str = "data/2_processed"):
     return df
 
 
-def get_value_counts(dataset_path):
+def get_value_counts(dataset_path: str) -> None:
+    """Get class counts of all classes in the dataset
+
+    Parameters
+    ----------
+    dataset_path : str
+        directory with subclasses
+    """
     data = get_df(dataset_path)
     vc = data["file_name"].apply(lambda x: x.split(".")[-1]).value_counts()
     print(vc)
@@ -144,11 +205,35 @@ def get_value_counts(dataset_path):
 ####################################### tf.data Utilities ###################################
 
 
-def scalar(img):
-    return img / 127.5 - 1  # scale pixel between -1 and +1
+def scalar(img: Image) -> Image:
+    """scale pixel between -1 and +1
+
+    Parameters
+    ----------
+    img : Image
+        PIL Image
+
+    Returns
+    -------
+    Image
+        imagew with pixel values scaled between -1 and 1
+    """
+    return img / 127.5 - 1
 
 
 def get_preprocess(cfg):
+    """_summary_
+
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     preprocess_dict = {
         "vgg16": applications.vgg16.preprocess_input,
         "resnet": applications.resnet.preprocess_input,
@@ -163,6 +248,24 @@ def get_preprocess(cfg):
 
 
 def prepare(ds, cfg, shuffle=False, augment=False):
+    """_summary_
+
+    Parameters
+    ----------
+    ds : _type_
+        _description_
+    cfg : _type_
+        _description_
+    shuffle : bool, optional
+        _description_, by default False
+    augment : bool, optional
+        _description_, by default False
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     data_augmentation = tf.keras.Sequential(
         [
             layers.RandomFlip(
@@ -197,6 +300,18 @@ def prepare(ds, cfg, shuffle=False, augment=False):
 
 
 def get_tfds_from_dir(cfg):
+    """_summary_
+
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     IMAGE_SIZE = (cfg.image_size, cfg.image_size)
     train_ds = tf.keras.utils.image_dataset_from_directory(
         "data/4_tfds_dataset/train",
@@ -240,7 +355,10 @@ def get_tfds_from_dir(cfg):
 def rename_files(source_dir: str = "data/2_processed/tmp"):
     """Renames files in classes and moves to 2_processed
 
-
+    Parameters
+    ----------
+    source_dir : str, optional
+        _description_, by default "data/2_processed/tmp"
     """
     class_names = os.listdir(source_dir)
     for class_name in class_names:
@@ -258,8 +376,14 @@ def rename_files(source_dir: str = "data/2_processed/tmp"):
 
 def move_files(src_dir: str, dest_dir: str = "data/2_processed/tmp"):
     """Moves files to tmp directory in 2_processed
-
     src_dir: directory of rock subclass with files [Basalt, Marble, Coal, ...]
+
+    Parameters
+    ----------
+    src_dir : str
+        _description_
+    dest_dir : str, optional
+        _description_, by default "data/2_processed/tmp"
     """
     if os.path.exists(dest_dir):
         shutil.rmtree(dest_dir)
@@ -282,9 +406,12 @@ def move_files(src_dir: str, dest_dir: str = "data/2_processed/tmp"):
 
 
 def move_and_rename(class_dir: str):
-    """Moves files from class_dir to tmp, renames them there based on count, and moves back to 2_processed
+    """Moves files from class_dir to tmp, renames them there based on count, and moves back to 2_processed class_dir: A class dir of supporting classes (Marble, Coal, ...), which contains image files
 
-    class_dir: A class dir of supporting classes (Marble, Coal, ...), which contains image files
+    Parameters
+    ----------
+    class_dir : str
+        _description_
     """
     target_classes = os.listdir("data/2_processed/")
     if "tmp" in target_classes:

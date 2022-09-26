@@ -8,21 +8,52 @@ from tensorflow.keras.callbacks import Callback
 
 
 def get_optimizer(cfg, lr):
-    if cfg.optimizer == "adam":
-        opt = optimizers.Adam(learning_rate=lr)
-    elif cfg.optimizer == "rms":
-        opt = optimizers.RMSprop(learning_rate=lr, rho=0.9, epsilon=1e-08, decay=0.0)
-    elif cfg.optimizer == "sgd":
-        opt = optimizers.SGD(learning_rate=lr)
-    elif cfg.optimizer == "adamax":
-        opt = optimizers.Adamax(learning_rate=lr)
-    else:
-        print(f"\n{cfg.optimizer} not present, using default (adam optimizer)\n")
-        opt = optimizers.Adam(learning_rate=lr)
+    """Gets optimizer set with an learning rate
+
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+    lr : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+
+    Raises
+    ------
+    NotImplementedError
+        _description_
+    """
+    optimizer_dict = {
+        "adam": optimizers.Adam,
+        "rms": optimizers.RMSprop,
+        "sgd": optimizers.SGD,
+        "adamax": optimizers.Adamax
+    }
+    try:
+        opt = optimizer_dict[cfg.optimizer](learning_rate=lr)
+    except:
+        raise NotImplementedError("Not implemented.")
+
     return opt
 
 
-def get_model_weights_ds(train_ds):
+def get_model_weights(train_ds):
+    """_summary_
+
+    Parameters
+    ----------
+    train_ds : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     class_weights = class_weight.compute_class_weight(
         class_weight="balanced",
         classes=np.unique(train_ds.class_names),
