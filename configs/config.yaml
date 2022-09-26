@@ -15,6 +15,7 @@ batch_size: 16
 num_classes: 7
 train_split: 0.70
 last_layers: 30
+custom_callback: True
 monitor: "val_accuracy"
 
 wandb.use: True

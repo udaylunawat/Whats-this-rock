@@ -1,14 +1,16 @@
 method: bayes
 metric:
-  goal: maximize
-  name: val_accuracy
+  goal: minimize
+  name: val_loss
 parameters:
   notes:
     value: ""
   seed:
-    values: [1, 42, 100]
+    values: [1]
   lr:
-    values: [1e-3, 5e-4, 1e-4, 5e-5, 1e-5]
+    distribution: uniform
+    min: 1e-5
+    max: 1e-4
   epochs:
     value: 50
   augmentation:
@@ -27,8 +29,6 @@ parameters:
     value: 7
   train_split:
     values:
-      - 0.70
-      - 0.75
       - 0.80
   data_path:
     value: data/4_tfds_dataset/
@@ -37,7 +37,7 @@ parameters:
   wandb.mode:
     value: online
   wandb.project:
-    value: Whats-this-rockv5
+    value: Whats-this-rockv7
   dataset_id:
     values:
       - [1]
@@ -46,29 +46,23 @@ parameters:
   image_channels:
     value: 3
   sampling:
-    values: [None, oversampling, undersampling]
+    values: [None, oversampling]
   backbone:
-    values:
-      [
-        efficientnetv2m,
-        efficientnetv2,
-        resnet,
-        mobilenetv2,
-        inceptionresnetv2,
-        xception,
-      ]
+    values: [resnet]
   use_pretrained_weights:
     values: [True]
   trainable:
-    values: [True, False]
+    values: [False]
   last_layers:
-    values: [5, 10, 20, 30, 40, 50]
+    values: [5, 10, 20, 30]
+  custom_callback:
+    values: [True, False]
   preprocess:
     value: True
   dropout_rate:
-    values: [0.3]
+    values: [0, 0.1, 0.3, 0.5]
   monitor:
-    values: ["val_accuracy", "val_loss"]
+    values: ["val_loss"]
   earlystopping.use:
     values: [False]
   earlystopping.patience:
@@ -76,11 +70,11 @@ parameters:
   reduce_lr.use:
     values: [True]
   reduce_lr.factor:
-    values: [.9, .7, .5, .3]
+    values: [.9, .3]
   reduce_lr.patience:
-    values: [1, 3, 5, 7, 13]
+    values: [1, 5]
   reduce_lr.min_lr:
-    value: 1e-5
+    values: [parameters.lr/100]
   save_model:
     value: False
 

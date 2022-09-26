@@ -25,6 +25,7 @@ from tensorflow.keras import mixed_precision
 mixed_precision.set_global_policy("mixed_float16")
 
 import wandb
+from wandb.keras import WandbCallback
 
 # from absl import app  # app.run(main)
 import hydra
@@ -37,6 +38,7 @@ from src.data.utils import get_tfds_from_dir, prepare
 from src.models.utils import get_optimizer, get_model_weights_ds
 from src.data.download import get_data
 from src.callbacks.callbacks import get_callbacks
+from src.callbacks.custom_callbacks import LRA
 from src.visualization import plot
 
 
@@ -53,19 +55,38 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
 
     f1_score_metrics = [
-            tfa.metrics.F1Score(num_classes=cfg.num_classes,
-                                average="macro",
-                                threshold=0.5)
-        ]
+        tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)
+    ]
 
     # Compile the model
     model.compile(
-        optimizer=optimizer, loss=cfg.loss, metrics=["accuracy",f1_score_metrics],
+        optimizer=optimizer,
+        loss=cfg.loss,
+        metrics=["accuracy", f1_score_metrics],
     )
 
-    callbacks = get_callbacks(cfg)
-
-    verbose = 1
+    if cfg.custom_callback == True:
+        callbacks = [
+            LRA(
+                model=model,
+                patience=cfg.reduce_lr.patience,
+                stop_patience=cfg.earlystopping.patience,
+                threshold=0.75,
+                factor=cfg.reduce_lr.factor,
+                dwell=False,
+                model_name=cfg.backbone,
+                freeze=False,
+                initial_epoch=0,
+            ),
+            WandbCallback(
+                monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model)
+            ),
+        ]
+        LRA.tepochs = cfg.epochs  # used to determine value of last epoch for printing
+        verbose = 0
+    else:
+        callbacks = get_callbacks(cfg)
+        verbose = 1
 
     history = model.fit(
         train_dataset,
@@ -76,6 +97,46 @@ def train(cfg, train_dataset, val_dataset, class_weights):
         workers=-1,
         verbose=verbose,
     )
+
+    if cfg.trainable == False and history.history["val_accuracy"][-1] > 0.68:
+        model.layers[0].trainable = False
+        # model.trainable = True
+        for layer in model.layers[0].layers[-cfg.last_layers :]:
+            layer.trainable = True
+
+        # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
+        for layer in model.layers[0].layers:
+            if isinstance(layer, layers.BatchNormalization):
+                layer.trainable = False
+
+        print("\nFinetuning model with BatchNorm layers freezed.\n")
+        print("\nBackbone layers\n\n")
+        for layer in model.layers[0].layers:
+            print(layer.name, layer.trainable)
+
+        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr)
+
+        # Compile the model
+        model.compile(
+            optimizer=optimizer,
+            loss=cfg.loss,
+            metrics=["accuracy", f1_score_metrics],
+        )
+
+        epochs = cfg.epochs + 20
+
+        cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
+        cfg.reduce_lr.patience = 2
+        callbacks = get_callbacks(cfg)
+
+        history = model.fit(
+            train_dataset,
+            epochs=epochs,
+            validation_data=val_dataset,
+            callbacks=callbacks,
+            initial_epoch=len(history.history["loss"]),
+            verbose=verbose,
+        )
 
     return model, history
 
@@ -134,7 +195,7 @@ def main(cfg: DictConfig) -> None:
     artifact.add_dir("src/")
     wandb.log_artifact(artifact)
     print(OmegaConf.to_yaml(cfg))
-    wandb.log({'TF version':tf.__version__})
+    wandb.log({"TF version": tf.__version__})
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
     subprocess.run(
@@ -156,54 +217,6 @@ def main(cfg: DictConfig) -> None:
     train_dataset = prepare(train_dataset, cfg, shuffle=True, augment=cfg.augmentation)
     val_dataset = prepare(val_dataset, cfg)
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
-
-    if cfg.trainable == False and history.history["val_accuracy"][-1] > 0.68:
-        model.layers[0].trainable = False
-        # model.trainable = True
-        for layer in model.layers[0].layers[-cfg.last_layers:]:
-            layer.trainable = True
-
-        # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
-        for layer in model.layers[0].layers:
-            if isinstance(layer, layers.BatchNormalization):
-                layer.trainable = False
-
-        print("\nFinetuning model with BatchNorm layers freezed.\n")
-        print("\nBackbone layers\n\n")
-        for layer in model.layers[0].layers:
-            print(layer.name, layer.trainable)
-
-        print("\nModel layers\n\n")
-        for layer in model.layers:
-            print(layer.name, layer.trainable)
-
-        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr)
-
-        f1_score_metrics = [
-            tfa.metrics.F1Score(num_classes=cfg.num_classes,
-                                average="macro",
-                                threshold=0.5)
-        ]
-
-        # Compile the model
-        model.compile(
-            optimizer=optimizer, loss=cfg.loss, metrics=["accuracy", f1_score_metrics],
-        )
-
-        epochs = cfg.epochs + 20
-
-        cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
-        cfg.reduce_lr.patience = 2
-        callbacks = get_callbacks(cfg)
-
-        history = model.fit(
-            train_dataset,
-            epochs=epochs,
-            validation_data=val_dataset,
-            callbacks=callbacks,
-            initial_epoch=len(history.history["loss"]),
-            verbose=1,
-        )
 
     evaluate(cfg, model, history, test_dataset, labels)
     run.finish()
