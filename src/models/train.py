@@ -35,7 +35,7 @@ from omegaconf import OmegaConf
 from src.data.preprocess import process_data
 from src.models.models import get_model
 from src.data.utils import get_tfds_from_dir, prepare
-from src.models.utils import get_optimizer, get_model_weights_ds
+from src.models.utils import get_optimizer, get_model_weights
 from src.data.download import get_data
 from src.callbacks.callbacks import get_callbacks
 from src.callbacks.custom_callbacks import LRA
