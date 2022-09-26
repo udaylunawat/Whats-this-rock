@@ -37,7 +37,7 @@ parameters:
   wandb.mode:
     value: online
   wandb.project:
-    value: Whats-this-rockv7
+    value: Whats-this-rockv10
   dataset_id:
     values:
       - [1]
@@ -74,7 +74,7 @@ parameters:
   reduce_lr.patience:
     values: [1, 5]
   reduce_lr.min_lr:
-    values: [parameters.lr/100]
+    values: [5e-4, 1e-4, 1e-5, 5e-6]
   save_model:
     value: False
 

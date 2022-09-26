@@ -20,7 +20,7 @@ monitor: "val_accuracy"
 
 wandb:
   use: True
-  project: Whats-this-rockv8
+  project: Whats-this-rockv10
   mode: offline
 
 # dataset
