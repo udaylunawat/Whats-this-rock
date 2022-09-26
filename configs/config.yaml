@@ -18,9 +18,10 @@ last_layers: 30
 custom_callback: True
 monitor: "val_accuracy"
 
-wandb.use: True
-wandb.project: Whats-this-rockv8
-wandb.mode: offline
+wandb:
+  use: True
+  project: Whats-this-rockv8
+  mode: offline
 
 # dataset
 dataset_id: [1, 2, 3, 4]
@@ -38,10 +39,12 @@ dropout_rate: 0.3
 save_model: False
 
 # callback
-earlystopping.use: True
-earlystopping.patience: 10
+earlystopping:
+  use: True
+  patience: 10
 
-reduce_lr.use: True
-reduce_lr.factor: 0.4
-reduce_lr.min_lr: 1e-5
-reduce_lr.patience: 2
+reduce_lr:
+  use: True
+  factor: 0.4
+  min_lr: 1e-5
+  patience: 2
