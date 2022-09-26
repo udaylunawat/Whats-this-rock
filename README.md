@@ -179,9 +179,9 @@ Directory Tree
     │   │   ├── dataset2.sh
     │   │   ├── dataset3.sh
     │   │   ├── dataset4.sh
-    │       └── setup.sh
-    │
-    │   └── visualization                 <- Scripts for visualizations
+    │   │   └── setup.sh
+    │.  │
+    │   └── visualization                 <- Scripts for visualizations
     │
     ├── .dockerignore                     <- Docker ignore
     ├── .gitignore                        <- GitHub's excellent Python .gitignore customized for this project
