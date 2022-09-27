@@ -135,7 +135,7 @@ def train(cfg, train_dataset, val_dataset, class_weights):
             validation_data=val_dataset,
             callbacks=callbacks,
             initial_epoch=len(history.history["loss"]),
-            verbose=verbose,
+            verbose=2,
         )
 
     return model, history
