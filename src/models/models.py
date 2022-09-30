@@ -23,6 +23,7 @@ def get_backbone(cfg):
     """
     weights = None
     models_dict = {
+        "convnexttiny":applications.ConvNeXtTiny,
         "vgg16": applications.VGG16,
         "resnet": applications.ResNet50,
         "inceptionresnetv2": applications.InceptionResNetV2,

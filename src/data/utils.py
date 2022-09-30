@@ -236,16 +236,17 @@ def get_preprocess(cfg):
         _description_
     """
     preprocess_dict = {
-        "vgg16": applications.vgg16.preprocess_input,
-        "resnet": applications.resnet.preprocess_input,
-        "inceptionresnetv2": applications.inception_resnet_v2.preprocess_input,
-        "mobilenetv2": applications.mobilenet_v2.preprocess_input,
-        "efficientnetv2": applications.efficientnet_v2.preprocess_input,
-        "efficientnetv2m": applications.efficientnet_v2.preprocess_input,
-        "xception": applications.xception.preprocess_input,
+        "convnexttiny":applications.convnext,
+        "vgg16": applications.vgg16,
+        "resnet": applications.resnet,
+        "inceptionresnetv2": applications.inception_resnet_v2,
+        "mobilenetv2": applications.mobilenet_v2,
+        "efficientnetv2": applications.efficientnet_v2,
+        "efficientnetv2m": applications.efficientnet_v2,
+        "xception": applications.xception,
     }
 
-    return preprocess_dict[cfg.backbone]
+    return preprocess_dict[cfg.backbone].preprocess_input
 
 
 def prepare(ds, cfg, shuffle=False, augment=False):
