@@ -1,11 +1,7 @@
 import os
 import json
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
-from predict import get_prediction
-
-# read config file
-with open("config.json") as config_file:
-    config = json.load(config_file)
+from src.models.predict import get_prediction
 
 
 def start(update, context):
@@ -56,10 +52,6 @@ def handle_photo(update, context):
 
 
 if __name__ == "__main__":
-
-    # read config file
-    with open("config.json") as config_file:
-        config = json.load(config_file)
 
     print("Bot started!")
     print("Please visit {} to start using me!".format("t.me/test7385_bot"))

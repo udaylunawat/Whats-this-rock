@@ -1,7 +1,10 @@
+-e .
+
 numpy
 wandb
 kaggle
 pandas
+hydra-core
 scikit-learn
 tensorflow-cpu==2.9
 tensorflow-addons
