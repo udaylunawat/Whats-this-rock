@@ -85,7 +85,7 @@ def preprocess_image(file):
     file_bytes = np.asarray(bytearray(f.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    img = cv2.resize(img, IMAGE_SIZE, interpolation=cv2.INTER_AREA)
+    img = cv2.resize(img, cfg.image_size, interpolation=cv2.INTER_AREA)
     return img
 
 
