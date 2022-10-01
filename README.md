@@ -91,6 +91,7 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
 - [x] TFDS datasets
 - [x] ImageDataGenerator
 - [x] Models
+  - [x] ConvNextTiny
   - [x] BaselineCNN
   - [x] Efficientnet
   - [x] Resnet101
@@ -103,7 +104,8 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
   - [x] Confusion Matrix
   - [x] Classification Report
 - [x] Telegram Bot Deployed
-  - [x] Heroku
+  - [x] Heroku - Deprecated
+  - [x] Railway
   - [x] Show CM and CL in bot
 - [ ] Accessing the model through FastAPI (Backend)
 - [ ] Streamlit (Frontend)
@@ -119,7 +121,7 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
 - [x] Configuration Management
   - [x] ml-collections
   - [x] Hydra
-- [ ] Performance improvement
+- [x] Performance improvement
   - [x] Convert to tf.data.Dataset
 
 ## Technologies Used
@@ -129,11 +131,12 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
 - [Tensorflow](https://www.tensorflow.org/)
 - [Weights and Biases](https://wandb.ai/site)
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
-- [Heroku](https://heroku.com)
+- [Heroku](https://heroku.com) - Deprecated as Heroku will no longer provide free-to-use service
+- [Railway](https://railway.app)
 - [Hydra - by Facebook](https://hydra.cc)
 
+## Directory Tree
 
-Directory Tree
 ------------
 
     ├── imgs                              <- Images for skill banner, project banner and other images
@@ -143,7 +146,7 @@ Directory Tree
     │   └── sweeps.yaml                   <- confguration file for sweeps hyperparameter tuning
     │
     ├── data
-    │   ├── corrupted_images              <- corrupted images will be moved to this directory 
+    │   ├── corrupted_images              <- corrupted images will be moved to this directory
     │   ├── sample_images                 <- Sample images for inference
     │   ├── 0_raw                         <- The original, immutable data dump.
     │   ├── 1_external                    <- Data from third party sources.
@@ -160,7 +163,7 @@ Directory Tree
     │   ├── data                          <- Scripts to download or generate data
     │   │   ├── download.py
     │   │   ├── preprocess.py
-    │   │   └── utils.py    
+    │   │   └── utils.py
     │   │
     │   ├── callbacks                     <- functions that are executed during training at given stages of the training procedure
     │   │   └── callbacks.py
@@ -191,8 +194,6 @@ Directory Tree
     ├── requirements.txt                  <- The requirements file for reproducing the analysis environment, e.g.
     │                                        generated with `pip freeze > requirements.txt`
     └── setup.py                          <- makes project pip installable (pip install -e .) so src can be imported
-
-
 
 ## Bug / Feature Request
 
