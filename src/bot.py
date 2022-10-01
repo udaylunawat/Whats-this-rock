@@ -1,7 +1,7 @@
 import os
 import json
 from telegram.ext import Updater, CommandHandler, Filters, MessageHandler
-from src.models.predict import get_prediction
+from src.models.predict import get_prediction, get_run_data
 
 
 def start(update, context):
@@ -67,6 +67,7 @@ if __name__ == "__main__":
     dp.add_handler(MessageHandler(Filters.photo, handle_photo))
 
     print("Telegram Bot Deployed!")
+    get_run_data()  # Download model and report image
 
     updater.start_polling()
     updater.idle()
