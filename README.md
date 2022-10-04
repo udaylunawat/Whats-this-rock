@@ -103,15 +103,18 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
 - [x] Evaluation
   - [x] Confusion Matrix
   - [x] Classification Report
-- [x] Telegram Bot Deployed
+- [x] Deploy Telegram Bot
   - [x] Heroku - Deprecated
   - [x] Railway
   - [x] Show CM and CL in bot
+- [ ] Deploy to Huggingface spaces
 - [ ] Accessing the model through FastAPI (Backend)
 - [ ] Streamlit (Frontend)
 - [x] Docker
 - [x] GitHub Actions
   - [x] Deploy Bot when bot.py is updated.
+  - [x] Lint code
+- [ ] convert models.py to Classes and more OOP
 - [ ] nbdev
 - [ ] Group Runs
   - [ ] kfold cross validation
@@ -123,6 +126,9 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
   - [x] Hydra
 - [x] Performance improvement
   - [x] Convert to tf.data.Dataset
+- [ ] Add Badges
+  - [ ] Linting
+  - [ ] Railway
 
 ## Technologies Used
 
