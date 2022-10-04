@@ -80,17 +80,19 @@ def main(cfg: DictConfig):
 
     print("Model loaded!")
 
-def preprocess_image(file):
+
+def preprocess_image(file, image_size):
+    # TODO: Get image size from cfg
     f = BytesIO(file.download_as_bytearray())
     file_bytes = np.asarray(bytearray(f.read()), dtype=np.uint8)
     img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-    img = cv2.resize(img, cfg.image_size, interpolation=cv2.INTER_AREA)
+    img = cv2.resize(img, image_size, interpolation=cv2.INTER_AREA)
     return img
 
 
 def get_prediction(file):
-    img = preprocess_image(file)
+    img = preprocess_image(file, image_size=224)
     prediction = model.predict(np.array([img / 255]), batch_size=1)
     return f"In this image I see {class_names[np.argmax(prediction)]} (with {(max(prediction[0]))*100:.3f}% confidence!)"
 
