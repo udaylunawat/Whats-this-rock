@@ -98,7 +98,11 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
   - [x] MobileNetv1
   - [x] MobileNetv2
   - [x] Xception
-- [x] LRScheduleer, LRDecay
+- [ ] LRScheduleer, LRDecay
+  - [ ] Baseline without scheduler
+  - [ ] Step decay
+  - [ ] Cosine annealing
+  - [ ] Classic cosine annealing with bathc steps w/o restart
 - [x] Model Checkpoint, Resume Training
 - [x] Evaluation
   - [x] Confusion Matrix
