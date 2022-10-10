@@ -1,10 +1,11 @@
 import tensorflow as tf
 from tensorflow.keras.optimizers import schedules
+import wandb
 from wandb.keras import WandbCallback
 
 
 def get_earlystopper(cfg) -> tf.keras.callbacks:
-    """ Returns tf.keras.callbacks.EarlyStopping
+    """Return tf.keras.callbacks.EarlyStopping.
 
     Parameters
     ----------
@@ -28,7 +29,7 @@ def get_earlystopper(cfg) -> tf.keras.callbacks:
 
 
 def get_reduce_lr_on_plateau(cfg):
-    """ Returns tf.keras.callbacks.ReduceLROnPlateau
+    """Return tf.keras.callbacks.ReduceLROnPlateau.
 
     Parameters
     ----------
@@ -51,8 +52,23 @@ def get_reduce_lr_on_plateau(cfg):
     return reduce_lr_on_plateau
 
 
+class LRLogger(tf.keras.callbacks.Callback):
+    """log lr at the end of every epoch.
+
+    Parameters
+    ----------
+    tf : callbacks
+        callbacks
+    """
+
+    def on_epoch_end(self, epoch, logs=None):
+        """Log lr on epoch end."""
+        lr = float(tf.keras.backend.get_value(self.model.optimizer.lr.initial_learning_rate))  # get the current learning rate
+        wandb.log({'learning_rate':lr})
+
+
 def get_callbacks(cfg):
-    """ Returns a Callback List
+    """Return a Callback List.
 
     Parameters
     ----------
@@ -68,7 +84,7 @@ def get_callbacks(cfg):
         monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model),
     )
 
-    callbacks = [wandbcallback]
+    callbacks = [wandbcallback, LRLogger()]
     if cfg.earlystopping.use:
         earlystopper = get_earlystopper(cfg)
         callbacks.append(earlystopper)
