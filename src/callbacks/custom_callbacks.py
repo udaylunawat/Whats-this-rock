@@ -48,7 +48,7 @@ class LRA(tf.keras.callbacks.Callback):
         self.threshold = threshold  # specifies training accuracy threshold when lr will be adjusted based on validation loss
         self.factor = factor  # factor by which to reduce the learning rate
         self.dwell = dwell
-        self.lr = float(K.get_value(model.optimizer.lr)) # get the initiallearning rate and save it in self.lr
+        self.lr = float(K.get_value(model.optimizer.lr.initial_learning_rate)) # get the initiallearning rate and save it in self.lr
         self.highest_tracc = 0.0  # set highest training accuracy to 0
         self.lowest_vloss = np.inf  # set lowest validation loss to infinity
         # self.count=0 # initialize counter that counts epochs with no improvement
@@ -74,8 +74,8 @@ class LRA(tf.keras.callbacks.Callback):
             msg='{0:^8s}{1:^10s}{2:^9s}{3:^9s}{4:^9s}{5:^9s}{6:^9s}{7:^11s}{8:^8s}'.format('Epoch', 'Loss', 'Accuracy','V_loss','V_acc', 'LR', 'Next LR', 'Monitor', 'Duration')
             print_in_color(msg, (244,252,3), (55,65,80))
 
-        lr = float(K.get_value(self.model.optimizer.lr)) # get the current learning rate
-        self.wandb.log({'lr':lr})
+        lr = self.lr # get the current learning rate
+        self.wandb.log({'learning_rate':lr})
         current_lr = lr
         v_loss = logs.get('val_loss')  # get the validation loss for this epoch
         acc = logs.get('accuracy')  # get training accuracy
