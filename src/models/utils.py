@@ -8,7 +8,7 @@ from tensorflow.keras.callbacks import Callback
 
 
 def get_optimizer(cfg, lr: str) -> optimizers:
-    """Gets optimizer set with an learning rate
+    """Get optimizer set with an learning rate.
 
     Parameters
     ----------
@@ -41,18 +41,18 @@ def get_optimizer(cfg, lr: str) -> optimizers:
     return opt
 
 
-def get_model_weights(train_ds):
-    """_summary_
+def get_model_weights(train_ds: tf.data.Dataset):
+    """Return model weights dict.
 
     Parameters
     ----------
-    train_ds : _type_
-        _description_
+    train_ds : tf.data.Dataset
+        Tensorflow Dataset.
 
     Returns
     -------
-    _type_
-        _description_
+    dict
+        Dictionary of class weights.
     """
     class_weights = class_weight.compute_class_weight(
         class_weight="balanced",
@@ -64,8 +64,8 @@ def get_model_weights(train_ds):
     return train_class_weights
 
 
-def get_lr_scheduler(cfg) -> schedules:
-    """Returns A LearningRateSchedule
+def get_lr_scheduler(cfg) -> optimizers.schedules:
+    """Return A LearningRateSchedule.
 
     Parameters
     ----------
@@ -74,12 +74,12 @@ def get_lr_scheduler(cfg) -> schedules:
 
     Returns
     -------
-    schedules
+    tensorflow.keras.optimizers.schedules
         A LearningRateSchedule
     """
     scheduler = {
-        'cosine_decay':schedules.CosineDecay(cfg.lr, decay_steps=cfg.lr_decay_steps),
-        'exponentialdecay':schedules.ExponentialDecay(cfg.lr, decay_steps=100, decay_rate=0.96, staircase=True),
-        'cosine_decay_restarts':schedules.CosineDecayRestarts(cfg.lr, first_decay_steps=cfg.lr_decay_steps),
+        'cosine_decay':optimizers.schedules.CosineDecay(cfg.lr, decay_steps=cfg.lr_decay_steps),
+        'exponentialdecay':optimizers.schedules.ExponentialDecay(cfg.lr, decay_steps=cfg.lr_decay_steps, decay_rate=cfg.reduce_lr.factor, staircase=True),
+        'cosine_decay_restarts':optimizers.schedules.CosineDecayRestarts(cfg.lr, first_decay_steps=cfg.lr_decay_steps),
     }
     return scheduler[cfg.lr_schedule]

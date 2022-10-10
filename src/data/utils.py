@@ -18,7 +18,7 @@ from typing import Optional
 
 
 def timer_func(func):
-    """This function shows the execution time of the function object passed
+    """Show the execution time of the function object passed.
 
     Parameters
     ----------
@@ -36,7 +36,7 @@ def timer_func(func):
 
 
 def find_filepaths(root_folder: str):
-    """_summary_
+    """Recursively finds all files.
 
     Parameters
     ----------
@@ -58,12 +58,12 @@ def find_filepaths(root_folder: str):
 
 
 def remove_unsupported_images(root_folder: str):
-    """_summary_
+    """Remove unsupported images.
 
     Parameters
     ----------
     root_folder : str
-        _description_
+        Root Folder.
     """
     print("\n\nRemoving unsupported images...")
     count = 1
@@ -82,14 +82,14 @@ def remove_unsupported_images(root_folder: str):
 def remove_corrupted_images(
     s_dir: str, ext_list: list =["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
 ):
-    """_summary_
+    """Remove corrupted images.
 
     Parameters
     ----------
     s_dir : str
-        _description_
+        Source directory.
     ext_list : list, optional
-        _description_, by default ["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
+        Extensions list, by default ["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
     """
     print("\n\nRemoving corrupted images...")
     bad_images = []
@@ -134,7 +134,7 @@ def remove_corrupted_images(
 
 
 def get_dims(file: str) -> Optional[tuple]:
-    """Returns dimenstions for an RBG image
+    """Return dimenstions for an RBG image.
 
     Parameters
     ----------
@@ -156,7 +156,7 @@ def get_dims(file: str) -> Optional[tuple]:
 
 
 def get_df(root: str = "data/2_processed") -> pd.DataFrame :
-    """root: a folder present inside data dir, which contains classes containing images
+    """root: a folder present inside data dir, which contains classes containing images.
 
     Parameters
     ----------
@@ -168,7 +168,6 @@ def get_df(root: str = "data/2_processed") -> pd.DataFrame :
     pd.DataFrame
         with columns file_name, class and file_path
     """
-
     classes = os.listdir(root)
 
     class_names = []
@@ -191,7 +190,7 @@ def get_df(root: str = "data/2_processed") -> pd.DataFrame :
 
 
 def get_value_counts(dataset_path: str) -> None:
-    """Get class counts of all classes in the dataset
+    """Get class counts of all classes in the dataset.
 
     Parameters
     ----------
@@ -207,7 +206,7 @@ def get_value_counts(dataset_path: str) -> None:
 
 
 def scalar(img: Image) -> Image:
-    """scale pixel between -1 and +1
+    """Scale pixel between -1 and +1.
 
     Parameters
     ----------
@@ -223,12 +222,12 @@ def scalar(img: Image) -> Image:
 
 
 def get_preprocess(cfg):
-    """_summary_
+    """Return preprocess function for particular model.
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig)
+        Configuration
 
     Returns
     -------
@@ -236,7 +235,7 @@ def get_preprocess(cfg):
         _description_
     """
     preprocess_dict = {
-        "convnexttiny":applications.convnext,
+        # "convnexttiny":applications.convnext,
         "vgg16": applications.vgg16,
         "resnet": applications.resnet,
         "inceptionresnetv2": applications.inception_resnet_v2,
@@ -250,14 +249,14 @@ def get_preprocess(cfg):
 
 
 def prepare(ds, cfg, shuffle=False, augment=False):
-    """_summary_
+    """Prepare dataset using augment, preprocess, cache, shuffle and prefetch.
 
     Parameters
     ----------
     ds : _type_
         _description_
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig):
+        Configuration
     shuffle : bool, optional
         _description_, by default False
     augment : bool, optional
@@ -302,12 +301,12 @@ def prepare(ds, cfg, shuffle=False, augment=False):
 
 
 def get_tfds_from_dir(cfg):
-    """_summary_
+    """Convert directory of images to tfds dataset.
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig):
+        Configuration
 
     Returns
     -------
@@ -355,7 +354,7 @@ def get_tfds_from_dir(cfg):
 
 
 def rename_files(source_dir: str = "data/2_processed/tmp"):
-    """Renames files in classes and moves to 2_processed
+    """Rename files in classes and moves to 2_processed.
 
     Parameters
     ----------
@@ -377,7 +376,8 @@ def rename_files(source_dir: str = "data/2_processed/tmp"):
 
 
 def move_files(src_dir: str, dest_dir: str = "data/2_processed/tmp"):
-    """Moves files to tmp directory in 2_processed
+    """Move files to tmp directory in 2_processed.
+
     src_dir: directory of rock subclass with files [Basalt, Marble, Coal, ...]
 
     Parameters
@@ -408,7 +408,7 @@ def move_files(src_dir: str, dest_dir: str = "data/2_processed/tmp"):
 
 
 def move_and_rename(class_dir: str):
-    """Moves files from class_dir to tmp, renames them there based on count, and moves back to 2_processed class_dir: A class dir of supporting classes (Marble, Coal, ...), which contains image files
+    """Move files from class_dir to tmp, renames them there based on count, and moves back to 2_processed class_dir: A class dir of supporting classes (Marble, Coal, ...), which contains image files.
 
     Parameters
     ----------
