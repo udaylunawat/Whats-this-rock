@@ -6,7 +6,7 @@ kaggle
 pandas
 hydra-core
 scikit-learn
-tensorflow-cpu==2.9
+tensorflow-cpu
 tensorflow-addons
 python-telegram-bot
 opencv-python-headless
