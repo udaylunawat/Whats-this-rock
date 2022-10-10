@@ -1,19 +1,20 @@
 import tensorflow as tf
+from tensorflow.keras.optimizers import schedules
 from wandb.keras import WandbCallback
 
 
-def get_earlystopper(cfg):
-    """_summary_
+def get_earlystopper(cfg) -> tf.keras.callbacks:
+    """ Returns tf.keras.callbacks.EarlyStopping
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig):
+    Configuration
 
     Returns
     -------
-    _type_
-        _description_
+    tensorflow.keras.callbacks
+        Stop training when a monitored metric has stopped improving.
     """
     earlystopper = tf.keras.callbacks.EarlyStopping(
         monitor=cfg.monitor,
@@ -27,17 +28,17 @@ def get_earlystopper(cfg):
 
 
 def get_reduce_lr_on_plateau(cfg):
-    """_summary_
+    """ Returns tf.keras.callbacks.ReduceLROnPlateau
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig):
+    Configuration
 
     Returns
     -------
-    _type_
-        _description_
+    tf.keras.callbacks.ReduceLROnPlateau
+        Reduce learning rate when a metric has stopped improving.
     """
     reduce_lr_on_plateau = tf.keras.callbacks.ReduceLROnPlateau(
         monitor=cfg.monitor,
@@ -51,17 +52,17 @@ def get_reduce_lr_on_plateau(cfg):
 
 
 def get_callbacks(cfg):
-    """ Define WandbCallback for experiment tracking
+    """ Returns a Callback List
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig):
+        Configuration
 
     Returns
     -------
-    _type_
-        _description_
+    List
+        Callbacks List
     """
     wandbcallback = WandbCallback(
         monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model),
