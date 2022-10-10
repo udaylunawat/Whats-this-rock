@@ -6,41 +6,42 @@ notes: ""
 seed: 42
 
 lr: 0.001
-lr_decay_steps: 100
+lr_decay_steps: 500
 lr_schedule: cosine_decay
 
 epochs: 30
-augmentation: True
 class_weights: True
 optimizer: adam
 loss: categorical_crossentropy
 metrics: ["accuracy"]
 batch_size: 32
 num_classes: 7
-train_split: 0.70
-last_layers: 30
 custom_callback: True
 monitor: "val_accuracy"
-
-wandb:
-  use: True
-  project: Whats-this-rockv10
-  mode: offline
 
 # dataset
 dataset_id: [1]
 data_path: data/4_tfds_dataset/
 sampling: None
+train_split: 0.70
 image_size: 224
 image_channels: 3
+augmentation: True
 
 # model
 backbone: resnet
 use_pretrained_weights: True
-trainable: True
 preprocess: True
 dropout_rate: 0.3
 save_model: False
+trainable: True
+last_layers: 30
+
+# wandb
+wandb:
+  use: True
+  project: Whats-this-rockv10
+  mode: offline
 
 # callback
 earlystopping:

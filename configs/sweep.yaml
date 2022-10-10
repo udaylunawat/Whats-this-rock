@@ -11,6 +11,13 @@ parameters:
     distribution: uniform
     min: 5e-5
     max: 8e-3
+  lr_decay_steps:
+    values: [100, 500, 1000]
+  lr_schedule:
+    values:
+      - cosine_decay
+      - exponentialdecay
+      - cosine_decay_restarts
   epochs:
     value: 50
   augmentation:
@@ -18,7 +25,7 @@ parameters:
   class_weights:
     value: True
   optimizer:
-    values: [adam]
+    values: [adam, adamax]
   loss:
     value: categorical_crossentropy
   metrics:
@@ -48,7 +55,7 @@ parameters:
   sampling:
     values: [None]
   backbone:
-    values: [convnexttiny]
+    values: [resnet]
   use_pretrained_weights:
     values: [True]
   trainable:
@@ -56,13 +63,13 @@ parameters:
   last_layers:
     values: [5, 10, 20, 30]
   custom_callback:
-    values: [False]
+    values: [False, True]
   preprocess:
     value: True
   dropout_rate:
     values: [0.1, 0.3]
   monitor:
-    values: ["val_loss"]
+    values: ["val_loss", "val_f1_score", "val_accuracy"]
   earlystopping.use:
     values: [False]
   earlystopping.patience:
