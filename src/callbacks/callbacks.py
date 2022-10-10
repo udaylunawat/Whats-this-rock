@@ -64,7 +64,7 @@ class LRLogger(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs=None):
         """Log lr on epoch end."""
         lr = float(tf.keras.backend.get_value(self.model.optimizer.lr.initial_learning_rate))  # get the current learning rate
-        wandb.log({'learning_rate':lr})
+        wandb.log({'learning_rate':lr}, commit=True)
 
 
 def get_callbacks(cfg):
