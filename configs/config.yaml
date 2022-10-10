@@ -4,14 +4,18 @@
 
 notes: ""
 seed: 42
+
 lr: 0.001
+lr_decay_steps: 100
+lr_schedule: cosine_decay
+
 epochs: 30
 augmentation: True
 class_weights: True
 optimizer: adam
 loss: categorical_crossentropy
 metrics: ["accuracy"]
-batch_size: 16
+batch_size: 32
 num_classes: 7
 train_split: 0.70
 last_layers: 30
@@ -24,7 +28,7 @@ wandb:
   mode: offline
 
 # dataset
-dataset_id: [1, 2, 3, 4]
+dataset_id: [1]
 data_path: data/4_tfds_dataset/
 sampling: None
 image_size: 224
@@ -40,11 +44,11 @@ save_model: False
 
 # callback
 earlystopping:
-  use: True
+  use: False
   patience: 10
 
 reduce_lr:
-  use: True
-  factor: 0.4
+  use: False
+  factor: 0.6
   min_lr: 1e-5
   patience: 2

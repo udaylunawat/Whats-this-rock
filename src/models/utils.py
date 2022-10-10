@@ -7,25 +7,25 @@ from tensorflow.keras import layers, optimizers, backend as K
 from tensorflow.keras.callbacks import Callback
 
 
-def get_optimizer(cfg, lr):
+def get_optimizer(cfg, lr: str) -> optimizers:
     """Gets optimizer set with an learning rate
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
-    lr : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig):
+        Configuration
+    lr : str
+        learning rate
 
     Returns
     -------
-    _type_
-        _description_
+    tensorflow.keras.optimizers
+        Tensorflow optimizer
 
     Raises
     ------
     NotImplementedError
-        _description_
+        Raise error if cfg.optimizer not implemented.
     """
     optimizer_dict = {
         "adam": optimizers.Adam,
@@ -62,3 +62,24 @@ def get_model_weights(train_ds):
 
     train_class_weights = dict(enumerate(class_weights))
     return train_class_weights
+
+
+def get_lr_scheduler(cfg) -> schedules:
+    """Returns A LearningRateSchedule
+
+    Parameters
+    ----------
+    cfg : cfg (omegaconf.DictConfig):
+    Configuration
+
+    Returns
+    -------
+    schedules
+        A LearningRateSchedule
+    """
+    scheduler = {
+        'cosine_decay':schedules.CosineDecay(cfg.lr, decay_steps=cfg.lr_decay_steps),
+        'exponentialdecay':schedules.ExponentialDecay(cfg.lr, decay_steps=100, decay_rate=0.96, staircase=True),
+        'cosine_decay_restarts':schedules.CosineDecayRestarts(cfg.lr, first_decay_steps=cfg.lr_decay_steps),
+    }
+    return scheduler[cfg.lr_schedule]

@@ -35,7 +35,7 @@ from omegaconf import OmegaConf
 from src.data.preprocess import process_data
 from src.models.models import get_model
 from src.data.utils import get_tfds_from_dir, prepare
-from src.models.utils import get_optimizer, get_model_weights
+from src.models.utils import get_optimizer, get_model_weights, get_lr_scheduler
 from src.data.download import get_data
 from src.callbacks.callbacks import get_callbacks
 from src.callbacks.custom_callbacks import LRA
@@ -50,8 +50,9 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     model.summary()
 
     print(f"\nModel loaded: {cfg.backbone}.\n\n")
+    lr_decayed_fn = get_lr_scheduler(cfg)
 
-    optimizer = get_optimizer(cfg, cfg.lr)
+    optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
     optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
 
     f1_score_metrics = [
@@ -113,8 +114,14 @@ def train(cfg, train_dataset, val_dataset, class_weights):
         # print("\nBackbone layers\n\n")
         # for layer in model.layers[0].layers:
         #     print(layer.name, layer.trainable)
+            # lr_decayed_fn = (
 
-        optimizer = get_optimizer(cfg, lr=cfg.reduce_lr.min_lr)
+        cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
+        lr_decayed_fn = (
+            tf.keras.optimizers.schedules.CosineDecayRestarts(
+                cfg.reduce_lr.min_lr,
+                first_decay_steps=cfg.lr_decay_steps))
+        optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
 
         # Compile the model
         model.compile(
@@ -125,8 +132,6 @@ def train(cfg, train_dataset, val_dataset, class_weights):
 
         epochs = cfg.epochs + 20
 
-        cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
-        cfg.reduce_lr.patience = 2
         callbacks = get_callbacks(cfg)
 
         history = model.fit(
@@ -216,8 +221,8 @@ def main(cfg: DictConfig) -> None:
 
     train_dataset = prepare(train_dataset, cfg, shuffle=True, augment=cfg.augmentation)
     val_dataset = prepare(val_dataset, cfg)
-    model, history = train(cfg, train_dataset, val_dataset, class_weights)
 
+    model, history = train(cfg, train_dataset, val_dataset, class_weights)
     evaluate(cfg, model, history, test_dataset, labels)
     run.finish()
 
