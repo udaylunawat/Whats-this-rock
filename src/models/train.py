@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-"""
-Trains a model on rocks dataset
-"""
+"""Trains a model on rocks dataset."""
 
 import os
 
@@ -42,8 +40,26 @@ from src.callbacks.custom_callbacks import LRA
 from src.visualization import plot
 
 
-def train(cfg, train_dataset, val_dataset, class_weights):
+def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.Dataset, class_weights: dict):
+    """Utility function to train the model and returns model and history.
 
+    Parameters
+    ----------
+    cfg : DictConfig
+        Hydra Configuration
+    train_dataset : tf.data.Dataset
+        Train Dataset
+    val_dataset : tf.data.Dataset
+        Validation Dataset
+    class_weights : dict
+        Class weights dictionary
+
+    Returns
+    -------
+    model and history
+        model and history
+    """
+    # Initalize model
     tf.keras.backend.clear_session()
 
     model = get_model(cfg)
@@ -66,7 +82,7 @@ def train(cfg, train_dataset, val_dataset, class_weights):
         metrics=["accuracy", f1_score_metrics],
     )
 
-    if cfg.custom_callback == True and cfg.reduce_lr.use == True:
+    if cfg.custom_callback == True:
         callbacks = [
             LRA(
                 model=model,
@@ -146,7 +162,22 @@ def train(cfg, train_dataset, val_dataset, class_weights):
     return model, history
 
 
-def evaluate(cfg, model, history, test_dataset, labels):
+def evaluate(cfg: DictConfig, model: tf.keras.Model, history: dict, test_dataset: tf.data.Dataset, labels:list):
+    """Evaluate the trained model on Test Dataset, log confusion matrix and classification report.
+
+    Parameters
+    ----------
+    cfg : DictConfig
+        Hydra Configuration.
+    model : tf.keras.Model
+        Tensorflow model.
+    history : dict
+        History object.
+    test_dataset : tf.data.Dataset
+        Test Dataset.
+    labels : list
+        List of Labels.
+    """
     # Scores
     test_dataset = prepare(test_dataset, cfg)
     scores = model.evaluate(test_dataset, return_dict=True)
@@ -188,6 +219,13 @@ def evaluate(cfg, model, history, test_dataset, labels):
 
 @hydra.main(config_path="../../configs/", config_name="config.yaml", version_base="1.2")
 def main(cfg: DictConfig) -> None:
+    """Run Main function.
+
+    Parameters
+    ----------
+    cfg : DictConfig
+        Hydra Configuration
+    """
     tf.keras.utils.set_random_seed(cfg.seed)
     if cfg.wandb.use:
         run = wandb.init(
@@ -200,7 +238,7 @@ def main(cfg: DictConfig) -> None:
     artifact.add_dir("src/")
     wandb.log_artifact(artifact)
     print(OmegaConf.to_yaml(cfg))
-    wandb.log({"TF version": tf.__version__})
+    wandb.log({"TF version": str(tf.__version__)}, commit=False)
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
     subprocess.run(
