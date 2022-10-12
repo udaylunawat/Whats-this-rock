@@ -44,24 +44,26 @@
 
   > Paste your kaggle.json file in the root directory
 
-### Run these commands
+    Run these commands
 
-  ```bash
-  pip install -r requirements-dev.txt
-  sh src/scripts/setup.sh
-  sh src/scripts/clean_dir.sh
-  python src/models/train.py
-  ```
+    ```bash
+    pip install -r requirements-dev.txt
+    sh src/scripts/setup.sh
+    sh src/scripts/clean_dir.sh
+    python src/models/train.py
+    ```
 
-  You can try different models and parameters by editing `config.json`.
+    You can try different models and parameters by editing `config.json`.
 
-  By using Hydra it's now much more easier to override parameters like this
+    By using Hydra it's now much more easier to override parameters like this
 
-  ```bash
-  python src/models/train.py  callback.reduce_lr.factor=0.5 \
-                              callback.reduce_lr.patience=4 \
-                              callback.earlystopping.patience=20
-  ```
+    ```bash
+    python src/models/train.py  wandb.project=Whats-this-rockv13 \
+                                dataset_id=[1] \
+                                epochs=50 \
+                                custom_callback=False \
+                                backbone=resnet
+    ```
 
 ## 👨‍💻 Demo
 
