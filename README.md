@@ -13,66 +13,61 @@
 
 - [Table of Contents](#table-of-contents)
 <!-- - [Motivation](#motivation) -->
-- [Getting Started](#getting-started)
-  - [Installation](#deploy-telegram-bot)
+- [Installation Steps](#🛠️-installation-steps)
+  - [Use the Telegram Bot](#use-the-telegram-bot)
+  - [Deploy the Telegram Bot](#deploy-telegram-bot)
+  - [Train Model](#train-model)
+- [Demo](#👨‍💻-demo)
 - [Features I'd like to add](#features-id-like-to-add)
-- [Notebooks](#notebooks)
 - [Technologies Used](#technologies-used)
+- [Directory Tree](#directory-tree)
 - [Contributing](#contributing)
 - [License](#license)
 <!-- - [Contact](#contact) -->
 
-## Getting Started
+## 🛠️ Installation Steps
 
-## Use the Telegram Bot
+- ## Use the Telegram Bot
 
-You can try the bot [here](https://t.me/test7385_bot) on Telegram.
+  You can try the bot [here](https://t.me/test7385_bot) on Telegram.
 
-Type `/help` to get instructions.
+  Type `/help` to get instructions.
 
-## Deploy Telegram Bot
+- ## Deploy Telegram Bot
 
-```bash
-pip install -r requirements-prod.txt
-python src/bot.py
-```
+  ```bash
+  pip install -r requirements-prod.txt
+  python src/bot.py
+  ```
 
-## Train Model
+- ## Train Model
 
-- Paste your kaggle.json file in the root directory
-- You can try different models and parameters by editing `config.json`
+  > Paste your kaggle.json file in the root directory
 
-Run these commands
+### Run these commands
 
-```bash
-pip install -r requirements-dev.txt
-sh src/scripts/setup.sh
-sh src/scripts/clean_dir.sh
-python src/models/train.py
-```
+  ```bash
+  pip install -r requirements-dev.txt
+  sh src/scripts/setup.sh
+  sh src/scripts/clean_dir.sh
+  python src/models/train.py
+  ```
 
-By using Hydra it's now much more easier to override parameters like this
+  You can try different models and parameters by editing `config.json`.
 
-```bash
-python src/models/train.py  callback.reduce_lr.factor=0.5 \
-                            callback.reduce_lr.patience=4 \
-                            callback.earlystopping.patience=20
-```
+  By using Hydra it's now much more easier to override parameters like this
 
-## Notebooks
+  ```bash
+  python src/models/train.py  callback.reduce_lr.factor=0.5 \
+                              callback.reduce_lr.patience=4 \
+                              callback.earlystopping.patience=20
+  ```
 
-<table class="tfo-notebook-buttons" align="left">
-  <td>
-    <a target="_blank" href="https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing"><img src="https://www.tensorflow.org/images/colab_logo_32px.png" />Run in Google Colab</a>
-  </td>
-  <td>
-    <a target="_blank" href="https://github.com/udaylunawat/Whats-this-rock"><img src="https://www.tensorflow.org/images/GitHub-Mark-32px.png" />View source on GitHub</a>
-  </td>
-  <td>
-    <a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/notebook.ipynb"><img src="https://www.tensorflow.org/images/download_logo_32px.png" />Download notebook</a>
-  </td>
-</table>
-<br></br>
+## 👨‍💻 Demo
+
+|  |  |  |
+|---|---|---|
+| ![ alt colab](https://www.tensorflow.org/images/colab_logo_32px.png)[Run in Colab](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing) | ![ alt Source](https://www.tensorflow.org/images/GitHub-Mark-32px.png)[View Source on Github](https://github.com/udaylunawat/Whats-this-rock) | ![ alt noteboook](https://www.tensorflow.org/images/download_logo_32px.png)[Download Notebook]() |
 
 ## Features I'd like to add
 
@@ -176,6 +171,7 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
     │   │   └── utils.py
     │   │
     │   ├── callbacks                     <- functions that are executed during training at given stages of the training procedure
+    │   │   ├── custom_callbacks.py
     │   │   └── callbacks.py
     │   │
     │   ├── models                        <- Scripts to train models and then use trained models to make
@@ -209,40 +205,26 @@ python src/models/train.py  callback.reduce_lr.factor=0.5 \
 
 If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
 
-If you'd like to request a new function, feel free to do so by opening an issue [here](https://github.com/). Please include sample queries and their corresponding results.
+If you'd like to request a new function, feel free to do so by opening an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues). Please include sample queries and their corresponding results.
 
 <!-- CONTRIBUTING -->
-## Contributing
+## 👨‍💻 Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+- Contributions make the open source community such an amazing place to learn, inspire, and create.
+- Any contributions you make are **greatly appreciated**.
+- Check out our [contribution guidelines](/CONTRIBUTING.md) for more information.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 🛡️ License
 
-## License
-
-[![Apache license](https://img.shields.io/badge/license-apache-blue?style=for-the-badge&logo=appveyor)](http://www.apache.org/licenses/LICENSE-2.0e)
-
-Copyright 2020 Uday
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+LinkFree is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Credits
 
 - [Dataset - by Mahmoud Alforawi](https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals)
+
+## 🙏 Support
+
+This project needs a ⭐️ from you. Don't forget to leave a star ⭐️
 
 <br>
 <p align="center"> Walt might be the one who knocks <br> but Hank is the one who rocks. </br> </p>
