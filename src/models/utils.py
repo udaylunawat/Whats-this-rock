@@ -13,7 +13,7 @@ def get_optimizer(cfg, lr: str) -> optimizers:
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
-        Configuration
+        Hydra Configuration
     lr : str
         learning rate
 
@@ -70,7 +70,7 @@ def get_lr_scheduler(cfg) -> optimizers.schedules:
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
-    Configuration
+        Hydra Configuration
 
     Returns
     -------

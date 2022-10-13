@@ -227,7 +227,7 @@ def get_preprocess(cfg):
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig)
-        Configuration
+        Hydra Configuration
 
     Returns
     -------
@@ -256,7 +256,7 @@ def prepare(ds, cfg, shuffle=False, augment=False):
     ds : _type_
         _description_
     cfg : cfg (omegaconf.DictConfig):
-        Configuration
+        Hydra Configuration
     shuffle : bool, optional
         _description_, by default False
     augment : bool, optional
@@ -306,7 +306,7 @@ def get_tfds_from_dir(cfg):
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
-        Configuration
+        Hydra Configuration
 
     Returns
     -------

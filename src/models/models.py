@@ -3,23 +3,23 @@ from tensorflow.keras import layers, models, applications
 from tensorflow.keras import regularizers, initializers
 
 
-def get_backbone(cfg):
+def get_backbone(cfg) -> tf.keras.model:
     """Get backbone for the model.
 
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
-        Configuration
+        Hydra Configuration
 
     Returns
     -------
-    _type_
-        _description_
+    tensorflow.keras.model
+        Tensroflow Model
 
     Raises
     ------
     NotImplementedError
-        _description_
+        raise error if wrong backbone name passed
     """
     weights = None
     models_dict = {
@@ -56,12 +56,12 @@ def get_model(cfg):
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig)
-        Configuration
+        Hydra Configuration
 
     Returns
     -------
-    _type_
-        _description_
+    tensorflow.keras.Model
+        Model object
     """
     # Backbone
     base_model = get_backbone(cfg)

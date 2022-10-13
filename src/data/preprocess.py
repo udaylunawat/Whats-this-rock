@@ -7,12 +7,12 @@ from src.data.utils import *
 
 
 def process_data(cfg):
-    """_summary_
+    """Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig):
+        Hydra Configuration
     """
     datasets = os.listdir("data/1_extracted")
     for dataset in datasets:

@@ -1,13 +1,13 @@
 import os
 
 
-def get_data(dataset_id):
-    """_summary_
+def get_data(dataset_id: int):
+    """Download the dataset with dataset_id.
 
     Parameters
     ----------
-    dataset_id : _type_
-        _description_
+    dataset_id : int
+        Dataset number
     """
     data_dict = {
         1: "src/scripts/dataset1.sh",

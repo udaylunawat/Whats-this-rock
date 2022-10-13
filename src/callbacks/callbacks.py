@@ -10,7 +10,7 @@ def get_earlystopper(cfg) -> tf.keras.callbacks:
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
-    Configuration
+        Hydra Configuration
 
     Returns
     -------
@@ -34,7 +34,7 @@ def get_reduce_lr_on_plateau(cfg):
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
-    Configuration
+        Hydra Configuration
 
     Returns
     -------
@@ -73,7 +73,7 @@ def get_callbacks(cfg):
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
-        Configuration
+        Hydra Configuration
 
     Returns
     -------
