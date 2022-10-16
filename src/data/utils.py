@@ -16,6 +16,8 @@ from os import listdir
 from pathlib import Path
 from typing import Optional
 
+import keras_cv
+
 
 def timer_func(func):
     """Show the execution time of the function object passed.
@@ -267,27 +269,73 @@ def prepare(ds, cfg, shuffle=False, augment=False):
     _type_
         _description_
     """
-    data_augmentation = tf.keras.Sequential(
-        [
-            layers.RandomFlip(
-                "horizontal",
-                input_shape=(cfg.image_size, cfg.image_size, cfg.image_channels),
-            ),
-            layers.RandomRotation(0.1),
-            layers.RandomZoom(0.1),
-        ]
-    )
-    if augment:
-        # Use data augmentation only on the training set.
-        ds = ds.map(
-            lambda x, y: (data_augmentation(x, training=True), y),
-            num_parallel_calls=tf.data.AUTOTUNE,
-        )
+    # keras_cv
+    def to_dict(image, label):
+        image = tf.image.resize(image, (cfg.image_size, cfg.image_size))
+        image = tf.cast(image, tf.float32)
+        # label = tf.one_hot(label, cfg.num_classes)
+        return {"images": image, "labels": label}
+
+    def preprocess_for_model(inputs):
+        images, labels = inputs["images"], inputs["labels"]
+        images = tf.cast(images, tf.float32)
+        return images, labels
+
+    def cut_mix_and_mix_up(samples):
+        samples = cut_mix(samples, training=True)
+        samples = mix_up(samples, training=True)
+        return samples
+
+    def apply_rand_augment(inputs):
+        inputs["images"] = rand_augment(inputs["images"])
+        return inputs
+
+    AUTOTUNE = tf.data.AUTOTUNE
+
     if cfg.preprocess:
         preprocess_input = get_preprocess(cfg)
         ds = ds.map(
-            lambda x, y: (preprocess_input(x), y), num_parallel_calls=tf.data.AUTOTUNE
+            lambda x, y: (preprocess_input(x), y), num_parallel_calls=AUTOTUNE
         )
+
+    if augment:
+        # normal augmentation
+        data_augmentation = tf.keras.Sequential(
+            [
+                layers.RandomFlip(
+                    "horizontal",
+                    input_shape=(cfg.image_size, cfg.image_size, cfg.image_channels),
+                ),
+                layers.RandomRotation(0.1),
+                layers.RandomZoom(0.1),
+            ]
+        )
+        # Use data augmentation only on the training set.
+        ds = ds.map(
+            lambda x, y: (data_augmentation(x, training=True), y),
+            num_parallel_calls=AUTOTUNE,
+        )
+    elif augment == "kerascv":
+        # using keras_cv
+        ds = ds.map(to_dict, num_parallel_calls=AUTOTUNE)
+        rand_augment = keras_cv.layers.RandAugment(
+            value_range=(0, 255),
+            augmentations_per_image=3,
+            magnitude=0.3,
+            magnitude_stddev=0.2,
+            rate=0.5,
+        )
+        cut_mix = keras_cv.layers.CutMix()
+        mix_up = keras_cv.layers.MixUp()
+
+        ds = (
+            ds
+            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
+            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
+        )
+
+        ds = ds.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
+
 
     ds = ds.cache()
     if shuffle:
@@ -297,7 +345,7 @@ def prepare(ds, cfg, shuffle=False, augment=False):
     # ds = ds.batch(cfg.batch_size)
 
     # Use buffered prefetching on all datasets.
-    return ds.prefetch(buffer_size=tf.data.AUTOTUNE)
+    return ds.prefetch(buffer_size=AUTOTUNE)
 
 
 def get_tfds_from_dir(cfg):
