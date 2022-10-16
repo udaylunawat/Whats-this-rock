@@ -3,7 +3,7 @@ from tensorflow.keras import layers, models, applications
 from tensorflow.keras import regularizers, initializers
 
 
-def get_backbone(cfg) -> tf.keras.model:
+def get_backbone(cfg) -> tf.keras.models:
     """Get backbone for the model.
 
     Parameters
