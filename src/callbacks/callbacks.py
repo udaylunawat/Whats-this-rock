@@ -1,7 +1,9 @@
+import wandb
+import warnings
+from wandb.keras import WandbCallback
+
 import tensorflow as tf
 from tensorflow.keras.optimizers import schedules
-import wandb
-from wandb.keras import WandbCallback
 
 
 def get_earlystopper(cfg) -> tf.keras.callbacks:
@@ -67,6 +69,33 @@ class LRLogger(tf.keras.callbacks.Callback):
         wandb.log({'learning_rate':lr}, commit=True)
 
 
+class CustomEarlyStopping(tf.keras.callbacks.Callback):
+    """Stops training when epoch > min_epoch and monitor value < value.
+
+    Parameters
+    ----------
+    Callback : Tensorflow Callback
+        tensorflow Callback
+    """
+
+    def __init__(self, monitor='val_accuracy', value=0.60, min_epoch=10, verbose=0):
+        super(tf.keras.callbacks.Callback, self).__init__()
+        self.monitor = monitor
+        self.value = value
+        self.min_epoch = min_epoch
+        self.verbose = verbose
+
+    def on_epoch_end(self, epoch, logs={}):
+        current = logs.get(self.monitor)
+        if current is None:
+            warnings.warn("Early stopping requires %s available!" % self.monitor, RuntimeWarning)
+
+        if current < self.value and epoch >= self.min_epoch:
+            if self.verbose > 0:
+                print("Epoch %05d: early stopping THR" % epoch)
+            self.model.stop_training = True
+
+
 def get_callbacks(cfg):
     """Return a Callback List.
 
@@ -84,7 +113,7 @@ def get_callbacks(cfg):
         monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model),
     )
 
-    callbacks = [wandbcallback, LRLogger()]
+    callbacks = [wandbcallback, LRLogger(), CustomEarlyStopping()]
     if cfg.earlystopping.use:
         earlystopper = get_earlystopper(cfg)
         callbacks.append(earlystopper)
