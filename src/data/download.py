@@ -1,5 +1,5 @@
 import os
-from utils import timer_func
+from src.data.utils import timer_func
 
 
 @timer_func
