@@ -1,6 +1,8 @@
 import os
+from utils import timer_func
 
 
+@timer_func
 def get_data(dataset_id: int):
     """Download the dataset with dataset_id.
 
