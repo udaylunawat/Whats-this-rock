@@ -72,7 +72,7 @@ class LRLogger(tf.keras.callbacks.Callback):
             current_decayed_lr = self.model.optimizer.learning_rate
 
         # current_decayed_lr = self.model.optimizer._decayed_lr(tf.float32).numpy()
-        print(' - LR: {:.6f}\n'.format(current_decayed_lr))
+        print(' - LR: {:.8f}\n'.format(current_decayed_lr))
         wandb.log({'learning_rate': current_decayed_lr}, commit=False)
 
 
