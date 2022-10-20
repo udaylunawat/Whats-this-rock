@@ -117,8 +117,14 @@ def get_callbacks(cfg):
     if cfg.earlystopping.use:
         earlystopper = get_earlystopper(cfg)
         callbacks.append(earlystopper)
+    else:
+        cfg.earlystopping.patience = None
     if cfg.reduce_lr.use:
         reduce_lr = get_reduce_lr_on_plateau(cfg)
         callbacks.append(reduce_lr)
+    else:
+        cfg.reduce_lr.factor = None
+        cfg.reduce_lr.min_lr = None
+        cfg.reduce_lr.patience = None
 
-    return callbacks
+    return callbacks, cfg
