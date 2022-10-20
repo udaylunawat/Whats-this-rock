@@ -94,16 +94,17 @@ def remove_corrupted_images(
         Extensions list, by default ["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
     """
     print("\n\nRemoving corrupted images...")
-    bad_images = []
-    bad_ext = []
-    s_list = os.listdir(s_dir)
-    for klass in s_list:
-        klass_path = os.path.join(s_dir, klass)
-        print("processing class directory ", klass)
-        if os.path.isdir(klass_path):
-            file_list = os.listdir(klass_path)
+    classes = os.listdir(s_dir)
+
+    def remove_corrupted_from_dir(rock_class):
+        # remove corrupted images from single directory
+        bad_images = []
+        class_path = os.path.join(s_dir, rock_class)
+        print(f"Processing class directory {rock_class}...")
+        if os.path.isdir(class_path):
+            file_list = os.listdir(class_path)
             for f in file_list:
-                f_path = os.path.join(klass_path, f)
+                f_path = os.path.join(class_path, f)
                 tip = imghdr.what(f_path)
                 if ext_list.count(tip) == 0:
                     bad_images.append(f_path)
@@ -119,7 +120,7 @@ def remove_corrupted_images(
                         "*** fatal error, you a sub directory ",
                         f,
                         " in class directory ",
-                        klass,
+                        rock_class,
                     )
         else:
             print(
@@ -128,11 +129,24 @@ def remove_corrupted_images(
                 " it should only contain sub directories",
             )
 
-    for f_path in bad_images:
-        shutil.move(
-            f_path, os.path.join("data", "corrupted_images", os.path.basename(f_path)),
-        )
-    print(f"removed {len(bad_images)} bad images.\n")
+        for f_path in bad_images:
+            shutil.move(
+                f_path, os.path.join("data", "corrupted_images", os.path.basename(f_path)),
+            )
+        print(f"removed {len(bad_images)} bad images from {rock_class}.")
+
+    # Multiprocessing
+    # create all tasks
+    from multiprocessing import Process
+    processes = [Process(target=remove_corrupted_from_dir, args=(i,)) for i in classes]
+    # start all processes
+    for process in processes:
+        process.start()
+    # wait for all processes to complete
+    for process in processes:
+        process.join()
+    # report that all tasks are completed
+    print('Removed all corrupted images.', flush=True)
 
 
 def get_dims(file: str) -> Optional[tuple]:
