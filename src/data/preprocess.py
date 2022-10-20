@@ -28,14 +28,12 @@ def process_data(cfg):
     ).stdout.decode("utf-8")
     print(result)
 
-    print("\nFile types before cleaning:")
-    get_value_counts("data/2_processed")
+    print("\nFile types before cleaning:", get_value_counts("data/2_processed"))
 
     remove_unsupported_images("data/2_processed")
     remove_corrupted_images("data/2_processed")
 
-    print("\nFile types after cleaning:")
-    get_value_counts("data/2_processed")
+    print("\nFile types after cleaning:", get_value_counts("data/2_processed"))
 
     print("\n", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
@@ -45,7 +43,7 @@ def process_data(cfg):
     scc = min(get_df()["class"].value_counts())
     val_split = test_split = (1 - cfg.train_split) / 2
     print(
-        f"Data Split:- Training {cfg.train_split}, Validation {val_split}, Test {test_split}"
+        f"Data Split:- Training {cfg.train_split:.2f}, Validation {val_split:.2f}, Test {test_split:.2f}"
     )
     if cfg.sampling == "oversample":
         print("\nOversampling...")
