@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow_addons as tfa
 from tensorflow.keras import layers
+from tensorflow.keras import backend as K
 from sklearn.metrics import classification_report
 
 # speed improvements
@@ -102,7 +103,7 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
         LRA.tepochs = cfg.epochs  # used to determine value of last epoch for printing
         verbose = 0
     else:
-        callbacks = get_callbacks(cfg)
+        callbacks, cfg = get_callbacks(cfg)
         verbose = 1
 
     history = model.fit(
@@ -132,10 +133,10 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
         #     print(layer.name, layer.trainable)
             # lr_decayed_fn = (
 
-        cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
+        # cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
         lr_decayed_fn = (
             tf.keras.optimizers.schedules.CosineDecayRestarts(
-                cfg.reduce_lr.min_lr,
+                K.get_value(model.optimizer.learning_rate),
                 first_decay_steps=cfg.lr_decay_steps))
         optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
 
@@ -148,7 +149,7 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
 
         epochs = cfg.epochs + 20
 
-        callbacks = get_callbacks(cfg)
+        callbacks, cfg = get_callbacks(cfg)
 
         history = model.fit(
             train_dataset,
@@ -238,24 +239,20 @@ def main(cfg: DictConfig) -> None:
     artifact.add_dir("src/")
     wandb.log_artifact(artifact)
     print(OmegaConf.to_yaml(cfg))
-    wandb.log({"TF version": str(tf.__version__)}, commit=False)
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
     subprocess.run(
         ["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE
     ).stdout.decode("utf-8")
-    for dataset_id in cfg.dataset_id:
-        get_data(dataset_id)
 
+    for dataset_id in cfg.dataset_id: get_data(dataset_id)
     process_data(cfg)
 
     train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)
     labels = train_dataset.class_names
     cfg.num_classes = len(labels)
 
-    class_weights = None
-    if cfg.class_weights:
-        class_weights = get_model_weights(train_dataset)
+    class_weights = get_model_weights(train_dataset) if cfg.class_weights else None
 
     train_dataset = prepare(train_dataset, cfg, shuffle=True, augment=cfg.augmentation)
     val_dataset = prepare(val_dataset, cfg)
