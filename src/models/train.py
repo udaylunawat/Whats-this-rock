@@ -6,43 +6,41 @@ import os
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 import subprocess
-import random
-import numpy as np
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow_addons as tfa
-from tensorflow.keras import layers
-from tensorflow.keras import backend as K
 from sklearn.metrics import classification_report
 
 # speed improvements
-from tensorflow.keras import mixed_precision
+from tensorflow.keras import backend as K
+from tensorflow.keras import layers, mixed_precision
 
 mixed_precision.set_global_policy("mixed_float16")
 
-import wandb
-from wandb.keras import WandbCallback
-
 # from absl import app  # app.run(main)
 import hydra
-from omegaconf import DictConfig
-from omegaconf import OmegaConf
+import wandb
+from omegaconf import DictConfig, OmegaConf
+from wandb.keras import WandbCallback
 
-from src.data.preprocess import process_data
-from src.models.models import get_model
-from src.data.utils import get_tfds_from_dir, prepare
-from src.models.utils import get_optimizer, get_model_weights, get_lr_scheduler
-from src.data.download import get_data
 from src.callbacks.callbacks import get_callbacks
 from src.callbacks.custom_callbacks import LRA
+from src.data.download import get_data
+from src.data.preprocess import process_data
+from src.data.utils import get_tfds_from_dir, prepare
+from src.models.models import get_model
+from src.models.utils import get_lr_scheduler, get_model_weights, get_optimizer
 from src.visualization import plot
 
 
-def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.Dataset, class_weights: dict):
-    """Utility function to train the model and returns model and history.
+def train(
+    cfg: DictConfig,
+    train_dataset: tf.data.Dataset,
+    val_dataset: tf.data.Dataset,
+    class_weights: dict,
+):
+    """Train the model and returns model and history.
 
     Parameters
     ----------
@@ -83,7 +81,7 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
         metrics=["accuracy", f1_score_metrics],
     )
 
-    if cfg.custom_callback == True:
+    if cfg.custom_callback:
         callbacks = [
             LRA(
                 model=model,
@@ -93,7 +91,7 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
                 factor=cfg.reduce_lr.factor,
                 dwell=False,
                 model_name=cfg.backbone,
-                freeze= not cfg.trainable,
+                freeze=not cfg.trainable,
                 initial_epoch=0,
             ),
             WandbCallback(
@@ -116,7 +114,7 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
         verbose=verbose,
     )
 
-    if cfg.trainable == False and history.history["val_accuracy"][-1] > 0.68:
+    if not cfg.trainable and history.history["val_accuracy"][-1] > 0.68:
         model.layers[0].trainable = False
         # model.trainable = True
         for layer in model.layers[0].layers[-cfg.last_layers :]:
@@ -131,13 +129,13 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
         # print("\nBackbone layers\n\n")
         # for layer in model.layers[0].layers:
         #     print(layer.name, layer.trainable)
-            # lr_decayed_fn = (
+        #     lr_decayed_fn = (
 
         # cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
-        lr_decayed_fn = (
-            tf.keras.optimizers.schedules.CosineDecayRestarts(
-                K.get_value(model.optimizer.learning_rate),
-                first_decay_steps=cfg.lr_decay_steps))
+        lr_decayed_fn = tf.keras.optimizers.schedules.CosineDecayRestarts(
+            K.get_value(model.optimizer.learning_rate),
+            first_decay_steps=cfg.lr_decay_steps,
+        )
         optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
 
         # Compile the model
@@ -163,7 +161,13 @@ def train(cfg: DictConfig, train_dataset: tf.data.Dataset, val_dataset: tf.data.
     return model, history
 
 
-def evaluate(cfg: DictConfig, model: tf.keras.Model, history: dict, test_dataset: tf.data.Dataset, labels:list):
+def evaluate(
+    cfg: DictConfig,
+    model: tf.keras.Model,
+    history: dict,
+    test_dataset: tf.data.Dataset,
+    labels: list,
+):
     """Evaluate the trained model on Test Dataset, log confusion matrix and classification report.
 
     Parameters
@@ -203,7 +207,7 @@ def evaluate(cfg: DictConfig, model: tf.keras.Model, history: dict, test_dataset
     )
     print(cl_report)
 
-    cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+    # cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
     plt.savefig("cr.png", dpi=400)
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
@@ -245,7 +249,8 @@ def main(cfg: DictConfig) -> None:
         ["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE
     ).stdout.decode("utf-8")
 
-    for dataset_id in cfg.dataset_id: get_data(dataset_id)
+    for dataset_id in cfg.dataset_id:
+        get_data(dataset_id)
     process_data(cfg)
 
     train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)
@@ -258,8 +263,10 @@ def main(cfg: DictConfig) -> None:
     val_dataset = prepare(val_dataset, cfg)
 
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
+
     if history.history["val_accuracy"][-1] > 0.68:
         evaluate(cfg, model, history, test_dataset, labels)
+
     run.finish()
 
 

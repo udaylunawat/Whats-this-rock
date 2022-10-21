@@ -1,9 +1,8 @@
-import wandb
 import warnings
-from wandb.keras import WandbCallback
 
 import tensorflow as tf
-from tensorflow.keras.optimizers import schedules
+import wandb
+from wandb.keras import WandbCallback
 
 
 def get_earlystopper(cfg) -> tf.keras.callbacks:
@@ -65,15 +64,16 @@ class LRLogger(tf.keras.callbacks.Callback):
 
     def on_epoch_end(self, epoch, logs=None):
         """Log lr on epoch end."""
-        # lr = float(tf.keras.backend.get_value(self.model.optimizer.lr.initial_learning_rate))  # get the current learning rate
         if callable(self.model.optimizer.learning_rate):
-            current_decayed_lr = self.model.optimizer.learning_rate(self.model.optimizer.iterations)
+            current_decayed_lr = self.model.optimizer.learning_rate(
+                self.model.optimizer.iterations
+            )
         else:
             current_decayed_lr = self.model.optimizer.learning_rate
 
         # current_decayed_lr = self.model.optimizer._decayed_lr(tf.float32).numpy()
-        print(' - LR: {:.8f}\n'.format(current_decayed_lr))
-        wandb.log({'learning_rate': current_decayed_lr}, commit=False)
+        print(" - LR: {:.8f}".format(current_decayed_lr))
+        wandb.log({"learning_rate": current_decayed_lr}, commit=False)
 
 
 class CustomEarlyStopping(tf.keras.callbacks.Callback):
@@ -85,7 +85,7 @@ class CustomEarlyStopping(tf.keras.callbacks.Callback):
         tensorflow Callback
     """
 
-    def __init__(self, monitor='val_accuracy', value=0.60, min_epoch=15, verbose=0):
+    def __init__(self, monitor="val_accuracy", value=0.60, min_epoch=15, verbose=0):
         super(tf.keras.callbacks.Callback, self).__init__()
         self.monitor = monitor
         self.value = value
@@ -95,17 +95,19 @@ class CustomEarlyStopping(tf.keras.callbacks.Callback):
     def on_epoch_end(self, epoch, logs={}):
         current = logs.get(self.monitor)
         if current is None:
-            warnings.warn("Early stopping requires %s available!" % self.monitor, RuntimeWarning)
+            warnings.warn(
+                f"Early stopping requires {RuntimeWarning} available!" % self.monitor
+            )
 
         if current < self.value and epoch == self.min_epoch:
             if self.verbose > 0:
                 print("Epoch %05d: early stopping THR" % epoch)
             self.model.stop_training = True
 
-        if current < self.value+0.08 and epoch == 25:
-            if self.verbose > 0:
-                print("Epoch %05d: early stopping THR" % epoch)
-            self.model.stop_training = True
+        # if current < self.value+0.08 and epoch == 25:
+        #     if self.verbose > 0:
+        #         print("Epoch %05d: early stopping THR" % epoch)
+        #     self.model.stop_training = True
 
 
 def get_callbacks(cfg):
@@ -122,7 +124,9 @@ def get_callbacks(cfg):
         Callbacks List
     """
     wandbcallback = WandbCallback(
-        monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model),
+        monitor=cfg.monitor,
+        mode="auto",
+        save_model=(cfg.save_model),
     )
 
     callbacks = [wandbcallback, LRLogger(), CustomEarlyStopping()]

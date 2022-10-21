@@ -1,9 +1,16 @@
 # https://stackoverflow.com/a/64006242/9292995
-import splitfolders
 import os
 import subprocess
 
-from src.data.utils import *
+import splitfolders
+
+from src.data.utils import (
+    get_df,
+    get_value_counts,
+    move_and_rename,
+    remove_corrupted_images,
+    remove_unsupported_images,
+)
 
 
 def process_data(cfg):
@@ -28,14 +35,16 @@ def process_data(cfg):
     ).stdout.decode("utf-8")
     print(result)
 
-    print("\nFile types before cleaning:", get_value_counts("data/2_processed"))
+    print("\nFile types before cleaning:")
+    get_value_counts("data/2_processed")
 
     remove_unsupported_images("data/2_processed")
     remove_corrupted_images("data/2_processed")
 
-    print("\nFile types after cleaning:", get_value_counts("data/2_processed"))
+    print("\nFile types after cleaning:")
+    get_value_counts("data/2_processed")
 
-    print("\n", get_df().info(), "\n")
+    print("\nCounts of classes:", get_df().info(), "\n")
     print(get_df()["class"].value_counts())
     print(
         "\nSplitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"

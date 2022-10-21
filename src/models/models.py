@@ -1,6 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras import layers, models, applications
-from tensorflow.keras import regularizers, initializers
+from tensorflow.keras import applications, layers
 
 
 def get_backbone(cfg) -> tf.keras.models:
@@ -42,7 +41,7 @@ def get_backbone(cfg) -> tf.keras.models:
             weights=weights,
             input_shape=(cfg.image_size, cfg.image_size, cfg.image_channels),
         )
-    except:
+    except NotImplementedError:
         raise NotImplementedError("Not implemented for this backbone.")
 
     base_model.trainable = cfg.trainable

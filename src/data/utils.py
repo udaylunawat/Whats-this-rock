@@ -1,22 +1,17 @@
-import os
-import cv2
-import shutil
-import pandas as pd
-
-import tensorflow as tf
-import tensorflow_datasets as tfds
-from tensorflow.keras import layers, applications
-
 import imghdr
-import numpy as np
-from PIL import Image
+import os
+import shutil
 from time import time
-from tqdm import tqdm
-from os import listdir
-from pathlib import Path
 from typing import Optional
 
+import cv2
 import keras_cv
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+from PIL import Image
+from tensorflow.keras import applications, layers
+from tqdm import tqdm
 
 
 def timer_func(func):
@@ -27,6 +22,7 @@ def timer_func(func):
     func : _type_
         _description_
     """
+
     def wrap_func(*args, **kwargs):
         t1 = time()
         result = func(*args, **kwargs)
@@ -82,7 +78,7 @@ def remove_unsupported_images(root_folder: str):
 
 @timer_func
 def remove_corrupted_images(
-    s_dir: str, ext_list: list =["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
+    s_dir: str, ext_list: list = ["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
 ):
     """Remove corrupted images.
 
@@ -110,9 +106,9 @@ def remove_corrupted_images(
                     bad_images.append(f_path)
                 if os.path.isfile(f_path):
                     try:
-                        img = cv2.imread(f_path)
-                        shape = img.shape
-                    except:
+                        cv2.imread(f_path)
+                        # shape = img.shape
+                    except Exception:
                         print("file ", f_path, " is not a valid image file")
                         bad_images.append(f_path)
                 else:
@@ -131,13 +127,15 @@ def remove_corrupted_images(
 
         for f_path in bad_images:
             shutil.move(
-                f_path, os.path.join("data", "corrupted_images", os.path.basename(f_path)),
+                f_path,
+                os.path.join("data", "corrupted_images", os.path.basename(f_path)),
             )
         print(f"removed {len(bad_images)} bad images from {rock_class}.")
 
     # Multiprocessing
     # create all tasks
     from multiprocessing import Process
+
     processes = [Process(target=remove_corrupted_from_dir, args=(i,)) for i in classes]
     # start all processes
     for process in processes:
@@ -146,7 +144,7 @@ def remove_corrupted_images(
     for process in processes:
         process.join()
     # report that all tasks are completed
-    print('Removed all corrupted images.', flush=True)
+    print("Removed all corrupted images.", flush=True)
 
 
 def get_dims(file: str) -> Optional[tuple]:
@@ -171,8 +169,8 @@ def get_dims(file: str) -> Optional[tuple]:
         return None
 
 
-def get_df(root: str = "data/2_processed") -> pd.DataFrame :
-    """root: a folder present inside data dir, which contains classes containing images.
+def get_df(root: str = "data/2_processed") -> pd.DataFrame:
+    """Return df with classes, image paths and file names.
 
     Parameters
     ----------
@@ -308,9 +306,7 @@ def prepare(ds, cfg, shuffle=False, augment=False):
 
     if cfg.preprocess:
         preprocess_input = get_preprocess(cfg)
-        ds = ds.map(
-            lambda x, y: (preprocess_input(x), y), num_parallel_calls=AUTOTUNE
-        )
+        ds = ds.map(lambda x, y: (preprocess_input(x), y), num_parallel_calls=AUTOTUNE)
 
     if augment:
         # normal augmentation
@@ -342,14 +338,11 @@ def prepare(ds, cfg, shuffle=False, augment=False):
         cut_mix = keras_cv.layers.CutMix()
         mix_up = keras_cv.layers.MixUp()
 
-        ds = (
-            ds
-            .map(apply_rand_augment, num_parallel_calls=AUTOTUNE)
-            .map(cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE)
+        ds = ds.map(apply_rand_augment, num_parallel_calls=AUTOTUNE).map(
+            cut_mix_and_mix_up, num_parallel_calls=AUTOTUNE
         )
 
         ds = ds.map(preprocess_for_model, num_parallel_calls=AUTOTUNE)
-
 
     ds = ds.cache()
     if shuffle:

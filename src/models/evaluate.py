@@ -1,16 +1,15 @@
-from model.utils import get_model, get_optimizer
-from src.data.utils import get_generators
-
-import plot
-import json
+import matplotlib.pyplot as plt
+import numpy as np
 
 # import wandb
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+import plot
 import seaborn as sns
 import tensorflow_addons as tfa
+from hydra import compose, initialize
+from model.utils import get_model, get_optimizer
 from sklearn.metrics import classification_report
+from src.data.utils import get_tfds_from_dir
 
 # run = wandb.init(project="Whats-this-rock-inceptionresnetv2",
 #                  entity="rock-classifiers",
@@ -22,13 +21,18 @@ from sklearn.metrics import classification_report
 #     run = api.run("rock-classifiers/Whats-this-rock/3hvgnqas")
 #     run.file("model-best.h5").download()
 
-train_dataset, val_dataset, test_dataset = get_generators(cfg)
+
+initialize(config_path="configs")
+cfg = compose(config_name="config")
+# print(OmegaConf.to_yaml(cfg))
+
+train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)
 labels = ["Basalt", "Coal", "Granite", "Limestone", "Marble", "Quartzite", "Sandstone"]
 
 model = get_model(cfg)
 try:
     model.load_weights("model-best.h5")
-except:
+except Exception:
     print("model-best.h5 should be present in the checkpoint dir.")
 
 opt = get_optimizer(cfg)

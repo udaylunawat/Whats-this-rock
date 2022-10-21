@@ -1,10 +1,7 @@
-import time
 import numpy as np
-from sklearn.utils import class_weight
-
 import tensorflow as tf
-from tensorflow.keras import layers, optimizers, backend as K
-from tensorflow.keras.callbacks import Callback
+from sklearn.utils import class_weight
+from tensorflow.keras import optimizers
 
 
 def get_optimizer(cfg, lr: str) -> optimizers:
@@ -31,11 +28,11 @@ def get_optimizer(cfg, lr: str) -> optimizers:
         "adam": optimizers.Adam,
         "rms": optimizers.RMSprop,
         "sgd": optimizers.SGD,
-        "adamax": optimizers.Adamax
+        "adamax": optimizers.Adamax,
     }
     try:
         opt = optimizer_dict[cfg.optimizer](learning_rate=lr)
-    except:
+    except NotImplementedError:
         raise NotImplementedError("Not implemented.")
 
     return opt
@@ -78,8 +75,17 @@ def get_lr_scheduler(cfg) -> optimizers.schedules:
         A LearningRateSchedule
     """
     scheduler = {
-        'cosine_decay':optimizers.schedules.CosineDecay(cfg.lr, decay_steps=cfg.lr_decay_steps),
-        'exponentialdecay':optimizers.schedules.ExponentialDecay(cfg.lr, decay_steps=cfg.lr_decay_steps, decay_rate=cfg.reduce_lr.factor, staircase=True),
-        'cosine_decay_restarts':optimizers.schedules.CosineDecayRestarts(cfg.lr, first_decay_steps=cfg.lr_decay_steps),
+        "cosine_decay": optimizers.schedules.CosineDecay(
+            cfg.lr, decay_steps=cfg.lr_decay_steps
+        ),
+        "exponentialdecay": optimizers.schedules.ExponentialDecay(
+            cfg.lr,
+            decay_steps=cfg.lr_decay_steps,
+            decay_rate=cfg.reduce_lr.factor,
+            staircase=True,
+        ),
+        "cosine_decay_restarts": optimizers.schedules.CosineDecayRestarts(
+            cfg.lr, first_decay_steps=cfg.lr_decay_steps
+        ),
     }
     return scheduler[cfg.lr_schedule]
