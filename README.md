@@ -3,7 +3,7 @@
 ## Rock Classification Telegram Bot
 
 ![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock) ![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock) ![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
-[![Deploy to heroku.](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/main.yaml/badge.svg)](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/main.yaml)
+
 <p align="left">
     <img src="imgs/marie.jpg " alt="What's my name?" width="200"/>
 </p>
@@ -17,6 +17,7 @@
   - [Use the Telegram Bot](#use-the-telegram-bot)
   - [Deploy the Telegram Bot](#deploy-telegram-bot)
   - [Train Model](#train-model)
+  - [Hyperparameter Tuning](#wandb-sweeps-hyperparameter-tuning)
 - [Demo](#👨‍💻-demo)
 - [Features I'd like to add](#features-id-like-to-add)
 - [Technologies Used](#technologies-used)
@@ -27,29 +28,28 @@
 
 ## 🛠️ Installation Steps
 
-- ## Use the Telegram Bot
+  > ## Use the Telegram Bot
 
   You can try the bot [here](https://t.me/test7385_bot) on Telegram.
 
   Type `/help` to get instructions.
 
-- ## Deploy Telegram Bot
+  > ## Deploy Telegram Bot
 
   ```bash
   pip install -r requirements-prod.txt
   python src/bot.py
   ```
 
-- ## Train Model
+  >## Train Model
 
-  > Paste your kaggle.json file in the root directory
+  - Paste your kaggle.json file in the root directory
 
     Run these commands
 
     ```bash
     pip install -r requirements-dev.txt
     sh src/scripts/setup.sh
-    sh src/scripts/clean_dir.sh
     python src/models/train.py
     ```
 
@@ -58,11 +58,29 @@
     By using Hydra it's now much more easier to override parameters like this
 
     ```bash
-    python src/models/train.py  wandb.project=Whats-this-rockv13 \
-                                dataset_id=[1] \
+    python src/models/train.py  wandb.project=Whats-this-rockv \
+                                dataset_id=[1,2,3,4] \
                                 epochs=50 \
-                                custom_callback=False \
                                 backbone=resnet
+    ```
+    <p align="left">
+      <img src="imgs/result.png " alt="result" width="1500"/>
+    </p>
+
+  > ## Wandb Sweeps (Hyperparameter Tuning)
+  - Edit configs/sweeps.yaml
+
+    ```bash
+    wandb sweep \
+    --project Whats-this-rock \
+    --entity udaylunawat \
+    configs/sweep.yaml
+    ```
+
+      This will return a command with $sweepid
+
+    ```bash
+    wandb agent udaylunawat/Whats-this-rock/$sweepid
     ```
 
 ## 👨‍💻 Demo
@@ -71,7 +89,7 @@
 |---|---|---|
 | ![ alt colab](https://www.tensorflow.org/images/colab_logo_32px.png)[Run in Colab](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing) | ![ alt Source](https://www.tensorflow.org/images/GitHub-Mark-32px.png)[View Source on Github](https://github.com/udaylunawat/Whats-this-rock) | ![ alt noteboook](https://www.tensorflow.org/images/download_logo_32px.png)[Download Notebook]() |
 
-## Features I'd like to add
+## Features added
 
 - [x] Wandb
   - [x] Config
@@ -95,11 +113,11 @@
   - [x] MobileNetv1
   - [x] MobileNetv2
   - [x] Xception
-- [ ] LRScheduleer, LRDecay
-  - [ ] Baseline without scheduler
-  - [ ] Step decay
-  - [ ] Cosine annealing
-  - [ ] Classic cosine annealing with bathc steps w/o restart
+- [x] LRScheduleer, LRDecay
+  - [x] Baseline without scheduler
+  - [x] Step decay
+  - [x] Cosine annealing
+  - [x] Classic cosine annealing with bathc steps w/o restart
 - [x] Model Checkpoint, Resume Training
 - [x] Evaluation
   - [x] Confusion Matrix
@@ -108,25 +126,27 @@
   - [x] Heroku - Deprecated
   - [x] Railway
   - [x] Show CM and CL in bot
-- [ ] Deploy to Huggingface spaces
-- [ ] Accessing the model through FastAPI (Backend)
-- [ ] Streamlit (Frontend)
 - [x] Docker
 - [x] GitHub Actions
   - [x] Deploy Bot when bot.py is updated.
   - [x] Lint code
-- [ ] convert models.py to Classes and more OOP
+- [x] Configuration Management
+  - [x] ml-collections
+  - [x] Hydra
+- [x] Performance improvement
+  - [x] Convert to tf.data.Dataset
+## Features I'd like to add
+- [ ] Deploy to Huggingface spaces
+- [ ] Accessing the model through FastAPI (Backend)
+- [ ] Streamlit (Frontend)
+- [ ] convert models.py to Classes and more OOP style
 - [ ] nbdev
 - [ ] Group Runs
   - [ ] kfold cross validation
 - [ ] [WandB Tables](https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&t=VRL-ZXzznXV_Hg2h7QnjuA)
   - [ ] find the long tail examples or hard examples,
   - [ ] find the classes that the model is performing terribly on,
-- [x] Configuration Management
-  - [x] ml-collections
-  - [x] Hydra
-- [x] Performance improvement
-  - [x] Convert to tf.data.Dataset
+
 - [ ] Add Badges
   - [ ] Linting
   - [ ] Railway
