@@ -2,10 +2,21 @@
 
 ## Rock Classification Telegram Bot
 
-![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock) ![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock) ![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Lint%20Code%20Base)
+![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock)
+![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock)
+![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
 
-<p align="left">
-    <img src="imgs/marie.jpg " alt="What's my name?" width="200"/>
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+![GitHub issues](https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock)
+[![HitCount](https://hits.dwyl.com/udaylunawat/Whats-this-rock.svg?style=flat)](http://hits.dwyl.com/udaylunawat/Whats-this-rock)
+
+![Twitter Follow](https://img.shields.io/twitter/follow/udaylunawat?style=social)
+
+This project deploys a telegram bot that classifies rock images into 1 of 7 types.
+
+<p >
+    <img src="imgs/marie.jpg " alt="What's my name?" width="240" align="right"/>
 </p>
 
 <!-- TABLE OF CONTENTS -->
@@ -43,7 +54,7 @@
 
   >## Train Model
 
-  - Paste your kaggle.json file in the root directory
+- Paste your kaggle.json file in the root directory
 
     Run these commands
 
@@ -63,12 +74,14 @@
                                 epochs=50 \
                                 backbone=resnet
     ```
+
     <p align="left">
       <img src="imgs/result.png " alt="result" width="1500"/>
     </p>
 
   > ## Wandb Sweeps (Hyperparameter Tuning)
-  - Edit configs/sweeps.yaml
+
+- Edit configs/sweeps.yaml
 
     ```bash
     wandb sweep \
@@ -100,19 +113,20 @@
     <td>
 
 - Wandb
-- Config
-- Sweeps
 - Datasets
   - 4 Datasets
 - Augmentation
+  - keras-cv
+  - Regular Augmentation
 - Sampling
   - Oversampling
   - Undersampling
-  - class weights
+  - Class weights
 - Remove Corrupted Images
-- Try Multiple Optimizers
-- TFDS datasets
-- ImageDataGenerator
+- Try Multiple Optimizers (Adam, RMSProp, AdamW, SGD)
+- Generators
+  - TFDS datasets
+  - ImageDataGenerator
 - Models
   - ConvNextTiny
   - BaselineCNN
@@ -137,12 +151,17 @@
 - Docker
 - GitHub Actions
   - Deploy Bot when bot.py is updated.
-  - Lint code
+  - Lint code using GitHub super-linter
 - Configuration Management
   - ml-collections
   - Hydra
 - Performance improvement
   - Convert to tf.data.Dataset
+- Linting & Formatting
+  - Black
+  - Flake8
+  - isort
+  - pydocstyle
     </td>
     <td>
 - [ ] Deploy to Huggingface spaces
@@ -159,19 +178,37 @@
   - [ ] Linting
   - [ ] Railway
   </td>
+
  </tr>
 </table>
 
 ## Technologies Used
 
-- [Google Colab](https://colab.research.google.com/?utm_source=scs-index)
-- [Python](https://www.python.org/)
-- [Tensorflow](https://www.tensorflow.org/)
-- [Weights and Biases](https://wandb.ai/site)
-- [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
-- [Heroku](https://heroku.com) - Deprecated as Heroku will no longer provide free-to-use service
-- [Railway](https://railway.app)
-- [Hydra - by Facebook](https://hydra.cc)
+[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing)
+
+[![python-telegram-bot](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=black)](https://github.com/python-telegram-bot/python-telegram-bot)
+
+![Railway](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=black)
+
+[![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=black)](https://jupyter.org)
+
+[![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
+
+[![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=black)](https://github.com/features/actions)
+
+[![Weights & Biases](https://raw.githubusercontent.com/wandb/assets/main/wandb-github-badge-28.svg)](http://wandb.ai)
+
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=black)](https://www.tensorflow.org/)
+
+![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
+
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=black)](http://docker.com)
+
+![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black)
+
+[![Hydra](https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&labelColor=gray)](https://hydra.cc)
+
+[![Black](https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&labelColor=gray)](https://github.com/psf/black)
 
 ## Directory Tree
 
