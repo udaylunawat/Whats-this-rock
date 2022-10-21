@@ -89,53 +89,62 @@
 |---|---|---|
 | ![ alt colab](https://www.tensorflow.org/images/colab_logo_32px.png)[Run in Colab](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing) | ![ alt Source](https://www.tensorflow.org/images/GitHub-Mark-32px.png)[View Source on Github](https://github.com/udaylunawat/Whats-this-rock) | ![ alt noteboook](https://www.tensorflow.org/images/download_logo_32px.png)[Download Notebook]() |
 
-## Features added
+## Features
 
-- [x] Wandb
-  - [x] Config
-  - [x] Sweeps
-- [x] Datasets
-  - [x] 4 Datasets
-- [x] Augmentation
-- [x] Sampling
-  - [x] Oversampling
-  - [x] Undersampling
-  - [x] class weights
-- [x] Remove Corrupted Images
-- [x] Try Multiple Optimizers
-- [x] TFDS datasets
-- [x] ImageDataGenerator
-- [x] Models
-  - [x] ConvNextTiny
-  - [x] BaselineCNN
-  - [x] Efficientnet
-  - [x] Resnet101
-  - [x] MobileNetv1
-  - [x] MobileNetv2
-  - [x] Xception
-- [x] LRScheduleer, LRDecay
-  - [x] Baseline without scheduler
-  - [x] Step decay
-  - [x] Cosine annealing
-  - [x] Classic cosine annealing with bathc steps w/o restart
-- [x] Model Checkpoint, Resume Training
-- [x] Evaluation
-  - [x] Confusion Matrix
-  - [x] Classification Report
-- [x] Deploy Telegram Bot
-  - [x] Heroku - Deprecated
-  - [x] Railway
-  - [x] Show CM and CL in bot
-- [x] Docker
-- [x] GitHub Actions
-  - [x] Deploy Bot when bot.py is updated.
-  - [x] Lint code
-- [x] Configuration Management
-  - [x] ml-collections
-  - [x] Hydra
-- [x] Performance improvement
-  - [x] Convert to tf.data.Dataset
-## Features I'd like to add
+<table border="0" class="left">
+ <tr>
+    <td><b><style="font-size:37px">Features added</b></td>
+    <td><b><style="font-size:37px">Features planned</b></td>
+ </tr>
+ <tr>
+    <td>
+
+- Wandb
+- Config
+- Sweeps
+- Datasets
+  - 4 Datasets
+- Augmentation
+- Sampling
+  - Oversampling
+  - Undersampling
+  - class weights
+- Remove Corrupted Images
+- Try Multiple Optimizers
+- TFDS datasets
+- ImageDataGenerator
+- Models
+  - ConvNextTiny
+  - BaselineCNN
+  - Efficientnet
+  - Resnet101
+  - MobileNetv1
+  - MobileNetv2
+  - Xception
+- LRScheduleer, LRDecay
+  - Baseline without scheduler
+  - Step decay
+  - Cosine annealing
+  - Classic cosine annealing with bathc steps w/o restart
+- Model Checkpoint, Resume Training
+- Evaluation
+  - Confusion Matrix
+  - Classification Report
+- Deploy Telegram Bot
+  - Heroku - Deprecated
+  - Railway
+  - Show CM and CL in bot
+- Docker
+- GitHub Actions
+  - Deploy Bot when bot.py is updated.
+  - Lint code
+- Configuration Management
+  - ml-collections
+  - Hydra
+- Performance improvement
+  - Convert to tf.data.Dataset
+    </td>
+    <td>
 - [ ] Deploy to Huggingface spaces
 - [ ] Accessing the model through FastAPI (Backend)
 - [ ] Streamlit (Frontend)
@@ -144,12 +153,14 @@
 - [ ] Group Runs
   - [ ] kfold cross validation
 - [ ] [WandB Tables](https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&t=VRL-ZXzznXV_Hg2h7QnjuA)
-  - [ ] find the long tail examples or hard examples,
-  - [ ] find the classes that the model is performing terribly on,
-
+- [ ] find the long tail examples or hard examples,
+- [ ] find the classes that the model is performing terribly on,
 - [ ] Add Badges
   - [ ] Linting
   - [ ] Railway
+  </td>
+ </tr>
+</table>
 
 ## Technologies Used
 
