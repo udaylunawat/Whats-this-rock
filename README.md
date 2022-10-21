@@ -183,32 +183,13 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 </table>
 
 ## Technologies Used
-
-[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing)
-
-[![python-telegram-bot](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=black)](https://github.com/python-telegram-bot/python-telegram-bot)
-
-![Railway](https://img.shields.io/badge/Railway-131415?style=for-the-badge&logo=railway&logoColor=black)
-
-[![Jupyter Notebook](https://img.shields.io/badge/jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=black)](https://jupyter.org)
-
-[![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
-
-[![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=black)](https://github.com/features/actions)
-
-[![Weights & Biases](https://raw.githubusercontent.com/wandb/assets/main/wandb-github-badge-28.svg)](http://wandb.ai)
-
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=black)](https://www.tensorflow.org/)
-
-![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
-
-[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=black)](http://docker.com)
-
-![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black)
-
-[![Hydra](https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&labelColor=gray)](https://hydra.cc)
-
-[![Black](https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&labelColor=gray)](https://github.com/psf/black)
+|  |  |  |
+|--|--|--|
+[![Google Colab][colab-shield]][googlecolab]|[![python-telegram-bot][telegram-shield]][python-telegram-bot]|[![Railway][railway-shield]][Railway]
+[![Jupyter Notebook][jupyter-shield]][Jupyter]|[![Python][python-shield]][Python]|[![GitHub Actions][githubactions-shield]][GithubActions]
+[![Weights & Biases][wandb-shield]][wandb]|[![TensorFlow][tensorflow-shield]][TensorFlow]|[![macOS][mac-shield]](Macos)
+[![Docker][docker-shield]][Docker]|[![Git][git-shield]]()|[![Hydra][hydra-shield]][Hydra]
+[![Black][black-shield]][black]|  |
 
 ## Directory Tree
 
@@ -298,3 +279,33 @@ This project needs a ⭐️ from you. Don't forget to leave a star ⭐️
 
 <br>
 <p align="center"> Walt might be the one who knocks <br> but Hank is the one who rocks. </br> </p>
+
+
+[googlecolab]: https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing
+[python-telegram-bot]: https://github.com/python-telegram-bot/python-telegram-bot
+[railway]: https://railway.app
+[jupyter]: https://jupyter.org
+[python]: https://www.python.org/
+[gitHubActions]: https://github.com/features/actions
+[wandb]: http://wandb.ai
+[TensorFlow]: https://www.tensorflow.org/
+[docker]: http://docker.com
+[git]: https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black
+[hydra]: http://hydra.cc
+[black]: http://github.com/psf/black
+[macos]: https://apple.com/macos
+
+[colab-shield]: https://img.shields.io/badge/Compute-Google%20Colab-F9AB00?logo=googlecolab&logoColor=fff&style=for-the-badge
+[telegram-shield]: https://img.shields.io/badge/ChatBot-Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=black
+[railway-shield]: https://img.shields.io/badge/Deployment-Railway-131415?style=for-the-badge&logo=railway&logoColor=black
+[python-shield]: https://img.shields.io/badge/Language-python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
+[jupyter-shield]: https://img.shields.io/badge/Coding-jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=black
+[githubactions-shield]: https://img.shields.io/badge/CI-github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=black
+[wandb-shield]: https://img.shields.io/badge/MLOps-Weights%20%26%20Biases-FFBE00?logo=weightsandbiases&logoColor=000&style=for-the-badge
+[tensorflow-shield]: https://img.shields.io/badge/ML_Framework-TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=black
+[mac-shield]: https://img.shields.io/badge/OS-mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0
+[docker-shield]: https://img.shields.io/badge/Container-docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=black
+[git-shield]: https://img.shields.io/badge/Version_Control-git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black
+[hydra-shield]: https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&labelColor=gray
+[black-shield]: https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&labelColor=gray
+
