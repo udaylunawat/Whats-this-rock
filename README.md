@@ -7,6 +7,9 @@
 ![repo-size](https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock)
 ![top-language](https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock)
 
+![Python](https://img.shields.io/badge/python-v3.8.0+-success.svg)
+![Tensorflow](https://img.shields.io/badge/tensorflow-v2.9.0+-success.svg)
+
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 ![GitHub issues](https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock)
 [![HitCount](https://hits.dwyl.com/udaylunawat/Whats-this-rock.svg?style=flat)](http://hits.dwyl.com/udaylunawat/Whats-this-rock)
