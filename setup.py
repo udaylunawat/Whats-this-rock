@@ -7,12 +7,12 @@ def read(fname):
 
 
 setup(
-    name="rocks",
-    version="0.0.1",
+    name="rocks-telegram-bot",
+    version="0.9",
     author="Uday Lunawat",
     author_email="udaylunawat@gmail.com",
     description=(
-        "Rock classifier deployed on heroku and monitored using Weights and Biases."
+        "Rock classifier deployed on railway and monitored using Weights and Biases."
     ),
     license="MIT License",
     keywords="image_classification tensorflow keras wandb telegram-bot",
