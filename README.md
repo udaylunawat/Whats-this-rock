@@ -33,11 +33,13 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
   - [Train Model](#train-model)
   - [Hyperparameter Tuning](#wandb-sweeps-hyperparameter-tuning)
 - [Demo](#👨‍💻-demo)
-- [Features I'd like to add](#features-id-like-to-add)
+- [Features I'd like to add](#features)
 - [Technologies Used](#technologies-used)
 - [Directory Tree](#directory-tree)
-- [Contributing](#contributing)
-- [License](#license)
+- [Bugs/Feature Request](#bug--feature-request)
+- [Contributing](#👨‍💻-contributing)
+- [License](#🛡️-license)
+- [Support](#🙏-support)
 <!-- - [Contact](#contact) -->
 
 ## 🛠️ Installation Steps
@@ -93,7 +95,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
     configs/sweep.yaml
     ```
 
-      This will return a command with $sweepid
+    This will return a command with $sweepid
 
     ```bash
     wandb agent udaylunawat/Whats-this-rock/$sweepid
@@ -103,7 +105,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 
 |  |  |  |
 |---|---|---|
-| ![ alt colab](https://www.tensorflow.org/images/colab_logo_32px.png)[Run in Colab](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing) | ![ alt Source](https://www.tensorflow.org/images/GitHub-Mark-32px.png)[View Source on Github](https://github.com/udaylunawat/Whats-this-rock) | ![ alt noteboook](https://www.tensorflow.org/images/download_logo_32px.png)[Download Notebook]() |
+| ![ alt colab](https://www.tensorflow.org/images/colab_logo_32px.png)[Run in Colab](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing) | ![ alt Source](https://www.tensorflow.org/images/GitHub-Mark-32px.png)[View Source on GitHub](https://github.com/udaylunawat/Whats-this-rock) | ![ alt noteboook](https://www.tensorflow.org/images/download_logo_32px.png)[Download Notebook](https://github.com/udaylunawat/Whats-this-rock/blob/main/notebooks/03_training.ipynb) |
 
 ## Features
 
@@ -186,17 +188,16 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 </table>
 
 ## Technologies Used
+
 |  |  |  |
 |--|--|--|
 [![Google Colab][colab-shield]][googlecolab]|[![python-telegram-bot][telegram-shield]][python-telegram-bot]|[![Railway][railway-shield]][Railway]
-[![Jupyter Notebook][jupyter-shield]][Jupyter]|[![Python][python-shield]][Python]|[![GitHub Actions][githubactions-shield]][GithubActions]
-[![Weights & Biases][wandb-shield]][wandb]|[![TensorFlow][tensorflow-shield]][TensorFlow]|[![macOS][mac-shield]](Macos)
-[![Docker][docker-shield]][Docker]|[![Git][git-shield]]()|[![Hydra][hydra-shield]][Hydra]
+[![Jupyter Notebook][jupyter-shield]][Jupyter]|[![Python][python-shield]][Python]|[![GitHub Actions][githubactions-shield]][GitHubActions]
+[![Weights & Biases][wandb-shield]][wandb]|[![TensorFlow][tensorflow-shield]][TensorFlow]|[![macOS][mac-shield]][Macos]
+[![Docker][docker-shield]][Docker]|[![Git][git-shield]][git]|[![Hydra][hydra-shield]][Hydra]
 [![Black][black-shield]][black]|  |
 
 ## Directory Tree
-
-------------
 
     ├── imgs                              <- Images for skill banner, project banner and other images
     │
@@ -257,7 +258,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 
 ## Bug / Feature Request
 
-If you find a bug (the website couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
+If you find a bug (the site couldn't handle the query and / or gave undesired results), kindly open an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues) by including your search query and the expected result.
 
 If you'd like to request a new function, feel free to do so by opening an issue [here](https://github.com/udaylunawat/Whats-this-rock/issues). Please include sample queries and their corresponding results.
 
@@ -283,17 +284,16 @@ This project needs a ⭐️ from you. Don't forget to leave a star ⭐️
 <br>
 <p align="center"> Walt might be the one who knocks <br> but Hank is the one who rocks. </br> </p>
 
-
 [googlecolab]: https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing
 [python-telegram-bot]: https://github.com/python-telegram-bot/python-telegram-bot
 [railway]: https://railway.app
 [jupyter]: https://jupyter.org
 [python]: https://www.python.org/
-[gitHubActions]: https://github.com/features/actions
+[GitHubActions]: https://github.com/features/actions
 [wandb]: http://wandb.ai
 [TensorFlow]: https://www.tensorflow.org/
 [docker]: http://docker.com
-[git]: https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black
+[git]: https://git-scm.com
 [hydra]: http://hydra.cc
 [black]: http://github.com/psf/black
 [macos]: https://apple.com/macos
@@ -311,4 +311,3 @@ This project needs a ⭐️ from you. Don't forget to leave a star ⭐️
 [git-shield]: https://img.shields.io/badge/Version_Control-git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black
 [hydra-shield]: https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&labelColor=gray
 [black-shield]: https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&labelColor=gray
-
