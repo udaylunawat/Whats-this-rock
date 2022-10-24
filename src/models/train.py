@@ -1,27 +1,20 @@
 #!/usr/bin/env python
 """Trains a model on rocks dataset."""
 
-import os
-
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-
+import logging
 import subprocess
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow_addons as tfa
+import wandb
+from hydra import compose, initialize
+from omegaconf import DictConfig, OmegaConf
 from sklearn.metrics import classification_report
 
 # speed improvements
 from tensorflow.keras import backend as K
 from tensorflow.keras import layers, mixed_precision
-
-mixed_precision.set_global_policy("mixed_float16")
-
-# from absl import app  # app.run(main)
-import hydra
-import wandb
-from omegaconf import DictConfig, OmegaConf
 from wandb.keras import WandbCallback
 
 from src.callbacks.callbacks import get_callbacks
@@ -32,6 +25,9 @@ from src.data.utils import get_tfds_from_dir, prepare
 from src.models.models import get_model
 from src.models.utils import get_lr_scheduler, get_model_weights, get_optimizer
 from src.visualization import plot
+
+tf.get_logger().setLevel(logging.ERROR)
+mixed_precision.set_global_policy("mixed_float16")
 
 
 def train(
@@ -70,9 +66,7 @@ def train(
     optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
     optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
 
-    f1_score_metrics = [
-        tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)
-    ]
+    f1_score_metrics = [tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)]
 
     # Compile the model
     model.compile(
@@ -94,9 +88,7 @@ def train(
                 freeze=not cfg.trainable,
                 initial_epoch=0,
             ),
-            WandbCallback(
-                monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model)
-            ),
+            WandbCallback(monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model)),
         ]
         LRA.tepochs = cfg.epochs  # used to determine value of last epoch for printing
         verbose = 0
@@ -119,7 +111,6 @@ def train(
         # model.trainable = True
         for layer in model.layers[0].layers[-cfg.last_layers :]:
             layer.trainable = True
-
         # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
         for layer in model.layers[0].layers:
             if isinstance(layer, layers.BatchNormalization):
@@ -213,17 +204,10 @@ def evaluate(
     wandb.log({"Test Accuracy": scores["accuracy"]})
 
     wandb.log({"Confusion Matrix": cm})
-    wandb.log(
-        {
-            "Classification Report Image:": wandb.Image(
-                "cr.png", caption="Classification Report"
-            )
-        }
-    )
+    wandb.log({"Classification Report Image:": wandb.Image("cr.png", caption="Classification Report")})
 
 
-@hydra.main(config_path="../../configs/", config_name="config.yaml", version_base="1.2")
-def main(cfg: DictConfig) -> None:
+def main() -> None:
     """Run Main function.
 
     Parameters
@@ -231,6 +215,9 @@ def main(cfg: DictConfig) -> None:
     cfg : DictConfig
         Hydra Configuration
     """
+    initialize(config_path="configs")
+    cfg = compose(config_name="config")
+
     tf.keras.utils.set_random_seed(cfg.seed)
     if cfg.wandb.use:
         run = wandb.init(
@@ -245,9 +232,7 @@ def main(cfg: DictConfig) -> None:
     print(OmegaConf.to_yaml(cfg))
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
-    subprocess.run(
-        ["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE
-    ).stdout.decode("utf-8")
+    subprocess.run(["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
     for dataset_id in cfg.dataset_id:
         get_data(dataset_id)
