@@ -2,7 +2,7 @@ import os
 
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
-from src.models.predict import get_prediction, get_run_data
+from src.models.predict import get_prediction, get_run_data, load_model
 
 
 def start(update, context):
@@ -33,14 +33,19 @@ def model_details(update, context):
     #         f"""Model details can be found at \nhttps://wandb.ai/{config["pretrained_model_link"]}/
     # """
     #     )
-    dir = os.listdir("media/images")
-    cr = os.path.join("media", "images", dir[0])
-    update.message.reply_text("Here's the Confusion matrix heatmap for the model.")
+
+    if os.path.exists("media/images"):
+        dir = os.listdir("media/images")
+        model_image = os.path.join("media", "images", dir[0])
+        update.message.reply_text("Here's the Confusion matrix heatmap for the model.")
+    else:
+        model_image = os.path.join("imgs", "result.png")
+        update.message.reply_text("Here are the plots for the model.")
+
     user = update.effective_user
-    print(cr)
-    print(user)
     chat_id = user["id"]
-    bot.send_photo(chat_id, photo=open(cr, "rb"))
+    bot.send_photo(chat_id, photo=open(model_image, "rb"))
+    print(f"{model_image} sent to user {chat_id}.")
 
 
 def handle_message(update, context):
@@ -58,9 +63,6 @@ def handle_photo(update, context):
 
 if __name__ == "__main__":
 
-    print("Bot started!")
-    print("Please visit {} to start using me!".format("t.me/test7385_bot"))
-
     TOKEN = os.environ["TOKEN"]
     updater = Updater(TOKEN, use_context=True)
     bot = updater.bot
@@ -71,8 +73,10 @@ if __name__ == "__main__":
     dp.add_handler(MessageHandler(Filters.text, handle_message))
     dp.add_handler(MessageHandler(Filters.photo, handle_photo))
 
-    print("Telegram Bot Deployed!")
     get_run_data()  # Download model and report image
-
+    model = load_model()
     updater.start_polling()
     updater.idle()
+    print("Bot started!")
+    print("Please visit {} to start using me!".format("t.me/test7385_bot"))
+    print("Telegram Bot Deployed!")
