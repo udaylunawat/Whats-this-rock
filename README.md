@@ -12,6 +12,7 @@
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 ![GitHub issues](https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock)
+[![GitHub Super-Linter](https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 [![HitCount](https://hits.dwyl.com/udaylunawat/Whats-this-rock.svg?style=flat)](http://hits.dwyl.com/udaylunawat/Whats-this-rock)
 
 ![Twitter Follow](https://img.shields.io/twitter/follow/udaylunawat?style=social)
