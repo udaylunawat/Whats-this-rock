@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>rocks_bot - Trainer</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="rocks_bot - Trainer">
+<meta property="og:site-name" content="rocks_bot">
+<meta name="twitter:title" content="rocks_bot - Trainer">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">rocks_bot</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page">Getting Started</a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="./t.me/test7385_bot"><i class="bi bi-play-btn-fill" role="img">
+</i> 
+ <span class="dropdown-text">Telegram Rock Classifier Chatbot</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/"><i class="bi bi-journal-bookmark-fill" role="img">
+</i> 
+ <span class="dropdown-text">Keras-CV</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tensorflow.org/tutorials"><i class="bi bi-link" role="img">
+</i> 
+ <span class="dropdown-text">Tensorflow (tutorial)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://nbdev.fast.ai/getting_started.html"><i class="bi bi-link" role="img">
+</i> 
+ <span class="dropdown-text">nbdev (docs)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="button" data-bs-toggle="dropdown" aria-expanded="false">Help</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-help">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/udaylunawat/Whats-this-rock/issues"><i class="bi bi-bug" role="img">
+</i> 
+ <span class="dropdown-text">Report an Issue</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/udaylunawat"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://udaylunawat.github.io/Whats-this-rock"><i class="bi bi-house" role="img" aria-label="Twitter">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Trainer</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Whats-this-rock</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_datasets.html" class="sidebar-item-text sidebar-link">Downloading Data</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./b_data_utils.html" class="sidebar-item-text sidebar-link">Data utils</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_loading.html" class="sidebar-item-text sidebar-link">Data Loading</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./eda.html" class="sidebar-item-text sidebar-link">Exploratory Notebook</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./detailed_trainer.html" class="sidebar-item-text sidebar-link active">Trainer</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./training.html" class="sidebar-item-text sidebar-link">Training Notebook</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./sweeps.html" class="sidebar-item-text sidebar-link">Hyperparameter Tuning using Wandb Sweeps</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/rocks_bot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Trainer</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nvidia-smi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Thu Sep 15 16:48:03 2022       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 460.32.03    Driver Version: 460.32.03    CUDA Version: 11.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Tesla T4            Off  | 00000000:00:04.0 Off |                    0 |
+| N/A   53C    P8     9W /  70W |      0MiB / 15109MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+</code></pre>
+</div>
+</div>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm <span class="op">-</span>rf <span class="op">/</span>content<span class="op">/</span>Whats<span class="op">-</span>this<span class="op">-</span>rock<span class="op">/</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>git clone <span class="op">-</span>b hydra https:<span class="op">//</span>github.com<span class="op">/</span>udaylunawat<span class="op">/</span>Whats<span class="op">-</span>this<span class="op">-</span>rock.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>/content
+Cloning into 'Whats-this-rock'...
+remote: Enumerating objects: 2093, done.
+remote: Counting objects: 100% (333/333), done.
+remote: Compressing objects: 100% (246/246), done.
+remote: Total 2093 (delta 152), reused 188 (delta 86), pack-reused 1760
+Receiving objects: 100% (2093/2093), 5.84 MiB | 2.85 MiB/s, done.
+Resolving deltas: 100% (1355/1355), done.
+/content/Whats-this-rock</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'WANDB_MODE'</span>] <span class="op">=</span> <span class="st">'offline'</span> <span class="co"># offline</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="st">'WANDB_API_KEY'</span> <span class="kw">not</span> <span class="kw">in</span> os.environ:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.environ[<span class="st">'WANDB_MODE'</span>] <span class="op">==</span> <span class="st">'online'</span>:</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> getpass <span class="im">import</span> getpass</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        secret <span class="op">=</span> getpass(<span class="st">'Enter WandB API Key: '</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        os.environ[<span class="st">'WANDB_API_KEY'</span>] <span class="op">=</span> secret</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"WandB Offline!"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WandB Offline!</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>sh src<span class="op">/</span>scripts<span class="op">/</span>setup.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The following package was automatically installed and is no longer required:
+  libnvidia-common-460
+Use 'apt autoremove' to remove it.
+The following packages will be REMOVED:
+  libcudnn8-dev
+The following held packages will be changed:
+  libcudnn8
+The following packages will be upgraded:
+  libcudnn8
+1 upgraded, 0 newly installed, 1 to remove and 18 not upgraded.
+Need to get 430 MB of archives.
+After this operation, 3,139 MB disk space will be freed.
+(Reading database ... 155569 files and directories currently installed.)
+Removing libcudnn8-dev (8.0.5.39-1+cuda11.1) ...
+(Reading database ... 155547 files and directories currently installed.)
+Preparing to unpack .../libcudnn8_8.1.0.77-1+cuda11.2_amd64.deb ...
+Unpacking libcudnn8 (8.1.0.77-1+cuda11.2) over (8.0.5.39-1+cuda11.1) ...
+Setting up libcudnn8 (8.1.0.77-1+cuda11.2) ...
+     |████████████████████████████████| 1.8 MB 28.4 MB/s 
+     |████████████████████████████████| 151 kB 74.1 MB/s 
+     |████████████████████████████████| 158 kB 59.3 MB/s 
+     |████████████████████████████████| 181 kB 72.3 MB/s 
+     |████████████████████████████████| 63 kB 1.7 MB/s 
+     |████████████████████████████████| 157 kB 72.6 MB/s 
+     |████████████████████████████████| 157 kB 72.9 MB/s 
+     |████████████████████████████████| 157 kB 75.3 MB/s 
+     |████████████████████████████████| 157 kB 75.1 MB/s 
+     |████████████████████████████████| 157 kB 84.0 MB/s 
+     |████████████████████████████████| 157 kB 64.6 MB/s 
+     |████████████████████████████████| 157 kB 78.5 MB/s 
+     |████████████████████████████████| 156 kB 73.5 MB/s 
+     |████████████████████████████████| 79 kB 8.3 MB/s 
+     |████████████████████████████████| 117 kB 76.0 MB/s 
+  Building wheel for antlr4-python3-runtime (setup.py) ... done
+  Building wheel for pathtools (setup.py) ... done
+renamed 'kaggle.json' -&gt; '/root/.kaggle/kaggle.json'</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>sh src<span class="op">/</span>scripts<span class="op">/</span>clean_dir.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env python</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">Trains a model on rocks dataset</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"TF_CPP_MIN_LOG_LEVEL"</span>] <span class="op">=</span> <span class="st">"3"</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gc</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> subprocess</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> click</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow_addons <span class="im">as</span> tfa</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="co"># speed improvements</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras <span class="im">import</span> mixed_precision</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>mixed_precision.set_global_policy(<span class="st">'mixed_float16'</span>)</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> wandb</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wandb.keras <span class="im">import</span> WandbCallback</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> absl <span class="im">import</span> app</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hydra</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> omegaconf <span class="im">import</span> DictConfig</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.data.preprocess <span class="im">import</span> process_data</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.models.models <span class="im">import</span> get_model</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.data.utils <span class="im">import</span> get_tfds_from_dir, prepare</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.models.utils <span class="im">import</span> get_optimizer, get_model_weights_ds</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.data.download <span class="im">import</span> get_data</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.callbacks.callbacks <span class="im">import</span> get_earlystopper, get_reduce_lr_on_plateau</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.visualization <span class="im">import</span> plot</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> seed_everything(seed):</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    os.environ[<span class="st">"TF_CUDNN_DETERMINISTIC"</span>] <span class="op">=</span> <span class="st">"1"</span></span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>    os.environ[<span class="st">"PYTHONHASHSEED"</span>] <span class="op">=</span> <span class="bu">str</span>(seed)</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>    random.seed(seed)</span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    np.random.seed(seed)</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    tf.random.set_seed(seed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>ModuleNotFoundError: ignored</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get configs from the config file.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>config <span class="op">=</span> get_config()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>config.seed <span class="op">=</span> <span class="dv">42</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>config.dataset_config.train_dataset <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>config.dataset_config.sampling <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>config.train_config.lr <span class="op">=</span> <span class="fl">0.001</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>config.train_config.epochs <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>config.train_config.loss <span class="op">=</span> <span class="st">"categorical_crossentropy"</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>config.model_config.preprocess <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>config.model_config.backbone <span class="op">=</span> <span class="st">'resnet'</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>config.model_config.regularize_more <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>config.callback_config.save_model <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>config.callback_config.rlrp_factor <span class="op">=</span> <span class="fl">0.8</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>config.callback_config.rlrp_patience <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>config.callback_config.early_patience <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(config)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.train <span class="im">import</span> train</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.train <span class="im">import</span> evaluate</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>seed_everything(config.seed)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>run <span class="op">=</span> wandb.init(</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    project<span class="op">=</span>config.wandb_config.project,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    config<span class="op">=</span>config.to_dict(),</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    allow_val_change<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>artifact <span class="op">=</span> wandb.Artifact(<span class="st">'rocks'</span>, <span class="bu">type</span><span class="op">=</span><span class="st">'files'</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>artifact.add_dir(<span class="st">'src/'</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>wandb.log_artifact(artifact)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Datasets used for Training:- </span><span class="sc">{</span>config<span class="sc">.</span>dataset_config<span class="sc">.</span>train_dataset<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dataset_id <span class="kw">in</span> config.dataset_config.train_dataset:</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    get_data(dataset_id)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="st">'data/4_tfds_dataset/train'</span>):</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    process_data(config)</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>train_dataset, val_dataset, test_dataset <span class="op">=</span> get_tfds_from_dir(config)</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Basalt"</span>,</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Coal"</span>,</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Granite"</span>,</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Limestone"</span>,</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Marble"</span>,</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Quartzite"</span>,</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Sandstone"</span>,</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="co">## Update the `num_classes` and update wandb config</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>config.dataset_config.num_classes <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> wandb.run <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    wandb.config.update(</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"dataset_config.num_classes"</span>: config.dataset_config.num_classes})</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>model, history <span class="op">=</span> train(config, train_dataset, val_dataset, labels)</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>evaluate(config, model, history, test_dataset, labels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report, confusion_matrix</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>test_ds <span class="op">=</span> prepare(test_dataset, config)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Scores</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> model.evaluate(test_dataset, return_dict<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Scores: '</span>, scores)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> tf.concat([y <span class="cf">for</span> x, y <span class="kw">in</span> test_ds], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>true_categories <span class="op">=</span> tf.argmax(y_true, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(test_dataset, verbose<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>predicted_categories <span class="op">=</span> tf.argmax(y_pred, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> plot.plot_confusion_matrix(labels, true_categories, predicted_categories)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>cl_report <span class="op">=</span> classification_report(true_categories,</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>                                  predicted_categories,</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>                                  labels<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>                                  target_names<span class="op">=</span>labels,</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>                                  output_dict<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cl_report)</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>cr <span class="op">=</span> sns.heatmap(pd.DataFrame(cl_report).iloc[:<span class="op">-</span><span class="dv">1</span>, :].T, annot<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'imgs/cr.png'</span>, dpi<span class="op">=</span><span class="dv">400</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>6/6 [==============================] - 2s 302ms/step - loss: 4.8600 - accuracy: 0.3476 - f1_score: 0.3195
+Scores:  {'loss': 4.859963417053223, 'accuracy': 0.34756097197532654, 'f1_score': 0.3195052146911621}</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+
+<meta charset="utf-8">
+
+    <div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax) {MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>                <div id="a74b5ef0-469e-4d34-ae15-6e70f04ea6f8" class="plotly-graph-div" style="height:550px; width:850px;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("a74b5ef0-469e-4d34-ae15-6e70f04ea6f8")) {                    Plotly.newPlot(                        "a74b5ef0-469e-4d34-ae15-6e70f04ea6f8",                        [{"colorscale":[[0.0,"rgb(247,251,255)"],[0.125,"rgb(222,235,247)"],[0.25,"rgb(198,219,239)"],[0.375,"rgb(158,202,225)"],[0.5,"rgb(107,174,214)"],[0.625,"rgb(66,146,198)"],[0.75,"rgb(33,113,181)"],[0.875,"rgb(8,81,156)"],[1.0,"rgb(8,48,107)"]],"hoverinfo":"text","reversescale":false,"showscale":false,"text":[["Correctly predicted 1 out of 22 Basalt with accuracy 0.045454545454545456","Incorrectly predicted 4 out of 59 Coal as Basalt","","Incorrectly predicted 4 out of 56 Limestone as Basalt","Incorrectly predicted 4 out of 54 Marble as Basalt","Incorrectly predicted 5 out of 65 Quartzite as Basalt",""],["","Correctly predicted 26 out of 59 Coal with accuracy 0.4406779661016949","","Incorrectly predicted 5 out of 56 Limestone as Coal","Incorrectly predicted 13 out of 54 Marble as Coal","Incorrectly predicted 8 out of 65 Quartzite as Coal","Incorrectly predicted 3 out of 47 Sandstone as Coal"],["Incorrectly predicted 4 out of 22 Basalt as Granite","Incorrectly predicted 1 out of 59 Coal as Granite","Correctly predicted 10 out of 25 Granite with accuracy 0.4","Incorrectly predicted 3 out of 56 Limestone as Granite","Incorrectly predicted 2 out of 54 Marble as Granite","Incorrectly predicted 7 out of 65 Quartzite as Granite","Incorrectly predicted 3 out of 47 Sandstone as Granite"],["Incorrectly predicted 3 out of 22 Basalt as Limestone","Incorrectly predicted 7 out of 59 Coal as Limestone","Incorrectly predicted 2 out of 25 Granite as Limestone","Correctly predicted 21 out of 56 Limestone with accuracy 0.375","Incorrectly predicted 3 out of 54 Marble as Limestone","Incorrectly predicted 7 out of 65 Quartzite as Limestone","Incorrectly predicted 11 out of 47 Sandstone as Limestone"],["Incorrectly predicted 2 out of 22 Basalt as Marble","Incorrectly predicted 6 out of 59 Coal as Marble","Incorrectly predicted 2 out of 25 Granite as Marble","Incorrectly predicted 3 out of 56 Limestone as Marble","Correctly predicted 13 out of 54 Marble with accuracy 0.24074074074074073","Incorrectly predicted 7 out of 65 Quartzite as Marble","Incorrectly predicted 5 out of 47 Sandstone as Marble"],["Incorrectly predicted 5 out of 22 Basalt as Quartzite","Incorrectly predicted 12 out of 59 Coal as Quartzite","Incorrectly predicted 7 out of 25 Granite as Quartzite","Incorrectly predicted 7 out of 56 Limestone as Quartzite","Incorrectly predicted 14 out of 54 Marble as Quartzite","Correctly predicted 26 out of 65 Quartzite with accuracy 0.4","Incorrectly predicted 8 out of 47 Sandstone as Quartzite"],["Incorrectly predicted 7 out of 22 Basalt as Sandstone","Incorrectly predicted 3 out of 59 Coal as Sandstone","Incorrectly predicted 4 out of 25 Granite as Sandstone","Incorrectly predicted 13 out of 56 Limestone as Sandstone","Incorrectly predicted 5 out of 54 Marble as Sandstone","Incorrectly predicted 5 out of 65 Quartzite as Sandstone","Correctly predicted 17 out of 47 Sandstone with accuracy 0.3617021276595745"]],"x":["Basalt","Coal","Granite","Limestone","Marble","Quartzite","Sandstone"],"y":["Basalt","Coal","Granite","Limestone","Marble","Quartzite","Sandstone"],"z":[[1,4,0,4,4,5,0],[0,26,0,5,13,8,3],[4,1,10,3,2,7,3],[3,7,2,21,3,7,11],[2,6,2,3,13,7,5],[5,12,7,7,14,26,8],[7,3,4,13,5,5,17]],"type":"heatmap"}],                        {"annotations":[{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Basalt","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Coal","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"","x":"Granite","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Limestone","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Marble","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Quartzite","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"","x":"Sandstone","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"","x":"Basalt","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"26","x":"Coal","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"","x":"Granite","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Limestone","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"13","x":"Marble","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"8","x":"Quartzite","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Sandstone","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Basalt","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Coal","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"10","x":"Granite","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Limestone","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Marble","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Quartzite","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Sandstone","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Basalt","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Coal","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Granite","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"21","x":"Limestone","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Marble","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Quartzite","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"11","x":"Sandstone","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Basalt","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"6","x":"Coal","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Granite","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Limestone","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"13","x":"Marble","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Quartzite","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Sandstone","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Basalt","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"12","x":"Coal","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Granite","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Limestone","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"14","x":"Marble","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"26","x":"Quartzite","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"8","x":"Sandstone","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Basalt","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Coal","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Granite","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"13","x":"Limestone","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Marble","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Quartzite","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"17","x":"Sandstone","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#094973","size":16},"showarrow":false,"text":"True Class","x":0.5,"xref":"paper","y":-0.1,"yref":"paper"},{"font":{"color":"#094973","size":16},"showarrow":false,"text":"Predicted Class","textangle":-90,"x":-0.17,"xref":"paper","y":0.5,"yref":"paper"}],"xaxis":{"dtick":1,"gridcolor":"rgb(0, 0, 0)","side":"top","ticks":""},"yaxis":{"dtick":1,"ticks":"","ticksuffix":"  "},"template":{"data":{"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"#E5ECF6","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"bgcolor":"#E5ECF6","radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"bgcolor":"#E5ECF6","caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","zerolinewidth":2}}},"width":850,"height":550,"margin":{"t":100,"l":200}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('a74b5ef0-469e-4d34-ae15-6e70f04ea6f8');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                            </script>        </div>
+
+
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'Basalt': {'precision': 0.05555555555555555, 'recall': 0.045454545454545456, 'f1-score': 0.049999999999999996, 'support': 22}, 'Coal': {'precision': 0.4727272727272727, 'recall': 0.4406779661016949, 'f1-score': 0.45614035087719296, 'support': 59}, 'Granite': {'precision': 0.3333333333333333, 'recall': 0.4, 'f1-score': 0.3636363636363636, 'support': 25}, 'Limestone': {'precision': 0.3888888888888889, 'recall': 0.375, 'f1-score': 0.3818181818181819, 'support': 56}, 'Marble': {'precision': 0.34210526315789475, 'recall': 0.24074074074074073, 'f1-score': 0.2826086956521739, 'support': 54}, 'Quartzite': {'precision': 0.3291139240506329, 'recall': 0.4, 'f1-score': 0.3611111111111111, 'support': 65}, 'Sandstone': {'precision': 0.3148148148148148, 'recall': 0.3617021276595745, 'f1-score': 0.33663366336633666, 'support': 47}, 'accuracy': 0.3475609756097561, 'macro avg': {'precision': 0.31950557893262754, 'recall': 0.32336791142236515, 'f1-score': 0.31884976663733716, 'support': 328}, 'weighted avg': {'precision': 0.34721532925108595, 'recall': 0.3475609756097561, 'f1-score': 0.34463378640286313, 'support': 328}}</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="03_detailed_trainer_files/figure-html/cell-10-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>test_ds <span class="op">=</span> prepare(test_dataset, config)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Scores</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>scores <span class="op">=</span> model.evaluate(test_dataset, return_dict<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Scores: "</span>, scores)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> tf.concat([y <span class="cf">for</span> x, y <span class="kw">in</span> test_ds], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>true_categories <span class="op">=</span> tf.argmax(y_true, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(test_ds)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>predicted_categories <span class="op">=</span> tf.argmax(y_pred, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Confusion Matrix</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>cm <span class="op">=</span> plot.plot_confusion_matrix(labels, true_categories,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>                            predicted_categories)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Classification Report</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>cl_report <span class="op">=</span> classification_report(</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    true_categories,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    predicted_categories,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    labels<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>],</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    target_names<span class="op">=</span>labels,</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    output_dict<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cl_report)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>cr <span class="op">=</span> sns.heatmap(pd.DataFrame(cl_report).iloc[:<span class="op">-</span><span class="dv">1</span>, :].T, annot<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"cr.png"</span>, dpi<span class="op">=</span><span class="dv">400</span>)</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>wandb.log({<span class="st">"Test Accuracy"</span>: scores[<span class="st">"accuracy"</span>]})</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>wandb.log({<span class="st">"Test F1 Score"</span>: scores[<span class="st">"f1_score"</span>]})</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co"># average of val and test f1 score</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>wandb.log({</span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Avg VT F1 Score"</span>:</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a>    (scores[<span class="st">"f1_score"</span>] <span class="op">+</span> <span class="bu">max</span>(history.history[<span class="st">"val_f1_score"</span>])) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>wandb.log({<span class="st">"Confusion Matrix"</span>: cm})</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>wandb.log({</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Classification Report Image:"</span>:</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a>    wandb.Image(<span class="st">"cr.png"</span>, caption<span class="op">=</span><span class="st">"Classification Report"</span>)</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a>run.finish()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>6/6 [==============================] - 2s 336ms/step - loss: 4.8600 - accuracy: 0.3476 - f1_score: 0.3195
+Scores:  {'loss': 4.859963417053223, 'accuracy': 0.34756097197532654, 'f1_score': 0.3195052146911621}
+6/6 [==============================] - 1s 219ms/step</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+
+<meta charset="utf-8">
+
+    <div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax) {MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script src="https://cdn.plot.ly/plotly-2.8.3.min.js"></script>                <div id="a89143d2-266e-4b9d-afa1-1bb4211eed4c" class="plotly-graph-div" style="height:550px; width:850px;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("a89143d2-266e-4b9d-afa1-1bb4211eed4c")) {                    Plotly.newPlot(                        "a89143d2-266e-4b9d-afa1-1bb4211eed4c",                        [{"colorscale":[[0.0,"rgb(247,251,255)"],[0.125,"rgb(222,235,247)"],[0.25,"rgb(198,219,239)"],[0.375,"rgb(158,202,225)"],[0.5,"rgb(107,174,214)"],[0.625,"rgb(66,146,198)"],[0.75,"rgb(33,113,181)"],[0.875,"rgb(8,81,156)"],[1.0,"rgb(8,48,107)"]],"hoverinfo":"text","reversescale":false,"showscale":false,"text":[["Correctly predicted 1 out of 22 Basalt with accuracy 0.045454545454545456","Incorrectly predicted 7 out of 59 Coal as Basalt","Incorrectly predicted 1 out of 25 Granite as Basalt","Incorrectly predicted 1 out of 56 Limestone as Basalt","Incorrectly predicted 5 out of 54 Marble as Basalt","Incorrectly predicted 3 out of 65 Quartzite as Basalt","Incorrectly predicted 1 out of 47 Sandstone as Basalt"],["","Correctly predicted 29 out of 59 Coal with accuracy 0.4915254237288136","","Incorrectly predicted 4 out of 56 Limestone as Coal","Incorrectly predicted 6 out of 54 Marble as Coal","Incorrectly predicted 12 out of 65 Quartzite as Coal","Incorrectly predicted 3 out of 47 Sandstone as Coal"],["Incorrectly predicted 2 out of 22 Basalt as Granite","Incorrectly predicted 1 out of 59 Coal as Granite","Correctly predicted 8 out of 25 Granite with accuracy 0.32","Incorrectly predicted 4 out of 56 Limestone as Granite","","Incorrectly predicted 5 out of 65 Quartzite as Granite","Incorrectly predicted 2 out of 47 Sandstone as Granite"],["Incorrectly predicted 3 out of 22 Basalt as Limestone","Incorrectly predicted 5 out of 59 Coal as Limestone","Incorrectly predicted 1 out of 25 Granite as Limestone","Correctly predicted 26 out of 56 Limestone with accuracy 0.4642857142857143","Incorrectly predicted 3 out of 54 Marble as Limestone","Incorrectly predicted 10 out of 65 Quartzite as Limestone","Incorrectly predicted 9 out of 47 Sandstone as Limestone"],["Incorrectly predicted 5 out of 22 Basalt as Marble","Incorrectly predicted 2 out of 59 Coal as Marble","Incorrectly predicted 5 out of 25 Granite as Marble","Incorrectly predicted 2 out of 56 Limestone as Marble","Correctly predicted 20 out of 54 Marble with accuracy 0.37037037037037035","Incorrectly predicted 9 out of 65 Quartzite as Marble","Incorrectly predicted 7 out of 47 Sandstone as Marble"],["Incorrectly predicted 6 out of 22 Basalt as Quartzite","Incorrectly predicted 13 out of 59 Coal as Quartzite","Incorrectly predicted 6 out of 25 Granite as Quartzite","Incorrectly predicted 6 out of 56 Limestone as Quartzite","Incorrectly predicted 14 out of 54 Marble as Quartzite","Correctly predicted 22 out of 65 Quartzite with accuracy 0.3384615384615385","Incorrectly predicted 6 out of 47 Sandstone as Quartzite"],["Incorrectly predicted 5 out of 22 Basalt as Sandstone","Incorrectly predicted 2 out of 59 Coal as Sandstone","Incorrectly predicted 4 out of 25 Granite as Sandstone","Incorrectly predicted 13 out of 56 Limestone as Sandstone","Incorrectly predicted 6 out of 54 Marble as Sandstone","Incorrectly predicted 4 out of 65 Quartzite as Sandstone","Correctly predicted 19 out of 47 Sandstone with accuracy 0.40425531914893614"]],"x":["Basalt","Coal","Granite","Limestone","Marble","Quartzite","Sandstone"],"y":["Basalt","Coal","Granite","Limestone","Marble","Quartzite","Sandstone"],"z":[[1,7,1,1,5,3,1],[0,29,0,4,6,12,3],[2,1,8,4,0,5,2],[3,5,1,26,3,10,9],[5,2,5,2,20,9,7],[6,13,6,6,14,22,6],[5,2,4,13,6,4,19]],"type":"heatmap"}],                        {"annotations":[{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Basalt","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Coal","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Granite","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Limestone","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Marble","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Quartzite","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Sandstone","xref":"x","y":"Basalt","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"","x":"Basalt","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"29","x":"Coal","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"","x":"Granite","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Limestone","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"6","x":"Marble","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"12","x":"Quartzite","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Sandstone","xref":"x","y":"Coal","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Basalt","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Coal","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"8","x":"Granite","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Limestone","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"","x":"Marble","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Quartzite","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Sandstone","xref":"x","y":"Granite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Basalt","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Coal","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"1","x":"Granite","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"26","x":"Limestone","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"3","x":"Marble","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"10","x":"Quartzite","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"9","x":"Sandstone","xref":"x","y":"Limestone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Basalt","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Coal","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Granite","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Limestone","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"20","x":"Marble","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"9","x":"Quartzite","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"7","x":"Sandstone","xref":"x","y":"Marble","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"6","x":"Basalt","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"13","x":"Coal","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"6","x":"Granite","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"6","x":"Limestone","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"14","x":"Marble","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"22","x":"Quartzite","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"6","x":"Sandstone","xref":"x","y":"Quartzite","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"5","x":"Basalt","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"2","x":"Coal","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Granite","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"13","x":"Limestone","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"6","x":"Marble","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#000000"},"showarrow":false,"text":"4","x":"Quartzite","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#FFFFFF"},"showarrow":false,"text":"19","x":"Sandstone","xref":"x","y":"Sandstone","yref":"y"},{"font":{"color":"#094973","size":16},"showarrow":false,"text":"True Class","x":0.5,"xref":"paper","y":-0.1,"yref":"paper"},{"font":{"color":"#094973","size":16},"showarrow":false,"text":"Predicted Class","textangle":-90,"x":-0.17,"xref":"paper","y":0.5,"yref":"paper"}],"xaxis":{"dtick":1,"gridcolor":"rgb(0, 0, 0)","side":"top","ticks":""},"yaxis":{"dtick":1,"ticks":"","ticksuffix":"  "},"template":{"data":{"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"heatmapgl":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmapgl"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"#E5ECF6","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"bgcolor":"#E5ECF6","radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","gridwidth":2,"linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white"}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"ternary":{"aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"bgcolor":"#E5ECF6","caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","zerolinewidth":2}}},"width":850,"height":550,"margin":{"t":100,"l":200}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('a89143d2-266e-4b9d-afa1-1bb4211eed4c');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                            </script>        </div>
+
+
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'Basalt': {'precision': 0.05263157894736842, 'recall': 0.045454545454545456, 'f1-score': 0.04878048780487805, 'support': 22}, 'Coal': {'precision': 0.5370370370370371, 'recall': 0.4915254237288136, 'f1-score': 0.5132743362831859, 'support': 59}, 'Granite': {'precision': 0.36363636363636365, 'recall': 0.32, 'f1-score': 0.3404255319148936, 'support': 25}, 'Limestone': {'precision': 0.45614035087719296, 'recall': 0.4642857142857143, 'f1-score': 0.46017699115044247, 'support': 56}, 'Marble': {'precision': 0.4, 'recall': 0.37037037037037035, 'f1-score': 0.3846153846153846, 'support': 54}, 'Quartzite': {'precision': 0.3013698630136986, 'recall': 0.3384615384615385, 'f1-score': 0.31884057971014496, 'support': 65}, 'Sandstone': {'precision': 0.3584905660377358, 'recall': 0.40425531914893614, 'f1-score': 0.38, 'support': 47}, 'accuracy': 0.38109756097560976, 'macro avg': {'precision': 0.3527579656499138, 'recall': 0.3477647016357026, 'f1-score': 0.3494447587827042, 'support': 328}, 'weighted avg': {'precision': 0.38267056817598527, 'recall': 0.38109756097560976, 'f1-score': 0.381069435442386, 'support': 328}}</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: ignored</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="03_detailed_trainer_files/figure-html/cell-11-output-5.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/rocks_bot/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

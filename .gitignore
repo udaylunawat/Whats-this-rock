@@ -149,6 +149,4 @@ environment.yml
 outputs
 configs/trained/*
 
-_docs/
-notebooks/_docs
 notebooks/wandb/
