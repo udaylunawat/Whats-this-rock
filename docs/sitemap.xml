@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://udaylunawat.github.io/rocks_bot/sweeps.html</loc>
+    <lastmod>2022-10-27T14:29:45.713Z</lastmod>
+  </url>
+  <url>
     <loc>https://udaylunawat.github.io/rocks_bot/b_data_utils.html</loc>
-    <lastmod>2022-10-27T14:25:29.591Z</lastmod>
+    <lastmod>2022-10-27T14:29:46.537Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/rocks_bot/detailed_trainer.html</loc>
+    <lastmod>2022-10-27T14:29:47.321Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/rocks_bot/training.html</loc>
+    <lastmod>2022-10-27T14:29:47.962Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/rocks_bot/eda.html</loc>
+    <lastmod>2022-10-27T14:29:48.665Z</lastmod>
   </url>
   <url>
     <loc>https://udaylunawat.github.io/rocks_bot/data_loading.html</loc>
-    <lastmod>2022-10-27T14:25:30.286Z</lastmod>
+    <lastmod>2022-10-27T14:29:49.152Z</lastmod>
   </url>
   <url>
     <loc>https://udaylunawat.github.io/rocks_bot/a_datasets.html</loc>
-    <lastmod>2022-10-27T14:25:30.927Z</lastmod>
+    <lastmod>2022-10-27T14:29:49.674Z</lastmod>
   </url>
   <url>
     <loc>https://udaylunawat.github.io/rocks_bot/index.html</loc>
-    <lastmod>2022-10-27T14:25:31.614Z</lastmod>
+    <lastmod>2022-10-27T14:29:50.337Z</lastmod>
   </url>
 </urlset>
