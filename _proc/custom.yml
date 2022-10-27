@@ -24,18 +24,18 @@ website:
         href: index.ipynb
       - text: "Resources"
         menu:
-          - text: "fastai x Hugging Face Study Group"
+          - text: "Telegram Rock Classifier Chatbot"
             icon: bi-play-btn-fill
-            href: https://www.youtube.com/playlist?list=PLD80i8An1OEF8UOb9N9uSoidOGIMKW96t
-          - text: "Hugging Face Course"
+            href: t.me/test7385_bot
+          - text: "Keras-CV"
             icon: journal-bookmark-fill
-            href: https://huggingface.co/course/chapter1/1
-          - text: "fast.ai (docs)"
+            href: https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/
+          - text: "Tensorflow (tutorial)"
             icon: link
-            href: https://docs.fast.ai/
-          - text: "transformers (docs)"
+            href: https://www.tensorflow.org/tutorials
+          - text: "nbdev (docs)"
             icon: link
-            href: https://huggingface.co/docs/transformers/index
+            href: https://nbdev.fast.ai/getting_started.html
       - text: "Help"
         menu:
           - text: "Report an Issue"
