@@ -298,7 +298,7 @@ Please include sample queries and their corresponding results.
 - Contributions make the open source community such an amazing place to
   learn, inspire, and create.
 - Any contributions you make are **greatly appreciated**.
-- Check out our [contribution guidelines](/CONTRIBUTING.md) for more
+- Check out our [contribution guidelines](../CONTRIBUTING.md) for more
   information.
 
 ## License
