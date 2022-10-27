@@ -5,7 +5,7 @@ __all__ = []
 
 # %% ../../notebooks/00_b_data_utils.ipynb 2
 # import imghdr
-# import os
+import os
 # import shutil
 # from time import time
 # from typing import Optional
