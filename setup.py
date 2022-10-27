@@ -16,6 +16,6 @@ setup(
     ),
     license="MIT License",
     keywords="image_classification tensorflow keras wandb telegram-bot",
-    packages=["src", "configs"],
+    packages=["rocks_bot"],
     long_description=read("README.md"),
 )

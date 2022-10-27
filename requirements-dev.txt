@@ -14,3 +14,4 @@ hydra-core
 matplotlib
 seaborn
 plotly
+nbdev
