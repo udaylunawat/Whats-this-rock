@@ -5,10 +5,9 @@ __all__ = ['get_data']
 
 # %% ../../notebooks/00_a_datasets.ipynb 2
 import os
-from .utils import timer_func
 
 # %% ../../notebooks/00_a_datasets.ipynb 3
-@timer_func
+# @timer_func
 def get_data(dataset_id: int):
     """Download the dataset with dataset_id.
 

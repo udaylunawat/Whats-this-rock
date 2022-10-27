@@ -26,7 +26,7 @@ website:
         menu:
           - text: "Telegram Rock Classifier Chatbot"
             icon: bi-play-btn-fill
-            href: t.me/test7385_bot
+            href: https://t.me/test7385_bot
           - text: "Keras-CV"
             icon: journal-bookmark-fill
             href: https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/
