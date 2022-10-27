@@ -2,8 +2,8 @@ project:
   output-dir: _docs
 
 website:
-  title: "Whats-this-rock"
-  site-url: "https://udaylunawat.github.io/Whats-this-rock"
+  title: "rocks_bot"
+  site-url: "https://udaylunawat.github.io/rocks_bot"
   description: "Telegram Rock Classification Bot!"
   repo-branch: master
-  repo-url: "https://github.com/udaylunawat/Whats-this-rock"
+  repo-url: "https://github.com/udaylunawat/rocks_bot"

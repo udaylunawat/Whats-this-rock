@@ -1,7 +1,6 @@
 website:
   sidebar:
     contents:
-      - index.html
       - index.ipynb
       - 00_a_datasets.ipynb
       - 00_b_data_utils.ipynb
