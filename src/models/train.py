@@ -6,9 +6,9 @@ import subprocess
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
-import tensorflow_addons as tfa
+# import tensorflow_addons as tfa
 import wandb
-from hydra import compose, initialize
+import hydra
 from omegaconf import DictConfig, OmegaConf
 from sklearn.metrics import classification_report
 
@@ -18,7 +18,6 @@ from tensorflow.keras import layers, mixed_precision
 from wandb.keras import WandbCallback
 
 from src.callbacks.callbacks import get_callbacks
-from src.callbacks.custom_callbacks import LRA
 from src.data.download import get_data
 from src.data.preprocess import process_data
 from src.data.utils import get_tfds_from_dir, prepare
@@ -66,35 +65,18 @@ def train(
     optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
     optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
 
-    f1_score_metrics = [tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)]
+    # f1_score_metrics = [tfa.metrics.F1Score(num_classes=cfg.num_classes, average="macro", threshold=0.5)]
 
     # Compile the model
     model.compile(
         optimizer=optimizer,
         loss=cfg.loss,
-        metrics=["accuracy", f1_score_metrics],
+        metrics=["accuracy", ], # f1_score_metrics
     )
 
-    if cfg.custom_callback:
-        callbacks = [
-            LRA(
-                model=model,
-                patience=cfg.reduce_lr.patience,
-                stop_patience=cfg.earlystopping.patience,
-                threshold=0.75,
-                factor=cfg.reduce_lr.factor,
-                dwell=False,
-                model_name=cfg.backbone,
-                freeze=not cfg.trainable,
-                initial_epoch=0,
-            ),
-            WandbCallback(monitor=cfg.monitor, mode="auto", save_model=(cfg.save_model)),
-        ]
-        LRA.tepochs = cfg.epochs  # used to determine value of last epoch for printing
-        verbose = 0
-    else:
-        callbacks, cfg = get_callbacks(cfg)
-        verbose = 1
+
+    callbacks, cfg = get_callbacks(cfg)
+    verbose = 1
 
     history = model.fit(
         train_dataset,
@@ -206,8 +188,8 @@ def evaluate(
     wandb.log({"Confusion Matrix": cm})
     wandb.log({"Classification Report Image:": wandb.Image("cr.png", caption="Classification Report")})
 
-
-def main() -> None:
+@hydra.main(config_path="../../configs", config_name="config", version_base='1.2')
+def main(cfg) -> None:
     """Run Main function.
 
     Parameters
@@ -215,8 +197,7 @@ def main() -> None:
     cfg : DictConfig
         Hydra Configuration
     """
-    initialize(config_path="configs")
-    cfg = compose(config_name="config")
+    print(OmegaConf.to_yaml(cfg))
 
     tf.keras.utils.set_random_seed(cfg.seed)
     if cfg.wandb.use:
@@ -229,7 +210,7 @@ def main() -> None:
     artifact = wandb.Artifact("rocks", type="files")
     artifact.add_dir("src/")
     wandb.log_artifact(artifact)
-    print(OmegaConf.to_yaml(cfg))
+
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
     subprocess.run(["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE).stdout.decode("utf-8")
