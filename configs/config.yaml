@@ -5,9 +5,9 @@
 notes: ""
 seed: 42
 
-lr: 0.001
+lr: 0.0005
 lr_decay_steps: 500
-lr_schedule: cosine_decay
+lr_schedule: cosine_decay_restarts
 
 epochs: 30
 class_weights: True
@@ -16,17 +16,17 @@ loss: categorical_crossentropy
 metrics: ["accuracy"]
 batch_size: 32
 num_classes: 7
-custom_callback: True
+custom_callback: False
 monitor: "val_accuracy"
 
 # dataset
-dataset_id: [1]
+dataset_id: [1,2,3,4]
 data_path: data/4_tfds_dataset/
 sampling: None
 train_split: 0.70
 image_size: 224
 image_channels: 3
-augmentation: True
+augmentation: keras-cv
 
 # model
 backbone: resnet
@@ -40,7 +40,7 @@ last_layers: 30
 # wandb
 wandb:
   use: True
-  project: Whats-this-rockv10
+  project: Whats-this-rock
   mode: offline
 
 # callback
