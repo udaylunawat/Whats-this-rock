@@ -136,21 +136,26 @@ staticfiles
 db.sqlite3
 getting-started/*
 
-
+# files
 kaggle.json
 *.h5
 .vscode
-data/*
-wandb/*
+
 linux-packages.txt
 secrets.json
 requirements-docker.txt
 requirements-m1.txt
 Dockerfile_train
 environment.yml
+
+*pickle
+*pkl
+
+# folders
+data/*
+wandb/*
 outputs
 configs/trained/*
 notebooks/wandb/
-_proc
-*pickle
-*pkl
+_proc/*
+
