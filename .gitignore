@@ -152,3 +152,5 @@ outputs
 configs/trained/*
 notebooks/wandb/
 _proc
+*pickle
+*pkl
