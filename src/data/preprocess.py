@@ -1,7 +1,7 @@
 # https://stackoverflow.com/a/64006242/9292995
 import os
 import subprocess
-
+import logging
 import splitfolders
 
 from src.data.utils import (
@@ -21,14 +21,18 @@ def process_data(cfg):
     cfg : cfg (omegaconf.DictConfig):
         Hydra Configuration
     """
-    datasets = os.listdir("data/1_extracted")
-    for dataset in datasets:
-        print(f"\nProcessing {dataset}")
-        for main_class in os.listdir(os.path.join("data/1_extracted", dataset)):
-            main_class_path = os.path.join("data/1_extracted/", dataset, main_class)
+    extracted_datasets = os.listdir("data/1_extracted")
+    for dataset_id in cfg.dataset_id:
+        print(f"\nProcessing dataset {dataset_id}...")
+        for main_class in os.listdir(
+            os.path.join("data/1_extracted", "dataset" + str(dataset_id))
+        ):
+            main_class_path = os.path.join(
+                "data/1_extracted/", "dataset" + str(dataset_id), main_class
+            )
             move_and_rename(main_class_path)
 
-    print("\nFiles other than jpg and png.\n\n")
+    print("\n\nFiles other than jpg and png.\n")
     result = subprocess.run(
         ["ls", "data/2_processed", "-I", "*.jpg", "-I", "*.png", "-R"],
         stdout=subprocess.PIPE,
@@ -44,10 +48,10 @@ def process_data(cfg):
     print("\nFile types after cleaning:")
     get_value_counts("data/2_processed")
 
-    print("\nCounts of classes:", get_df().info(), "\n")
+    print("\nCounts of classes:\n")
     print(get_df()["class"].value_counts())
     print(
-        "\nSplitting files in Train, Validation and Test and saving to data/4_tfds_dataset/"
+        "\nSplitting files in Train, Validation and Test and saving to data/3_tfds_dataset/"
     )
     scc = min(get_df()["class"].value_counts())
     val_split = test_split = (1 - cfg.train_split) / 2
@@ -55,23 +59,23 @@ def process_data(cfg):
         f"Data Split:- Training {cfg.train_split:.2f}, Validation {val_split:.2f}, Test {test_split:.2f}"
     )
     if cfg.sampling == "oversample":
-        print("\nOversampling...")
+        print("\nSampling type:- Oversampling...")
         # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
         print("Finding smallest class for oversampling fixed parameter.")
         print(f"Smallest class count is {scc}\n")
         splitfolders.fixed(
             "data/2_processed",
-            output="data/4_tfds_dataset",
+            output="data/3_tfds_dataset",
             oversample=True,
             fixed=(((scc // 2) - 1, (scc // 2) - 1)),
             seed=cfg.seed,
             move=False,
         )
     elif cfg.sampling == "undersample":
-        print(f"Undersampling to {cfg.sampling} samples.")
+        print(f"Sampling type:- Undersampling to {cfg.sampling} samples.")
         splitfolders.fixed(
             "data/2_processed",
-            output="data/4_tfds_dataset",
+            output="data/3_tfds_dataset",
             fixed=(
                 int(scc * cfg.train_split),
                 int(scc * val_split),
@@ -82,10 +86,10 @@ def process_data(cfg):
             move=False,
         )
     else:
-        print("No Sampling.")
+        print("Sampling type:- No Sampling.")
         splitfolders.ratio(
             "data/2_processed",
-            output="data/4_tfds_dataset",
+            output="data/3_tfds_dataset",
             ratio=(cfg.train_split, val_split, test_split),
             seed=cfg.seed,
             move=False,
