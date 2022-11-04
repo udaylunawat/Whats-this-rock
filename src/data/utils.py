@@ -132,19 +132,23 @@ def remove_corrupted_images(
             )
         print(f"removed {len(bad_images)} bad images from {rock_class}.")
 
-    # Multiprocessing
-    # create all tasks
-    from multiprocessing import Process
+    def remove_corrupted_images_multicore():
+        # Multiprocessing
+        # create all tasks
+        from multiprocessing import Process
 
-    processes = [Process(target=remove_corrupted_from_dir, args=(i,)) for i in classes]
-    # start all processes
-    for process in processes:
-        process.start()
-    # wait for all processes to complete
-    for process in processes:
-        process.join()
-    # report that all tasks are completed
-    print("Removed all corrupted images.", flush=True)
+        processes = [Process(target=remove_corrupted_from_dir, args=(i,)) for i in classes]
+        # start all processes
+        for process in processes:
+            process.start()
+        # wait for all processes to complete
+        for process in processes:
+            process.join()
+        # report that all tasks are completed
+        print("Removed all corrupted images.", flush=True)
+
+    for rock_class in classes:
+        remove_corrupted_from_dir(rock_class)
 
 
 def get_dims(file: str) -> Optional[tuple]:
