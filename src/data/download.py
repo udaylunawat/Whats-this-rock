@@ -1,10 +1,10 @@
 import os
-
-from src.data.utils import timer_func
+import logging
+from src.data.utils import timer_func, find_filepaths
 
 
 @timer_func
-def get_data(dataset_id: int):
+def download_datasets():
     """Download the dataset with dataset_id.
 
     Parameters
@@ -13,10 +13,17 @@ def get_data(dataset_id: int):
         Dataset number
     """
     data_dict = {
-        1: "src/scripts/dataset1.sh",
-        2: "src/scripts/dataset2.sh",
-        3: "src/scripts/dataset3.sh",
-        4: "src/scripts/dataset4.sh",
+        1: {"script":"src/scripts/dataset1.sh", "filecount":2083},
+        2: {"script":"src/scripts/dataset2.sh", "filecount":4553},
+        3: {"script":"src/scripts/dataset3.sh", "filecount":946},
+        4: {"script":"src/scripts/dataset4.sh", "filecount":2343},
     }
-    if not os.path.exists(os.path.join("data", "1_extracted", f"dataset{dataset_id}")):
-        os.system(f"sh {data_dict[dataset_id]}")
+    for dataset_id in data_dict:
+        if not os.path.exists(os.path.join("data", "1_extracted", f"dataset{dataset_id}")):
+            print(f'Downloading dataset {dataset_id}...')
+            os.system(f"sh {data_dict[dataset_id]['script']}")
+        else:
+            _, count = find_filepaths(os.path.join("data", "1_extracted", f"dataset{dataset_id}"))
+            assert count == data_dict[dataset_id]['filecount']
+            print(f"dataset{dataset_id} already exists.")
+            print(f'Total Files in dataset{dataset_id}:- {count}.')
