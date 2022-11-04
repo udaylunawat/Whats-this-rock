@@ -135,6 +135,8 @@ staticfiles
 .env
 db.sqlite3
 getting-started/*
+
+
 kaggle.json
 *.h5
 .vscode
@@ -148,5 +150,5 @@ Dockerfile_train
 environment.yml
 outputs
 configs/trained/*
-
 notebooks/wandb/
+_proc
