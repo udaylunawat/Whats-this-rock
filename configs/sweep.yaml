@@ -25,7 +25,7 @@ parameters:
   epochs:
     value: 75
   data_path:
-    value: data/4_tfds_dataset/
+    value: data/3_tfds_dataset/
   dataset_id:
     values:
       - [1, 2, 3, 4]
