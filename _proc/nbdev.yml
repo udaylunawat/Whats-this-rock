@@ -1,9 +1,0 @@
-project:
-  output-dir: docs
-
-website:
-  title: "rocks_bot"
-  site-url: "https://udaylunawat.github.io/rocks_bot"
-  description: "Telegram Rock Classification Bot!"
-  repo-branch: master
-  repo-url: "https://github.com/udaylunawat/rocks_bot"
