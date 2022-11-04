@@ -6,9 +6,6 @@ kaggle
 pandas
 numpy
 pillow
-tensorflow
-tensorflow-addons
-keras-cv
 wandb
 split-folders
 hydra-core
@@ -16,3 +13,11 @@ matplotlib
 seaborn
 plotly
 nbdev
+pre-commit
+
+fastchan
+fastai
+
+tensorflow
+tensorflow-addons
+keras-cv
