@@ -18,7 +18,7 @@ from tensorflow.keras import layers, mixed_precision
 from wandb.keras import WandbCallback
 
 from src.callbacks.callbacks import get_callbacks
-from src.data.download import get_data
+from src.data.download import download_datasets
 from src.data.preprocess import process_data
 from src.data.utils import get_tfds_from_dir, prepare
 from src.models.models import get_model
@@ -215,8 +215,7 @@ def main(cfg) -> None:
 
     subprocess.run(["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE).stdout.decode("utf-8")
 
-    for dataset_id in cfg.dataset_id:
-        get_data(dataset_id)
+    download_datasets()
     process_data(cfg)
 
     train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)

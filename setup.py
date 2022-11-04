@@ -8,7 +8,7 @@ def read(fname):
 
 setup(
     name="rocks-telegram-bot",
-    version="0.9",
+    version="0.0.1",
     author="Uday Lunawat",
     author_email="udaylunawat@gmail.com",
     description=(

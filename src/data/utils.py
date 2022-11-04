@@ -5,6 +5,7 @@ from time import time
 from typing import Optional
 
 import cv2
+import logging
 import keras_cv
 import numpy as np
 import pandas as pd
@@ -50,9 +51,7 @@ def find_filepaths(root_folder: str):
     for dirname, _, filenames in os.walk(root_folder):
         for filename in filenames:
             filepaths.append(os.path.join(dirname, filename))
-    total_images_before_deletion = len(filepaths)
-    print(f"Total images before deletion = {total_images_before_deletion}")
-    return filepaths
+    return filepaths, len(filepaths)
 
 
 def remove_unsupported_images(root_folder: str):
@@ -65,7 +64,7 @@ def remove_unsupported_images(root_folder: str):
     """
     print("\n\nRemoving unsupported images...")
     count = 1
-    filepaths = find_filepaths(root_folder)
+    filepaths, _ = find_filepaths(root_folder)
     for filepath in filepaths:
         if filepath.endswith(("JFIF", "webp", "jfif")):
             shutil.move(
@@ -73,7 +72,7 @@ def remove_unsupported_images(root_folder: str):
                 os.path.join("data", "corrupted_images", os.path.basename(filepath)),
             )
             count += 1
-    print(f"Removed {count} unsupported files.")
+    print(f"Removed {count} unsupported files.\n")
 
 
 @timer_func
@@ -89,14 +88,13 @@ def remove_corrupted_images(
     ext_list : list, optional
         Extensions list, by default ["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
     """
-    print("\n\nRemoving corrupted images...")
+    print("\nRemoving corrupted images...")
     classes = os.listdir(s_dir)
 
     def remove_corrupted_from_dir(rock_class):
         # remove corrupted images from single directory
         bad_images = []
         class_path = os.path.join(s_dir, rock_class)
-        print(f"Processing class directory {rock_class}...")
         if os.path.isdir(class_path):
             file_list = os.listdir(class_path)
             for f in file_list:
@@ -130,14 +128,16 @@ def remove_corrupted_images(
                 f_path,
                 os.path.join("data", "corrupted_images", os.path.basename(f_path)),
             )
-        print(f"removed {len(bad_images)} bad images from {rock_class}.")
+        print(f"Removed {len(bad_images)} bad images from {rock_class}.")
 
     def remove_corrupted_images_multicore():
         # Multiprocessing
         # create all tasks
         from multiprocessing import Process
 
-        processes = [Process(target=remove_corrupted_from_dir, args=(i,)) for i in classes]
+        processes = [
+            Process(target=remove_corrupted_from_dir, args=(i,)) for i in classes
+        ]
         # start all processes
         for process in processes:
             process.start()
@@ -374,7 +374,7 @@ def get_tfds_from_dir(cfg):
     """
     IMAGE_SIZE = (cfg.image_size, cfg.image_size)
     train_ds = tf.keras.utils.image_dataset_from_directory(
-        "data/4_tfds_dataset/train",
+        "data/3_tfds_dataset/train",
         labels="inferred",
         label_mode="categorical",
         color_mode="rgb",
@@ -386,7 +386,7 @@ def get_tfds_from_dir(cfg):
     )
 
     val_ds = tf.keras.utils.image_dataset_from_directory(
-        "data/4_tfds_dataset/val",
+        "data/3_tfds_dataset/val",
         labels="inferred",
         label_mode="categorical",
         color_mode="rgb",
@@ -398,7 +398,7 @@ def get_tfds_from_dir(cfg):
     )
 
     test_ds = tf.keras.utils.image_dataset_from_directory(
-        "data/4_tfds_dataset/test",
+        "data/3_tfds_dataset/test",
         labels="inferred",
         label_mode="categorical",
         color_mode="rgb",
