@@ -11,4 +11,4 @@ mv -n kaggle.json ~/.kaggle
 chmod 600 ~/.kaggle/kaggle.json
 
 sh src/scripts/clean_dir.sh
-python src/data/preprocess.py
+python src/data/download.py

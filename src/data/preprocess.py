@@ -4,7 +4,6 @@ import subprocess
 import logging
 import splitfolders
 
-from src.data.download import download_datasets
 from src.data.utils import (
     get_df,
     get_value_counts,
@@ -96,7 +95,3 @@ def process_data(cfg):
             move=False,
         )
     print("\n\n")
-
-
-if __name__ == "__main__":
-    download_datasets()
