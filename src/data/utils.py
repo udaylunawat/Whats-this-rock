@@ -105,14 +105,16 @@ def get_new_name(dir_list: list) -> dict:
     return file_dict
 
 def move_to_processed():
+    """Moves files from 1_extracted to 2_processed
+    """
     dir1 = 'data/1_extracted/dataset1'
     dir2 = 'data/1_extracted/dataset2'
     for d1, d2 in zip(os.listdir(dir1), os.listdir(dir2)):
-        assert d1 == d2
-        path_dict = get_new_name([os.path.join(dir1, d1), os.path.join(dir2, d2)])
+        if d1 == d2:
+            path_dict = get_new_name([os.path.join(dir1, d1), os.path.join(dir2, d2)])
 
-        for old_path, new_path in path_dict.items():
-            shutil.copy(old_path, new_path)
+            for old_path, new_path in path_dict.items():
+                shutil.copy(old_path, new_path)
 
 
 def timer_func(func):
