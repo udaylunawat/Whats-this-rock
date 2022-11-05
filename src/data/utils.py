@@ -67,7 +67,7 @@ def move_to_processed():
             shutil.copy(old_path, new_path)
 
 
-def move_bad_files(txt_file, dest):
+def move_bad_files(txt_file, dest, text):
     """Moves files in txt_file to dest.
 
     Parameters
@@ -77,11 +77,15 @@ def move_bad_files(txt_file, dest):
     dest : _type_
         target destination
     """
+    print(text)
     f = open(txt_file, "r")
+    count = 0
     for line in f:
         basename = os.path.basename(line)
         file_name = os.path.splitext(basename)[0]
         shutil.move(line.strip(), os.path.join(dest, file_name))
+        count +=1
+    print(f"Moved {count} images to {dest}.")
 
 
 def sampling(cfg):
