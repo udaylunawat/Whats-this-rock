@@ -1,6 +1,7 @@
 import imghdr
 import os
 import shutil
+import splitfolders
 from time import time
 from typing import Optional
 
@@ -13,6 +14,105 @@ import tensorflow as tf
 from PIL import Image
 from tensorflow.keras import applications, layers
 from tqdm import tqdm
+
+
+def sampling(cfg):
+    """Oversamples/Undersample/No Sampling data into train, val, test.
+
+    Parameters
+    ----------
+    cfg : _type_
+        _description_
+    """
+    print(
+        "\nSplitting files in Train, Validation and Test and saving to data/3_tfds_dataset/"
+    )
+    scc = min(get_df()["class"].value_counts())
+    val_split = test_split = (1 - cfg.train_split) / 2
+    print(
+        f"Data Split:- Training {cfg.train_split:.2f}, Validation {val_split:.2f}, Test {test_split:.2f}"
+    )
+    if cfg.sampling == "oversample":
+            print("\nSampling type:- Oversampling...")
+            # If your datasets is balanced (each class has the same number of samples), choose ratio otherwise fixed.
+            print("Finding smallest class for oversampling fixed parameter.")
+            print(f"Smallest class count is {scc}\n")
+            splitfolders.fixed(
+                "data/2_processed",
+                output="data/3_tfds_dataset",
+                oversample=True,
+                fixed=(((scc // 2) - 1, (scc // 2) - 1)),
+                seed=cfg.seed,
+                move=False,
+            )
+    elif cfg.sampling == "undersample":
+        print(f"Sampling type:- Undersampling to {cfg.sampling} samples.")
+        splitfolders.fixed(
+            "data/2_processed",
+            output="data/3_tfds_dataset",
+            fixed=(
+                int(scc * cfg.train_split),
+                int(scc * val_split),
+                int(scc * test_split),
+            ),
+            oversample=False,
+            seed=cfg.seed,
+            move=False,
+        )
+    else:
+        print("Sampling type:- No Sampling.")
+        splitfolders.ratio(
+            "data/2_processed",
+            output="data/3_tfds_dataset",
+            ratio=(cfg.train_split, val_split, test_split),
+            seed=cfg.seed,
+            move=False,
+        )
+    print("\n\n")
+
+def get_new_name(dir_list: list) -> dict:
+    """Return dict with old name and new name of files in multiple directories.
+
+    {'data/1_extracted/dataset1/Basalt/14.jpg': 'data/2_processed/Basalt/dataset1_01_Basalt_14.jpg'}
+
+    Parameters
+    ----------
+    dir_list : list
+        list of dir paths
+
+    Returns
+    -------
+    dict
+        {old_name: new_name}
+    """
+    file_list = []
+    for dir in dir_list:
+        paths, _ = find_filepaths(dir)
+        file_list.extend(paths)
+
+    count = 1
+    file_dict = {}
+    for file_path in file_list:
+        dataset = file_path.split('/')[-3]
+        class_name = file_path.split('/')[-2]
+        basename = os.path.basename(file_path)
+        file_name = os.path.splitext(basename)[0]
+        extension = os.path.splitext(basename)[1]
+        new_file_name = os.path.join('data','2_processed', class_name, f'{dataset}_{class_name}_{str(count).zfill(3)}_{file_name}{extension}')
+        file_dict[file_path] = new_file_name
+        count += 1
+
+    return file_dict
+
+def move_to_processed():
+    dir1 = 'data/1_extracted/dataset1'
+    dir2 = 'data/1_extracted/dataset2'
+    for d1, d2 in zip(os.listdir(dir1), os.listdir(dir2)):
+        assert d1 == d2
+        path_dict = get_new_name([os.path.join(dir1, d1), os.path.join(dir2, d2)])
+
+        for old_path, new_path in path_dict.items():
+            shutil.copy(old_path, new_path)
 
 
 def timer_func(func):
@@ -52,7 +152,6 @@ def find_filepaths(root_folder: str):
         for filename in filenames:
             filepaths.append(os.path.join(dirname, filename))
     return filepaths, len(filepaths)
-
 
 def remove_unsupported_images(root_folder: str):
     """Remove unsupported images.
