@@ -169,5 +169,4 @@ data/2_processed/Quartzite/dataset1_Quartzite_359_images(438).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_379_images(484).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_395_images(507).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_459_istockphoto-1009039398-612x612.jpg
-data/2_processed/Quartzite/dataset1_Quartzite_459_istockphoto-1009039398-612x612.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_365_Sandstone79.jpg
