@@ -11,7 +11,8 @@ from src.data.utils import (
     remove_corrupted_images,
     remove_unsupported_images,
     move_to_processed,
-    sampling
+    sampling,
+    move_bad_files,
 )
 
 
@@ -35,6 +36,10 @@ def process_data(cfg):
     print("\nFile types before cleaning:")
     get_value_counts("data/2_processed")
 
+    move_bad_files("configs/bad_images selected by gemini.txt", "data/bad_images")
+    move_bad_files("configs/misclassified selected by gemini.txt", "data/misclassified_images")
+    move_bad_files("configs/duplicates selected by gemini.txt", "data/duplicate_images")
+
     remove_unsupported_images("data/2_processed")
     remove_corrupted_images("data/2_processed")
 
@@ -44,3 +49,7 @@ def process_data(cfg):
     print("\nCounts of classes:\n")
     print(get_df()["class"].value_counts())
     sampling(cfg)
+
+
+if __name__ == "__main__":
+    process_data()

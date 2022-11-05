@@ -18,7 +18,6 @@ from tensorflow.keras import layers, mixed_precision
 from wandb.keras import WandbCallback
 
 from src.callbacks.callbacks import get_callbacks
-from src.data.preprocess import process_data
 from src.data.utils import get_tfds_from_dir, prepare
 from src.models.models import get_model
 from src.models.utils import get_lr_scheduler, get_model_weights, get_optimizer
@@ -211,8 +210,6 @@ def main(cfg) -> None:
         wandb.log_artifact(artifact)
 
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
-
-    process_data(cfg)
 
     train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)
     labels = train_dataset.class_names
