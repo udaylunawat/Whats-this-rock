@@ -26,4 +26,4 @@ def download_datasets():
             _, count = find_filepaths(os.path.join("data", "1_extracted", f"dataset{dataset_id}"))
             assert count == data_dict[dataset_id]['filecount']
             print(f"dataset{dataset_id} already exists.")
-            print(f'Total Files in dataset{dataset_id}:- {count}.')
+            print(f'Total Files in dataset{dataset_id}:- {count}.\n')

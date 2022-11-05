@@ -18,7 +18,6 @@ from tensorflow.keras import layers, mixed_precision
 from wandb.keras import WandbCallback
 
 from src.callbacks.callbacks import get_callbacks
-from src.data.download import download_datasets
 from src.data.preprocess import process_data
 from src.data.utils import get_tfds_from_dir, prepare
 from src.models.models import get_model
@@ -207,15 +206,12 @@ def main(cfg) -> None:
             config=OmegaConf.to_container(cfg, resolve=True, throw_on_missing=True),
         )
 
-    artifact = wandb.Artifact("rocks", type="files")
-    artifact.add_dir("src/")
-    wandb.log_artifact(artifact)
+        artifact = wandb.Artifact("rocks", type="files")
+        artifact.add_dir("src/")
+        wandb.log_artifact(artifact)
 
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
-    subprocess.run(["sh", "src/scripts/clean_dir.sh"], stdout=subprocess.PIPE).stdout.decode("utf-8")
-
-    download_datasets()
     process_data(cfg)
 
     train_dataset, val_dataset, test_dataset = get_tfds_from_dir(cfg)
