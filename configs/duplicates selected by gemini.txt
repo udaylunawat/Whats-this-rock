@@ -1,0 +1,89 @@
+data/2_processed/Limestone/dataset1_Limestone_226_300.jpg
+data/2_processed/Limestone/dataset1_Limestone_223_299.jpg
+data/2_processed/Marble/dataset2_Marble_391_marble rock11.jpg
+data/2_processed/Marble/dataset2_Marble_401_marble rock21.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_367_Sandstone81.jpg
+data/2_processed/Marble/dataset2_Marble_399_marble rock2.jpg
+data/2_processed/Limestone/dataset1_Limestone_170_250.jpg
+data/2_processed/Marble/dataset2_Marble_394_marble rock14.jpg
+data/2_processed/Marble/dataset2_Marble_419_marble rock39.jpg
+data/2_processed/Marble/dataset2_Marble_424_marble rock6.jpg
+data/2_processed/Limestone/dataset1_Limestone_144_227.jpg
+data/2_processed/Limestone/dataset1_Limestone_233_307.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_170_250.jpg
+data/2_processed/Marble/dataset2_Marble_389_marble rock1.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_503_quartzite rock33.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_237_310.jpg
+data/2_processed/Granite/dataset2_Granite_213_granite rock87.jpg
+data/2_processed/Marble/dataset2_Marble_427_marble rock9.jpg
+data/2_processed/Coal/dataset1_Coal_263_336.jpg
+data/2_processed/Marble/dataset2_Marble_422_marble rock41.jpg
+data/2_processed/Granite/dataset2_Granite_155_granite rock308.jpg
+data/2_processed/Limestone/dataset1_Limestone_188_267.jpg
+data/2_processed/Coal/dataset2_Coal_460_coal rock82.jpg
+data/2_processed/Limestone/dataset1_Limestone_028_122.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_497_quartzite rock28.jpg
+data/2_processed/Limestone/dataset1_Limestone_282_48.jpg
+data/2_processed/Limestone/dataset1_Limestone_281_47.jpg
+data/2_processed/Basalt/dataset2_Basalt_161_Basalt rock6.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_510_quartzite rock4.jpg
+data/2_processed/Granite/dataset2_Granite_164_granite rock41.jpg
+data/2_processed/Marble/dataset2_Marble_400_marble rock20.jpg
+data/2_processed/Marble/dataset2_Marble_397_marble rock17.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_502_quartzite rock32.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_514_quartzite rock6.jpg
+data/2_processed/Limestone/dataset1_Limestone_206_283.jpg
+data/2_processed/Basalt/dataset2_Basalt_153_Basalt rock44.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_501_quartzite rock31.jpg
+data/2_processed/Limestone/dataset1_Limestone_018_113.jpg
+data/2_processed/Basalt/dataset2_Basalt_149_Basalt rock42.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_512_quartzite rock41.jpg
+data/2_processed/Granite/dataset2_Granite_184_granite rock532.jpg
+data/2_processed/Limestone/dataset1_Limestone_195_273.jpg
+data/2_processed/Limestone/dataset1_Limestone_065_156.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_492_quartzite rock23.jpg
+data/2_processed/Limestone/dataset1_Limestone_101_189.jpg
+data/2_processed/Limestone/dataset2_Limestone_341_Limestone10.jpg
+data/2_processed/Limestone/dataset1_Limestone_312_75.jpg
+data/2_processed/Limestone/dataset1_Limestone_311_74.jpg
+data/2_processed/Marble/dataset2_Marble_396_marble rock16.jpg
+data/2_processed/Basalt/dataset2_Basalt_087_Basalt rock0.jpg
+data/2_processed/Marble/dataset1_Marble_386_s-l400.jpg
+data/2_processed/Limestone/dataset2_Limestone_355_Limestone14.jpg
+data/2_processed/Coal/dataset1_Coal_256_33.jpg
+data/2_processed/Limestone/dataset2_Limestone_361_Limestone17.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_500_quartzite rock30.jpg
+data/2_processed/Marble/dataset2_Marble_404_marble rock25.jpg
+data/2_processed/Marble/dataset2_Marble_402_marble rock22.jpg
+data/2_processed/Coal/dataset2_Coal_441_coal rock52.jpg
+data/2_processed/Coal/dataset2_Coal_371_coal rock1.jpg
+data/2_processed/Granite/dataset2_Granite_158_granite rock326.jpg
+data/2_processed/Basalt/dataset2_Basalt_146_Basalt rock4.jpg
+data/2_processed/Granite/dataset2_Granite_102_granite rock1.jpg
+data/2_processed/Marble/dataset2_Marble_398_marble rock18.jpg
+data/2_processed/Basalt/dataset2_Basalt_088_Basalt rock1.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_498_quartzite rock29.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_349_Sandstone4.jpg
+data/2_processed/Marble/dataset2_Marble_420_marble rock4.jpg
+data/2_processed/Marble/dataset2_Marble_421_marble rock40.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_256_36.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_496_quartzite rock27.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_506_quartzite rock36.jpg
+data/2_processed/Marble/dataset2_Marble_418_marble rock38.jpg
+data/2_processed/Marble/dataset2_Marble_426_marble rock8.jpg
+data/2_processed/Coal/dataset2_Coal_370_coal rock0.jpg
+data/2_processed/Marble/dataset2_Marble_410_marble rock30.jpg
+data/2_processed/Granite/dataset2_Granite_126_granite rock2.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_075_165.jpg
+data/2_processed/Limestone/dataset2_Limestone_340_Limestone1.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_495_quartzite rock26.jpg
+data/2_processed/Coal/dataset1_Coal_276_348.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_515_quartzite rock7.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_493_quartzite rock24.jpg
+data/2_processed/Granite/dataset1_Granite_013_2.jpg
+data/2_processed/Limestone/dataset1_Limestone_061_152.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_361_Sandstone7.jpg
+data/2_processed/Marble/dataset2_Marble_388_marble rock0.jpg
+data/2_processed/Limestone/dataset1_Limestone_201_279.jpg
+data/2_processed/Limestone/dataset1_Limestone_316_79.jpg
+data/2_processed/Limestone/dataset1_Limestone_318_80.jpg

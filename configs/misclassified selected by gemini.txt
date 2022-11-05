@@ -1,0 +1,3 @@
+data/2_processed/Limestone/dataset1_Limestone_071_161.jpg
+data/2_processed/Quartzite/dataset1_Quartzite_109_images(18).jpg
+data/2_processed/Limestone/dataset1_Limestone_053_145.jpg
