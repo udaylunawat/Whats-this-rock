@@ -12,3 +12,4 @@ chmod 600 ~/.kaggle/kaggle.json
 
 sh src/scripts/clean_dir.sh
 python src/data/download.py
+python src/data/preprocess.py
