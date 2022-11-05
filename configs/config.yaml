@@ -20,7 +20,7 @@ custom_callback: False
 monitor: "val_accuracy"
 
 # dataset
-dataset_id: [1,2,3,4]
+dataset_id: [1,2]
 data_path: data/3_tfds_dataset/
 sampling: None
 train_split: 0.70

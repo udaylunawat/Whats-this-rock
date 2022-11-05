@@ -28,7 +28,7 @@ parameters:
     value: data/3_tfds_dataset/
   dataset_id:
     values:
-      - [1, 2, 3, 4]
+      - [1, 2]
   augmentation:
     values: [kerascv]
   class_weights:
