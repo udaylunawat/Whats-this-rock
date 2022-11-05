@@ -79,13 +79,20 @@ def move_bad_files(txt_file, dest, text):
     """
     print(text)
     f = open(txt_file, "r")
+    cleaned = list(map(lambda x:x.replace('\n', ''), f.readlines()))
+    assert len(list(set([x for i,x in enumerate(cleaned) if cleaned.count(x) > 1]))) == 0
+
     count = 0
-    for line in f:
-        basename = os.path.basename(line)
-        file_name = os.path.splitext(basename)[0]
-        shutil.move(line.strip(), os.path.join(dest, file_name))
-        count +=1
-    print(f"Moved {count} images to {dest}.")
+    for line in cleaned:
+        if len(line) > 0 and not line.startswith('#') and not line == "":
+            basename = os.path.basename(line)
+            file_name = os.path.splitext(basename)[0]
+            try:
+                shutil.move(line.strip(), os.path.join(dest, file_name))
+                count +=1
+            except FileNotFoundError:
+                continue
+    print(f"\nMoved {count} images to {dest}.\n")
 
 
 def sampling(cfg):

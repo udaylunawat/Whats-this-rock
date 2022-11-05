@@ -41,8 +41,8 @@ def process_data(cfg):
     move_bad_files("configs/misclassified selected by gemini.txt", "data/misclassified_images", "Moving misclassified images...")
     move_bad_files("configs/duplicates selected by gemini.txt", "data/duplicate_images", "Moving duplicate images...")
 
-    remove_unsupported_images("data/2_processed")
-    remove_corrupted_images("data/2_processed")
+    # remove_unsupported_images("data/2_processed")
+    # remove_corrupted_images("data/2_processed")
 
     print("\nFile types after cleaning:")
     get_value_counts("data/2_processed")
