@@ -7,7 +7,7 @@ pip install -r requirements-dev.txt
 # setting up kaggle
 wget -qq https://www.dropbox.com/s/ltp4ly8ilvxlgas/kaggle.json
 mkdir -p ~/.kaggle
-mv -n kaggle.json ~/.kaggle
+mv -n kaggle.json ~/.kaggle/
 chmod 600 ~/.kaggle/kaggle.json
 
 sh src/scripts/clean_dir.sh
