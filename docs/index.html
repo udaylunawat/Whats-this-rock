@@ -8,7 +8,7 @@
 
 <meta name="description" content="Telegram Rock Classification Bot!">
 
-<title>rocks_bot - Whats-this-rock</title>
+<title>rocks_classifier - Whats-this-rock</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,10 +127,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="rocks_bot - Whats-this-rock">
+<meta property="og:title" content="rocks_classifier - Whats-this-rock">
 <meta property="og:description" content="Telegram Rock Classification Bot!">
-<meta property="og:site-name" content="rocks_bot">
-<meta name="twitter:title" content="rocks_bot - Whats-this-rock">
+<meta property="og:site-name" content="rocks_classifier">
+<meta name="twitter:title" content="rocks_classifier - Whats-this-rock">
 <meta name="twitter:description" content="Telegram Rock Classification Bot!">
 <meta name="twitter:card" content="summary">
 </head>
@@ -143,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">rocks_bot</span>
+    <span class="navbar-title">rocks_classifier</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -197,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  </a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://udaylunawat.github.io/Whats-this-rock"><i class="bi bi-house" role="img" aria-label="Twitter">
+    <a class="nav-link" href="https://udaylunawat.github.io/Whats-this-rock"><i class="bi bi-github" role="img" aria-label="Twitter">
 </i> 
  </a>
   </li>  
@@ -231,37 +231,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./a_datasets.html" class="sidebar-item-text sidebar-link">Downloading Data</a>
+  <a href="./b_download.html" class="sidebar-item-text sidebar-link">1) Download dataset</a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./b_data_utils.html" class="sidebar-item-text sidebar-link">Data utils</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./data_loading.html" class="sidebar-item-text sidebar-link">Data Loading</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./eda.html" class="sidebar-item-text sidebar-link">Exploratory Notebook</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./detailed_trainer.html" class="sidebar-item-text sidebar-link">Trainer</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./training.html" class="sidebar-item-text sidebar-link">Training Notebook</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./sweeps.html" class="sidebar-item-text sidebar-link">Hyperparameter Tuning using Wandb Sweeps</a>
+  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">2) Download utilities</a>
   </div>
 </li>
     </ul>
@@ -290,7 +265,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#credits" id="toc-credits" class="nav-link" data-scroll-target="#credits">Credits</a></li>
   <li><a href="#support" id="toc-support" class="nav-link" data-scroll-target="#support">Support</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/rocks_bot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/rocks_classifier/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
@@ -856,7 +831,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/rocks_bot/);
+      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/rocks_classifier/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

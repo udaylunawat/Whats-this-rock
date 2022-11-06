@@ -1,47 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/sweeps.html</loc>
-    <lastmod>2022-11-04T17:34:49.087Z</lastmod>
+    <loc>https://udaylunawat.github.io/rocks_classifier/b_download.html</loc>
+    <lastmod>2022-11-06T16:50:03.631Z</lastmod>
   </url>
   <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/test_fastai.html</loc>
-    <lastmod>2022-11-04T17:34:49.985Z</lastmod>
+    <loc>https://udaylunawat.github.io/rocks_classifier/index.html</loc>
+    <lastmod>2022-11-06T16:50:04.552Z</lastmod>
   </url>
   <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/deploy_to_telegram.html</loc>
-    <lastmod>2022-11-04T17:34:50.491Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/b_data_utils.html</loc>
-    <lastmod>2022-11-04T17:34:51.209Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/fastai.html</loc>
-    <lastmod>2022-11-04T17:34:51.922Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/detailed_trainer.html</loc>
-    <lastmod>2022-11-04T17:34:52.581Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/training.html</loc>
-    <lastmod>2022-11-04T17:34:53.090Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/eda.html</loc>
-    <lastmod>2022-11-04T17:34:53.837Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/data_loading.html</loc>
-    <lastmod>2022-11-04T17:34:54.316Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/a_datasets.html</loc>
-    <lastmod>2022-11-04T17:34:54.838Z</lastmod>
-  </url>
-  <url>
-    <loc>https://udaylunawat.github.io/rocks_bot/index.html</loc>
-    <lastmod>2022-11-04T17:34:55.713Z</lastmod>
+    <loc>https://udaylunawat.github.io/rocks_classifier/a_download_utils.html</loc>
+    <lastmod>2022-11-06T16:50:05.174Z</lastmod>
   </url>
 </urlset>

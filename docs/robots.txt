@@ -1,1 +1,1 @@
-Sitemap: https://udaylunawat.github.io/rocks_bot/sitemap.xml
+Sitemap: https://udaylunawat.github.io/rocks_classifier/sitemap.xml

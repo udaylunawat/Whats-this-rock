@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Data download and utils">
+<meta name="description" content="Utils for downloading and preprocessing data">
 
-<title>rocks_bot - Data utils</title>
+<title>rocks_classifier - 2) Download utilities</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,11 +64,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="rocks_bot - Data utils">
-<meta property="og:description" content="Data download and utils">
-<meta property="og:site-name" content="rocks_bot">
-<meta name="twitter:title" content="rocks_bot - Data utils">
-<meta name="twitter:description" content="Data download and utils">
+<meta property="og:title" content="rocks_classifier - 2) Download utilities">
+<meta property="og:description" content="Utils for downloading and preprocessing data">
+<meta property="og:site-name" content="rocks_classifier">
+<meta name="twitter:title" content="rocks_classifier - 2) Download utilities">
+<meta name="twitter:description" content="Utils for downloading and preprocessing data">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">rocks_bot</span>
+    <span class="navbar-title">rocks_classifier</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -134,7 +134,7 @@ ul.task-list li input[type="checkbox"] {
  </a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://udaylunawat.github.io/Whats-this-rock"><i class="bi bi-house" role="img" aria-label="Twitter">
+    <a class="nav-link" href="https://udaylunawat.github.io/Whats-this-rock"><i class="bi bi-github" role="img" aria-label="Twitter">
 </i> 
  </a>
   </li>  
@@ -148,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Data utils</h1>
+      <h1 class="quarto-secondary-nav-title">2) Download utilities</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -168,37 +168,12 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./a_datasets.html" class="sidebar-item-text sidebar-link">Downloading Data</a>
+  <a href="./b_download.html" class="sidebar-item-text sidebar-link">1) Download dataset</a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./b_data_utils.html" class="sidebar-item-text sidebar-link active">Data utils</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./data_loading.html" class="sidebar-item-text sidebar-link">Data Loading</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./eda.html" class="sidebar-item-text sidebar-link">Exploratory Notebook</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./detailed_trainer.html" class="sidebar-item-text sidebar-link">Trainer</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./training.html" class="sidebar-item-text sidebar-link">Training Notebook</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./sweeps.html" class="sidebar-item-text sidebar-link">Hyperparameter Tuning using Wandb Sweeps</a>
+  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link active">2) Download utilities</a>
   </div>
 </li>
     </ul>
@@ -210,34 +185,21 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#move_and_rename" id="toc-move_and_rename" class="nav-link active" data-scroll-target="#move_and_rename">move_and_rename</a></li>
-  <li><a href="#move_files" id="toc-move_files" class="nav-link" data-scroll-target="#move_files">move_files</a></li>
-  <li><a href="#rename_files" id="toc-rename_files" class="nav-link" data-scroll-target="#rename_files">rename_files</a></li>
-  <li><a href="#get_tfds_from_dir" id="toc-get_tfds_from_dir" class="nav-link" data-scroll-target="#get_tfds_from_dir">get_tfds_from_dir</a></li>
-  <li><a href="#prepare" id="toc-prepare" class="nav-link" data-scroll-target="#prepare">prepare</a></li>
-  <li><a href="#get_preprocess" id="toc-get_preprocess" class="nav-link" data-scroll-target="#get_preprocess">get_preprocess</a></li>
-  <li><a href="#scalar" id="toc-scalar" class="nav-link" data-scroll-target="#scalar">scalar</a></li>
-  <li><a href="#get_value_counts" id="toc-get_value_counts" class="nav-link" data-scroll-target="#get_value_counts">get_value_counts</a></li>
-  <li><a href="#get_df" id="toc-get_df" class="nav-link" data-scroll-target="#get_df">get_df</a></li>
-  <li><a href="#get_dims" id="toc-get_dims" class="nav-link" data-scroll-target="#get_dims">get_dims</a></li>
-  <li><a href="#timer_func..wrap_func" id="toc-timer_func..wrap_func" class="nav-link" data-scroll-target="#timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></a></li>
-  <li><a href="#remove_unsupported_images" id="toc-remove_unsupported_images" class="nav-link" data-scroll-target="#remove_unsupported_images">remove_unsupported_images</a></li>
-  <li><a href="#find_filepaths" id="toc-find_filepaths" class="nav-link" data-scroll-target="#find_filepaths">find_filepaths</a></li>
-  <li><a href="#timer_func" id="toc-timer_func" class="nav-link" data-scroll-target="#timer_func">timer_func</a></li>
+  <li><a href="#find_filepaths" id="toc-find_filepaths" class="nav-link active" data-scroll-target="#find_filepaths">find_filepaths</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/rocks_bot/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/rocks_classifier/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Data utils</h1>
+<h1 class="title d-none d-lg-block">2) Download utilities</h1>
 </div>
 
 <div>
   <div class="description">
-    Data download and utils
+    Utils for downloading and preprocessing data
   </div>
 </div>
 
@@ -252,377 +214,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Recursively finding all files in folder</p>
 <hr>
-<section id="move_and_rename" class="level3">
-<h3 class="anchored" data-anchor-id="move_and_rename">move_and_rename</h3>
-<blockquote class="blockquote">
-<pre><code> move_and_rename (class_dir:str)</code></pre>
-</blockquote>
-<p>Move files from class_dir to tmp, renames them there based on count, and moves back to 2_processed class_dir: A class dir of supporting classes (Marble, Coal, …), which contains image files.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>class_dir</td>
-<td>str</td>
-<td><em>description</em></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="move_files" class="level3">
-<h3 class="anchored" data-anchor-id="move_files">move_files</h3>
-<blockquote class="blockquote">
-<pre><code> move_files (src_dir:str, dest_dir:str='data/2_processed/tmp')</code></pre>
-</blockquote>
-<p>Move files to tmp directory in 2_processed.</p>
-<p>src_dir: directory of rock subclass with files [Basalt, Marble, Coal, …]</p>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>src_dir</td>
-<td>str</td>
-<td></td>
-<td><em>description</em></td>
-</tr>
-<tr class="even">
-<td>dest_dir</td>
-<td>str</td>
-<td>data/2_processed/tmp</td>
-<td><em>description</em>, by default “data/2_processed/tmp”</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="rename_files" class="level3">
-<h3 class="anchored" data-anchor-id="rename_files">rename_files</h3>
-<blockquote class="blockquote">
-<pre><code> rename_files (source_dir:str='data/2_processed/tmp')</code></pre>
-</blockquote>
-<p>Rename files in classes and moves to 2_processed.</p>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>source_dir</td>
-<td>str</td>
-<td>data/2_processed/tmp</td>
-<td><em>description</em>, by default “data/2_processed/tmp”</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_tfds_from_dir" class="level3">
-<h3 class="anchored" data-anchor-id="get_tfds_from_dir">get_tfds_from_dir</h3>
-<blockquote class="blockquote">
-<pre><code> get_tfds_from_dir (cfg)</code></pre>
-</blockquote>
-<p>Convert directory of images to tfds dataset.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig):</td>
-<td>Hydra Configuration</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong><em>type</em></strong></td>
-<td><strong><em>description</em></strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="prepare" class="level3">
-<h3 class="anchored" data-anchor-id="prepare">prepare</h3>
-<blockquote class="blockquote">
-<pre><code> prepare (ds, cfg, shuffle=False, augment=False)</code></pre>
-</blockquote>
-<p>Prepare dataset using augment, preprocess, cache, shuffle and prefetch.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ds</td>
-<td><em>type</em></td>
-<td></td>
-<td><em>description</em></td>
-</tr>
-<tr class="even">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig):</td>
-<td></td>
-<td>Hydra Configuration</td>
-</tr>
-<tr class="odd">
-<td>shuffle</td>
-<td>bool</td>
-<td>False</td>
-<td><em>description</em>, by default False</td>
-</tr>
-<tr class="even">
-<td>augment</td>
-<td>bool</td>
-<td>False</td>
-<td><em>description</em>, by default False</td>
-</tr>
-<tr class="odd">
-<td><strong>Returns</strong></td>
-<td><strong><em>type</em></strong></td>
-<td></td>
-<td><strong><em>description</em></strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_preprocess" class="level3">
-<h3 class="anchored" data-anchor-id="get_preprocess">get_preprocess</h3>
-<blockquote class="blockquote">
-<pre><code> get_preprocess (cfg)</code></pre>
-</blockquote>
-<p>Return preprocess function for particular model.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig)</td>
-<td>Hydra Configuration</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong><em>type</em></strong></td>
-<td><strong><em>description</em></strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="scalar" class="level3">
-<h3 class="anchored" data-anchor-id="scalar">scalar</h3>
-<blockquote class="blockquote">
-<pre><code> scalar (img:&lt;module'PIL.Image'from'/Users/uday/miniforge3/envs/rocks/lib/
-         python3.10/site-packages/PIL/Image.py'&gt;)</code></pre>
-</blockquote>
-<p>Scale pixel between -1 and +1.</p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>img</td>
-<td>PIL.Image</td>
-<td>PIL Image</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>PIL.Image</strong></td>
-<td><strong>imagew with pixel values scaled between -1 and 1</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_value_counts" class="level3">
-<h3 class="anchored" data-anchor-id="get_value_counts">get_value_counts</h3>
-<blockquote class="blockquote">
-<pre><code> get_value_counts (dataset_path:str)</code></pre>
-</blockquote>
-<p>Get class counts of all classes in the dataset.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>dataset_path</td>
-<td>str</td>
-<td>directory with subclasses</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>None</strong></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_df" class="level3">
-<h3 class="anchored" data-anchor-id="get_df">get_df</h3>
-<blockquote class="blockquote">
-<pre><code> get_df (root:str='data/2_processed')</code></pre>
-</blockquote>
-<p>Return df with classes, image paths and file names.</p>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>root</td>
-<td>str</td>
-<td>data/2_processed</td>
-<td>directory to scan for image files, by default “data/2_processed”</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>DataFrame</strong></td>
-<td></td>
-<td><strong>with columns file_name, class and file_path</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_dims" class="level3">
-<h3 class="anchored" data-anchor-id="get_dims">get_dims</h3>
-<blockquote class="blockquote">
-<pre><code> get_dims (file:str)</code></pre>
-</blockquote>
-<p>Return dimenstions for an RBG image.</p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>file</td>
-<td>str</td>
-<td>file path for image</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>Optional</strong></td>
-<td><strong>returns a tuple of heights and width of image or None</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="timer_func..wrap_func" class="level3">
-<h3 class="anchored" data-anchor-id="timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></h3>
-<blockquote class="blockquote">
-<pre><code> timer_func.&lt;locals&gt;.wrap_func (*args, **kwargs)</code></pre>
-</blockquote>
-<hr>
-</section>
-<section id="remove_unsupported_images" class="level3">
-<h3 class="anchored" data-anchor-id="remove_unsupported_images">remove_unsupported_images</h3>
-<blockquote class="blockquote">
-<pre><code> remove_unsupported_images (root_folder:str)</code></pre>
-</blockquote>
-<p>Remove unsupported images.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>root_folder</td>
-<td>str</td>
-<td>Root Folder.</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
 <section id="find_filepaths" class="level3">
 <h3 class="anchored" data-anchor-id="find_filepaths">find_filepaths</h3>
 <blockquote class="blockquote">
@@ -630,6 +223,11 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p>Recursively finds all files.</p>
 <table class="table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 38%">
+<col style="width: 52%">
+</colgroup>
 <thead>
 <tr class="header">
 <th></th>
@@ -641,36 +239,12 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>root_folder</td>
 <td>str</td>
-<td><em>description</em></td>
+<td>folder path</td>
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong><em>type</em></strong></td>
-<td><strong><em>description</em></strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="timer_func" class="level3">
-<h3 class="anchored" data-anchor-id="timer_func">timer_func</h3>
-<blockquote class="blockquote">
-<pre><code> timer_func (func)</code></pre>
-</blockquote>
-<p>Show the execution time of the function object passed.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>func</td>
-<td><em>type</em></td>
-<td><em>description</em></td>
+<td><strong>(typing.List, &lt;class ‘int’&gt;)</strong></td>
+<td><strong>Returns a Tuple (Sorted filepaths, length of filepaths)</strong></td>
 </tr>
 </tbody>
 </table>
@@ -889,7 +463,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/rocks_bot/);
+      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/rocks_classifier/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
