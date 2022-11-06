@@ -85,7 +85,7 @@ def get_data_tfds():
     # build the tfds dataset from ImageFolder
     # https://www.tensorflow.org/datasets/api_docs/python/tfds/image/ImageFolder
 
-    builder = tfds.ImageFolder("data/4_tfds_dataset")
+    builder = tfds.ImageFolder("data/3_tfds_dataset")
     print(builder.info)  # number of images, number of classes, etc.
     data = builder.as_dataset(split=None, as_supervised=True)
 
@@ -163,7 +163,7 @@ def get_generators(config):
         print("Error in config.augment. Stop Training!")
 
     train_dataset = train_datagen.flow_from_directory(
-        "data/4_tfds_dataset/train",
+        "data/3_tfds_dataset/train",
         target_size=IMAGE_SIZE,
         batch_size=cfg.batch_size,
         shuffle=True,
@@ -175,7 +175,7 @@ def get_generators(config):
         rescale=1.0 / 255
     )  # preprocessing_function=scalar
     val_dataset = test_datagen.flow_from_directory(
-        "data/4_tfds_dataset/val",
+        "data/3_tfds_dataset/val",
         shuffle=True,
         color_mode="rgb",
         target_size=IMAGE_SIZE,
@@ -184,7 +184,7 @@ def get_generators(config):
     )
 
     test_generator = test_datagen.flow_from_directory(
-        "data/4_tfds_dataset/test",
+        "data/3_tfds_dataset/test",
         batch_size=cfg.batch_size,
         seed=cfg.seed,
         color_mode="rgb",
