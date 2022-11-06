@@ -197,7 +197,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  </a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://udaylunawat.github.io/Whats-this-rock"><i class="bi bi-github" role="img" aria-label="Twitter">
+    <a class="nav-link" href="https://www.github.com/udaylunawat/Whats-this-rock"><i class="bi bi-github" role="img" aria-label="Twitter">
 </i> 
  </a>
   </li>  
@@ -239,6 +239,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">2) Download utilities</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link">3) Preprocess Data</a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -257,10 +262,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#download-and-verify-the-data" id="toc-download-and-verify-the-data" class="nav-link" data-scroll-target="#download-and-verify-the-data">Download and verify the data</a>
   <ul>
-  <li><a href="#download_datasets" id="toc-download_datasets" class="nav-link" data-scroll-target="#download_datasets">download_datasets</a></li>
+  <li><a href="#timer_func..wrap_func" id="toc-timer_func..wrap_func" class="nav-link" data-scroll-target="#timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/rocks_classifier/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
@@ -297,31 +302,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <blockquote class="blockquote">
 <p>It creates the directory structure, and clears existing data files.</p>
 </blockquote>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/first_run.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># setting up data dir</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/*</span> data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/*</span> data<span class="op">/</span><span class="dv">3</span><span class="er">_tfds_dataset</span><span class="op">/*</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span>corrupted_images<span class="op">/*</span> data<span class="op">/</span>duplicate_images<span class="op">/*</span> data<span class="op">/</span>bad_images<span class="op">/*</span> data<span class="op">/</span>misclassified_images<span class="op">/*</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">0</span><span class="er">_raw</span> data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span> data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span> data<span class="op">/</span><span class="dv">3</span><span class="er">_tfds_dataset</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span>corrupted_images data<span class="op">/</span>duplicate_images data<span class="op">/</span>bad_images data<span class="op">/</span>misclassified_images<span class="op">/</span> checkpoints</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/<span class="pp">*</span> data/2_processed/<span class="pp">*</span> data/3_tfds_dataset/<span class="pp">*</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/corrupted_images/<span class="pp">*</span> data/duplicate_images/<span class="pp">*</span> data/bad_images/<span class="pp">*</span> data/misclassified_images/<span class="pp">*</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/0_raw data/1_extracted data/2_processed data/3_tfds_dataset</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/corrupted_images data/duplicate_images data/bad_images data/misclassified_images/ checkpoints</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/</span>Coal<span class="op">/</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/</span>Basalt<span class="op">/</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/</span>Granite<span class="op">/</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/</span>Marble<span class="op">/</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/</span>Quartzite<span class="op">/</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/</span>Limestone<span class="op">/</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>mkdir <span class="op">-</span>p data<span class="op">/</span><span class="dv">2</span><span class="er">_processed</span><span class="op">/</span>Sandstone<span class="op">/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Coal/</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Basalt/</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Granite/</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Marble/</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Quartzite/</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Limestone/</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Sandstone/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-error">
-<pre><code>SyntaxError: invalid decimal literal (184036895.py, line 10)</code></pre>
-</div>
 </div>
 </section>
 <section id="setting-up-kaggle-api-token" class="level2">
@@ -334,25 +334,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="dataset-1" class="level3">
 <h3 class="anchored" data-anchor-id="dataset-1">Dataset 1</h3>
 <p>Downloads <a href="https://www.kaggle.com/datasets/salmaneunus/rock-classification">Dataset1</a> and moves the extracted files to <code>data/1_extracted/dataset1</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/dataset1.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/dataset1.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset 1 processing</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>kaggle datasets download salmaneunus<span class="op">/</span>rock<span class="op">-</span>classification <span class="op">--</span>path data<span class="op">/</span><span class="dv">0</span><span class="er">_raw</span><span class="op">/</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>unzip <span class="op">-</span>qn data<span class="op">/</span><span class="dv">0</span><span class="er">_raw</span><span class="op">/</span>rock<span class="op">-</span>classification.<span class="bu">zip</span> <span class="op">-</span>d data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>mv <span class="op">-</span>vn data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>Dataset data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span>Igneous<span class="op">/*</span> data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span>Metamorphic<span class="op">/*</span> data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span>Sedimentary<span class="op">/*</span> data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span>Igneous<span class="op">/</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span>Metamorphic<span class="op">/</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset1<span class="op">/</span>Sedimentary<span class="op">/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset 1 processing</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kaggle</span> datasets download salmaneunus/rock-classification <span class="at">--path</span> data/0_raw/</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-qn</span> data/0_raw/rock-classification.zip <span class="at">-d</span> data/1_extracted/</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-vn</span> data/1_extracted/Dataset data/1_extracted/dataset1</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset1/Igneous/<span class="pp">*</span> data/1_extracted/dataset1/</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset1/Metamorphic/<span class="pp">*</span> data/1_extracted/dataset1/</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset1/Sedimentary/<span class="pp">*</span> data/1_extracted/dataset1/</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset1/Igneous/</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset1/Metamorphic/</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset1/Sedimentary/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>rock-classification.zip: Skipping, found more recently modified local copy (use --force to force download)
+data/1_extracted/Dataset -&gt; data/1_extracted/dataset1</code></pre>
+</div>
 </div>
 </section>
 <section id="dataset-2" class="level3">
@@ -362,45 +366,81 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset 2 processing</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>kaggle datasets download mahmoudalforawi<span class="op">/</span>igneous<span class="op">-</span>metamorphic<span class="op">-</span>sedimentary<span class="op">-</span>rocks<span class="op">-</span><span class="kw">and</span><span class="op">-</span>minerals <span class="op">--</span>path data<span class="op">/</span><span class="dv">0</span><span class="er">_raw</span><span class="op">/</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>unzip <span class="op">-</span>qn data<span class="op">/</span><span class="dv">0</span><span class="er">_raw</span><span class="op">/</span>igneous<span class="op">-</span>metamorphic<span class="op">-</span>sedimentary<span class="op">-</span>rocks<span class="op">-</span><span class="kw">and</span><span class="op">-</span>minerals.<span class="bu">zip</span> <span class="op">-</span>d data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>Rock_Dataset data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kaggle</span> datasets download mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals <span class="at">--path</span> data/0_raw/</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-qn</span> data/0_raw/igneous-metamorphic-sedimentary-rocks-and-minerals.zip <span class="at">-d</span> data/1_extracted/</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/Rock_Dataset data/1_extracted/dataset2</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>minerals</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/minerals</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>igneous\ rocks<span class="op">/</span>Basalt data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>igneous\ rocks<span class="op">/</span>granite data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>metamorphic\ rocks<span class="op">/</span>marble data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>metamorphic\ rocks<span class="op">/</span>quartzite data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>sedimentary\ rocks<span class="op">/</span>Limestone data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>sedimentary\ rocks<span class="op">/</span>Sandstone data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>sedimentary\ rocks<span class="op">/</span>coal data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/igneous\ rocks/Basalt data/1_extracted/dataset2/</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/igneous\ rocks/granite data/1_extracted/dataset2/</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/metamorphic\ rocks/marble data/1_extracted/dataset2/</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/metamorphic\ rocks/quartzite data/1_extracted/dataset2/</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/sedimentary\ rocks/Limestone data/1_extracted/dataset2/</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/sedimentary\ rocks/Sandstone data/1_extracted/dataset2/</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/sedimentary\ rocks/coal data/1_extracted/dataset2/</span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>granite data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>Granite</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>marble data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>Marble</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>quartzite data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>Quartzite</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>mv data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>coal data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>Coal</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/granite data/1_extracted/dataset2/Granite</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/marble data/1_extracted/dataset2/Marble</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/quartzite data/1_extracted/dataset2/Quartzite</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/coal data/1_extracted/dataset2/Coal</span>
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>igneous\ rocks</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>metamorphic\ rocks</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>rm <span class="op">-</span>rf data<span class="op">/</span><span class="dv">1</span><span class="er">_extracted</span><span class="op">/</span>dataset2<span class="op">/</span>sedimentary\ rocks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/igneous\ rocks</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/metamorphic\ rocks</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/sedimentary\ rocks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>igneous-metamorphic-sedimentary-rocks-and-minerals.zip: Skipping, found more recently modified local copy (use --force to force download)</code></pre>
+</div>
 </div>
 </section>
 </section>
 <section id="download-and-verify-the-data" class="level1">
 <h1>Download and verify the data</h1>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/data/download.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/data/download.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rocks_classifier.data.utils <span class="im">import</span> timer_func, find_filepaths</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">@timer_func</span>  <span class="co"># | hide_line</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_datasets():</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Download the datasets using scripts and verifies the image counts.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Uses `find_filepaths` to recursively find paths for all files in a directory.</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    data_dict <span class="op">=</span> {</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>: {<span class="st">"script"</span>: <span class="st">"rocks_classifier/scripts/dataset1.sh"</span>, <span class="st">"filecount"</span>: <span class="dv">2083</span>},</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span>: {<span class="st">"script"</span>: <span class="st">"rocks_classifier/scripts/dataset2.sh"</span>, <span class="st">"filecount"</span>: <span class="dv">4553</span>},</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> dataset_id <span class="kw">in</span> data_dict:</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> os.path.exists(</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            os.path.join(<span class="st">"data"</span>, <span class="st">"1_extracted"</span>, <span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        ):</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Downloading dataset </span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>            os.system(<span class="ss">f"sh </span><span class="sc">{</span>data_dict[dataset_id][<span class="st">'script'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>            _, count <span class="op">=</span> find_filepaths(</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>                os.path.join(<span class="st">"data"</span>, <span class="st">"1_extracted"</span>, <span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># assert count == data_dict[dataset_id]["filecount"]</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss"> already exists."</span>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Total Files in dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">:- </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">.</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <hr>
-<section id="download_datasets" class="level3">
-<h3 class="anchored" data-anchor-id="download_datasets">download_datasets</h3>
+<section id="timer_func..wrap_func" class="level3">
+<h3 class="anchored" data-anchor-id="timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></h3>
 <blockquote class="blockquote">
-<pre><code> download_datasets ()</code></pre>
+<pre><code> timer_func.&lt;locals&gt;.wrap_func (*args, **kwargs)</code></pre>
 </blockquote>
-<p>Download the datasets using scripts and verifies the image counts.</p>
 
 
 </section>
@@ -617,7 +657,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/rocks_classifier/);
+      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/Whats-this-rock/);
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href);
     }

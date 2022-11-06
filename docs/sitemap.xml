@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://udaylunawat.github.io/rocks_classifier/b_download.html</loc>
-    <lastmod>2022-11-06T16:50:03.631Z</lastmod>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/b_download.html</loc>
+    <lastmod>2022-11-06T22:09:09.457Z</lastmod>
   </url>
   <url>
-    <loc>https://udaylunawat.github.io/rocks_classifier/index.html</loc>
-    <lastmod>2022-11-06T16:50:04.552Z</lastmod>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/preprocess_data.html</loc>
+    <lastmod>2022-11-06T22:09:10.053Z</lastmod>
   </url>
   <url>
-    <loc>https://udaylunawat.github.io/rocks_classifier/a_download_utils.html</loc>
-    <lastmod>2022-11-06T16:50:05.174Z</lastmod>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/index.html</loc>
+    <lastmod>2022-11-06T22:09:10.819Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html</loc>
+    <lastmod>2022-11-06T22:09:11.476Z</lastmod>
   </url>
 </urlset>
