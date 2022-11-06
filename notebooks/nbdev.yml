@@ -2,8 +2,8 @@ project:
   output-dir: docs
 
 website:
-  title: "rocks_bot"
-  site-url: "https://udaylunawat.github.io/rocks_bot"
-  description: "Telegram Rock Classification Bot!"
-  repo-branch: master
-  repo-url: "https://github.com/udaylunawat/rocks_bot"
+  title: "rocks_classifier"
+  site-url: "https://udaylunawat.github.io/Whats-this-rock"
+  description: "Rock classifier deployed on railway and monitored using Weights and Biases!"
+  repo-branch: nbdev
+  repo-url: "https://github.com/udaylunawat/Whats-this-rock"

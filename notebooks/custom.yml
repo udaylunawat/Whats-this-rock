@@ -44,6 +44,6 @@ website:
     right:
       - icon: twitter
         href: https://twitter.com/udaylunawat
-      - icon: house
+      - icon: github
         href: "https://udaylunawat.github.io/Whats-this-rock"
         aria-label: Twitter

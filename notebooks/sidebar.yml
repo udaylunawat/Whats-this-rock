@@ -2,10 +2,11 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_a_datasets.ipynb
-      - 00_b_data_utils.ipynb
-      - 01_data_loading.ipynb
-      - 02_EDA.ipynb
-      - 03_detailed_trainer.ipynb
-      - 04_training.ipynb
-      - 05_sweeps.ipynb
+      - 01_b_download.ipynb
+      - 01_a_download_utils.ipynb
+      - 02_preprocess_data.ipynb
+      # - 01_data_loading.ipynb
+      # - 02_EDA.ipynb
+      # - 03_detailed_trainer.ipynb
+      # - 04_training.ipynb
+      # - 05_sweeps.ipynb
