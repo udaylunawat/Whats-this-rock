@@ -57,14 +57,46 @@ def get_new_name(dir_list: list) -> dict:
 
 
 def move_to_processed():
+    """
+    Combines files with same subclass and moves them to the subclass under data/2_processed.
+
+    Uses `get_new_name` to create new names of files and then rename them and copy to data/2_processed.
+    """
     dir1 = "data/1_extracted/dataset1"
     dir2 = "data/1_extracted/dataset2"
-    for d1, d2 in zip(os.listdir(dir1), os.listdir(dir2)):
-        assert d1 == d2
+    for d1, d2 in zip(sorted(os.listdir(dir1)), sorted(os.listdir(dir2))):
         path_dict = get_new_name([os.path.join(dir1, d1), os.path.join(dir2, d2)])
 
         for old_path, new_path in path_dict.items():
             shutil.copy(old_path, new_path)
+
+
+def clean_images(cfg):
+    """Removes bad, misclassified, duplicate, corrupted and unsupported images.
+
+    Parameters
+    ----------
+    cfg : cfg (omegaconf.DictConfig)
+        Hydra Configuration
+    """
+    if cfg.remove_bad: move_bad_files(
+        "configs/bad_images selected by gemini.txt",
+        "data/bad_images",
+        "Moving bad images...",
+    )
+    if cfg.remove_misclassified: move_bad_files(
+        "configs/misclassified selected by gemini.txt",
+        "data/misclassified_images",
+        "Moving misclassified images...",
+    )
+    if cfg.remove_duplicates: move_bad_files(
+        "configs/duplicates selected by gemini.txt",
+        "data/duplicate_images",
+        "Moving duplicate images...",
+    )
+
+    if cfg.remove_unsupported: remove_unsupported_images("data/2_processed")
+    if cfg.remove_corrupted: remove_corrupted_images("data/2_processed")
 
 
 def move_bad_files(txt_file, dest, text):
@@ -100,8 +132,8 @@ def sampling(cfg):
 
     Parameters
     ----------
-    cfg : _type_
-        _description_
+    cfg : cfg (omegaconf.DictConfig)
+        Hydra Configuration
     """
     print(
         "\nSplitting files in Train, Validation and Test and saving to data/3_tfds_dataset/"
@@ -338,21 +370,23 @@ def get_df(root: str = "data/2_processed") -> pd.DataFrame:
         list(zip(file_names, class_names, images_paths)),
         columns=["file_name", "class", "file_path"],
     )
+    df['file_type'] = df["file_name"].apply(lambda x: os.path.splitext(x)[1])
 
     return df
 
 
-def get_value_counts(dataset_path: str) -> None:
-    """Get class counts of all classes in the dataset.
+def get_value_counts(dataset_path: str, column: str='file_type') -> None:
+    """Get value counts of passed column.
 
     Parameters
     ----------
     dataset_path : str
         directory with subclasses
+    column : str
+        column name
     """
     data = get_df(dataset_path)
-    vc = data["file_name"].apply(lambda x: x.split(".")[-1]).value_counts()
-    print(vc)
+    print(data[column].value_counts())
 
 
 ####################################### tf.data Utilities ###################################
