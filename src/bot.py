@@ -63,7 +63,7 @@ def handle_photo(update, context):
 
 if __name__ == "__main__":
 
-    TOKEN = os.environ["TOKEN"]
+    TOKEN = os.environ["TELEGRAM_TOKEN"]
     updater = Updater(TOKEN, use_context=True)
     bot = updater.bot
     dp = updater.dispatcher
