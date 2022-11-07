@@ -19,10 +19,18 @@ num_classes: 7
 custom_callback: False
 monitor: "val_accuracy"
 
-# dataset
+# data
 dataset_id: [1,2]
 data_path: data/3_tfds_dataset/
 sampling: None
+
+# data cleaning
+remove_bad: True
+remove_misclassified: True
+remove_duplicates: True
+remove_corrupted: False
+remove_unsupported: False
+
 train_split: 0.70
 image_size: 224
 image_channels: 3
