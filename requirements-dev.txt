@@ -2,7 +2,6 @@
 
 scikit-learn
 opencv-python
-kaggle
 pandas
 numpy
 pillow
@@ -18,7 +17,7 @@ pre-commit
 # fastchan
 fastai
 
+nbdev
 tensorflow
 tensorflow-addons
 keras-cv
-nbdev
