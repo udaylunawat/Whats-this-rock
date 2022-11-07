@@ -57,17 +57,21 @@ data/2_processed/Basalt/dataset1_Basalt_059_7ae2fbb2259062b944e5f9f551330008.jpg
 data/2_processed/Basalt/dataset1_Basalt_060_8.jpg
 data/2_processed/Basalt/dataset1_Basalt_061_800px_COLOURBOX18999858.jpg
 data/2_processed/Basalt/dataset1_Basalt_062_9.jpg
+data/2_processed/Basalt/dataset1_Basalt_064_Basalt-Lava-Rock-Vivarium-Guide-768x568.jpg
 data/2_processed/Basalt/dataset1_Basalt_068_P1020339.jpg
 data/2_processed/Basalt/dataset1_Basalt_072_basalt-texture.jpg
 data/2_processed/Basalt/dataset1_Basalt_076_collection-small-rock-isolated-white-background_70287-3572.jpg
 data/2_processed/Basalt/dataset1_Basalt_077_gettyimages-1127177629-612x612.jpg
 data/2_processed/Basalt/dataset1_Basalt_078_gettyimages-865515424-612x612.jpg
+data/2_processed/Basalt/dataset1_Basalt_081_piece-raw-gray-hyalobasalt-rock-isolated-closeup-sample-natural-mineral-geological-collection-white-background-170798111.jpg
 data/2_processed/Basalt/dataset1_Basalt_083_rosen-kazlachev-full.jpg
 data/2_processed/Basalt/dataset1_Basalt_084_rosetta-stone.jpg
+data/2_processed/Basalt/dataset2_Basalt_089_Basalt rock10.jpg
 data/2_processed/Basalt/dataset2_Basalt_090_Basalt rock100.jpg
 data/2_processed/Basalt/dataset2_Basalt_091_Basalt rock101.jpg
 data/2_processed/Basalt/dataset2_Basalt_092_Basalt rock102.jpg
 data/2_processed/Basalt/dataset2_Basalt_094_Basalt rock104.jpg
+data/2_processed/Basalt/dataset2_Basalt_096_Basalt rock109.jpg
 data/2_processed/Basalt/dataset2_Basalt_097_Basalt rock110.jpg
 data/2_processed/Basalt/dataset2_Basalt_098_Basalt rock112.jpg
 data/2_processed/Basalt/dataset2_Basalt_100_Basalt rock124.jpg
@@ -93,6 +97,7 @@ data/2_processed/Basalt/dataset2_Basalt_154_Basalt rock46.jpg
 data/2_processed/Basalt/dataset2_Basalt_155_Basalt rock48.jpg
 data/2_processed/Basalt/dataset2_Basalt_156_Basalt rock501.jpg
 data/2_processed/Basalt/dataset2_Basalt_157_Basalt rock52.jpg
+data/2_processed/Basalt/dataset2_Basalt_159_Basalt rock57.jpg
 data/2_processed/Basalt/dataset2_Basalt_160_Basalt rock59.jpg
 data/2_processed/Basalt/dataset2_Basalt_169_Basalt rock80.jpg
 data/2_processed/Basalt/dataset2_Basalt_171_Basalt rock84.jpg
@@ -109,21 +114,26 @@ data/2_processed/Coal/dataset1_Coal_152_236.jpg
 data/2_processed/Coal/dataset1_Coal_154_238.jpg
 data/2_processed/Coal/dataset1_Coal_160_243.jpg
 data/2_processed/Coal/dataset1_Coal_165_248.jpg
+data/2_processed/Coal/dataset1_Coal_188_269.jpg
 data/2_processed/Coal/dataset1_Coal_210_289.jpg
 data/2_processed/Coal/dataset1_Coal_218_296.jpg
 data/2_processed/Coal/dataset1_Coal_236_311.jpg
+data/2_processed/Coal/dataset1_Coal_298_368.jpg
 data/2_processed/Coal/dataset1_Coal_312_47.jpg
 data/2_processed/Coal/dataset1_Coal_330_63.jpg
+data/2_processed/Coal/dataset1_Coal_348_8.jpg
 data/2_processed/Coal/dataset1_Coal_349_80.jpg
 data/2_processed/Coal/dataset1_Coal_352_83.jpg
 data/2_processed/Coal/dataset1_Coal_358_89.jpg
 data/2_processed/Coal/dataset1_Coal_369_99.jpg
 data/2_processed/Coal/dataset2_Coal_375_coal rock104.jpg
 data/2_processed/Coal/dataset2_Coal_377_coal rock112.jpg
+data/2_processed/Coal/dataset2_Coal_400_coal rock191.jpg
 data/2_processed/Coal/dataset2_Coal_404_coal rock236.jpg
 data/2_processed/Coal/dataset2_Coal_411_coal rock277.jpg
 data/2_processed/Coal/dataset2_Coal_412_coal rock28.jpg
 data/2_processed/Coal/dataset2_Coal_413_coal rock284.jpg
+data/2_processed/Coal/dataset2_Coal_419_coal rock312.jpg
 data/2_processed/Coal/dataset2_Coal_427_coal rock370.jpg
 data/2_processed/Coal/dataset2_Coal_431_coal rock396.jpg
 data/2_processed/Coal/dataset2_Coal_436_coal rock46.jpg
@@ -137,6 +147,7 @@ data/2_processed/Granite/dataset1_Granite_009_16.jpg
 data/2_processed/Granite/dataset1_Granite_014_20.jpg
 data/2_processed/Granite/dataset1_Granite_017_23.jpeg
 data/2_processed/Granite/dataset1_Granite_018_24.png
+data/2_processed/Granite/dataset1_Granite_019_25.png
 data/2_processed/Granite/dataset1_Granite_020_26.png
 data/2_processed/Granite/dataset1_Granite_022_28.jpg
 data/2_processed/Granite/dataset1_Granite_023_29.jpg
@@ -144,6 +155,7 @@ data/2_processed/Granite/dataset1_Granite_024_3.jpg
 data/2_processed/Granite/dataset1_Granite_025_30.jpg
 data/2_processed/Granite/dataset1_Granite_026_31.jpg
 data/2_processed/Granite/dataset1_Granite_028_33.jpg
+data/2_processed/Granite/dataset1_Granite_029_34.JPEG
 data/2_processed/Granite/dataset1_Granite_030_35.jpg
 data/2_processed/Granite/dataset1_Granite_031_36.JPEG
 data/2_processed/Granite/dataset1_Granite_032_37.jpg
@@ -156,6 +168,7 @@ data/2_processed/Granite/dataset1_Granite_051_54.jpg
 data/2_processed/Granite/dataset1_Granite_052_55.jpg
 data/2_processed/Granite/dataset1_Granite_054_57.jpg
 data/2_processed/Granite/dataset1_Granite_055_58.png
+data/2_processed/Granite/dataset1_Granite_056_59.jpg
 data/2_processed/Granite/dataset1_Granite_058_60.jpg
 data/2_processed/Granite/dataset1_Granite_060_62.jpg
 data/2_processed/Granite/dataset1_Granite_061_63.jpg
@@ -178,7 +191,9 @@ data/2_processed/Granite/dataset2_Granite_133_granite rock227.jpg
 data/2_processed/Granite/dataset2_Granite_136_granite rock234.jpg
 data/2_processed/Granite/dataset2_Granite_138_granite rock241.jpg
 data/2_processed/Granite/dataset2_Granite_142_granite rock256.jpg
+data/2_processed/Granite/dataset2_Granite_145_granite rock26.jpg
 data/2_processed/Granite/dataset2_Granite_146_granite rock264.jpg
+data/2_processed/Granite/dataset2_Granite_147_granite rock267.jpg
 data/2_processed/Granite/dataset2_Granite_163_granite rock40.jpg
 data/2_processed/Granite/dataset2_Granite_166_granite rock417.jpg
 data/2_processed/Granite/dataset2_Granite_168_granite rock423.jpg
@@ -191,8 +206,12 @@ data/2_processed/Granite/dataset2_Granite_182_granite rock518.jpg
 data/2_processed/Granite/dataset2_Granite_187_granite rock548.jpg
 data/2_processed/Granite/dataset2_Granite_189_granite rock554.jpg
 data/2_processed/Granite/dataset2_Granite_193_granite rock574.jpg
+data/2_processed/Granite/dataset2_Granite_195_granite rock580.jpg
 data/2_processed/Limestone/dataset1_Limestone_012_108.jpg
 data/2_processed/Limestone/dataset1_Limestone_015_110.jpg
+data/2_processed/Limestone/dataset1_Limestone_026_120.jpg
+data/2_processed/Limestone/dataset1_Limestone_029_123.jpg
+data/2_processed/Limestone/dataset1_Limestone_044_137.jpg
 data/2_processed/Limestone/dataset1_Limestone_046_139.jpg
 data/2_processed/Limestone/dataset1_Limestone_048_140.jpg
 data/2_processed/Limestone/dataset1_Limestone_058_15.jpg
@@ -200,14 +219,17 @@ data/2_processed/Limestone/dataset1_Limestone_081_170.jpg
 data/2_processed/Limestone/dataset1_Limestone_082_171.jpg
 data/2_processed/Limestone/dataset1_Limestone_087_176.jpg
 data/2_processed/Limestone/dataset1_Limestone_110_197.jpg
+data/2_processed/Limestone/dataset1_Limestone_122_207.jpg
 data/2_processed/Limestone/dataset1_Limestone_124_209.jpg
 data/2_processed/Limestone/dataset1_Limestone_129_213.jpg
+data/2_processed/Limestone/dataset1_Limestone_134_218.jpg
 data/2_processed/Limestone/dataset1_Limestone_135_219.jpg
 data/2_processed/Limestone/dataset1_Limestone_141_224.jpg
 data/2_processed/Limestone/dataset1_Limestone_153_235.jpg
 data/2_processed/Limestone/dataset1_Limestone_162_243.jpg
 data/2_processed/Limestone/dataset1_Limestone_169_25.jpg
 data/2_processed/Limestone/dataset1_Limestone_196_274.jpg
+data/2_processed/Limestone/dataset1_Limestone_197_275.jpg
 data/2_processed/Limestone/dataset1_Limestone_210_287.jpg
 data/2_processed/Limestone/dataset1_Limestone_253_325.jpg
 data/2_processed/Limestone/dataset1_Limestone_273_4.jpg
@@ -222,6 +244,7 @@ data/2_processed/Limestone/dataset1_Limestone_304_68.jpg
 data/2_processed/Limestone/dataset1_Limestone_314_77.jpg
 data/2_processed/Limestone/dataset1_Limestone_319_81.jpg
 data/2_processed/Limestone/dataset1_Limestone_327_89.jpg
+data/2_processed/Limestone/dataset1_Limestone_335_96.jpg
 data/2_processed/Limestone/dataset2_Limestone_345_Limestone112.jpg
 data/2_processed/Limestone/dataset2_Limestone_346_Limestone113.jpg
 data/2_processed/Limestone/dataset2_Limestone_348_Limestone115.jpg
@@ -233,11 +256,14 @@ data/2_processed/Limestone/dataset2_Limestone_356_Limestone142.jpg
 data/2_processed/Limestone/dataset2_Limestone_357_Limestone148.jpg
 data/2_processed/Limestone/dataset2_Limestone_359_Limestone154.jpg
 data/2_processed/Limestone/dataset2_Limestone_360_Limestone157.jpg
+data/2_processed/Limestone/dataset2_Limestone_362_Limestone170.jpg
 data/2_processed/Limestone/dataset2_Limestone_363_Limestone173.jpg
 data/2_processed/Limestone/dataset2_Limestone_365_Limestone18.jpg
 data/2_processed/Limestone/dataset2_Limestone_366_Limestone180.jpg
+data/2_processed/Limestone/dataset2_Limestone_368_Limestone194.jpg
 data/2_processed/Limestone/dataset2_Limestone_371_Limestone20.jpg
 data/2_processed/Limestone/dataset2_Limestone_376_Limestone221.jpg
+data/2_processed/Limestone/dataset2_Limestone_377_Limestone23.jpg
 data/2_processed/Limestone/dataset2_Limestone_380_Limestone240.jpg
 data/2_processed/Limestone/dataset2_Limestone_381_Limestone242.jpg
 data/2_processed/Limestone/dataset2_Limestone_382_Limestone248.jpg
@@ -275,18 +301,24 @@ data/2_processed/Marble/dataset1_Marble_010_1 (19).jpg
 data/2_processed/Marble/dataset1_Marble_015_1 (23).jpg
 data/2_processed/Marble/dataset1_Marble_016_1 (24).jpg
 data/2_processed/Marble/dataset1_Marble_018_1 (26).jpg
+data/2_processed/Marble/dataset1_Marble_019_1 (28).jpg
 data/2_processed/Marble/dataset1_Marble_020_1 (29).jpg
+data/2_processed/Marble/dataset1_Marble_021_1 (30).jpg
 data/2_processed/Marble/dataset1_Marble_022_1 (31).jpg
 data/2_processed/Marble/dataset1_Marble_025_1 (334).jpg
 data/2_processed/Marble/dataset1_Marble_026_1 (335).jpg
 data/2_processed/Marble/dataset1_Marble_029_1 (338).jpg
+data/2_processed/Marble/dataset1_Marble_030_1 (339).jpg
 data/2_processed/Marble/dataset1_Marble_033_1 (341).jpg
+data/2_processed/Marble/dataset1_Marble_034_1 (342).jpg
 data/2_processed/Marble/dataset1_Marble_036_1 (345).jpg
 data/2_processed/Marble/dataset1_Marble_037_1 (346).jpg
 data/2_processed/Marble/dataset1_Marble_039_1 (348).jpg
+data/2_processed/Marble/dataset1_Marble_040_1 (349).jpg
 data/2_processed/Marble/dataset1_Marble_042_1 (350).jpg
 data/2_processed/Marble/dataset1_Marble_044_1 (352).jpg
 data/2_processed/Marble/dataset1_Marble_045_1 (353).jpg
+data/2_processed/Marble/dataset1_Marble_046_1 (354).jpg
 data/2_processed/Marble/dataset1_Marble_047_1 (355).jpg
 data/2_processed/Marble/dataset1_Marble_048_1 (356).jpg
 data/2_processed/Marble/dataset1_Marble_051_1 (36).jpg
@@ -296,6 +328,7 @@ data/2_processed/Marble/dataset1_Marble_059_1 (369).jpg
 data/2_processed/Marble/dataset1_Marble_061_1 (370).jpg
 data/2_processed/Marble/dataset1_Marble_062_1 (371).jpg
 data/2_processed/Marble/dataset1_Marble_063_1 (372).jpg
+data/2_processed/Marble/dataset1_Marble_064_1 (373).jpg
 data/2_processed/Marble/dataset1_Marble_068_1 (377).jpg
 data/2_processed/Marble/dataset1_Marble_069_1 (378).jpg
 data/2_processed/Marble/dataset1_Marble_073_1 (381).jpg
@@ -303,6 +336,7 @@ data/2_processed/Marble/dataset1_Marble_074_1 (382).jpg
 data/2_processed/Marble/dataset1_Marble_076_1 (384).jpg
 data/2_processed/Marble/dataset1_Marble_077_1 (385).jpg
 data/2_processed/Marble/dataset1_Marble_078_1 (387).jpg
+data/2_processed/Marble/dataset1_Marble_079_1 (388).jpg
 data/2_processed/Marble/dataset1_Marble_080_1 (389).jpg
 data/2_processed/Marble/dataset1_Marble_081_1 (39).jpg
 data/2_processed/Marble/dataset1_Marble_082_1 (390).jpg
@@ -315,6 +349,7 @@ data/2_processed/Marble/dataset1_Marble_099_1 (406).jpg
 data/2_processed/Marble/dataset1_Marble_101_1 (408).jpg
 data/2_processed/Marble/dataset1_Marble_102_1 (409).jpg
 data/2_processed/Marble/dataset1_Marble_107_1 (413).jpg
+data/2_processed/Marble/dataset1_Marble_110_1 (416).jpg
 data/2_processed/Marble/dataset1_Marble_111_1 (417).jpg
 data/2_processed/Marble/dataset1_Marble_112_1 (42).jpg
 data/2_processed/Marble/dataset1_Marble_115_1 (422).jpg
@@ -334,12 +369,14 @@ data/2_processed/Marble/dataset1_Marble_145_1 (459).jpg
 data/2_processed/Marble/dataset1_Marble_148_1 (461).jpg
 data/2_processed/Marble/dataset1_Marble_150_1 (464).jpg
 data/2_processed/Marble/dataset1_Marble_151_1 (465).jpg
+data/2_processed/Marble/dataset1_Marble_155_1 (469).jpg
 data/2_processed/Marble/dataset1_Marble_156_1 (47).jpg
 data/2_processed/Marble/dataset1_Marble_157_1 (470).jpg
 data/2_processed/Marble/dataset1_Marble_162_1 (479).jpg
 data/2_processed/Marble/dataset1_Marble_166_1 (486).jpg
 data/2_processed/Marble/dataset1_Marble_167_1 (487).jpg
 data/2_processed/Marble/dataset1_Marble_171_1 (495).jpg
+data/2_processed/Marble/dataset1_Marble_172_1 (496).jpg
 data/2_processed/Marble/dataset1_Marble_174_1 (498).jpg
 data/2_processed/Marble/dataset1_Marble_176_1 (500).jpg
 data/2_processed/Marble/dataset1_Marble_177_1 (501).jpg
@@ -350,6 +387,7 @@ data/2_processed/Marble/dataset1_Marble_183_1 (511).jpg
 data/2_processed/Marble/dataset1_Marble_184_1 (513).jpg
 data/2_processed/Marble/dataset1_Marble_186_1 (515).jpg
 data/2_processed/Marble/dataset1_Marble_187_1 (516).jpg
+data/2_processed/Marble/dataset1_Marble_188_1 (518).jpg
 data/2_processed/Marble/dataset1_Marble_189_1 (520).jpg
 data/2_processed/Marble/dataset1_Marble_190_1 (521).jpg
 data/2_processed/Marble/dataset1_Marble_193_1 (530).jpg
@@ -357,16 +395,24 @@ data/2_processed/Marble/dataset1_Marble_194_1 (531).jpg
 data/2_processed/Marble/dataset1_Marble_197_1 (536).jpg
 data/2_processed/Marble/dataset1_Marble_200_1 (547).jpg
 data/2_processed/Marble/dataset1_Marble_203_1 (551).jpg
+data/2_processed/Marble/dataset1_Marble_204_1 (552).jpg
 data/2_processed/Marble/dataset1_Marble_207_1 (557).jpg
 data/2_processed/Marble/dataset1_Marble_216_1 (571).jpg
+data/2_processed/Marble/dataset1_Marble_218_1 (573).jpg
+data/2_processed/Marble/dataset1_Marble_219_1 (574).jpg
 data/2_processed/Marble/dataset1_Marble_222_1 (577).jpg
 data/2_processed/Marble/dataset1_Marble_224_1 (579).jpg
 data/2_processed/Marble/dataset1_Marble_228_1 (583).jpg
+data/2_processed/Marble/dataset1_Marble_230_1 (585).jpg
+data/2_processed/Marble/dataset1_Marble_233_1 (588).jpg
+data/2_processed/Marble/dataset1_Marble_239_1 (594).jpg
 data/2_processed/Marble/dataset1_Marble_240_1 (595).jpg
 data/2_processed/Marble/dataset1_Marble_241_1 (596).jpg
 data/2_processed/Marble/dataset1_Marble_245_1 (6).jpg
+data/2_processed/Marble/dataset1_Marble_248_1 (602).jpg
 data/2_processed/Marble/dataset1_Marble_249_1 (603).jpg
 data/2_processed/Marble/dataset1_Marble_250_1 (604).jpg
+data/2_processed/Marble/dataset1_Marble_251_1 (605).jpg
 data/2_processed/Marble/dataset1_Marble_252_1 (606).jpg
 data/2_processed/Marble/dataset1_Marble_257_1 (611).jpg
 data/2_processed/Marble/dataset1_Marble_258_1 (612).jpg
@@ -377,7 +423,13 @@ data/2_processed/Marble/dataset1_Marble_268_15169970468_ef3c6b5bff_b.jpg
 data/2_processed/Marble/dataset1_Marble_269_1655-Ahola-dolomite-marble-8-cm.jpg
 data/2_processed/Marble/dataset1_Marble_270_1757-marble-calcite-Leivset-19-cm.jpg
 data/2_processed/Marble/dataset1_Marble_271_31e2cae7a399bd4322fc2f0a8351995e.jpg
+data/2_processed/Marble/dataset1_Marble_273_Marble-084-RD010-C-SH_nltxub.jpg
 data/2_processed/Marble/dataset1_Marble_276_MarbleWhite.jpg
+data/2_processed/Marble/dataset1_Marble_278_White-Marble-Metamorphic-Rock.jpg
+data/2_processed/Marble/dataset1_Marble_279_bflnze7yaaqme5qkgdqc_b5de349d-b6be-48ce-a108-0ede8f2a8b4c_915x700.jpg
+data/2_processed/Marble/dataset1_Marble_280_e9445d48-36f0-4ecf-b097-96ed445a9f74.__CR255,99,3210,1985_PT0_SX970_V1___.jpg
+data/2_processed/Marble/dataset1_Marble_287_istockphoto-1030995030-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_291_istockphoto-1078006654-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_292_istockphoto-1089481820-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_294_istockphoto-1124987135-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_295_istockphoto-1125425397-612x612.jpg
@@ -388,12 +440,18 @@ data/2_processed/Marble/dataset1_Marble_302_istockphoto-1162414197-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_303_istockphoto-1167831985-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_305_istockphoto-1172079174-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_309_istockphoto-1178410349-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_313_istockphoto-1187562031-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_317_istockphoto-1195174656-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_318_istockphoto-1197424395-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_319_istockphoto-1201821562-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_320_istockphoto-1207160907-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_321_istockphoto-1207543738-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_323_istockphoto-1212981210-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_328_istockphoto-1269930537-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_330_istockphoto-1289284267-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_332_istockphoto-136979336-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_335_istockphoto-174823235-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_337_istockphoto-182148999-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_338_istockphoto-183755373-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_339_istockphoto-184592313-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_340_istockphoto-476416199-612x612.jpg
@@ -406,12 +464,15 @@ data/2_processed/Marble/dataset1_Marble_347_istockphoto-502976396-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_348_istockphoto-509006947-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_349_istockphoto-521027443-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_350_istockphoto-521072811-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_354_istockphoto-591405034-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_355_istockphoto-596802498-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_356_istockphoto-619512250-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_358_istockphoto-660591162-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_360_istockphoto-677811978-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_362_istockphoto-689288296-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_363_istockphoto-693871142-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_365_istockphoto-878788946-612x612.jpg
+data/2_processed/Marble/dataset1_Marble_367_istockphoto-897447204-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_368_istockphoto-92256869-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_369_istockphoto-939752264-612x612.jpg
 data/2_processed/Marble/dataset1_Marble_382_pink-marble.jpg
@@ -419,7 +480,9 @@ data/2_processed/Marble/dataset1_Marble_385_rock-kit.jpg
 data/2_processed/Marble/dataset2_Marble_392_marble rock12.jpg
 data/2_processed/Marble/dataset2_Marble_395_marble rock15.jpg
 data/2_processed/Marble/dataset2_Marble_408_marble rock29.jpg
+data/2_processed/Marble/dataset2_Marble_425_marble rock7.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_002_05819280015911796649727.jpg
+data/2_processed/Quartzite/dataset1_Quartzite_003_09624110015898065506629.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_004_3-s2.0-B9780123838322000931-f90-01-9780123838322.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_006_3-s2.0-B9780123838322000931-f90-03-9780123838322.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_007_3-s2.0-B9780128141243001023-f102-07-9780128141243.jpg
@@ -436,19 +499,28 @@ data/2_processed/Quartzite/dataset1_Quartzite_021_images(1).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_022_images(10).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_031_images(108).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_041_images(117).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_044_images(12).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_052_images(128).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_056_images(131).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_066_images(140).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_070_images(144).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_082_images(155).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_083_images(156).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_085_images(158).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_097_images(169).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_100_images(171).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_110_images(180).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_111_images(181).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_120_images(190).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_126_images(196).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_131_images(20).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_132_images(200).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_133_images(201).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_139_images(207).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_142_images(21).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_154_images(220).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_161_images(227).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_170_images(235).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_174_images(239).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_182_images(246).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_183_images(247).jpg
@@ -457,10 +529,12 @@ data/2_processed/Quartzite/dataset1_Quartzite_190_images(253).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_192_images(255).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_193_images(256).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_199_images(263).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_200_images(264).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_205_images(269).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_209_images(272).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_213_images(276).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_216_images(279).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_221_images(283).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_223_images(285).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_224_images(286).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_226_images(288).jpg
@@ -468,21 +542,27 @@ data/2_processed/Quartzite/dataset1_Quartzite_229_images(290).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_233_images(294).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_235_images(297).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_236_images(298).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_245_images(306).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_248_images(309).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_249_images(31).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_250_images(310).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_258_images(318).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_259_images(319).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_272_images(335).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_273_images(336).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_274_images(337).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_283_images(345).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_284_images(346).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_289_images(355).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_295_images(360).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_299_images(365).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_308_images(376).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_319_images(387).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_330_images(4).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_334_images(406).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_335_images(407).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_338_images(412).jpg
+data/2_processed/Quartzite/dataset1_Quartzite_340_images(414).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_347_images(424).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_349_images(428).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_355_images(433).jpg
@@ -504,33 +584,47 @@ data/2_processed/Quartzite/dataset1_Quartzite_440_images(83).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_449_images(91).jpg
 data/2_processed/Quartzite/dataset1_Quartzite_458_images.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_459_istockphoto-1009039398-612x612.jpg
+data/2_processed/Quartzite/dataset1_Quartzite_461_istockphoto-1062419138-612x612.jpg
+data/2_processed/Quartzite/dataset1_Quartzite_462_istockphoto-1135857001-612x612.jpg
+data/2_processed/Quartzite/dataset1_Quartzite_463_istockphoto-1164037901-612x612.jpg
+data/2_processed/Quartzite/dataset1_Quartzite_464_istockphoto-1172732945-612x612.jpg
+data/2_processed/Quartzite/dataset1_Quartzite_465_istockphoto-1200978594-612x612.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_466_istockphoto-484404526-612x612.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_467_istockphoto-492199581-612x612.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_468_istockphoto-516391884-612x612.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_469_istockphoto-929779624-612x612.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_470_istockphoto-93179285-612x612.jpg
 data/2_processed/Quartzite/dataset1_Quartzite_475_quartzite1.jpg
+data/2_processed/Quartzite/dataset2_Quartzite_481_quartzite rock13.jpg
 data/2_processed/Quartzite/dataset2_Quartzite_489_quartzite rock20.jpg
 data/2_processed/Quartzite/dataset2_Quartzite_516_quartzite rock8.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_001_0.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_003_10.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_004_100.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_018_113.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_047_14.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_068_159.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_083_172.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_091_18.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_099_187.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_107_194.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_125_21.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_138_221.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_159_240.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_175_255.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_184_263.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_185_264.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_195_273.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_201_279.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_205_282.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_210_287.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_242_315.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_260_4.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_276_54.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_280_58.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_290_67.jpg
 data/2_processed/Sandstone/dataset1_Sandstone_301_77.jpg
+data/2_processed/Sandstone/dataset1_Sandstone_320_94.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_326_Sandstone0.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_327_Sandstone10.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_328_Sandstone102.jpg
@@ -538,14 +632,19 @@ data/2_processed/Sandstone/dataset2_Sandstone_330_Sandstone11.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_331_Sandstone113.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_332_Sandstone115.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_333_Sandstone119.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_334_Sandstone125.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_335_Sandstone147.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_337_Sandstone152.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_338_Sandstone153.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_339_Sandstone156.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_340_Sandstone160.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_341_Sandstone180.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_343_Sandstone22.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_344_Sandstone23.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_345_Sandstone24.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_347_Sandstone31.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_351_Sandstone47.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_352_Sandstone48.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_353_Sandstone49.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_355_Sandstone55.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_356_Sandstone57.jpg
@@ -557,4 +656,6 @@ data/2_processed/Sandstone/dataset2_Sandstone_364_Sandstone78.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_365_Sandstone79.
 data/2_processed/Sandstone/dataset2_Sandstone_365_Sandstone79.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_366_Sandstone8.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_368_Sandstone9.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_369_Sandstone94.jpg
+data/2_processed/Sandstone/dataset2_Sandstone_370_Sandstone97.jpg
