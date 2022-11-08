@@ -40,7 +40,7 @@ Type `/help` to get instructions.
 
 ``` bash
 pip install -r requirements-prod.txt
-python src/bot.py
+python rock_classifier/bot.py
 ```
 
 ### Train Model

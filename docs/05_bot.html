@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Move images from both datasets to respective class labels, remove duplicates, bad and corrupted images.">
 
-<title>rocks_classifier - 3) Preprocess Data</title>
+<title>rocks_classifier – bot</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,69 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -127,12 +63,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="rocks_classifier - 3) Preprocess Data">
-<meta property="og:description" content="Move images from both datasets to respective class labels, remove duplicates, bad and corrupted images.">
-<meta property="og:site-name" content="rocks_classifier">
-<meta name="twitter:title" content="rocks_classifier - 3) Preprocess Data">
-<meta name="twitter:description" content="Move images from both datasets to respective class labels, remove duplicates, bad and corrupted images.">
-<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -211,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">3) Preprocess Data</h1>
+      <h1 class="quarto-secondary-nav-title">(Untitled)</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -241,7 +171,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link active">3) Preprocess Data</a>
+  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link">3) Preprocess Data</a>
   </div>
 </li>
     </ul>
@@ -253,167 +183,64 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#steps" id="toc-steps" class="nav-link active" data-scroll-target="#steps">Steps</a>
-  <ul>
-  <li><a href="#rename-and-move-files-to-data2_processed." id="toc-rename-and-move-files-to-data2_processed." class="nav-link" data-scroll-target="#rename-and-move-files-to-data2_processed.">1. Rename and move files to data/2_processed.</a></li>
-  <li><a href="#move_to_processed" id="toc-move_to_processed" class="nav-link" data-scroll-target="#move_to_processed">move_to_processed</a></li>
-  <li><a href="#list-files-other-than-jpg-and-png-to-remove-unsupported-files." id="toc-list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="nav-link" data-scroll-target="#list-files-other-than-jpg-and-png-to-remove-unsupported-files.">2. List files other than jpg and png, to remove unsupported files.</a></li>
-  </ul></li>
-  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a>
-  <ul>
-  <li><a href="#process_data" id="toc-process_data" class="nav-link" data-scroll-target="#process_data">process_data</a></li>
-  </ul></li>
+  <li><a href="#handle_photo" id="toc-handle_photo" class="nav-link active" data-scroll-target="#handle_photo">handle_photo</a></li>
+  <li><a href="#handle_message" id="toc-handle_message" class="nav-link" data-scroll-target="#handle_message">handle_message</a></li>
+  <li><a href="#model_details" id="toc-model_details" class="nav-link" data-scroll-target="#model_details">model_details</a></li>
+  <li><a href="#help" id="toc-help" class="nav-link" data-scroll-target="#help">help</a></li>
+  <li><a href="#start" id="toc-start" class="nav-link" data-scroll-target="#start">start</a></li>
+  <li><a href="#deploy_bot" id="toc-deploy_bot" class="nav-link" data-scroll-target="#deploy_bot">deploy_bot</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block">3) Preprocess Data</h1>
-</div>
 
-<div>
-  <div class="description">
-    Move images from both datasets to respective class labels, remove duplicates, bad and corrupted images.
-  </div>
-</div>
-
-
-<div class="quarto-title-meta">
-
-    
-    
-  </div>
-  
-
-</header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<section id="steps" class="level2">
-<h2 class="anchored" data-anchor-id="steps">Steps</h2>
+<hr>
+<section id="handle_photo" class="level3">
+<h3 class="anchored" data-anchor-id="handle_photo">handle_photo</h3>
 <blockquote class="blockquote">
-<p>This is the description &amp; steps of the <code>preprocess_data</code> function which combines the following functions</p>
+<pre><code> handle_photo (update, context)</code></pre>
 </blockquote>
-<ol type="1">
-<li>Rename and move files to data/2_processed.</li>
-<li>List files other than jpg and png, to remove unsupported files.</li>
-<li>List file by types before cleaning.</li>
-<li>Remove
-<ul>
-<li>Bad Images</li>
-<li>Duplicate Images</li>
-<li>Misclassified Images</li>
-<li>Unsupported Images</li>
-<li>Corrupted Images</li>
-</ul></li>
-<li>List file by types after cleaning.</li>
-<li>Get count of files by class types.</li>
-<li>Handle Imbalance using Undersampling, Oversampling.</li>
-</ol>
-<section id="rename-and-move-files-to-data2_processed." class="level3">
-<h3 class="anchored" data-anchor-id="rename-and-move-files-to-data2_processed.">1. Rename and move files to data/2_processed.</h3>
 <hr>
 </section>
-<section id="move_to_processed" class="level3">
-<h3 class="anchored" data-anchor-id="move_to_processed">move_to_processed</h3>
+<section id="handle_message" class="level3">
+<h3 class="anchored" data-anchor-id="handle_message">handle_message</h3>
 <blockquote class="blockquote">
-<pre><code> move_to_processed ()</code></pre>
+<pre><code> handle_message (update, context)</code></pre>
 </blockquote>
-<p>Combines files with same subclass and moves them to the subclass under data/2_processed.</p>
-<p>Uses <code>get_new_name</code> to create new names of files and then rename them and copy to data/2_processed.</p>
-</section>
-<section id="list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="level3">
-<h3 class="anchored" data-anchor-id="list-files-other-than-jpg-and-png-to-remove-unsupported-files.">2. List files other than jpg and png, to remove unsupported files.</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n\n</span><span class="st">Files other than jpg and png.</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>files, _ <span class="op">=</span> find_filepaths(<span class="st">'data/2_processed/'</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="kw">not</span> x.endswith(<span class="st">'jpg'</span>) <span class="kw">and</span> <span class="kw">not</span> x.endswith(<span class="st">'png'</span>), files))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-
-Files other than jpg and png.
-
-data/2_processed/.DS_Store
-data/2_processed/Coal/dataset1_Coal_025_12.jpeg
-data/2_processed/Coal/dataset1_Coal_070_162.jpeg
-data/2_processed/Coal/dataset1_Coal_071_163.jpeg
-data/2_processed/Coal/dataset1_Coal_072_164.jpeg
-data/2_processed/Coal/dataset1_Coal_073_165.jpeg
-data/2_processed/Coal/dataset1_Coal_074_166.jpeg
-data/2_processed/Coal/dataset1_Coal_075_167.jpeg
-data/2_processed/Coal/dataset1_Coal_076_168.jpeg
-data/2_processed/Coal/dataset1_Coal_077_169.jpeg
-data/2_processed/Coal/dataset1_Coal_079_170.jpeg
-data/2_processed/Coal/dataset1_Coal_080_171.jpeg
-data/2_processed/Coal/dataset1_Coal_081_172.jpeg
-data/2_processed/Coal/dataset1_Coal_082_173.jpeg
-data/2_processed/Coal/dataset1_Coal_083_174.jpeg
-data/2_processed/Coal/dataset1_Coal_084_175.jpeg
-data/2_processed/Coal/dataset1_Coal_085_176.jpeg
-data/2_processed/Coal/dataset1_Coal_086_177.jpeg
-data/2_processed/Coal/dataset1_Coal_087_178.jpeg
-data/2_processed/Coal/dataset1_Coal_088_179.jpeg
-data/2_processed/Coal/dataset1_Coal_090_180.jpeg
-data/2_processed/Coal/dataset1_Coal_091_181.jpeg
-data/2_processed/Granite/dataset1_Granite_017_23.jpeg
-data/2_processed/Granite/dataset1_Granite_021_27.jpeg
-data/2_processed/Granite/dataset1_Granite_029_34.JPEG
-data/2_processed/Granite/dataset1_Granite_031_36.JPEG
-data/2_processed/Granite/dataset1_Granite_036_40.JPEG
-data/2_processed/Granite/dataset1_Granite_062_64.JPEG
-data/2_processed/Granite/dataset1_Granite_072_73.JPEG
-data/2_processed/Granite/dataset1_Granite_073_74.JPEG
-data/2_processed/Granite/dataset1_Granite_074_75.JPEG
-data/2_processed/Granite/dataset1_Granite_075_76.JPEG
-data/2_processed/Granite/dataset1_Granite_076_77.JPEG
-data/2_processed/Granite/dataset1_Granite_077_78.JPEG
-data/2_processed/Granite/dataset1_Granite_078_79.JPEG
-data/2_processed/Granite/dataset1_Granite_080_80.JPEG
-data/2_processed/Granite/dataset1_Granite_081_81.JPEG
-data/2_processed/Granite/dataset1_Granite_082_82.JPEG
-data/2_processed/Granite/dataset1_Granite_083_83.JPEG
-data/2_processed/Granite/dataset1_Granite_084_84.JPEG
-data/2_processed/Granite/dataset1_Granite_085_85.JPEG
-data/2_processed/Granite/dataset1_Granite_086_86.JPEG
-data/2_processed/Granite/dataset1_Granite_092_91.JPEG
-data/2_processed/Granite/dataset1_Granite_099_98.JPEG
-data/2_processed/Limestone/dataset1_Limestone_004_100.jpeg
-data/2_processed/Limestone/dataset1_Limestone_005_101.webp
-data/2_processed/Limestone/dataset1_Limestone_006_102.jfif
-data/2_processed/Limestone/dataset1_Limestone_007_103.jfif
-data/2_processed/Limestone/dataset1_Limestone_008_104.jfif
-data/2_processed/Limestone/dataset1_Limestone_125_21.jpeg
-data/2_processed/Limestone/dataset1_Limestone_156_238.jpeg
-data/2_processed/Limestone/dataset1_Limestone_203_280.jpeg
-data/2_processed/Limestone/dataset1_Limestone_215_291.jfif
-data/2_processed/Limestone/dataset1_Limestone_224_3.webp
-data/2_processed/Limestone/dataset1_Limestone_271_38.jfif
-data/2_processed/Limestone/dataset1_Limestone_306_7.jpeg
-data/2_processed/Marble/dataset1_Marble_277_Marmo_z17.jfif
-data/2_processed/Marble/dataset1_Marble_282_images.jfif
-data/2_processed/Marble/dataset1_Marble_380_mineral-stone-marble-nonfoliated-metamorphic-260nw-349915676.webp
-data/2_processed/Marble/dataset1_Marble_387_u3tqorgn31mp65iypkwy_7e2e86ad-6a3f-410e-9584-caa5b075ccd7_825x700.webp
-data/2_processed/Quartzite/dataset1_Quartzite_471_quartzite-crystal-mineral-sample-studio-shot-with-black-background-972333846-5c7e6525c9e77c0001d19dda.webp
-data/2_processed/Sandstone/dataset1_Sandstone_058_15.webp
-data/2_processed/Sandstone/dataset1_Sandstone_248_320.webp</code></pre>
-</div>
-</div>
-</section>
-</section>
-<section id="functions" class="level2">
-<h2 class="anchored" data-anchor-id="functions">Functions</h2>
 <hr>
-<section id="process_data" class="level3">
-<h3 class="anchored" data-anchor-id="process_data">process_data</h3>
-<blockquote class="blockquote">
-<pre><code> process_data ()</code></pre>
-</blockquote>
-<p>Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.</p>
-
-
 </section>
+<section id="model_details" class="level3">
+<h3 class="anchored" data-anchor-id="model_details">model_details</h3>
+<blockquote class="blockquote">
+<pre><code> model_details (update, context)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="help" class="level3">
+<h3 class="anchored" data-anchor-id="help">help</h3>
+<blockquote class="blockquote">
+<pre><code> help (update, context)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="start" class="level3">
+<h3 class="anchored" data-anchor-id="start">start</h3>
+<blockquote class="blockquote">
+<pre><code> start (update, context)</code></pre>
+</blockquote>
+<hr>
+</section>
+<section id="deploy_bot" class="level3">
+<h3 class="anchored" data-anchor-id="deploy_bot">deploy_bot</h3>
+<blockquote class="blockquote">
+<pre><code> deploy_bot ()</code></pre>
+</blockquote>
+
+
 </section>
 
 </main> <!-- /main -->

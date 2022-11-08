@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Utils for downloading and preprocessing data">
 
-<title>rocks_classifier - 2) Download utilities</title>
+<title>rocks_classifier – e_predict</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,12 +63,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="rocks_classifier - 2) Download utilities">
-<meta property="og:description" content="Utils for downloading and preprocessing data">
-<meta property="og:site-name" content="rocks_classifier">
-<meta name="twitter:title" content="rocks_classifier - 2) Download utilities">
-<meta name="twitter:description" content="Utils for downloading and preprocessing data">
-<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -148,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">2) Download utilities</h1>
+      <h1 class="quarto-secondary-nav-title">(Untitled)</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -173,7 +166,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link active">2) Download utilities</a>
+  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">2) Download utilities</a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -190,375 +183,34 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#move_and_rename" id="toc-move_and_rename" class="nav-link active" data-scroll-target="#move_and_rename">move_and_rename</a></li>
-  <li><a href="#move_files" id="toc-move_files" class="nav-link" data-scroll-target="#move_files">move_files</a></li>
-  <li><a href="#rename_files" id="toc-rename_files" class="nav-link" data-scroll-target="#rename_files">rename_files</a></li>
-  <li><a href="#get_tfds_from_dir" id="toc-get_tfds_from_dir" class="nav-link" data-scroll-target="#get_tfds_from_dir">get_tfds_from_dir</a></li>
-  <li><a href="#prepare" id="toc-prepare" class="nav-link" data-scroll-target="#prepare">prepare</a></li>
-  <li><a href="#get_preprocess" id="toc-get_preprocess" class="nav-link" data-scroll-target="#get_preprocess">get_preprocess</a></li>
-  <li><a href="#scalar" id="toc-scalar" class="nav-link" data-scroll-target="#scalar">scalar</a></li>
-  <li><a href="#get_value_counts" id="toc-get_value_counts" class="nav-link" data-scroll-target="#get_value_counts">get_value_counts</a></li>
-  <li><a href="#get_df" id="toc-get_df" class="nav-link" data-scroll-target="#get_df">get_df</a></li>
-  <li><a href="#get_dims" id="toc-get_dims" class="nav-link" data-scroll-target="#get_dims">get_dims</a></li>
-  <li><a href="#timer_func..wrap_func" id="toc-timer_func..wrap_func" class="nav-link" data-scroll-target="#timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></a></li>
-  <li><a href="#remove_unsupported_images" id="toc-remove_unsupported_images" class="nav-link" data-scroll-target="#remove_unsupported_images">remove_unsupported_images</a></li>
-  <li><a href="#find_filepaths" id="toc-find_filepaths" class="nav-link" data-scroll-target="#find_filepaths">find_filepaths</a></li>
-  <li><a href="#timer_func" id="toc-timer_func" class="nav-link" data-scroll-target="#timer_func">timer_func</a></li>
-  <li><a href="#sampling" id="toc-sampling" class="nav-link" data-scroll-target="#sampling">sampling</a></li>
-  <li><a href="#move_bad_files" id="toc-move_bad_files" class="nav-link" data-scroll-target="#move_bad_files">move_bad_files</a></li>
-  <li><a href="#clean_images" id="toc-clean_images" class="nav-link" data-scroll-target="#clean_images">clean_images</a></li>
-  <li><a href="#move_to_processed" id="toc-move_to_processed" class="nav-link" data-scroll-target="#move_to_processed">move_to_processed</a></li>
-  <li><a href="#get_new_name" id="toc-get_new_name" class="nav-link" data-scroll-target="#get_new_name">get_new_name</a></li>
-  <li><a href="#clean_data_dir" id="toc-clean_data_dir" class="nav-link" data-scroll-target="#clean_data_dir">clean_data_dir</a></li>
+  <li><a href="#main" id="toc-main" class="nav-link active" data-scroll-target="#main">main</a></li>
+  <li><a href="#get_prediction" id="toc-get_prediction" class="nav-link" data-scroll-target="#get_prediction">get_prediction</a></li>
+  <li><a href="#load_model" id="toc-load_model" class="nav-link" data-scroll-target="#load_model">load_model</a></li>
+  <li><a href="#preprocess_image" id="toc-preprocess_image" class="nav-link" data-scroll-target="#preprocess_image">preprocess_image</a></li>
+  <li><a href="#get_run_data" id="toc-get_run_data" class="nav-link" data-scroll-target="#get_run_data">get_run_data</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title d-none d-lg-block">2) Download utilities</h1>
-</div>
 
-<div>
-  <div class="description">
-    Utils for downloading and preprocessing data
-  </div>
-</div>
-
-
-<div class="quarto-title-meta">
-
-    
-    
-  </div>
-  
-
-</header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <hr>
-<section id="move_and_rename" class="level3">
-<h3 class="anchored" data-anchor-id="move_and_rename">move_and_rename</h3>
+<section id="main" class="level3">
+<h3 class="anchored" data-anchor-id="main">main</h3>
 <blockquote class="blockquote">
-<pre><code> move_and_rename (class_dir:str)</code></pre>
+<pre><code> main ()</code></pre>
 </blockquote>
-<p>Move files from class_dir to tmp, renames them there based on count, and moves back to 2_processed class_dir: A class dir of supporting classes (Marble, Coal, …), which contains image files.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>class_dir</td>
-<td>str</td>
-<td><em>description</em></td>
-</tr>
-</tbody>
-</table>
 <hr>
 </section>
-<section id="move_files" class="level3">
-<h3 class="anchored" data-anchor-id="move_files">move_files</h3>
+<section id="get_prediction" class="level3">
+<h3 class="anchored" data-anchor-id="get_prediction">get_prediction</h3>
 <blockquote class="blockquote">
-<pre><code> move_files (src_dir:str, dest_dir:str='data/2_processed/tmp')</code></pre>
+<pre><code> get_prediction (file)</code></pre>
 </blockquote>
-<p>Move files to tmp directory in 2_processed.</p>
-<p>src_dir: directory of rock subclass with files [Basalt, Marble, Coal, …]</p>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>src_dir</td>
-<td>str</td>
-<td></td>
-<td><em>description</em></td>
-</tr>
-<tr class="even">
-<td>dest_dir</td>
-<td>str</td>
-<td>data/2_processed/tmp</td>
-<td><em>description</em>, by default “data/2_processed/tmp”</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="rename_files" class="level3">
-<h3 class="anchored" data-anchor-id="rename_files">rename_files</h3>
-<blockquote class="blockquote">
-<pre><code> rename_files (source_dir:str='data/2_processed/tmp')</code></pre>
-</blockquote>
-<p>Rename files in classes and moves to 2_processed.</p>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>source_dir</td>
-<td>str</td>
-<td>data/2_processed/tmp</td>
-<td><em>description</em>, by default “data/2_processed/tmp”</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_tfds_from_dir" class="level3">
-<h3 class="anchored" data-anchor-id="get_tfds_from_dir">get_tfds_from_dir</h3>
-<blockquote class="blockquote">
-<pre><code> get_tfds_from_dir (cfg)</code></pre>
-</blockquote>
-<p>Convert directory of images to tfds dataset.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig):</td>
-<td>Hydra Configuration</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong><em>type</em></strong></td>
-<td><strong><em>description</em></strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="prepare" class="level3">
-<h3 class="anchored" data-anchor-id="prepare">prepare</h3>
-<blockquote class="blockquote">
-<pre><code> prepare (ds, cfg, shuffle=False, augment=False)</code></pre>
-</blockquote>
-<p>Prepare dataset using augment, preprocess, cache, shuffle and prefetch.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>ds</td>
-<td><em>type</em></td>
-<td></td>
-<td><em>description</em></td>
-</tr>
-<tr class="even">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig):</td>
-<td></td>
-<td>Hydra Configuration</td>
-</tr>
-<tr class="odd">
-<td>shuffle</td>
-<td>bool</td>
-<td>False</td>
-<td><em>description</em>, by default False</td>
-</tr>
-<tr class="even">
-<td>augment</td>
-<td>bool</td>
-<td>False</td>
-<td><em>description</em>, by default False</td>
-</tr>
-<tr class="odd">
-<td><strong>Returns</strong></td>
-<td><strong><em>type</em></strong></td>
-<td></td>
-<td><strong><em>description</em></strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_preprocess" class="level3">
-<h3 class="anchored" data-anchor-id="get_preprocess">get_preprocess</h3>
-<blockquote class="blockquote">
-<pre><code> get_preprocess (cfg)</code></pre>
-</blockquote>
-<p>Return preprocess function for particular model.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig)</td>
-<td>Hydra Configuration</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong><em>type</em></strong></td>
-<td><strong><em>description</em></strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="scalar" class="level3">
-<h3 class="anchored" data-anchor-id="scalar">scalar</h3>
-<blockquote class="blockquote">
-<pre><code> scalar (img:&lt;module'PIL.Image'from'/Users/uday/miniforge3/envs/rocks/lib/
-         python3.10/site-packages/PIL/Image.py'&gt;)</code></pre>
-</blockquote>
-<p>Scale pixel between -1 and +1.</p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>img</td>
-<td>PIL.Image</td>
-<td>PIL Image</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>PIL.Image</strong></td>
-<td><strong>imagew with pixel values scaled between -1 and 1</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_value_counts" class="level3">
-<h3 class="anchored" data-anchor-id="get_value_counts">get_value_counts</h3>
-<blockquote class="blockquote">
-<pre><code> get_value_counts (dataset_path:str, column:str='file_type')</code></pre>
-</blockquote>
-<p>Get value counts of passed column.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>dataset_path</td>
-<td>str</td>
-<td></td>
-<td>directory with subclasses</td>
-</tr>
-<tr class="even">
-<td>column</td>
-<td>str</td>
-<td>file_type</td>
-<td>column name</td>
-</tr>
-<tr class="odd">
-<td><strong>Returns</strong></td>
-<td><strong>None</strong></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_df" class="level3">
-<h3 class="anchored" data-anchor-id="get_df">get_df</h3>
-<blockquote class="blockquote">
-<pre><code> get_df (root:str='data/2_processed')</code></pre>
-</blockquote>
-<p>Return df with classes, image paths and file names.</p>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 25%">
-<col style="width: 34%">
-<col style="width: 34%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Default</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>root</td>
-<td>str</td>
-<td>data/2_processed</td>
-<td>directory to scan for image files, by default “data/2_processed”</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>DataFrame</strong></td>
-<td></td>
-<td><strong>with columns file_name, class and file_path</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="get_dims" class="level3">
-<h3 class="anchored" data-anchor-id="get_dims">get_dims</h3>
-<blockquote class="blockquote">
-<pre><code> get_dims (file:str)</code></pre>
-</blockquote>
-<p>Return dimenstions for an RBG image.</p>
+<p>Get prediction for image.</p>
 <table class="table">
 <colgroup>
 <col style="width: 9%">
@@ -575,31 +227,31 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>file</td>
-<td>str</td>
-<td>file path for image</td>
+<td>File</td>
+<td>Image file</td>
 </tr>
 <tr class="even">
 <td><strong>Returns</strong></td>
-<td><strong>Optional</strong></td>
-<td><strong>returns a tuple of heights and width of image or None</strong></td>
+<td><strong>str</strong></td>
+<td><strong>Prediction with class name and confidence %.</strong></td>
 </tr>
 </tbody>
 </table>
 <hr>
 </section>
-<section id="timer_func..wrap_func" class="level3">
-<h3 class="anchored" data-anchor-id="timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></h3>
+<section id="load_model" class="level3">
+<h3 class="anchored" data-anchor-id="load_model">load_model</h3>
 <blockquote class="blockquote">
-<pre><code> timer_func.&lt;locals&gt;.wrap_func (*args, **kwargs)</code></pre>
+<pre><code> load_model ()</code></pre>
 </blockquote>
 <hr>
 </section>
-<section id="remove_unsupported_images" class="level3">
-<h3 class="anchored" data-anchor-id="remove_unsupported_images">remove_unsupported_images</h3>
+<section id="preprocess_image" class="level3">
+<h3 class="anchored" data-anchor-id="preprocess_image">preprocess_image</h3>
 <blockquote class="blockquote">
-<pre><code> remove_unsupported_images (root_folder:str)</code></pre>
+<pre><code> preprocess_image (file, image_size)</code></pre>
 </blockquote>
-<p>Remove unsupported images.</p>
+<p>Decode and resize image.</p>
 <table class="table">
 <thead>
 <tr class="header">
@@ -610,35 +262,16 @@ ul.task-list li input[type="checkbox"] {
 </thead>
 <tbody>
 <tr class="odd">
-<td>root_folder</td>
-<td>str</td>
-<td>Root Folder.</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="find_filepaths" class="level3">
-<h3 class="anchored" data-anchor-id="find_filepaths">find_filepaths</h3>
-<blockquote class="blockquote">
-<pre><code> find_filepaths (root_folder:str)</code></pre>
-</blockquote>
-<p>Recursively finds all files.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>root_folder</td>
-<td>str</td>
+<td>file</td>
+<td><em>type</em></td>
 <td><em>description</em></td>
 </tr>
 <tr class="even">
+<td>image_size</td>
+<td><em>type</em></td>
+<td><em>description</em></td>
+</tr>
+<tr class="odd">
 <td><strong>Returns</strong></td>
 <td><strong><em>type</em></strong></td>
 <td><strong><em>description</em></strong></td>
@@ -647,157 +280,12 @@ ul.task-list li input[type="checkbox"] {
 </table>
 <hr>
 </section>
-<section id="timer_func" class="level3">
-<h3 class="anchored" data-anchor-id="timer_func">timer_func</h3>
+<section id="get_run_data" class="level3">
+<h3 class="anchored" data-anchor-id="get_run_data">get_run_data</h3>
 <blockquote class="blockquote">
-<pre><code> timer_func (func)</code></pre>
+<pre><code> get_run_data ()</code></pre>
 </blockquote>
-<p>Show the execution time of the function object passed.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>func</td>
-<td><em>type</em></td>
-<td><em>description</em></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="sampling" class="level3">
-<h3 class="anchored" data-anchor-id="sampling">sampling</h3>
-<blockquote class="blockquote">
-<pre><code> sampling (cfg)</code></pre>
-</blockquote>
-<p>Oversamples/Undersample/No Sampling data into train, val, test.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig)</td>
-<td>Hydra Configuration</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="move_bad_files" class="level3">
-<h3 class="anchored" data-anchor-id="move_bad_files">move_bad_files</h3>
-<blockquote class="blockquote">
-<pre><code> move_bad_files (txt_file, dest, text)</code></pre>
-</blockquote>
-<p>Moves files in txt_file to dest.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>txt_file</td>
-<td>file</td>
-<td>text file with path of bad images</td>
-</tr>
-<tr class="even">
-<td>dest</td>
-<td><em>type</em></td>
-<td>target destination</td>
-</tr>
-<tr class="odd">
-<td>text</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="clean_images" class="level3">
-<h3 class="anchored" data-anchor-id="clean_images">clean_images</h3>
-<blockquote class="blockquote">
-<pre><code> clean_images (cfg)</code></pre>
-</blockquote>
-<p>Removes bad, misclassified, duplicate, corrupted and unsupported images.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig)</td>
-<td>Hydra Configuration</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="move_to_processed" class="level3">
-<h3 class="anchored" data-anchor-id="move_to_processed">move_to_processed</h3>
-<blockquote class="blockquote">
-<pre><code> move_to_processed ()</code></pre>
-</blockquote>
-<p>Combines files with same subclass and moves them to the subclass under data/2_processed.</p>
-<p>Uses <code>get_new_name</code> to create new names of files and then rename them and copy to data/2_processed.</p>
-<hr>
-</section>
-<section id="get_new_name" class="level3">
-<h3 class="anchored" data-anchor-id="get_new_name">get_new_name</h3>
-<blockquote class="blockquote">
-<pre><code> get_new_name (dir_list:list)</code></pre>
-</blockquote>
-<p>Return dict with old name and new name of files in multiple directories.</p>
-<p>{‘data/1_extracted/dataset1/Basalt/14.jpg’: ‘data/2_processed/Basalt/dataset1_01_Basalt_14.jpg’}</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>dir_list</td>
-<td>list</td>
-<td>list of dir paths</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>dict</strong></td>
-<td><strong>{old_name: new_name}</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-<section id="clean_data_dir" class="level3">
-<h3 class="anchored" data-anchor-id="clean_data_dir">clean_data_dir</h3>
-<blockquote class="blockquote">
-<pre><code> clean_data_dir ()</code></pre>
-</blockquote>
-<p>Clean all data directories except 0_raw.</p>
+<p>Get data for a wandb sweep.</p>
 
 
 </section>

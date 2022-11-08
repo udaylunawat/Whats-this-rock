@@ -253,16 +253,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#creating-project-directory-structure" id="toc-creating-project-directory-structure" class="nav-link active" data-scroll-target="#creating-project-directory-structure">Creating project directory structure</a></li>
-  <li><a href="#setting-up-kaggle-api-token" id="toc-setting-up-kaggle-api-token" class="nav-link" data-scroll-target="#setting-up-kaggle-api-token">Setting up Kaggle API token</a></li>
-  <li><a href="#creating-scripts-to-download-and-setup-datasets" id="toc-creating-scripts-to-download-and-setup-datasets" class="nav-link" data-scroll-target="#creating-scripts-to-download-and-setup-datasets">Creating scripts to download and setup datasets</a>
-  <ul>
-  <li><a href="#dataset-1" id="toc-dataset-1" class="nav-link" data-scroll-target="#dataset-1">Dataset 1</a></li>
-  <li><a href="#dataset-2" id="toc-dataset-2" class="nav-link" data-scroll-target="#dataset-2">Dataset 2</a></li>
-  </ul></li>
+  <li><a href="#create-directory-structure-and-if-data-already-exists-clean-it" id="toc-create-directory-structure-and-if-data-already-exists-clean-it" class="nav-link active" data-scroll-target="#create-directory-structure-and-if-data-already-exists-clean-it">Create directory structure, and if data already exists, clean it!</a></li>
   <li><a href="#download-and-verify-the-data" id="toc-download-and-verify-the-data" class="nav-link" data-scroll-target="#download-and-verify-the-data">Download and verify the data</a>
   <ul>
-  <li><a href="#timer_func..wrap_func" id="toc-timer_func..wrap_func" class="nav-link" data-scroll-target="#timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></a></li>
+  <li><a href="#download_and_move" id="toc-download_and_move" class="nav-link" data-scroll-target="#download_and_move">download_and_move</a></li>
+  <li><a href="#download_and_move_datasets" id="toc-download_and_move_datasets" class="nav-link" data-scroll-target="#download_and_move_datasets">download_and_move_datasets</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -296,151 +291,117 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>We’ll create and use some bash scripts to create a directory structure for our project</li>
 <li>We’ll be following the project template by <a href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter - by datadriven</a></li>
 </ul>
-<section id="creating-project-directory-structure" class="level2">
-<h2 class="anchored" data-anchor-id="creating-project-directory-structure">Creating project directory structure</h2>
-<p>Let’s create a script <code>scripts/first_run.sh</code></p>
-<blockquote class="blockquote">
-<p>It creates the directory structure, and clears existing data files.</p>
-</blockquote>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/first_run.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># setting up data dir</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/<span class="pp">*</span> data/2_processed/<span class="pp">*</span> data/3_tfds_dataset/<span class="pp">*</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/corrupted_images/<span class="pp">*</span> data/duplicate_images/<span class="pp">*</span> data/bad_images/<span class="pp">*</span> data/misclassified_images/<span class="pp">*</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/0_raw data/1_extracted data/2_processed data/3_tfds_dataset</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/corrupted_images data/duplicate_images data/bad_images data/misclassified_images/ checkpoints</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Coal/</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Basalt/</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Granite/</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Marble/</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Quartzite/</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Limestone/</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> data/2_processed/Sandstone/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="setting-up-kaggle-api-token" class="level2">
-<h2 class="anchored" data-anchor-id="setting-up-kaggle-api-token">Setting up Kaggle API token</h2>
-<p>Download <code>kaggle.json</code> by going to <a href="https://www.kaggle.com/">Kaggle</a>-&gt;Account-&gt;<code>Create a new API token</code></p>
-<p>Move it to <code>~/$username/.kaggle/</code> directory.</p>
-</section>
-<section id="creating-scripts-to-download-and-setup-datasets" class="level2">
-<h2 class="anchored" data-anchor-id="creating-scripts-to-download-and-setup-datasets">Creating scripts to download and setup datasets</h2>
-<section id="dataset-1" class="level3">
-<h3 class="anchored" data-anchor-id="dataset-1">Dataset 1</h3>
-<p>Downloads <a href="https://www.kaggle.com/datasets/salmaneunus/rock-classification">Dataset1</a> and moves the extracted files to <code>data/1_extracted/dataset1</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/dataset1.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset 1 processing</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kaggle</span> datasets download salmaneunus/rock-classification <span class="at">--path</span> data/0_raw/</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-qn</span> data/0_raw/rock-classification.zip <span class="at">-d</span> data/1_extracted/</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> <span class="at">-vn</span> data/1_extracted/Dataset data/1_extracted/dataset1</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset1/Igneous/<span class="pp">*</span> data/1_extracted/dataset1/</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset1/Metamorphic/<span class="pp">*</span> data/1_extracted/dataset1/</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset1/Sedimentary/<span class="pp">*</span> data/1_extracted/dataset1/</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset1/Igneous/</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset1/Metamorphic/</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset1/Sedimentary/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>rock-classification.zip: Skipping, found more recently modified local copy (use --force to force download)
-data/1_extracted/Dataset -&gt; data/1_extracted/dataset1</code></pre>
-</div>
-</div>
-</section>
-<section id="dataset-2" class="level3">
-<h3 class="anchored" data-anchor-id="dataset-2">Dataset 2</h3>
-<p>Downloads <a href="https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals">Dataset2</a> and moves the extracted files to <code>data/1_extracted/dataset2</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> scripts/dataset2.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># dataset 2 processing</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ex">kaggle</span> datasets download mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals <span class="at">--path</span> data/0_raw/</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-qn</span> data/0_raw/igneous-metamorphic-sedimentary-rocks-and-minerals.zip <span class="at">-d</span> data/1_extracted/</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/Rock_Dataset data/1_extracted/dataset2</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/minerals</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/igneous\ rocks/Basalt data/1_extracted/dataset2/</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/igneous\ rocks/granite data/1_extracted/dataset2/</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/metamorphic\ rocks/marble data/1_extracted/dataset2/</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/metamorphic\ rocks/quartzite data/1_extracted/dataset2/</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/sedimentary\ rocks/Limestone data/1_extracted/dataset2/</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/sedimentary\ rocks/Sandstone data/1_extracted/dataset2/</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/sedimentary\ rocks/coal data/1_extracted/dataset2/</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/granite data/1_extracted/dataset2/Granite</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/marble data/1_extracted/dataset2/Marble</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/quartzite data/1_extracted/dataset2/Quartzite</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> data/1_extracted/dataset2/coal data/1_extracted/dataset2/Coal</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/igneous\ rocks</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/metamorphic\ rocks</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-rf</span> data/1_extracted/dataset2/sedimentary\ rocks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>igneous-metamorphic-sedimentary-rocks-and-minerals.zip: Skipping, found more recently modified local copy (use --force to force download)</code></pre>
-</div>
-</div>
-</section>
+<section id="create-directory-structure-and-if-data-already-exists-clean-it" class="level1">
+<h1>Create directory structure, and if data already exists, clean it!</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_clean_data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="download-and-verify-the-data" class="level1">
 <h1>Download and verify the data</h1>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/data/download.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> rocks_clean_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Downloads <a href="https://www.kaggle.com/datasets/salmaneunus/rock-classification">Dataset1</a> and moves the extracted files to <code>data/1_extracted/dataset1</code>.</p>
+<p>Downloads <a href="https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals">Dataset2</a> and moves the extracted files to <code>data/1_extracted/dataset2</code>.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rocks_classifier.data.utils <span class="im">import</span> timer_func, find_filepaths</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">@timer_func</span>  <span class="co"># | hide_line</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> download_datasets():</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Download the datasets using scripts and verifies the image counts.</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Uses `find_filepaths` to recursively find paths for all files in a directory.</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    data_dict <span class="op">=</span> {</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>: {<span class="st">"script"</span>: <span class="st">"rocks_classifier/scripts/dataset1.sh"</span>, <span class="st">"filecount"</span>: <span class="dv">2083</span>},</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span>: {<span class="st">"script"</span>: <span class="st">"rocks_classifier/scripts/dataset2.sh"</span>, <span class="st">"filecount"</span>: <span class="dv">4553</span>},</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> dataset_id <span class="kw">in</span> data_dict:</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> os.path.exists(</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>            os.path.join(<span class="st">"data"</span>, <span class="st">"1_extracted"</span>, <span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>        ):</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Downloading dataset </span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">..."</span>)</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>            os.system(<span class="ss">f"sh </span><span class="sc">{</span>data_dict[dataset_id][<span class="st">'script'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>            _, count <span class="op">=</span> find_filepaths(</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>                os.path.join(<span class="st">"data"</span>, <span class="st">"1_extracted"</span>, <span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># assert count == data_dict[dataset_id]["filecount"]</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss"> already exists."</span>)</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Total Files in dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">:- </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">.</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> download_and_move:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Downloads datasets(zip files), extracts them to the correct folders, and rearranges them.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    data_dict <span class="op">=</span> {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span>: {<span class="st">"url"</span>: <span class="st">"https://huggingface.co/datasets/udayl/rocks/resolve/main/rock-classification.zip"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"file_name"</span>: <span class="st">"rock-classification.zip"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"folder_name"</span>: <span class="st">"Dataset"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"filecount"</span>: <span class="dv">2083</span>},</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span>: {<span class="st">"url"</span>: <span class="st">"https://huggingface.co/datasets/udayl/rocks/resolve/main/igneous-metamorphic-sedimentary-rocks-and-minerals.zip"</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"file_name"</span>: <span class="st">"igneous-metamorphic-sedimentary-rocks-and-minerals.zip"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"folder_name"</span>: <span class="st">"Rock_Dataset"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"filecount"</span>: <span class="dv">546</span>},</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    classes <span class="op">=</span> [<span class="st">'Coal'</span>, <span class="st">'Basalt'</span>, <span class="st">'Granite'</span>, <span class="st">'Marble'</span>, <span class="st">'Quartzite'</span>, <span class="st">'Limestone'</span>, <span class="st">'Sandstone'</span>]</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">@timer_func</span>  <span class="co"># | hide_line</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run_scripts(<span class="va">self</span>):</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">        Download the datasets using scripts.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">        Uses `find_filepaths` to recursively find paths for all files in a directory.</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        clean_data_dir()</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> dataset_id <span class="kw">in</span> <span class="va">self</span>.data_dict:</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="va">self</span>.archives_exist(dataset_id) <span class="kw">and</span> <span class="va">self</span>.files_exists(dataset_id):</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>                <span class="co"># if both zip files exist and are extracted</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"Dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss"> already exists."</span>)</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                count <span class="op">=</span> <span class="va">self</span>.verify_files(dataset_id)</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"Total Files in dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">:- </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">.</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.archives_exist(dataset_id):</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                <span class="co"># if zip files do not exist</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>                <span class="bu">print</span>(<span class="ss">f"Extracting dataset </span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.download_file(dataset_id)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.files_exists(dataset_id):</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>                <span class="co"># if zip files exists but they're not extracted</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.extract_archive(<span class="ss">f'data/0_raw/dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">.zip'</span>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>                os.rename(<span class="ss">f'data/1_extracted/</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>data_dict[dataset_id][<span class="st">"folder_name"</span>]<span class="sc">}</span><span class="ss">'</span>, </span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>                          <span class="ss">f'data/1_extracted/dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.move_subclasses_to_root_dir(dataset_id)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> download_file(<span class="va">self</span>, dataset_id, dest_dir<span class="op">=</span><span class="st">'data/0_raw/'</span>):</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Download and write file to destination directory."""</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> requests.get(<span class="va">self</span>.data_dict[dataset_id][<span class="st">'url'</span>], allow_redirects<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        <span class="bu">open</span>(os.path.join(dest_dir, <span class="ss">f'dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">.zip'</span>), <span class="st">'wb'</span>).write(r.content)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> extract_archive(<span class="va">self</span>, file_path, dest_dir<span class="op">=</span><span class="st">'data/1_extracted'</span>):</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Extract zip file to dest_dir."""</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        shutil.unpack_archive(file_path, dest_dir, <span class="st">'zip'</span>)</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> archives_exist(<span class="va">self</span>, dataset_id):</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(os.path.join(<span class="st">'data/0_raw'</span>, <span class="ss">f'dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">.zip'</span>)):</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> files_exists(<span class="va">self</span>, dataset_id):</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""check whether extracted files exist."""</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.exists(</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>                os.path.join(<span class="st">"data"</span>, <span class="st">"1_extracted"</span>, <span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">"</span>)):</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>            count <span class="op">=</span> <span class="va">self</span>.verify_files(dataset_id)</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> count</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> move_subclasses_to_root_dir(<span class="va">self</span>, dataset_id):</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Move subclasses to data/2_processed"""</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>        root_path <span class="op">=</span> <span class="ss">f'data/1_extracted/dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> class_name <span class="kw">in</span> os.listdir(<span class="ss">f'data/1_extracted/dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">'</span>):</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a>            class_path <span class="op">=</span> os.path.join(root_path, class_name)</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> subclass <span class="kw">in</span> os.listdir(class_path):</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> subclass.capitalize() <span class="kw">in</span> <span class="va">self</span>.classes:</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>                    folder_path <span class="op">=</span> os.path.join(class_path, subclass)</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>                    shutil.move(folder_path, <span class="ss">f'data/1_extracted/dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">/'</span>)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>                    shutil.move(<span class="ss">f'</span><span class="sc">{</span>root_path<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>subclass<span class="sc">}</span><span class="ss">'</span>, <span class="ss">f'</span><span class="sc">{</span>root_path<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>subclass<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>            shutil.rmtree(class_path)</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> verify_files(<span class="va">self</span>, dataset_id):</span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""verifies the image counts"""</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>        _, count <span class="op">=</span> find_filepaths(</span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>            os.path.join(<span class="st">"data"</span>, <span class="st">"1_extracted"</span>, <span class="ss">f"dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">"</span>))</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> count <span class="op">==</span> <span class="va">self</span>.data_dict[dataset_id][<span class="st">"filecount"</span>]</span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> count</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <hr>
-<section id="timer_func..wrap_func" class="level3">
-<h3 class="anchored" data-anchor-id="timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></h3>
+<section id="download_and_move" class="level3">
+<h3 class="anchored" data-anchor-id="download_and_move">download_and_move</h3>
 <blockquote class="blockquote">
-<pre><code> timer_func.&lt;locals&gt;.wrap_func (*args, **kwargs)</code></pre>
+<pre><code> download_and_move ()</code></pre>
 </blockquote>
+<p>Downloads datasets(zip files), extracts them to the correct folders, and rearranges them.</p>
+<hr>
+</section>
+<section id="download_and_move_datasets" class="level3">
+<h3 class="anchored" data-anchor-id="download_and_move_datasets">download_and_move_datasets</h3>
+<blockquote class="blockquote">
+<pre><code> download_and_move_datasets ()</code></pre>
+</blockquote>
+<p>Run the download and move datasets script.</p>
 
 
 </section>

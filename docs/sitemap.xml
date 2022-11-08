@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/03_d_train.html</loc>
+    <lastmod>2022-11-08T21:50:37.993Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/03_b_train_models.html</loc>
+    <lastmod>2022-11-08T21:50:38.600Z</lastmod>
+  </url>
+  <url>
     <loc>https://udaylunawat.github.io/Whats-this-rock/b_download.html</loc>
-    <lastmod>2022-11-06T22:09:09.457Z</lastmod>
+    <lastmod>2022-11-08T21:50:39.325Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/05_bot.html</loc>
+    <lastmod>2022-11-08T21:50:39.846Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/04_visualization.html</loc>
+    <lastmod>2022-11-08T21:50:40.444Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/03_a_train_utils.html</loc>
+    <lastmod>2022-11-08T21:50:40.967Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/03_e_predict.html</loc>
+    <lastmod>2022-11-08T21:50:41.437Z</lastmod>
   </url>
   <url>
     <loc>https://udaylunawat.github.io/Whats-this-rock/preprocess_data.html</loc>
-    <lastmod>2022-11-06T22:09:10.053Z</lastmod>
+    <lastmod>2022-11-08T21:50:41.923Z</lastmod>
+  </url>
+  <url>
+    <loc>https://udaylunawat.github.io/Whats-this-rock/03_c_callbacks.html</loc>
+    <lastmod>2022-11-08T21:50:42.398Z</lastmod>
   </url>
   <url>
     <loc>https://udaylunawat.github.io/Whats-this-rock/index.html</loc>
-    <lastmod>2022-11-06T22:09:10.819Z</lastmod>
+    <lastmod>2022-11-08T21:50:43.122Z</lastmod>
   </url>
   <url>
     <loc>https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html</loc>
-    <lastmod>2022-11-06T22:09:11.476Z</lastmod>
+    <lastmod>2022-11-08T21:50:43.747Z</lastmod>
   </url>
 </urlset>
