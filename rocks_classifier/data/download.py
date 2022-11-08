@@ -5,7 +5,6 @@ __all__ = ['download_datasets']
 
 # %% ../../notebooks/01_b_download.ipynb 28
 #| code-fold: true
-# | code-fold: true
 import os
 from .utils import timer_func, find_filepaths
 
@@ -38,6 +37,5 @@ def download_datasets():
 
 # %% ../../notebooks/01_b_download.ipynb 29
 #| eval: false
-# | eval: false
 if __name__ == "__main__":
     download_datasets()
