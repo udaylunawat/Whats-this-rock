@@ -9,7 +9,7 @@ import subprocess
 import logging
 import hydra
 
-from .download import download_datasets
+from .download import download_and_move_datasets
 from rocks_classifier.data.utils import (
     find_filepaths,
     get_df,
@@ -33,8 +33,7 @@ def process_data():
     path = 'configs/config.yaml'
     cfg = omegaconf.OmegaConf.load(path)
     
-    os.system('sh rocks_classifier/scripts/clean_dir.sh')
-    download_datasets()
+    download_and_move_datasets()
     move_to_processed()
 
     print("\n\nFiles other than jpg and png.\n")
