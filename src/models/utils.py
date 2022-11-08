@@ -61,7 +61,7 @@ def get_model_weights(train_ds: tf.data.Dataset):
     return train_class_weights
 
 
-def get_lr_scheduler(cfg) -> optimizers.schedules:
+def get_lr_scheduler(cfg, lr) -> optimizers.schedules:
     """Return A LearningRateSchedule.
 
     Parameters
@@ -76,16 +76,16 @@ def get_lr_scheduler(cfg) -> optimizers.schedules:
     """
     scheduler = {
         "cosine_decay": optimizers.schedules.CosineDecay(
-            cfg.lr, decay_steps=cfg.lr_decay_steps
+            lr, decay_steps=cfg.lr_decay_steps
         ),
         "exponentialdecay": optimizers.schedules.ExponentialDecay(
-            cfg.lr,
+            lr,
             decay_steps=cfg.lr_decay_steps,
             decay_rate=cfg.reduce_lr.factor,
             staircase=True,
         ),
         "cosine_decay_restarts": optimizers.schedules.CosineDecayRestarts(
-            cfg.lr, first_decay_steps=cfg.lr_decay_steps
+            lr, first_decay_steps=cfg.lr_decay_steps
         ),
     }
     return scheduler[cfg.lr_schedule]
