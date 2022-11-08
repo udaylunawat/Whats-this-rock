@@ -11,13 +11,14 @@ hydra-core
 matplotlib
 seaborn
 plotly
-nbdev
 pre-commit
-
-# fastchan
-fastai
-
-nbdev
 tensorflow
 tensorflow-addons
 keras-cv
+
+# fastai & nbdev
+fastai
+nbdev
+
+# deployment
+python-telegram-bot

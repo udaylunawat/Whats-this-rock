@@ -225,8 +225,8 @@ def evaluate(
     # )
 
 
-@hydra.main(config_path="../../configs", config_name="config", version_base="1.2")
-def main(cfg) -> None:
+# @hydra.main(config_path="configs", config_name="config", version_base="1.2")
+def main() -> None:
     """Run Main function.
 
     Parameters
@@ -234,6 +234,9 @@ def main(cfg) -> None:
     cfg : DictConfig
         Hydra Configuration
     """
+    path = 'configs/config.yaml'
+    cfg = OmegaConf.load(path)
+    
     print(OmegaConf.to_yaml(cfg))
 
     tf.keras.utils.set_random_seed(cfg.seed) # Setting global seed
