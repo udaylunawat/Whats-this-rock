@@ -6,6 +6,7 @@ import subprocess
 
 import matplotlib.pyplot as plt
 import tensorflow as tf
+
 # import tensorflow_addons as tfa
 import wandb
 import hydra
@@ -58,7 +59,7 @@ def train(
     model.summary()
 
     print(f"\nModel loaded: {cfg.backbone}.\n\n")
-    lr_decayed_fn = get_lr_scheduler(cfg)
+    lr_decayed_fn = get_lr_scheduler(cfg, cfg.lr)
 
     optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
     optimizer = mixed_precision.LossScaleOptimizer(optimizer)  # speed improvements
@@ -69,9 +70,10 @@ def train(
     model.compile(
         optimizer=optimizer,
         loss=cfg.loss,
-        metrics=["accuracy", ], # f1_score_metrics
+        metrics=[
+            "accuracy",
+        ],  # f1_score_metrics
     )
-
 
     callbacks, cfg = get_callbacks(cfg)
     verbose = 1
@@ -86,7 +88,7 @@ def train(
         verbose=verbose,
     )
 
-    if not cfg.trainable and history.history["val_accuracy"][-1] > 0.68:
+    if not cfg.trainable and history.history["val_accuracy"][-1] > 0.75:
         model.layers[0].trainable = False
         # model.trainable = True
         for layer in model.layers[0].layers[-cfg.last_layers :]:
@@ -103,20 +105,21 @@ def train(
         #     lr_decayed_fn = (
 
         # cfg.reduce_lr.min_lr = cfg.reduce_lr.min_lr * 0.7
-        lr_decayed_fn = tf.keras.optimizers.schedules.CosineDecayRestarts(
-            K.get_value(model.optimizer.learning_rate),
-            first_decay_steps=cfg.lr_decay_steps,
-        )
+        lr_decayed_fn = get_lr_scheduler(cfg, cfg.lr / 10)
+        # lr_decayed_fn = tf.keras.optimizers.schedules.CosineDecayRestarts(
+        #     K.get_value(model.optimizer.learning_rate),
+        #     first_decay_steps=cfg.lr_decay_steps,
+        # )
         optimizer = get_optimizer(cfg, lr=lr_decayed_fn)
 
         # Compile the model
         model.compile(
             optimizer=optimizer,
             loss=cfg.loss,
-            metrics=["accuracy", f1_score_metrics],
+            metrics=["accuracy"],  # f1_score_metrics
         )
 
-        epochs = cfg.epochs + 20
+        epochs = cfg.epochs // 3
 
         callbacks, cfg = get_callbacks(cfg)
 
@@ -154,9 +157,17 @@ def evaluate(
     labels : list
         List of Labels.
     """
+
+    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+    import numpy as np
+    import pandas as pd
+    import seaborn as sns
+
     # Scores
     test_dataset = prepare(test_dataset, cfg)
     scores = model.evaluate(test_dataset, return_dict=True)
+
+    print("\n\nTest Dataset Results!")
     print("Scores: ", scores)
 
     # Predict
@@ -165,8 +176,25 @@ def evaluate(
     true_categories = tf.argmax(y_true, axis=1)
     y_pred = model.predict(test_dataset, verbose=1)
     predicted_categories = tf.argmax(y_pred, axis=1)
+
     # Confusion Matrix
     cm = plot.plot_confusion_matrix(labels, true_categories, predicted_categories)
+
+    def get_cm(model, test_dataset, y_true):
+
+        y_prediction = model.predict(test_dataset)
+        y_prediction = np.argmax(y_prediction, axis=1)
+        y_test = np.argmax(y_true, axis=1)
+        # Create confusion matrix and normalizes it over predicted (columns)
+        result = confusion_matrix(y_test, y_prediction, normalize="pred")
+        disp = ConfusionMatrixDisplay(confusion_matrix=result, display_labels=labels)
+        disp.plot()
+        plt.xticks(rotation=45)
+        plt.show()
+        plt.savefig("confusion_matrix.png")
+        return result
+
+    cm_sklearn = get_cm(model, test_dataset, y_true)
 
     # Classification Report
     cl_report = classification_report(
@@ -176,17 +204,23 @@ def evaluate(
         target_names=labels,
         output_dict=True,
     )
-    print(cl_report)
 
-    # cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
-    plt.savefig("cr.png", dpi=400)
+    cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+    plt.show()
+    plt.savefig("classification_report.png")
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
-
     wandb.log({"Confusion Matrix": cm})
-    wandb.log({"Classification Report Image:": wandb.Image("cr.png", caption="Classification Report")})
+    wandb.log(
+        {
+            "Classification Report Image:": wandb.Image(
+                "cr.png", caption="Classification Report"
+            )
+        }
+    )
 
-@hydra.main(config_path="../../configs", config_name="config", version_base='1.2')
+
+@hydra.main(config_path="../../configs", config_name="config", version_base="1.2")
 def main(cfg) -> None:
     """Run Main function.
 
@@ -206,7 +240,7 @@ def main(cfg) -> None:
         )
 
         artifact = wandb.Artifact("rocks", type="files")
-        artifact.add_dir("src/")
+        artifact.add_dir("rocks_classifier/")
         wandb.log_artifact(artifact)
 
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
@@ -221,11 +255,11 @@ def main(cfg) -> None:
     val_dataset = prepare(val_dataset, cfg)
 
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
-
     if history.history["val_accuracy"][-1] > 0.68:
         evaluate(cfg, model, history, test_dataset, labels)
 
-    run.finish()
+    if cfg.wandb.use:
+        run.finish()
 
 
 if __name__ == "__main__":
