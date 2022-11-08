@@ -3,6 +3,7 @@ import subprocess
 import logging
 import hydra
 
+from src.data.download import download_datasets
 from src.data.utils import (
     find_filepaths,
     get_df,
@@ -22,6 +23,8 @@ def process_data(cfg):
     cfg : cfg (omegaconf.DictConfig):
         Hydra Configuration
     """
+    os.system('sh rocks_classifier/scripts/clean_dir.sh')
+    download_datasets()
     move_to_processed()
 
     print("\n\nFiles other than jpg and png.\n")
