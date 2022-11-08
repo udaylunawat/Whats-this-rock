@@ -1,6 +1,8 @@
+"""Downloads datasets.
+"""
 import os
 import logging
-from src.data.utils import timer_func, find_filepaths
+from rocks_classifierdata.utils import timer_func, find_filepaths
 
 
 @timer_func
@@ -13,8 +15,8 @@ def download_datasets():
         Dataset number
     """
     dataset_info = {
-        1: {"script": "src/scripts/dataset1.sh", "filecount": 2083},
-        2: {"script": "src/scripts/dataset2.sh", "filecount": 4553},
+        1: {"script": "rock_classifier/scripts/dataset1.sh", "filecount": 2083},
+        2: {"script": "rock_classifier/scripts/dataset2.sh", "filecount": 4553},
     }
     for dataset_id in dataset_info:
         if not os.path.exists(
