@@ -3,39 +3,45 @@
 # %% auto 0
 __all__ = ['download_datasets']
 
-# %% ../../notebooks/01_b_download.ipynb 28
-#| code-fold: true
+# %% ../../notebooks/01_b_download.ipynb 7
 import os
 from .utils import timer_func, find_filepaths
 
-
-@timer_func  # | hide_line
-def download_datasets():
-    """
-    Download the datasets using scripts and verifies the image counts.
-
-    Uses `find_filepaths` to recursively find paths for all files in a directory.
-    """
-
+# %% ../../notebooks/01_b_download.ipynb 25
+#| code-fold: true
+class download_datasets:
     data_dict = {
         1: {"script": "rocks_classifier/scripts/dataset1.sh", "filecount": 2083},
-        2: {"script": "rocks_classifier/scripts/dataset2.sh", "filecount": 4553},
+        2: {"script": "rocks_classifier/scripts/dataset2.sh", "filecount": 546},
     }
-    for dataset_id in data_dict:
-        if not os.path.exists(
-            os.path.join("data", "1_extracted", f"dataset{dataset_id}")
-        ):
-            print(f"Downloading dataset {dataset_id}...")
-            os.system(f"sh {data_dict[dataset_id]['script']}")
-        else:
-            _, count = find_filepaths(
-                os.path.join("data", "1_extracted", f"dataset{dataset_id}")
-            )
-            # assert count == data_dict[dataset_id]["filecount"]
-            print(f"dataset{dataset_id} already exists.")
-            print(f"Total Files in dataset{dataset_id}:- {count}.\n")
+        
+    @timer_func  # | hide_line
+    def run_scripts(self):
+        """
+        Download the datasets using scripts.
 
-# %% ../../notebooks/01_b_download.ipynb 29
-#| eval: false
-if __name__ == "__main__":
-    download_datasets()
+        Uses `find_filepaths` to recursively find paths for all files in a directory.
+        """
+
+        for dataset_id in self.data_dict:
+            if self.files_exists(dataset_id):
+                print(f"Dataset{dataset_id} already exists.")
+                self.verify_files(dataset_id)
+            else:
+                print(f"Downloading dataset {dataset_id}...")
+                os.system(f"sh {self.data_dict[dataset_id]['script']}")
+                
+                
+    def files_exists(self, dataset_id):
+        if os.path.exists(
+                os.path.join("data", "1_extracted", f"dataset{dataset_id}")):
+            self.verify_files(dataset_id)
+            return True
+    
+    def verify_files(self, dataset_id):
+        """verifies the image counts"""
+        _, count = find_filepaths(
+            os.path.join("data", "1_extracted", f"dataset{dataset_id}"))
+        assert count == self.data_dict[dataset_id]["filecount"]
+        print(f"Total Files in dataset{dataset_id}:- {count}.\n")
+        
