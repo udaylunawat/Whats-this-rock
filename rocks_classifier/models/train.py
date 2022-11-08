@@ -248,9 +248,9 @@ def main() -> None:
         config=OmegaConf.to_container(cfg, resolve=True, throw_on_missing=True),
     )
 
-    artifact = wandb.Artifact("rocks", type="files")
-    artifact.add_dir("rocks_classifier/")
-    wandb.log_artifact(artifact)
+    # artifact = wandb.Artifact("rocks", type="files")
+    # artifact.add_dir("rocks_classifier/")
+    # wandb.log_artifact(artifact)
 
     print(f"\nDatasets used for Training:- {cfg.dataset_id}")
 
