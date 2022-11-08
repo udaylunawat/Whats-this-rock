@@ -87,7 +87,7 @@ class download_and_move:
                     folder_path = os.path.join(class_path, subclass)
                     shutil.move(folder_path, f'data/1_extracted/dataset{dataset_id}/')
                     shutil.move(f'{root_path}/{subclass}', f'{root_path}/{subclass.capitalize()}')
-            shutil.rmtree(class_path)
+            shutil.rmtree(class_path, ignore_errors = False)
             
     
     def verify_files(self, dataset_id):

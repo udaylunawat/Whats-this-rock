@@ -34,14 +34,18 @@ def clean_data_dir():
     dir_2 = '2_processed'
     dir_3 = '3_tfds_dataset'
     
-    dir_list = [dir_1, dir_2, dir_3,
+    dir_list = [dir_0, dir_1, dir_2, dir_3,
                 'corrupted_images', 
                 'duplicate_images', 
                 'misclassified_images']
     
     for dir_name in dir_list:
-        shutil.rmtree(os.path.join(data_dir, dir_name))
-        os.makedirs(os.path.join(data_dir, dir_name))
+        for root, dirs, files in os.walk(os.path.join(data_dir, dir_name)):
+            for f in files:
+                os.unlink(os.path.join(root, f))
+            for d in dirs:
+                shutil.rmtree(os.path.join(root, d), ignore_errors = True)
+        os.makedirs(os.path.join(data_dir, dir_name), exist_ok=True)
         
     classes = ['Coal', 'Basalt', 'Granite', 'Marble', 'Quartzite', 'Limestone', 'Sandstone']
     
@@ -157,7 +161,7 @@ def move_bad_files(txt_file, dest, text):
                 count +=1
             except FileNotFoundError:
                 continue
-    print(f"\nMoved {count} images to {dest}.\n")
+    print(f"\nMoved {count} images to {dest}.")
 
 
 def sampling(cfg):
@@ -262,7 +266,7 @@ def remove_unsupported_images(root_folder: str):
     root_folder : str
         Root Folder.
     """
-    print("\n\nRemoving unsupported images...")
+    print("\nRemoving unsupported images...")
     count = 1
     filepaths, _ = find_filepaths(root_folder)
     for filepath in filepaths:
@@ -272,7 +276,7 @@ def remove_unsupported_images(root_folder: str):
                 os.path.join("data", "corrupted_images", os.path.basename(filepath)),
             )
             count += 1
-    print(f"Removed {count} unsupported files.\n")
+    print(f"Removed {count} unsupported files.")
 
 
 @timer_func
@@ -687,4 +691,5 @@ def move_and_rename(class_dir: str):
             move_files(subclass_dir_path)
             rename_files()
             shutil.rmtree("data/2_processed/tmp")
+
 
