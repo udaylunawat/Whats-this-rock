@@ -41,7 +41,7 @@ setuptools.setup(
     url = cfg['git_url'],
     packages = setuptools.find_packages(),
     include_package_data = True,
-    package_data={'scripts': ['*.sh']},
+    package_data={'rocks_classifier/scripts': ['*.sh']},
     install_requires = requirements,
     extras_require={'dev': dev_requirements,
                     'gpu': ['tensorflow-gpu'],
