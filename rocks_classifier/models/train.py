@@ -24,11 +24,11 @@ from tensorflow.keras import backend as K
 from tensorflow.keras import layers, mixed_precision
 from wandb.keras import WandbCallback
 
-from src.callbacks.callbacks import get_callbacks
-from src.data.utils import get_tfds_from_dir, prepare
-from src.models.models import get_model
-from src.models.utils import get_lr_scheduler, get_model_weights, get_optimizer
-from src.visualization.plot import plot_confusion_matrix
+from ..callbacks.callbacks import get_callbacks
+from ..data.utils import get_tfds_from_dir, prepare
+from .models import get_model
+from .utils import get_lr_scheduler, get_model_weights, get_optimizer
+from ..visualization.plot import plot_confusion_matrix
 
 # %% ../../notebooks/03_d_train.ipynb 2
 tf.get_logger().setLevel(logging.ERROR)
