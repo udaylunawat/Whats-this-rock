@@ -3,23 +3,16 @@
 # %% auto 0
 __all__ = ['process_data']
 
-# %% ../../notebooks/02_preprocess_data.ipynb 34
+# %% ../../notebooks/02_preprocess_data.ipynb 8
 import os
 import subprocess
 import logging
-import hydra
+import hydra, omegaconf
 
 from .download import download_and_move_datasets
-from rocks_classifier.data.utils import (
-    find_filepaths,
-    get_df,
-    get_value_counts,
-    move_to_processed,
-    sampling,
-    clean_images,
-)
+from .utils import *
 
-# %% ../../notebooks/02_preprocess_data.ipynb 36
+# %% ../../notebooks/02_preprocess_data.ipynb 35
 # @hydra.main(config_path="../../configs", config_name="config", version_base="1.2")
 def process_data():
     """Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.
@@ -29,7 +22,8 @@ def process_data():
     cfg : cfg (omegaconf.DictConfig):
         Hydra Configuration
     """
-    import omegaconf
+    download_configs()
+    
     path = 'configs/config.yaml'
     cfg = omegaconf.OmegaConf.load(path)
     
