@@ -31,15 +31,18 @@ welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?styl
 This package uses [tensorflow](https://github.com/tensorflow/tensorflow)
 to accelerate deep learning experimentation.
 
-MLOps workflow like - Experiment Tracking - Model Management -
-Hyperparameter Tuning
+MLOps workflow like 
+- Experiment Tracking 
+- Model Management 
+- Hyperparameter Tuning
 
 was all done using [Weights & Biases](https://wandb.ai)
 
-Additionally, [nbdev](https://github.com/fastai/nbdev) was used to -
-develop the package - produce documentation based on a series of
-notebooks. - CI - publishing to
-[PyPi](https://pypi.org/project/rocks-classifier/)
+Additionally, [nbdev](https://github.com/fastai/nbdev) was used to 
+- develop the package 
+- produce documentation based on a series of notebooks. 
+- CI 
+- publishing to [PyPi](https://pypi.org/project/rocks-classifier/)
 
 # Inspiration
 
@@ -47,7 +50,7 @@ notebooks. - CI - publishing to
 > learning  can be a very long way from the
 > truth!](https://youtu.be/J6XcP4JOHmk?t=2029)
 
-    You very often don’t need much data at all, a lot of people are looking for ways to share data and aggregate data, but that’s unnecessary.They assume they need more data than they do, cause they’re not familiar with the basics of transfer learning which is this critical technique for needing orders of magnitudes less data.
+> You very often don’t need much data at all, a lot of people are looking for ways to share data and aggregate data, but that’s unnecessary.They assume they need more data than they do, cause they’re not familiar with the basics of transfer learning which is this critical technique for needing orders of magnitudes less data.
 
 > [Jeremy
 > Howards](https://en.wikipedia.org/wiki/Jeremy_Howard_(entrepreneur))
