@@ -28,31 +28,56 @@ welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?styl
 
 ![](https://img.shields.io/twitter/follow/udaylunawat?style=social.png)
 
+This package uses [tensorflow](https://github.com/tensorflow/tensorflow)
+to accelerate deep learning experimentation.
+
+MLOps workflow like - Experiment Tracking - Model Management -
+Hyperparameter Tuning
+
+was all done using [Weights & Biases](https://wandb.ai)
+
+Additionally, [nbdev](https://github.com/fastai/nbdev) was used to -
+develop the package - produce documentation based on a series of
+notebooks. - CI - publishing to
+[PyPi](https://pypi.org/project/rocks-classifier/)
+
+# Inspiration
+
+> [The common complaint that you need massive amounts of data to do deep
+> learning  can be a very long way from the
+> truth!](https://youtu.be/J6XcP4JOHmk?t=2029)
+
+    You very often don’t need much data at all, a lot of people are looking for ways to share data and aggregate data, but that’s unnecessary.They assume they need more data than they do, cause they’re not familiar with the basics of transfer learning which is this critical technique for needing orders of magnitudes less data.
+
+> [Jeremy
+> Howards](https://en.wikipedia.org/wiki/Jeremy_Howard_(entrepreneur))
+
 ## Installation & Training Steps
+
+### Install
+
+To install, use `pip`:
+
+    pip install git+https://github.com/udaylunawat/Whats-this-rock.git
 
 ### Use the Telegram Bot
 
 You can try the bot [here](https://t.me/test7385_bot) on Telegram.
 
-Type `/help` to get instructions.
+> Type `/help` to get instructions in chat.
 
 ### Deploy Telegram Bot
 
 ``` bash
-pip install -r requirements-prod.txt
-python rock_classifier/bot.py
+rocks_deploy_bot
 ```
 
 ### Train Model
 
-Paste your kaggle.json file in the root directory
-
 Run these commands
 
 ``` bash
-pip install -r requirements-dev.txt
-sh src/scripts/setup.sh
-python src/models/train.py
+rocks_train_model epochs=3
 ```
 
 You can try different models and parameters by editing `config.json`.
@@ -61,10 +86,10 @@ By using Hydra it’s now much more easier to override parameters like
 this
 
 ``` bash
-python src/models/train.py  wandb.project=Whats-this-rockv \
-                            dataset_id=[1,2,3,4] \
-                            epochs=50 \
-                            backbone=resnet
+rocks_train_model wandb.project=Whats-this-rockv \
+                  dataset_id=[1,2] \
+                  epochs=50 \
+                  backbone=resnet
 ```
 
 <p align="left">
@@ -109,21 +134,33 @@ wandb agent udaylunawat/Whats-this-rock/$sweepid
 <td>
 
 - Wandb
+
 - Datasets
+
   - 4 Datasets
+
 - Augmentation
+
   - keras-cv
   - Regular Augmentation
+
 - Sampling
+
   - Oversampling
   - Undersampling
   - Class weights
+
 - Remove Corrupted Images
+
 - Try Multiple Optimizers (Adam, RMSProp, AdamW, SGD)
+
 - Generators
+
   - TFDS datasets
   - ImageDataGenerator
+
 - Models
+
   - ConvNextTiny
   - BaselineCNN
   - Efficientnet
@@ -131,48 +168,84 @@ wandb agent udaylunawat/Whats-this-rock/$sweepid
   - MobileNetv1
   - MobileNetv2
   - Xception
+
 - LRScheduleer, LRDecay
+
   - Baseline without scheduler
   - Step decay
   - Cosine annealing
   - Classic cosine annealing with bathc steps w/o restart
+
 - Model Checkpoint, Resume Training
+
 - Evaluation
+
   - Confusion Matrix
   - Classification Report
+
 - Deploy Telegram Bot
+
   - Heroku - Deprecated
   - Railway
   - Show CM and CL in bot
+
 - Docker
+
 - GitHub Actions
+
   - Deploy Bot when bot.py is updated.
   - Lint code using GitHub super-linter
+
 - Configuration Management
+
   - ml-collections
   - Hydra
+
 - Performance improvement
+
   - Convert to tf.data.Dataset
+
 - Linting & Formatting
+
   - Black
   - Flake8
   - isort
   - pydocstyle
-    </td>
-    <td>
+
+- Add Badges
+
+  - Linting
+
+- found the classes that the model is performing terribly on
+
+- nbdev
+
+- CI
+
+- documentation
+
+  </td>
+  <td>
+
 - [ ] Deploy to Huggingface spaces
+
 - [ ] Accessing the model through FastAPI (Backend)
+
 - [ ] Streamlit (Frontend)
+
 - [ ] convert models.py to Classes and more OOP style
-- [ ] nbdev
+
 - [ ] Group Runs
+
   - [ ] kfold cross validation
+
 - [ ] [WandB
   Tables](https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&t=VRL-ZXzznXV_Hg2h7QnjuA)
+
 - [ ] find the long tail examples or hard examples,
-- [ ] find the classes that the model is performing terribly on,
+
 - [ ] Add Badges
-  - [ ] Linting
+
   - [ ] Railway
 
   </td>
@@ -231,6 +304,9 @@ wandb agent udaylunawat/Whats-this-rock/$sweepid
     │
     ├── data
     │   ├── corrupted_images              <- corrupted images will be moved to this directory
+    │   ├── misclassified_images          <- misclassified images will be moved to this directory
+    │   ├── bad_images                    <- Bad images will be moved to this directory
+    │   ├── duplicate_images              <- Duplicate images will be moved to this directory
     │   ├── sample_images                 <- Sample images for inference
     │   ├── 0_raw                         <- The original, immutable data dump.
     │   ├── 1_external                    <- Data from third party sources.
@@ -242,7 +318,7 @@ wandb agent udaylunawat/Whats-this-rock/$sweepid
     │                                        1.0-jqp-initial-data-exploration`.
     │
     │
-    ├── src                               <- Source code for use in this project.
+    ├── rocks_classifier                  <- Source code for use in this project.
     │   │
     │   ├── data                          <- Scripts to download or generate data
     │   │   ├── download.py
@@ -250,7 +326,6 @@ wandb agent udaylunawat/Whats-this-rock/$sweepid
     │   │   └── utils.py
     │   │
     │   ├── callbacks                     <- functions that are executed during training at given stages of the training procedure
-    │   │   ├── custom_callbacks.py
     │   │   └── callbacks.py
     │   │
     │   ├── models                        <- Scripts to train models and then use trained models to make
@@ -261,20 +336,17 @@ wandb agent udaylunawat/Whats-this-rock/$sweepid
     │   │   ├── train.py
     │   │   └── utils.py
     │   │
-    │   └── scripts                       <- Scripts to setup dir structure and download datasets
-    │   │   ├── clean_dir.sh
-    │   │   ├── dataset1.sh
-    │   │   ├── dataset2.sh
-    │   │   ├── dataset3.sh
-    │   │   ├── dataset4.sh
-    │   │   └── setup.sh
-    │.  │
+    │   │
     │   └── visualization                 <- Scripts for visualizations
     │
     ├── .dockerignore                     <- Docker ignore
     ├── .gitignore                        <- GitHub's excellent Python .gitignore customized for this project
     ├── LICENSE                           <- Your project's license.
-    ├── Makefile                          <- Makefile with commands like `make data` or `make train`
+    ├── README.md                         <- The top-level README for developers using this project.
+    ├── CHANGELOG.md                      <- Release changes.
+    ├── CODE_OF_CONDUCT.md                <- Code of conduct.
+    ├── CONTRIBUTING.md                   <- Contributing Guidelines.
+    ├── settings.ini                      <- configuration.
     ├── README.md                         <- The top-level README for developers using this project.
     ├── requirements.txt                  <- The requirements file for reproducing the analysis environment, e.g.
     │                                        generated with `pip freeze > requirements.txt`
@@ -308,8 +380,12 @@ file for details.
 
 ## Credits
 
-- [Dataset - by Mahmoud
+- [Dataset 1 - by Mahmoud
   Alforawi](https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals)
+- [Dataset 2 - by
+  salmaneunus](https://www.kaggle.com/datasets/salmaneunus/rock-classification)
+- nbdev inspiration - [tmabraham](https://github.com/tmabraham/UPIT)
+- 
 
 ## Support
 
