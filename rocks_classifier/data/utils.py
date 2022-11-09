@@ -56,15 +56,15 @@ def clean_data_dir():
 # %% ../../notebooks/01_a_download_utils.ipynb 6
 def download_configs():
     config_files = {
-        1:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/bad_images%20selected%20by%20gemini.txt',
+        1:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/main/configs/bad_images%20selected%20by%20gemini.txt',
            'file_name':'bad_images selected by gemini.txt'},
-        2:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/config.yaml',
+        2:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/main/configs/config.yaml',
            'file_name':'config.yaml'},
-        3:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/duplicates%20selected%20by%20gemini.txt',
+        3:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/main/configs/duplicates%20selected%20by%20gemini.txt',
            'file_name':'duplicates selected by gemini.txt'},
-        4:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/misclassified%20selected%20by%20gemini.txt',
+        4:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/main/configs/misclassified%20selected%20by%20gemini.txt',
            'file_name':'misclassified selected by gemini.txt'},
-        5:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/sweep.yaml','file_name':'sweep.yaml'}
+        5:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/main/configs/sweep.yaml','file_name':'sweep.yaml'}
     }
     def download_file(url, file_name, dest_dir='configs'):
         """Download and write file to destination directory."""
