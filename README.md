@@ -31,17 +31,19 @@ welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?styl
 This package uses [tensorflow](https://github.com/tensorflow/tensorflow)
 to accelerate deep learning experimentation.
 
-MLOps workflow like 
-- Experiment Tracking 
-- Model Management 
+MLOps workflow like
+
+- Experiment Tracking
+- Model Management
 - Hyperparameter Tuning
 
 was all done using [Weights & Biases](https://wandb.ai)
 
-Additionally, [nbdev](https://github.com/fastai/nbdev) was used to 
-- develop the package 
-- produce documentation based on a series of notebooks. 
-- CI 
+Additionally, [nbdev](https://github.com/fastai/nbdev) was used to
+
+- develop the package
+- produce documentation based on a series of notebooks.
+- CI
 - publishing to [PyPi](https://pypi.org/project/rocks-classifier/)
 
 # Inspiration
@@ -50,7 +52,11 @@ Additionally, [nbdev](https://github.com/fastai/nbdev) was used to
 > learning  can be a very long way from the
 > truth!](https://youtu.be/J6XcP4JOHmk?t=2029)
 
-> You very often don’t need much data at all, a lot of people are looking for ways to share data and aggregate data, but that’s unnecessary.They assume they need more data than they do, cause they’re not familiar with the basics of transfer learning which is this critical technique for needing orders of magnitudes less data.
+> You very often don’t need much data at all, a lot of people are
+> looking for ways to share data and aggregate data, but that’s
+> unnecessary.They assume they need more data than they do, cause
+> they’re not familiar with the basics of transfer learning which is
+> this critical technique for needing orders of magnitudes less data.
 
 > [Jeremy
 > Howards](https://en.wikipedia.org/wiki/Jeremy_Howard_(entrepreneur))
@@ -75,12 +81,37 @@ You can try the bot [here](https://t.me/test7385_bot) on Telegram.
 rocks_deploy_bot
 ```
 
+### Download and process data
+
+``` bash
+%%bash
+rocks_process_data remove_bad= True \
+                    remove_misclassified= True \
+                    remove_duplicates= True \
+                    remove_corrupted= True \
+                    remove_unsupported= True \
+                    sampling=None \
+                    train_split=0.8 \
+```
+
 ### Train Model
 
 Run these commands
 
 ``` bash
-rocks_train_model epochs=3
+rocks_train_model wandb.project=Whats-this-rock \
+                    wandb.mode=offline \
+                    wandb.use=False \
+                    dataset_id=[1,2] \
+                    epochs=30 \
+                    lr=0.005 \
+                    augmentation=None \
+                    monitor=val_loss \
+                    loss=categorical_crossentropy \
+                    backbone=resnet \
+                    lr_schedule=cosine_decay_restarts \
+                    lr_decay_steps=300 \
+                    trainable=False \
 ```
 
 You can try different models and parameters by editing `config.json`.
