@@ -28,31 +28,30 @@ from tqdm import tqdm
 def clean_data_dir():
     """Clean all data directories except 0_raw.
     """
-    data_dir = 'data'
     dir_0 = '0_raw'
     dir_1 = '1_extracted'
     dir_2 = '2_processed'
     dir_3 = '3_tfds_dataset'
     
-    dir_list = [dir_0, dir_1, dir_2, dir_3,
+    dir_list = [dir_1, dir_2, dir_3,
                 'corrupted_images', 
                 'duplicate_images', 
                 'misclassified_images']
     
+    classes = ['Coal', 'Basalt', 'Granite', 'Marble', 'Quartzite', 'Limestone', 'Sandstone']
+    os.makedirs(os.path.join('data', dir_0), exist_ok=True)
     for dir_name in dir_list:
-        for root, dirs, files in os.walk(os.path.join(data_dir, dir_name)):
+        for root, dirs, files in os.walk(os.path.join('data', dir_name)):
             for f in files:
                 os.unlink(os.path.join(root, f))
             for d in dirs:
                 shutil.rmtree(os.path.join(root, d), ignore_errors = True)
-        os.makedirs(os.path.join(data_dir, dir_name), exist_ok=True)
-        
-    classes = ['Coal', 'Basalt', 'Granite', 'Marble', 'Quartzite', 'Limestone', 'Sandstone']
+        os.makedirs(os.path.join('data', dir_name), exist_ok=True)
     
     for class_name in classes:
-        os.makedirs(os.path.join(data_dir, dir_2, class_name))
-        
-        
+        os.makedirs(os.path.join('data', dir_2, class_name))
+
+# %% ../../notebooks/01_a_download_utils.ipynb 7
 def get_new_name(dir_list: list) -> dict:
     """Return dict with old name and new name of files in multiple directories.
 
@@ -103,7 +102,7 @@ def move_to_processed():
     dir2 = "data/1_extracted/dataset2"
     for d1, d2 in zip(sorted(os.listdir(dir1)), sorted(os.listdir(dir2))):
         path_dict = get_new_name([os.path.join(dir1, d1), os.path.join(dir2, d2)])
-
+        print(f"Moving files from dataset1/{d1} and dataset2/{d2} to data/2_processed/{d1} ...")
         for old_path, new_path in path_dict.items():
             shutil.copy(old_path, new_path)
 
@@ -691,5 +690,3 @@ def move_and_rename(class_dir: str):
             move_files(subclass_dir_path)
             rename_files()
             shutil.rmtree("data/2_processed/tmp")
-
-

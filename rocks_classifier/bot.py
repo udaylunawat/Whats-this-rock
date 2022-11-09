@@ -3,14 +3,14 @@
 # %% auto 0
 __all__ = ['start', 'help', 'model_details', 'handle_message', 'handle_photo', 'deploy_bot']
 
-# %% ../notebooks/05_bot.ipynb 1
+# %% ../notebooks/05_bot.ipynb 2
 import os
 import json
 from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
 from .models.predict import get_prediction, get_run_data, load_model
 
-# %% ../notebooks/05_bot.ipynb 2
+# %% ../notebooks/05_bot.ipynb 3
 def start(update, context):
     user = update.effective_user
     name = user["first_name"]
@@ -67,7 +67,7 @@ def handle_photo(update, context):
     update.message.reply_text(get_prediction(file))
 
 
-# %% ../notebooks/05_bot.ipynb 3
+# %% ../notebooks/05_bot.ipynb 4
 def deploy_bot():
     if 'TELEGRAM_TOKEN' in os.environ:
         TOKEN = os.environ["TELEGRAM_TOKEN"]

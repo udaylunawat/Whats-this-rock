@@ -9,11 +9,10 @@ import requests
 import shutil
 from .utils import timer_func, find_filepaths
 
-# %% ../../notebooks/01_b_download.ipynb 12
+# %% ../../notebooks/01_b_download.ipynb 11
 from .utils import clean_data_dir
 
-# %% ../../notebooks/01_b_download.ipynb 13
-#| code-fold: true
+# %% ../../notebooks/01_b_download.ipynb 12
 class download_and_move:
     """Downloads datasets(zip files), extracts them to the correct folders, and rearranges them.
     """
@@ -98,7 +97,7 @@ class download_and_move:
         return count
         
 
-# %% ../../notebooks/01_b_download.ipynb 14
+# %% ../../notebooks/01_b_download.ipynb 13
 def download_and_move_datasets():
     """Run the download and move datasets script."""
     download_and_move().run_scripts()

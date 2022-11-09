@@ -3,12 +3,12 @@
 # %% auto 0
 __all__ = ['get_backbone', 'get_model']
 
-# %% ../../notebooks/03_b_train_models.ipynb 1
+# %% ../../notebooks/03_b_train_models.ipynb 2
 import tensorflow as tf
 from tensorflow.keras import applications, layers
 
 
-# %% ../../notebooks/03_b_train_models.ipynb 2
+# %% ../../notebooks/03_b_train_models.ipynb 3
 def get_backbone(cfg) -> tf.keras.models:
     """Get backbone for the model.
 

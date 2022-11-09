@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['train', 'evaluate', 'main']
 
-# %% ../../notebooks/03_d_train.ipynb 1
+# %% ../../notebooks/03_d_train.ipynb 2
 #!/usr/bin/env python
 """Trains a model on rocks dataset."""
 
@@ -30,7 +30,7 @@ from .models import get_model
 from .utils import get_lr_scheduler, get_model_weights, get_optimizer
 from ..visualization.plot import plot_confusion_matrix
 
-# %% ../../notebooks/03_d_train.ipynb 2
+# %% ../../notebooks/03_d_train.ipynb 3
 tf.get_logger().setLevel(logging.ERROR)
 mixed_precision.set_global_policy("mixed_float16")
 
@@ -271,7 +271,7 @@ def main() -> None:
 
 
 
-# %% ../../notebooks/03_d_train.ipynb 3
+# %% ../../notebooks/03_d_train.ipynb 4
 #| eval: false
 if __name__ == "__main__":
     main()

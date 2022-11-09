@@ -3,14 +3,14 @@
 # %% auto 0
 __all__ = ['get_earlystopper', 'get_reduce_lr_on_plateau', 'LRLogger', 'CustomEarlyStopping', 'get_callbacks']
 
-# %% ../../notebooks/03_c_callbacks.ipynb 1
+# %% ../../notebooks/03_c_callbacks.ipynb 2
 import warnings
 
 import tensorflow as tf
 import wandb
 from wandb.keras import WandbCallback
 
-# %% ../../notebooks/03_c_callbacks.ipynb 2
+# %% ../../notebooks/03_c_callbacks.ipynb 3
 def get_earlystopper(cfg) -> tf.keras.callbacks:
     """Return tf.keras.callbacks.EarlyStopping.
 

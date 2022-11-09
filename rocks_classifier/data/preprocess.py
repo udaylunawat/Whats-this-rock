@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['process_data']
 
-# %% ../../notebooks/02_preprocess_data.ipynb 14
+# %% ../../notebooks/02_preprocess_data.ipynb 34
 import os
 import subprocess
 import logging
@@ -19,7 +19,7 @@ from rocks_classifier.data.utils import (
     clean_images,
 )
 
-# %% ../../notebooks/02_preprocess_data.ipynb 15
+# %% ../../notebooks/02_preprocess_data.ipynb 36
 # @hydra.main(config_path="../../configs", config_name="config", version_base="1.2")
 def process_data():
     """Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.
