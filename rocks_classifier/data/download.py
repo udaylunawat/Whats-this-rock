@@ -12,8 +12,8 @@ from .utils import clean_data_dir
 
 # %% ../../notebooks/01_b_download.ipynb 11
 class download_and_move:
-    """Downloads datasets(zip files), extracts them to the correct folders, and rearranges them.
-    """
+    """Downloads datasets(zip files), extracts them to the correct folders, and rearranges them."""
+    
     data_dict = {
         1: {"url": "https://huggingface.co/datasets/udayl/rocks/resolve/main/rock-classification.zip",
             "file_name": "rock-classification.zip",
@@ -66,7 +66,7 @@ class download_and_move:
             return True
         
     def files_exists(self, dataset_id):
-        """check whether extracted files exist."""
+        """Check whether extracted files exist."""
         if os.path.exists(
                 os.path.join("data", "1_extracted", f"dataset{dataset_id}")):
             count = self.verify_files(dataset_id)
@@ -75,7 +75,7 @@ class download_and_move:
             return False
     
     def move_subclasses_to_root_dir(self, dataset_id):
-        """Move subclasses to data/2_processed"""
+        """Move subclasses to data/2_processed."""
         root_path = f'data/1_extracted/dataset{dataset_id}'
         for class_name in os.listdir(f'data/1_extracted/dataset{dataset_id}'):
             class_path = os.path.join(root_path, class_name)
