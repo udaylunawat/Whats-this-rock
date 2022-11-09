@@ -28,8 +28,8 @@ sampling: None
 remove_bad: True
 remove_misclassified: True
 remove_duplicates: True
-remove_corrupted: False
-remove_unsupported: False
+remove_corrupted: True
+remove_unsupported: True
 
 train_split: 0.70
 image_size: 224
