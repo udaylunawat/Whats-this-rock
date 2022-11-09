@@ -194,3 +194,41 @@ def get_generators(config):
     )
 
     return train_dataset, val_dataset, test_generator
+
+
+def get_dims(file: str) -> Optional[tuple]:
+    """Return dimenstions for an RBG image.
+
+    Parameters
+    ----------
+    file : str
+        file path for image
+
+    Returns
+    -------
+    Optional[tuple, None]
+        returns a tuple of heights and width of image or None
+    """
+    im = cv2.imread(file)
+    if im is not None:
+        arr = np.array(im)
+        h, w = arr.shape[0], arr.shape[1]
+        return h, w
+    elif im is None:
+        return None
+
+
+def scalar(img: Image) -> Image:
+    """Scale pixel between -1 and +1.
+
+    Parameters
+    ----------
+    img : Image
+        PIL Image
+
+    Returns
+    -------
+    Image
+        imagew with pixel values scaled between -1 and 1
+    """
+    return img / 127.5 - 1
