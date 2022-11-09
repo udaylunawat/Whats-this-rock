@@ -55,10 +55,14 @@ def clean_data_dir():
 # %% ../../notebooks/01_a_download_utils.ipynb 6
 def download_configs():
     config_files = {
-        1:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/bad_images%20selected%20by%20gemini.txt','file_name':'bad_images selected by gemini.txt'},
-        2:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/config.yaml','file_name':'config.yaml'},
-        3:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/duplicates%20selected%20by%20gemini.txt','file_name':'duplicates selected by gemini.txt'},
-        4:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/misclassified%20selected%20by%20gemini.txt','file_name':'misclassified selected by gemini.txt'},
+        1:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/bad_images%20selected%20by%20gemini.txt',
+           'file_name':'bad_images selected by gemini.txt'},
+        2:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/config.yaml',
+           'file_name':'config.yaml'},
+        3:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/duplicates%20selected%20by%20gemini.txt',
+           'file_name':'duplicates selected by gemini.txt'},
+        4:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/misclassified%20selected%20by%20gemini.txt',
+           'file_name':'misclassified selected by gemini.txt'},
         5:{'url':'https://raw.githubusercontent.com/udaylunawat/Whats-this-rock/nbdev/configs/sweep.yaml','file_name':'sweep.yaml'}
     }
     def download_file(url, file_name, dest_dir='configs'):
@@ -168,7 +172,10 @@ def move_bad_files(txt_file, dest, text):
     print(text)
     f = open(txt_file, "r")
     cleaned = list(map(lambda x:x.replace('\n', ''), f.readlines()))
+    if len(list(set([x for i,x in enumerate(cleaned) if cleaned.count(x) > 1]))) > 0:
+        print(f"Duplicate found in {txt_file}.")
     assert len(list(set([x for i,x in enumerate(cleaned) if cleaned.count(x) > 1]))) == 0
+    
 
     count = 0
     for line in cleaned:
@@ -179,8 +186,9 @@ def move_bad_files(txt_file, dest, text):
                 shutil.move(line.strip(), os.path.join(dest, file_name))
                 count +=1
             except FileNotFoundError:
+                print(f'{file_name} not found!')
                 continue
-    print(f"\nMoved {count} images to {dest}.")
+    print(f"Moved {count} images to {dest}.")
 
 
 def sampling(cfg):
