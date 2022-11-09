@@ -376,7 +376,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>                    folder_path <span class="op">=</span> os.path.join(class_path, subclass)</span>
 <span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>                    shutil.move(folder_path, <span class="ss">f'data/1_extracted/dataset</span><span class="sc">{</span>dataset_id<span class="sc">}</span><span class="ss">/'</span>)</span>
 <span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>                    shutil.move(<span class="ss">f'</span><span class="sc">{</span>root_path<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>subclass<span class="sc">}</span><span class="ss">'</span>, <span class="ss">f'</span><span class="sc">{</span>root_path<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>subclass<span class="sc">.</span>capitalize()<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>            shutil.rmtree(class_path)</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>            shutil.rmtree(class_path, ignore_errors <span class="op">=</span> <span class="va">False</span>)</span>
 <span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>            </span>
 <span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> verify_files(<span class="va">self</span>, dataset_id):</span>
