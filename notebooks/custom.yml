@@ -15,13 +15,15 @@ format:
 website:
   favicon: favicon.ico
   reader-mode: false
+
   navbar:
     pinned: true
-    search: true
     collapse-below: lg
     left:
       - text: "Getting Started"
         href: index.ipynb
+      - text: "Tutorial"
+        href: 01_b_download.ipynb
       - text: "Resources"
         menu:
           - text: "Telegram Rock Classifier Chatbot"

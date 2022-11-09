@@ -1,14 +1,32 @@
 website:
   sidebar:
+    style: docked
     contents:
-      - index.ipynb
-      - 01_b_download.ipynb
-      - 01_a_download_utils.ipynb
-      - 02_preprocess_data.ipynb
-      - 03_a_train_utils.ipynb
-      - 03_b_train_models.ipynb
-      - 03_c_callbacks.ipynb
-      - 03_d_train.ipynb
-      - 03_e_predict.ipynb
-      - 04_visualization.ipynb
-      - 05_bot.ipynb
+      - section: Download
+        contents:
+          - 01_b_download.ipynb
+          - 01_a_download_utils.ipynb
+      - section: Exploratory Data Analysis
+
+      - section: Preprocess
+        contents:
+          - 02_preprocess_data.ipynb
+      - section: Config Management
+        contents:
+          - Hydra
+      - section: Training models
+        contents:
+          - 03_a_train_utils.ipynb
+          - 03_b_train_models.ipynb
+          - 03_c_callbacks.ipynb
+          - 03_d_train.ipynb
+          # - 03_e_predict.ipynb
+          # - 04_visualization.ipynb
+      - section: MLOps
+        contents:
+          - Experiment Tracking
+          - HyperParameter Tuning
+          - Model Management
+      - section: Telegram Bot
+        contents:
+          - 05_bot.ipynb
