@@ -9,6 +9,7 @@ __all__ = ['clean_data_dir', 'download_configs', 'get_new_name', 'move_to_proces
 # %% ../../notebooks/01_a_download_utils.ipynb 4
 import imghdr
 import os
+import requests
 import shutil
 import splitfolders
 from time import time

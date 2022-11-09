@@ -3,16 +3,14 @@
 # %% auto 0
 __all__ = ['download_and_move', 'download_and_move_datasets']
 
-# %% ../../notebooks/01_b_download.ipynb 6
+# %% ../../notebooks/01_b_download.ipynb 10
 import os
-import requests
 import shutil
+import requests
 from .utils import timer_func, find_filepaths
-
-# %% ../../notebooks/01_b_download.ipynb 11
 from .utils import clean_data_dir
 
-# %% ../../notebooks/01_b_download.ipynb 12
+# %% ../../notebooks/01_b_download.ipynb 11
 class download_and_move:
     """Downloads datasets(zip files), extracts them to the correct folders, and rearranges them.
     """
@@ -49,7 +47,7 @@ class download_and_move:
             if not self.files_exists(dataset_id):
                 # if zip files exists but they're not extracted
                 self.extract_archive(f'data/0_raw/dataset{dataset_id}.zip')
-                os.rename(f'data/1_extracted/{self.data_dict[dataset_id]["folder_name"]}', 
+                shutil.move(f'data/1_extracted/{self.data_dict[dataset_id]["folder_name"]}', 
                           f'data/1_extracted/dataset{dataset_id}')
             self.move_subclasses_to_root_dir(dataset_id)
             
@@ -97,7 +95,7 @@ class download_and_move:
         return count
         
 
-# %% ../../notebooks/01_b_download.ipynb 13
+# %% ../../notebooks/01_b_download.ipynb 12
 def download_and_move_datasets():
     """Run the download and move datasets script."""
     download_and_move().run_scripts()
