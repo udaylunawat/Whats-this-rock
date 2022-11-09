@@ -2,6 +2,20 @@
 
 <!-- do not remove -->
 
+## 0.0.8
+
+## New Features
+
+- Hydra now works using decorators and takes CLI arguments
+
+
+## Bugs Squashed
+
+- Remove Bad images directory
+- Hydra relative path
+- Hydra ignoring passed arguments
+
+
 ## 0.0.7
 
 ### New Features
