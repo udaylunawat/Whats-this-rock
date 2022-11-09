@@ -1,9 +1,11 @@
 project:
   type: website
-
+  preview:
+    port: 3000
 format:
   html:
-    theme: cosmo
+    page-layout: full
+    theme: dark
     css: styles.css
     toc: true
 
