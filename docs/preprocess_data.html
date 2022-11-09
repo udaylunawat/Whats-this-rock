@@ -434,6 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Also clears the data directory if files already exists.</p>
 </blockquote>
 <hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/download.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="download_and_move_datasets" class="level3">
 <h3 class="anchored" data-anchor-id="download_and_move_datasets">download_and_move_datasets</h3>
 <blockquote class="blockquote">
@@ -442,7 +443,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Run the download and move datasets script.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Function 'run_scripts' executed in 4.8487s</code></pre>
+<pre><code>Function 'run_scripts' executed in 4.7797s</code></pre>
 </div>
 </div>
 </section>
@@ -450,13 +451,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="rename-and-move-files-to-data2_processed." class="level2">
 <h2 class="anchored" data-anchor-id="rename-and-move-files-to-data2_processed.">2. Rename and move files to data/2_processed.</h2>
 <hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="move_to_processed" class="level3">
 <h3 class="anchored" data-anchor-id="move_to_processed">move_to_processed</h3>
 <blockquote class="blockquote">
 <pre><code> move_to_processed ()</code></pre>
 </blockquote>
 <p>Combines files with same subclass and moves them to the subclass under data/2_processed.</p>
-<p>Uses <code>get_new_name</code> to create new names of files and then rename them and copy to data/2_processed.</p>
+<p>Uses <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#get_new_name"><code>get_new_name</code></a> to create new names of files and then rename them and copy to data/2_processed.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Moving files from dataset1/Basalt and dataset2/Basalt to data/2_processed/Basalt ...
@@ -572,6 +574,7 @@ Name: file_type, dtype: int64</code></pre>
 - Unsupported Images
 - Corrupted Images</code></pre>
 <hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="clean_images" class="level3">
 <h3 class="anchored" data-anchor-id="clean_images">clean_images</h3>
 <blockquote class="blockquote">
@@ -597,6 +600,7 @@ Name: file_type, dtype: int64</code></pre>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Moving bad images...
+dataset2_Sandstone_365_Sandstone79 not found!
 
 Moved 658 images to data/bad_images.
 Moving misclassified images...
@@ -622,7 +626,7 @@ Removed 0 bad images from Marble.</code></pre>
 Removed 1 bad images from Quartzite.
 Removed 1 bad images from Sandstone.
 Removed 5 bad images from Coal.
-Function 'remove_corrupted_images' executed in 9.2491s</code></pre>
+Function 'remove_corrupted_images' executed in 9.1619s</code></pre>
 </div>
 </div>
 </section>
@@ -663,6 +667,7 @@ Name: class, dtype: int64</code></pre>
 <h2 class="anchored" data-anchor-id="handle-imbalance">8. Handle Imbalance</h2>
 <p>Using Undersampling, Oversampling and No Sampling.</p>
 <hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="sampling" class="level3">
 <h3 class="anchored" data-anchor-id="sampling">sampling</h3>
 <blockquote class="blockquote">
@@ -693,7 +698,7 @@ Data Split:- Training 0.70, Validation 0.15, Test 0.15
 Sampling type:- No Sampling.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Copying files: 1832 files [00:00, 3148.88 files/s]</code></pre>
+<pre><code>Copying files: 1832 files [00:00, 2461.91 files/s]</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -708,8 +713,9 @@ Sampling type:- No Sampling.</code></pre>
 </section>
 <section id="putting-it-all-together" class="level2">
 <h2 class="anchored" data-anchor-id="putting-it-all-together">Putting it all together</h2>
-<p><code>process_data</code> wraps all the above functions.</p>
+<p><a href="https://udaylunawat.github.io/Whats-this-rock/preprocess_data.html#process_data"><code>process_data</code></a> wraps all the above functions.</p>
 <hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/preprocess.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="process_data" class="level3">
 <h3 class="anchored" data-anchor-id="process_data">process_data</h3>
 <blockquote class="blockquote">

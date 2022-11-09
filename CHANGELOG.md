@@ -2,10 +2,18 @@
 
 <!-- do not remove -->
 
-## 0.0.6
+## 0.0.7
 
+### New Features
 
+- Logging duplicate lines
+- Downloading configs from Github (nbdev repo)
 
+### Docs
+
+- Inspiration
+- Directory Tree Updated
+- Added console_script commands 
 
 ## 0.0.6
 

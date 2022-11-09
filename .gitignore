@@ -140,7 +140,7 @@ getting-started/*
 kaggle.json
 *.h5
 .vscode
-
+*.zip
 linux-packages.txt
 secrets.json
 requirements-docker.txt
