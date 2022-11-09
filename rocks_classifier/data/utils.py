@@ -173,7 +173,7 @@ def move_bad_files(txt_file, dest, text):
     dest : _type_
         target destination
     """
-    print(text)
+    print(f'\n{text}')
     f = open(txt_file, "r")
     cleaned = list(map(lambda x:x.replace('\n', ''), f.readlines()))
     if len(list(set([x for i,x in enumerate(cleaned) if cleaned.count(x) > 1]))) > 0:
@@ -247,7 +247,7 @@ def sampling(cfg):
             seed=cfg.seed,
             move=False,
         )
-    print("\n\n")
+    print("\n")
 
 
 def timer_func(func):
