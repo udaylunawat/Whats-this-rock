@@ -157,7 +157,5 @@ wandb/*
 outputs
 configs/trained/*
 notebooks/wandb/
-other notebooks/*
 _proc/*
-
 token
