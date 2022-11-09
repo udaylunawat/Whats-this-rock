@@ -8,7 +8,7 @@
 
 <meta name="description" content="Move images from both datasets to respective class labels, remove duplicates, bad and corrupted images.">
 
-<title>rocks_classifier - 3) Preprocess Data</title>
+<title>rocks_classifier - Preprocess Data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,15 +127,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="rocks_classifier - 3) Preprocess Data">
+<meta property="og:title" content="rocks_classifier - Preprocess Data">
 <meta property="og:description" content="Move images from both datasets to respective class labels, remove duplicates, bad and corrupted images.">
 <meta property="og:site-name" content="rocks_classifier">
-<meta name="twitter:title" content="rocks_classifier - 3) Preprocess Data">
+<meta name="twitter:title" content="rocks_classifier - Preprocess Data">
 <meta name="twitter:description" content="Move images from both datasets to respective class labels, remove duplicates, bad and corrupted images.">
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -152,7 +152,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">Getting Started</a>
+    <a class="nav-link" href="./index.html">Getting Started</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./b_download.html" aria-current="page">Tutorial</a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
@@ -211,7 +214,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">3) Preprocess Data</h1>
+      <h1 class="quarto-secondary-nav-title">Preprocess Data</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -221,29 +224,124 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Download</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Whats-this-rock</a>
+  <a href="./b_download.html" class="sidebar-item-text sidebar-link">Download dataset</a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./b_download.html" class="sidebar-item-text sidebar-link">1) Download dataset</a>
+  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">Download utilities</a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">Exploratory Data Analysis</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Preprocess</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">2) Download utilities</a>
+  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link active">Preprocess Data</a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Config Management</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  Hydra
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Training models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link active">3) Preprocess Data</a>
+  <a href="./a_train_utils.html" class="sidebar-item-text sidebar-link">Training utilities</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./b_train_models.html" class="sidebar-item-text sidebar-link">Training models</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c_callbacks.html" class="sidebar-item-text sidebar-link">Callbacks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./d_train.html" class="sidebar-item-text sidebar-link">Training</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">MLOps</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  Experiment Tracking
+  </li>
+          <li class="sidebar-item">
+  HyperParameter Tuning
+  </li>
+          <li class="sidebar-item">
+  Model Management
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">Telegram Bot</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bot.html" class="sidebar-item-text sidebar-link">Telegram bot deployment</a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -255,13 +353,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#steps" id="toc-steps" class="nav-link active" data-scroll-target="#steps">Steps</a>
   <ul>
-  <li><a href="#rename-and-move-files-to-data2_processed." id="toc-rename-and-move-files-to-data2_processed." class="nav-link" data-scroll-target="#rename-and-move-files-to-data2_processed.">1. Rename and move files to data/2_processed.</a></li>
-  <li><a href="#move_to_processed" id="toc-move_to_processed" class="nav-link" data-scroll-target="#move_to_processed">move_to_processed</a></li>
-  <li><a href="#list-files-other-than-jpg-and-png-to-remove-unsupported-files." id="toc-list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="nav-link" data-scroll-target="#list-files-other-than-jpg-and-png-to-remove-unsupported-files.">2. List files other than jpg and png, to remove unsupported files.</a></li>
+  <li><a href="#download-and-move-datasets." id="toc-download-and-move-datasets." class="nav-link" data-scroll-target="#download-and-move-datasets.">1. Download and move datasets.</a>
+  <ul class="collapse">
+  <li><a href="#download_and_move_datasets" id="toc-download_and_move_datasets" class="nav-link" data-scroll-target="#download_and_move_datasets">download_and_move_datasets</a></li>
   </ul></li>
-  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a>
-  <ul>
+  <li><a href="#rename-and-move-files-to-data2_processed." id="toc-rename-and-move-files-to-data2_processed." class="nav-link" data-scroll-target="#rename-and-move-files-to-data2_processed.">2. Rename and move files to data/2_processed.</a>
+  <ul class="collapse">
+  <li><a href="#move_to_processed" id="toc-move_to_processed" class="nav-link" data-scroll-target="#move_to_processed">move_to_processed</a></li>
+  </ul></li>
+  <li><a href="#list-files-other-than-jpg-and-png-to-remove-unsupported-files." id="toc-list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="nav-link" data-scroll-target="#list-files-other-than-jpg-and-png-to-remove-unsupported-files.">3. List files other than jpg and png, to remove unsupported files.</a></li>
+  <li><a href="#list-file-by-types-before-cleaning." id="toc-list-file-by-types-before-cleaning." class="nav-link" data-scroll-target="#list-file-by-types-before-cleaning.">4. List file by types before cleaning.</a></li>
+  <li><a href="#remove" id="toc-remove" class="nav-link" data-scroll-target="#remove">5. Remove</a>
+  <ul class="collapse">
+  <li><a href="#clean_images" id="toc-clean_images" class="nav-link" data-scroll-target="#clean_images">clean_images</a></li>
+  </ul></li>
+  <li><a href="#list-file-by-types-after-cleaning." id="toc-list-file-by-types-after-cleaning." class="nav-link" data-scroll-target="#list-file-by-types-after-cleaning.">6. List file by types after cleaning.</a></li>
+  <li><a href="#get-count-of-files-by-class-types." id="toc-get-count-of-files-by-class-types." class="nav-link" data-scroll-target="#get-count-of-files-by-class-types.">7. Get count of files by class types.</a></li>
+  <li><a href="#handle-imbalance" id="toc-handle-imbalance" class="nav-link" data-scroll-target="#handle-imbalance">8. Handle Imbalance</a>
+  <ul class="collapse">
+  <li><a href="#sampling" id="toc-sampling" class="nav-link" data-scroll-target="#sampling">sampling</a></li>
+  </ul></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together">Putting it all together</a>
+  <ul class="collapse">
   <li><a href="#process_data" id="toc-process_data" class="nav-link" data-scroll-target="#process_data">process_data</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -271,7 +386,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">3) Preprocess Data</h1>
+<h1 class="title d-none d-lg-block">Preprocess Data</h1>
 </div>
 
 <div>
@@ -291,12 +406,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<section id="steps" class="level2">
-<h2 class="anchored" data-anchor-id="steps">Steps</h2>
+<section id="steps" class="level1">
+<h1>Steps</h1>
 <blockquote class="blockquote">
 <p>This is the description &amp; steps of the <code>preprocess_data</code> function which combines the following functions</p>
 </blockquote>
 <ol type="1">
+<li>Clear data directory, Download and move datasets.</li>
 <li>Rename and move files to data/2_processed.</li>
 <li>List files other than jpg and png, to remove unsupported files.</li>
 <li>List file by types before cleaning.</li>
@@ -312,11 +428,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Get count of files by class types.</li>
 <li>Handle Imbalance using Undersampling, Oversampling.</li>
 </ol>
-<section id="rename-and-move-files-to-data2_processed." class="level3">
-<h3 class="anchored" data-anchor-id="rename-and-move-files-to-data2_processed.">1. Rename and move files to data/2_processed.</h3>
+<section id="download-and-move-datasets." class="level2">
+<h2 class="anchored" data-anchor-id="download-and-move-datasets.">1. Download and move datasets.</h2>
+<blockquote class="blockquote">
+<p>Also clears the data directory if files already exists.</p>
+</blockquote>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/download.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="download_and_move_datasets" class="level3">
+<h3 class="anchored" data-anchor-id="download_and_move_datasets">download_and_move_datasets</h3>
+<blockquote class="blockquote">
+<pre><code> download_and_move_datasets ()</code></pre>
+</blockquote>
+<p>Run the download and move datasets script.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Function 'run_scripts' executed in 4.3805s</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="rename-and-move-files-to-data2_processed." class="level2">
+<h2 class="anchored" data-anchor-id="rename-and-move-files-to-data2_processed.">2. Rename and move files to data/2_processed.</h2>
 <hr>
 <p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
 <section id="move_to_processed" class="level3">
 <h3 class="anchored" data-anchor-id="move_to_processed">move_to_processed</h3>
 <blockquote class="blockquote">
@@ -324,19 +459,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </blockquote>
 <p>Combines files with same subclass and moves them to the subclass under data/2_processed.</p>
 <p>Uses <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#get_new_name"><code>get_new_name</code></a> to create new names of files and then rename them and copy to data/2_processed.</p>
-</section>
-<section id="list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="level3">
-<h3 class="anchored" data-anchor-id="list-files-other-than-jpg-and-png-to-remove-unsupported-files.">2. List files other than jpg and png, to remove unsupported files.</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n\n</span><span class="st">Files other than jpg and png.</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>files, _ <span class="op">=</span> find_filepaths(<span class="st">'data/2_processed/'</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="kw">not</span> x.endswith(<span class="st">'jpg'</span>) <span class="kw">and</span> <span class="kw">not</span> x.endswith(<span class="st">'png'</span>), files))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Moving files from Basalt and Basalt to data/2_processed...
+Moving files from Coal and Coal to data/2_processed...
+Moving files from Granite and Granite to data/2_processed...
+Moving files from Limestone and Limestone to data/2_processed...
+Moving files from Marble and Marble to data/2_processed...
+Moving files from Quartzite and Quartzite to data/2_processed...
+Moving files from Sandstone and Sandstone to data/2_processed...</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="level2">
+<h2 class="anchored" data-anchor-id="list-files-other-than-jpg-and-png-to-remove-unsupported-files.">3. List files other than jpg and png, to remove unsupported files.</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Files other than jpg and png.</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>files, _ <span class="op">=</span> find_filepaths(<span class="st">'data/2_processed/'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="kw">not</span> x.endswith(<span class="st">'jpg'</span>) <span class="kw">and</span> <span class="kw">not</span> x.endswith(<span class="st">'png'</span>), files))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-
 Files other than jpg and png.
 
-data/2_processed/.DS_Store
 data/2_processed/Coal/dataset1_Coal_025_12.jpeg
 data/2_processed/Coal/dataset1_Coal_070_162.jpeg
 data/2_processed/Coal/dataset1_Coal_071_163.jpeg
@@ -402,9 +550,169 @@ data/2_processed/Sandstone/dataset1_Sandstone_248_320.webp</code></pre>
 </div>
 </div>
 </section>
+<section id="list-file-by-types-before-cleaning." class="level2">
+<h2 class="anchored" data-anchor-id="list-file-by-types-before-cleaning.">4. List file by types before cleaning.</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+File types before cleaning:
+.jpg     2550
+.jpeg      28
+.JPEG      20
+.png       17
+.jfif       7
+.webp       7
+Name: file_type, dtype: int64</code></pre>
+</div>
+</div>
 </section>
-<section id="functions" class="level2">
-<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<section id="remove" class="level2">
+<h2 class="anchored" data-anchor-id="remove">5. Remove</h2>
+<pre><code>- Bad Images
+- Duplicate Images
+- Misclassified Images
+- Unsupported Images
+- Corrupted Images</code></pre>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="clean_images" class="level3">
+<h3 class="anchored" data-anchor-id="clean_images">clean_images</h3>
+<blockquote class="blockquote">
+<pre><code> clean_images (cfg)</code></pre>
+</blockquote>
+<p>Removes bad, misclassified, duplicate, corrupted and unsupported images.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cfg</td>
+<td>cfg (omegaconf.DictConfig)</td>
+<td>Hydra Configuration</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Moving bad images...
+
+Moved 658 images to data/bad_images.
+Moving misclassified images...
+
+Moved 3 images to data/misclassified_images.
+Moving duplicate images...
+
+Moved 89 images to data/duplicate_images.
+
+Removing unsupported images...
+Removed 15 unsupported files.
+
+Removing corrupted images...
+Removed 4 bad images from Limestone.
+Removed 6 bad images from Basalt.
+Removed 0 bad images from Marble.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>libpng warning: iCCP: known incorrect sRGB profile</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Removed 16 bad images from Granite.
+Removed 1 bad images from Quartzite.
+Removed 1 bad images from Sandstone.
+Removed 5 bad images from Coal.
+Function 'remove_corrupted_images' executed in 9.1468s</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="list-file-by-types-after-cleaning." class="level2">
+<h2 class="anchored" data-anchor-id="list-file-by-types-after-cleaning.">6. List file by types after cleaning.</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+File types after cleaning:
+.jpg     1797
+.jpeg      23
+.png       10
+.JPEG       2
+Name: file_type, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="get-count-of-files-by-class-types." class="level2">
+<h2 class="anchored" data-anchor-id="get-count-of-files-by-class-types.">7. Get count of files by class types.</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Counts of classes:
+
+Coal         414
+Quartzite    373
+Limestone    326
+Sandstone    299
+Marble       204
+Granite      121
+Basalt        95
+Name: class, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="handle-imbalance" class="level2">
+<h2 class="anchored" data-anchor-id="handle-imbalance">8. Handle Imbalance</h2>
+<p>Using Undersampling, Oversampling and No Sampling.</p>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="sampling" class="level3">
+<h3 class="anchored" data-anchor-id="sampling">sampling</h3>
+<blockquote class="blockquote">
+<pre><code> sampling (cfg)</code></pre>
+</blockquote>
+<p>Oversamples/Undersample/No Sampling data into train, val, test.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cfg</td>
+<td>cfg (omegaconf.DictConfig)</td>
+<td>Hydra Configuration</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Splitting files in Train, Validation and Test and saving to data/3_tfds_dataset/
+Data Split:- Training 0.70, Validation 0.15, Test 0.15
+Sampling type:- No Sampling.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Copying files: 1832 files [00:00, 2089.81 files/s]</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="putting-it-all-together" class="level2">
+<h2 class="anchored" data-anchor-id="putting-it-all-together">Putting it all together</h2>
+<p><a href="https://udaylunawat.github.io/Whats-this-rock/preprocess_data.html#process_data"><code>process_data</code></a> wraps all the above functions.</p>
 <hr>
 <p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/preprocess.py#L24" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="process_data" class="level3">
@@ -415,6 +723,7 @@ data/2_processed/Sandstone/dataset1_Sandstone_248_320.webp</code></pre>
 <p>Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.</p>
 
 
+</section>
 </section>
 </section>
 

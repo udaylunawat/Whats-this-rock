@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Multiple CNN based backbones available for training">
 
-<title>rocks_classifier – a_train_utils</title>
+<title>rocks_classifier - Training models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,9 +64,15 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="rocks_classifier - Training models">
+<meta property="og:description" content="Multiple CNN based backbones available for training">
+<meta property="og:site-name" content="rocks_classifier">
+<meta name="twitter:title" content="rocks_classifier - Training models">
+<meta name="twitter:description" content="Multiple CNN based backbones available for training">
+<meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -82,7 +89,10 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">Getting Started</a>
+    <a class="nav-link" href="./index.html">Getting Started</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./b_download.html" aria-current="page">Tutorial</a>
   </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
@@ -141,7 +151,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">(Untitled)</h1>
+      <h1 class="quarto-secondary-nav-title">Training models</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -151,29 +161,124 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Download</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Whats-this-rock</a>
+  <a href="./b_download.html" class="sidebar-item-text sidebar-link">Download dataset</a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./b_download.html" class="sidebar-item-text sidebar-link">1) Download dataset</a>
+  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">Download utilities</a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <span class="sidebar-item-text sidebar-link text-start">Exploratory Data Analysis</span>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Preprocess</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">2) Download utilities</a>
+  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link">Preprocess Data</a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Config Management</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  Hydra
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Training models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link">3) Preprocess Data</a>
+  <a href="./a_train_utils.html" class="sidebar-item-text sidebar-link">Training utilities</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./b_train_models.html" class="sidebar-item-text sidebar-link active">Training models</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c_callbacks.html" class="sidebar-item-text sidebar-link">Callbacks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./d_train.html" class="sidebar-item-text sidebar-link">Training</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">MLOps</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  Experiment Tracking
+  </li>
+          <li class="sidebar-item">
+  HyperParameter Tuning
+  </li>
+          <li class="sidebar-item">
+  Model Management
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">Telegram Bot</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bot.html" class="sidebar-item-text sidebar-link">Telegram bot deployment</a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -183,32 +288,75 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#get_lr_scheduler" id="toc-get_lr_scheduler" class="nav-link active" data-scroll-target="#get_lr_scheduler">get_lr_scheduler</a></li>
-  <li><a href="#get_model_weights" id="toc-get_model_weights" class="nav-link" data-scroll-target="#get_model_weights">get_model_weights</a></li>
-  <li><a href="#get_optimizer" id="toc-get_optimizer" class="nav-link" data-scroll-target="#get_optimizer">get_optimizer</a></li>
+  <li><a href="#get_model" id="toc-get_model" class="nav-link active" data-scroll-target="#get_model">get_model</a></li>
+  <li><a href="#get_backbone" id="toc-get_backbone" class="nav-link" data-scroll-target="#get_backbone">get_backbone</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content column-body" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Training models</h1>
+</div>
 
+<div>
+  <div class="description">
+    Multiple CNN based backbones available for training
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/models/utils.py#L70" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="get_lr_scheduler" class="level3">
-<h3 class="anchored" data-anchor-id="get_lr_scheduler">get_lr_scheduler</h3>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/models/models.py#L59" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="get_model" class="level3">
+<h3 class="anchored" data-anchor-id="get_model">get_model</h3>
 <blockquote class="blockquote">
-<pre><code> get_lr_scheduler (cfg, lr)</code></pre>
+<pre><code> get_model (cfg)</code></pre>
 </blockquote>
-<p>Return A LearningRateSchedule.</p>
+<p>Get an image classifier with a CNN based backbone.</p>
 <table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cfg</td>
+<td>cfg (omegaconf.DictConfig)</td>
+<td>Hydra Configuration</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>tensorflow.keras.Model</strong></td>
+<td><strong>Model object</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/models/models.py#L12" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_backbone" class="level3">
+<h3 class="anchored" data-anchor-id="get_backbone">get_backbone</h3>
+<blockquote class="blockquote">
+<pre><code> get_backbone (cfg)</code></pre>
+</blockquote>
+<p>Get backbone for the model.</p>
+<table class="table">
 <thead>
 <tr class="header">
 <th></th>
@@ -223,88 +371,9 @@ ul.task-list li input[type="checkbox"] {
 <td>Hydra Configuration</td>
 </tr>
 <tr class="even">
-<td>lr</td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
 <td><strong>Returns</strong></td>
-<td><strong>keras.api._v2.keras.optimizers.schedules</strong></td>
-<td><strong>A LearningRateSchedule</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/models/utils.py#L47" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="get_model_weights" class="level3">
-<h3 class="anchored" data-anchor-id="get_model_weights">get_model_weights</h3>
-<blockquote class="blockquote">
-<pre><code> get_model_weights
-                    (train_ds:tensorflow.python.data.ops.dataset_ops.Datas
-                    etV2)</code></pre>
-</blockquote>
-<p>Return model weights dict.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>train_ds</td>
-<td>DatasetV2</td>
-<td>Tensorflow Dataset.</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>dict</strong></td>
-<td><strong>Dictionary of class weights.</strong></td>
-</tr>
-</tbody>
-</table>
-<pre><code>/Users/uday/miniforge3/envs/rocks/lib/python3.10/site-packages/fastcore/docscrape.py:225: UserWarning: Unknown section Raises
-  else: warn(msg)</code></pre>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/models/utils.py#L13" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="get_optimizer" class="level3">
-<h3 class="anchored" data-anchor-id="get_optimizer">get_optimizer</h3>
-<blockquote class="blockquote">
-<pre><code> get_optimizer (cfg, lr:str)</code></pre>
-</blockquote>
-<p>Get optimizer set with an learning rate.</p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig):</td>
-<td>Hydra Configuration</td>
-</tr>
-<tr class="even">
-<td>lr</td>
-<td>str</td>
-<td>learning rate</td>
-</tr>
-<tr class="odd">
-<td><strong>Returns</strong></td>
-<td><strong>keras.api._v2.keras.optimizers</strong></td>
-<td><strong>Tensorflow optimizer</strong></td>
+<td><strong>keras.api._v2.keras.models</strong></td>
+<td><strong>Tensroflow Model</strong></td>
 </tr>
 </tbody>
 </table>
