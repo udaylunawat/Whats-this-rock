@@ -653,7 +653,7 @@ data/2_processed/Sandstone/dataset2_Sandstone_360_Sandstone64.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_362_Sandstone72.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_363_Sandstone74.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_364_Sandstone78.jpg
-data/2_processed/Sandstone/dataset2_Sandstone_365_Sandstone79.
+data/2_processed/Sandstone/dataset2_Sandstone_365_Sandstone79.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_365_Sandstone79.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_366_Sandstone8.jpg
 data/2_processed/Sandstone/dataset2_Sandstone_368_Sandstone9.jpg
