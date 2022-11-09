@@ -2,9 +2,9 @@
 
 # %% auto 0
 __all__ = ['clean_data_dir', 'download_configs', 'get_new_name', 'move_to_processed', 'clean_images', 'move_bad_files',
-           'sampling', 'timer_func', 'find_filepaths', 'remove_unsupported_images', 'remove_corrupted_images',
-           'get_dims', 'get_df', 'get_value_counts', 'scalar', 'get_preprocess', 'prepare', 'get_tfds_from_dir',
-           'rename_files', 'move_files', 'move_and_rename']
+           'sampling', 'timer_func', 'find_filepaths', 'remove_unsupported_images', 'remove_corrupted_images', 'get_df',
+           'get_value_counts', 'get_preprocess', 'prepare', 'get_tfds_from_dir', 'rename_files', 'move_files',
+           'move_and_rename']
 
 # %% ../../notebooks/01_a_download_utils.ipynb 4
 import imghdr
@@ -37,7 +37,8 @@ def clean_data_dir():
     dir_list = [dir_1, dir_2, dir_3,
                 'corrupted_images', 
                 'duplicate_images', 
-                'misclassified_images']
+                'misclassified_images',
+                'bad_images']
     
     classes = ['Coal', 'Basalt', 'Granite', 'Marble', 'Quartzite', 'Limestone', 'Sandstone']
     os.makedirs(os.path.join('data', dir_0), exist_ok=True)
@@ -76,6 +77,9 @@ def download_configs():
         file_name = file['file_name']
         download_file(file_url, file_name)
         
+        
+
+# %% ../../notebooks/01_a_download_utils.ipynb 7
 def get_new_name(dir_list: list) -> dict:
     """Return dict with old name and new name of files in multiple directories.
 
@@ -115,7 +119,7 @@ def get_new_name(dir_list: list) -> dict:
 
     return file_dict
 
-
+# %% ../../notebooks/01_a_download_utils.ipynb 8
 def move_to_processed():
     """
     Combines files with same subclass and moves them to the subclass under data/2_processed.
@@ -130,7 +134,7 @@ def move_to_processed():
         for old_path, new_path in path_dict.items():
             shutil.copy(old_path, new_path)
 
-
+# %% ../../notebooks/01_a_download_utils.ipynb 9
 def clean_images(cfg):
     """Removes bad, misclassified, duplicate, corrupted and unsupported images.
 
@@ -158,7 +162,7 @@ def clean_images(cfg):
     if cfg.remove_unsupported: remove_unsupported_images("data/2_processed")
     if cfg.remove_corrupted: remove_corrupted_images("data/2_processed")
 
-
+# %% ../../notebooks/01_a_download_utils.ipynb 10
 def move_bad_files(txt_file, dest, text):
     """Moves files in txt_file to dest.
 
@@ -181,7 +185,7 @@ def move_bad_files(txt_file, dest, text):
     for line in cleaned:
         if len(line) > 0 and not line.startswith('#') and not line == "":
             basename = os.path.basename(line)
-            file_name = os.path.splitext(basename)[0]
+            file_name = '.'.join(os.path.splitext(basename))
             try:
                 shutil.move(line.strip(), os.path.join(dest, file_name))
                 count +=1
@@ -190,7 +194,7 @@ def move_bad_files(txt_file, dest, text):
                 continue
     print(f"Moved {count} images to {dest}.")
 
-
+# %% ../../notebooks/01_a_download_utils.ipynb 11
 def sampling(cfg):
     """Oversamples/Undersample/No Sampling data into train, val, test.
 
@@ -359,7 +363,7 @@ def remove_corrupted_images(
                 f_path,
                 os.path.join("data", "corrupted_images", os.path.basename(f_path)),
             )
-        print(f"Removed {len(bad_images)} bad images from {rock_class}.")
+        print(f"Removed {len(bad_images)} corrupted images from {rock_class}.")
 
     def remove_corrupted_images_multicore():
         # Multiprocessing
@@ -382,26 +386,7 @@ def remove_corrupted_images(
         remove_corrupted_from_dir(rock_class)
 
 
-def get_dims(file: str) -> Optional[tuple]:
-    """Return dimenstions for an RBG image.
 
-    Parameters
-    ----------
-    file : str
-        file path for image
-
-    Returns
-    -------
-    Optional[tuple, None]
-        returns a tuple of heights and width of image or None
-    """
-    im = cv2.imread(file)
-    if im is not None:
-        arr = np.array(im)
-        h, w = arr.shape[0], arr.shape[1]
-        return h, w
-    elif im is None:
-        return None
 
 
 def get_df(root: str = "data/2_processed") -> pd.DataFrame:
@@ -454,22 +439,6 @@ def get_value_counts(dataset_path: str, column: str='file_type') -> None:
 
 
 ####################################### tf.data Utilities ###################################
-
-
-def scalar(img: Image) -> Image:
-    """Scale pixel between -1 and +1.
-
-    Parameters
-    ----------
-    img : Image
-        PIL Image
-
-    Returns
-    -------
-    Image
-        imagew with pixel values scaled between -1 and 1
-    """
-    return img / 127.5 - 1
 
 
 def get_preprocess(cfg):
