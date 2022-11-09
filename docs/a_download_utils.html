@@ -21,6 +21,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -289,26 +352,24 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#clean_data_dir" id="toc-clean_data_dir" class="nav-link active" data-scroll-target="#clean_data_dir">clean_data_dir</a></li>
+  <li><a href="#download_configs" id="toc-download_configs" class="nav-link" data-scroll-target="#download_configs">download_configs</a></li>
+  <li><a href="#get_new_name" id="toc-get_new_name" class="nav-link" data-scroll-target="#get_new_name">get_new_name</a></li>
+  <li><a href="#move_to_processed" id="toc-move_to_processed" class="nav-link" data-scroll-target="#move_to_processed">move_to_processed</a></li>
+  <li><a href="#clean_images" id="toc-clean_images" class="nav-link" data-scroll-target="#clean_images">clean_images</a></li>
+  <li><a href="#move_bad_files" id="toc-move_bad_files" class="nav-link" data-scroll-target="#move_bad_files">move_bad_files</a></li>
   <li><a href="#move_and_rename" id="toc-move_and_rename" class="nav-link" data-scroll-target="#move_and_rename">move_and_rename</a></li>
   <li><a href="#move_files" id="toc-move_files" class="nav-link" data-scroll-target="#move_files">move_files</a></li>
   <li><a href="#rename_files" id="toc-rename_files" class="nav-link" data-scroll-target="#rename_files">rename_files</a></li>
   <li><a href="#get_tfds_from_dir" id="toc-get_tfds_from_dir" class="nav-link" data-scroll-target="#get_tfds_from_dir">get_tfds_from_dir</a></li>
   <li><a href="#prepare" id="toc-prepare" class="nav-link" data-scroll-target="#prepare">prepare</a></li>
   <li><a href="#get_preprocess" id="toc-get_preprocess" class="nav-link" data-scroll-target="#get_preprocess">get_preprocess</a></li>
-  <li><a href="#scalar" id="toc-scalar" class="nav-link" data-scroll-target="#scalar">scalar</a></li>
   <li><a href="#get_value_counts" id="toc-get_value_counts" class="nav-link" data-scroll-target="#get_value_counts">get_value_counts</a></li>
   <li><a href="#get_df" id="toc-get_df" class="nav-link" data-scroll-target="#get_df">get_df</a></li>
-  <li><a href="#get_dims" id="toc-get_dims" class="nav-link" data-scroll-target="#get_dims">get_dims</a></li>
   <li><a href="#timer_func..wrap_func" id="toc-timer_func..wrap_func" class="nav-link" data-scroll-target="#timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></a></li>
   <li><a href="#remove_unsupported_images" id="toc-remove_unsupported_images" class="nav-link" data-scroll-target="#remove_unsupported_images">remove_unsupported_images</a></li>
   <li><a href="#find_filepaths" id="toc-find_filepaths" class="nav-link" data-scroll-target="#find_filepaths">find_filepaths</a></li>
   <li><a href="#timer_func" id="toc-timer_func" class="nav-link" data-scroll-target="#timer_func">timer_func</a></li>
   <li><a href="#sampling" id="toc-sampling" class="nav-link" data-scroll-target="#sampling">sampling</a></li>
-  <li><a href="#move_bad_files" id="toc-move_bad_files" class="nav-link" data-scroll-target="#move_bad_files">move_bad_files</a></li>
-  <li><a href="#clean_images" id="toc-clean_images" class="nav-link" data-scroll-target="#clean_images">clean_images</a></li>
-  <li><a href="#move_to_processed" id="toc-move_to_processed" class="nav-link" data-scroll-target="#move_to_processed">move_to_processed</a></li>
-  <li><a href="#get_new_name" id="toc-get_new_name" class="nav-link" data-scroll-target="#get_new_name">get_new_name</a></li>
-  <li><a href="#download_configs" id="toc-download_configs" class="nav-link" data-scroll-target="#download_configs">download_configs</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -346,7 +407,116 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p>Clean all data directories except 0_raw.</p>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L702" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L57" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="download_configs" class="level3">
+<h3 class="anchored" data-anchor-id="download_configs">download_configs</h3>
+<blockquote class="blockquote">
+<pre><code> download_configs ()</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L83" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_new_name" class="level3">
+<h3 class="anchored" data-anchor-id="get_new_name">get_new_name</h3>
+<blockquote class="blockquote">
+<pre><code> get_new_name (dir_list:list)</code></pre>
+</blockquote>
+<p>Return dict with old name and new name of files in multiple directories.</p>
+<p>{‘data/1_extracted/dataset1/Basalt/14.jpg’: ‘data/2_processed/Basalt/dataset1_01_Basalt_14.jpg’}</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>dir_list</td>
+<td>list</td>
+<td>list of dir paths</td>
+</tr>
+<tr class="even">
+<td><strong>Returns</strong></td>
+<td><strong>dict</strong></td>
+<td><strong>{old_name: new_name}</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L123" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="move_to_processed" class="level3">
+<h3 class="anchored" data-anchor-id="move_to_processed">move_to_processed</h3>
+<blockquote class="blockquote">
+<pre><code> move_to_processed ()</code></pre>
+</blockquote>
+<p>Combines files with same subclass and moves them to the subclass under data/2_processed.</p>
+<p>Uses <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#get_new_name"><code>get_new_name</code></a> to create new names of files and then rename them and copy to data/2_processed.</p>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L138" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="clean_images" class="level3">
+<h3 class="anchored" data-anchor-id="clean_images">clean_images</h3>
+<blockquote class="blockquote">
+<pre><code> clean_images (cfg)</code></pre>
+</blockquote>
+<p>Removes bad, misclassified, duplicate, corrupted and unsupported images.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>cfg</td>
+<td>cfg (omegaconf.DictConfig)</td>
+<td>Hydra Configuration</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L166" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="move_bad_files" class="level3">
+<h3 class="anchored" data-anchor-id="move_bad_files">move_bad_files</h3>
+<blockquote class="blockquote">
+<pre><code> move_bad_files (txt_file, dest, text)</code></pre>
+</blockquote>
+<p>Moves files in txt_file to dest.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th><strong>Type</strong></th>
+<th><strong>Details</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>txt_file</td>
+<td>file</td>
+<td>text file with path of bad images</td>
+</tr>
+<tr class="even">
+<td>dest</td>
+<td><em>type</em></td>
+<td>target destination</td>
+</tr>
+<tr class="odd">
+<td>text</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L671" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="move_and_rename" class="level3">
 <h3 class="anchored" data-anchor-id="move_and_rename">move_and_rename</h3>
@@ -371,7 +541,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L670" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L639" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="move_files" class="level3">
 <h3 class="anchored" data-anchor-id="move_files">move_files</h3>
@@ -411,7 +581,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L648" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L617" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="rename_files" class="level3">
 <h3 class="anchored" data-anchor-id="rename_files">rename_files</h3>
@@ -444,7 +614,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L595" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L564" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_tfds_from_dir" class="level3">
 <h3 class="anchored" data-anchor-id="get_tfds_from_dir">get_tfds_from_dir</h3>
@@ -474,7 +644,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L502" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L471" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="prepare" class="level3">
 <h3 class="anchored" data-anchor-id="prepare">prepare</h3>
@@ -525,7 +695,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L475" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L444" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_preprocess" class="level3">
 <h3 class="anchored" data-anchor-id="get_preprocess">get_preprocess</h3>
@@ -555,43 +725,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L459" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="scalar" class="level3">
-<h3 class="anchored" data-anchor-id="scalar">scalar</h3>
-<blockquote class="blockquote">
-<pre><code> scalar (img:&lt;module'PIL.Image'from'/Users/uday/miniforge3/envs/rocks/lib/
-         python3.10/site-packages/PIL/Image.py'&gt;)</code></pre>
-</blockquote>
-<p>Scale pixel between -1 and +1.</p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>img</td>
-<td>PIL.Image</td>
-<td>PIL Image</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>PIL.Image</strong></td>
-<td><strong>imagew with pixel values scaled between -1 and 1</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L442" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L427" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_value_counts" class="level3">
 <h3 class="anchored" data-anchor-id="get_value_counts">get_value_counts</h3>
@@ -630,7 +764,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L407" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L392" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_df" class="level3">
 <h3 class="anchored" data-anchor-id="get_df">get_df</h3>
@@ -669,41 +803,6 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L385" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="get_dims" class="level3">
-<h3 class="anchored" data-anchor-id="get_dims">get_dims</h3>
-<blockquote class="blockquote">
-<pre><code> get_dims (file:str)</code></pre>
-</blockquote>
-<p>Return dimenstions for an RBG image.</p>
-<table class="table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 38%">
-<col style="width: 52%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>file</td>
-<td>str</td>
-<td>file path for image</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>Optional</strong></td>
-<td><strong>returns a tuple of heights and width of image or None</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
 </section>
 <section id="timer_func..wrap_func" class="level3">
 <h3 class="anchored" data-anchor-id="timer_func..wrap_func">timer_func.<locals>.wrap_func</locals></h3>
@@ -711,7 +810,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code> timer_func.&lt;locals&gt;.wrap_func (*args, **kwargs)</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L288" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L292" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="remove_unsupported_images" class="level3">
 <h3 class="anchored" data-anchor-id="remove_unsupported_images">remove_unsupported_images</h3>
@@ -736,7 +835,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L268" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L272" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="find_filepaths" class="level3">
 <h3 class="anchored" data-anchor-id="find_filepaths">find_filepaths</h3>
@@ -766,7 +865,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L249" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L253" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="timer_func" class="level3">
 <h3 class="anchored" data-anchor-id="timer_func">timer_func</h3>
@@ -791,7 +890,7 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L194" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L198" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="sampling" class="level3">
 <h3 class="anchored" data-anchor-id="sampling">sampling</h3>
@@ -815,115 +914,46 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L162" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="move_bad_files" class="level3">
-<h3 class="anchored" data-anchor-id="move_bad_files">move_bad_files</h3>
-<blockquote class="blockquote">
-<pre><code> move_bad_files (txt_file, dest, text)</code></pre>
-</blockquote>
-<p>Moves files in txt_file to dest.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>txt_file</td>
-<td>file</td>
-<td>text file with path of bad images</td>
-</tr>
-<tr class="even">
-<td>dest</td>
-<td><em>type</em></td>
-<td>target destination</td>
-</tr>
-<tr class="odd">
-<td>text</td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L134" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="clean_images" class="level3">
-<h3 class="anchored" data-anchor-id="clean_images">clean_images</h3>
-<blockquote class="blockquote">
-<pre><code> clean_images (cfg)</code></pre>
-</blockquote>
-<p>Removes bad, misclassified, duplicate, corrupted and unsupported images.</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>cfg</td>
-<td>cfg (omegaconf.DictConfig)</td>
-<td>Hydra Configuration</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L119" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="move_to_processed" class="level3">
-<h3 class="anchored" data-anchor-id="move_to_processed">move_to_processed</h3>
-<blockquote class="blockquote">
-<pre><code> move_to_processed ()</code></pre>
-</blockquote>
-<p>Combines files with same subclass and moves them to the subclass under data/2_processed.</p>
-<p>Uses <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#get_new_name"><code>get_new_name</code></a> to create new names of files and then rename them and copy to data/2_processed.</p>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L79" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="get_new_name" class="level3">
-<h3 class="anchored" data-anchor-id="get_new_name">get_new_name</h3>
-<blockquote class="blockquote">
-<pre><code> get_new_name (dir_list:list)</code></pre>
-</blockquote>
-<p>Return dict with old name and new name of files in multiple directories.</p>
-<p>{‘data/1_extracted/dataset1/Basalt/14.jpg’: ‘data/2_processed/Basalt/dataset1_01_Basalt_14.jpg’}</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th></th>
-<th><strong>Type</strong></th>
-<th><strong>Details</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>dir_list</td>
-<td>list</td>
-<td>list of dir paths</td>
-</tr>
-<tr class="even">
-<td><strong>Returns</strong></td>
-<td><strong>dict</strong></td>
-<td><strong>{old_name: new_name}</strong></td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/nbdev/rocks_classifier/data/utils.py#L56" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
-<section id="download_configs" class="level3">
-<h3 class="anchored" data-anchor-id="download_configs">download_configs</h3>
-<blockquote class="blockquote">
-<pre><code> download_configs ()</code></pre>
-</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># archived</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_dims(<span class="bu">file</span>: <span class="bu">str</span>) <span class="op">-&gt;</span> Optional[<span class="bu">tuple</span>]:</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return dimenstions for an RBG image.</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">    file : str</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">        file path for image</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Optional[tuple, None]</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">        returns a tuple of heights and width of image or None</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    im <span class="op">=</span> cv2.imread(<span class="bu">file</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> im <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        arr <span class="op">=</span> np.array(im)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        h, w <span class="op">=</span> arr.shape[<span class="dv">0</span>], arr.shape[<span class="dv">1</span>]</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> h, w</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> im <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scalar(img: Image) <span class="op">-&gt;</span> Image:</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Scale pixel between -1 and +1.</span></span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="co">    img : Image</span></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="co">        PIL Image</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a><span class="co">    Image</span></span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a><span class="co">        imagew with pixel values scaled between -1 and 1</span></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> img <span class="op">/</span> <span class="fl">127.5</span> <span class="op">-</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
 </section>
