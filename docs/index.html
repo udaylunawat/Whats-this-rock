@@ -351,8 +351,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#installation-training-steps" id="toc-installation-training-steps" class="nav-link active" data-scroll-target="#installation-training-steps">Installation &amp; Training Steps</a>
+  <li><a href="#inspiration" id="toc-inspiration" class="nav-link active" data-scroll-target="#inspiration">Inspiration</a>
   <ul>
+  <li><a href="#installation-training-steps" id="toc-installation-training-steps" class="nav-link" data-scroll-target="#installation-training-steps">Installation &amp; Training Steps</a>
+  <ul class="collapse">
+  <li><a href="#install" id="toc-install" class="nav-link" data-scroll-target="#install">Install</a></li>
   <li><a href="#use-the-telegram-bot" id="toc-use-the-telegram-bot" class="nav-link" data-scroll-target="#use-the-telegram-bot">Use the Telegram Bot</a></li>
   <li><a href="#deploy-telegram-bot" id="toc-deploy-telegram-bot" class="nav-link" data-scroll-target="#deploy-telegram-bot">Deploy Telegram Bot</a></li>
   <li><a href="#train-model" id="toc-train-model" class="nav-link" data-scroll-target="#train-model">Train Model</a></li>
@@ -367,6 +370,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
   <li><a href="#credits" id="toc-credits" class="nav-link" data-scroll-target="#credits">Credits</a></li>
   <li><a href="#support" id="toc-support" class="nav-link" data-scroll-target="#support">Support</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -403,31 +407,47 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <p><img src="https://img.shields.io/badge/python-v3.8.0+-success.svg" class="img-fluid" alt="Python"> <img src="https://img.shields.io/badge/tensorflow-v2.9.0+-success.svg" class="img-fluid" alt="Tensorflow"></p>
 <p><a href="https://github.com/dwyl/esta/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" class="img-fluid" alt="contributions welcome"></a> <a href="http://hits.dwyl.com/udaylunawat/Whats-this-rock"><img src="https://hits.dwyl.com/udaylunawat/Whats-this-rock.svg?style=flat" class="img-fluid" alt="HitCount"></a></p>
 <p><img src="https://img.shields.io/twitter/follow/udaylunawat?style=social.png" class="img-fluid"></p>
+<p>This package uses <a href="https://github.com/tensorflow/tensorflow">tensorflow</a> to accelerate deep learning experimentation.</p>
+<p>MLOps workflow like - Experiment Tracking - Model Management - Hyperparameter Tuning</p>
+<p>was all done using <a href="https://wandb.ai">Weights &amp; Biases</a></p>
+<p>Additionally, <a href="https://github.com/fastai/nbdev">nbdev</a> was used to - develop the package - produce documentation based on a series of notebooks. - CI - publishing to <a href="https://pypi.org/project/rocks-classifier/">PyPi</a></p>
+<section id="inspiration" class="level1">
+<h1>Inspiration</h1>
+<blockquote class="blockquote">
+<p><a href="https://youtu.be/J6XcP4JOHmk?t=2029">The common complaint that&nbsp;you need massive amounts of data to do deep learning &nbsp;can be a very long way from the truth!</a></p>
+</blockquote>
+<pre><code>You very often don’t need much data at all, a lot of people are looking for ways to share data and aggregate data, but that’s unnecessary.They assume they need more data than they do, cause they’re not familiar with the basics of transfer learning which is this critical technique for needing orders of magnitudes less data.</code></pre>
+<blockquote class="blockquote">
+<p><a href="https://en.wikipedia.org/wiki/Jeremy_Howard_(entrepreneur)">Jeremy Howards</a></p>
+</blockquote>
 <section id="installation-training-steps" class="level2">
 <h2 class="anchored" data-anchor-id="installation-training-steps">Installation &amp; Training Steps</h2>
+<section id="install" class="level3">
+<h3 class="anchored" data-anchor-id="install">Install</h3>
+<p>To install, use <code>pip</code>:</p>
+<pre><code>pip install git+https://github.com/udaylunawat/Whats-this-rock.git</code></pre>
+</section>
 <section id="use-the-telegram-bot" class="level3">
 <h3 class="anchored" data-anchor-id="use-the-telegram-bot">Use the Telegram Bot</h3>
 <p>You can try the bot <a href="https://t.me/test7385_bot">here</a> on Telegram.</p>
-<p>Type <code>/help</code> to get instructions.</p>
+<blockquote class="blockquote">
+<p>Type <code>/help</code> to get instructions in chat.</p>
+</blockquote>
 </section>
 <section id="deploy-telegram-bot" class="level3">
 <h3 class="anchored" data-anchor-id="deploy-telegram-bot">Deploy Telegram Bot</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements-prod.txt</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> rock_classifier/bot.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_deploy_bot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="train-model" class="level3">
 <h3 class="anchored" data-anchor-id="train-model">Train Model</h3>
-<p>Paste your kaggle.json file in the root directory</p>
 <p>Run these commands</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements-dev.txt</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sh</span> src/scripts/setup.sh</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/models/train.py</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_train_model</span> epochs=3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>You can try different models and parameters by editing <code>config.json</code>.</p>
 <p>By using Hydra it’s now much more easier to override parameters like this</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> src/models/train.py  wandb.project=Whats-this-rockv <span class="dt">\</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                            dataset_id=[1,2,3,4] <span class="dt">\</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                            epochs=50 <span class="dt">\</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>                            backbone=resnet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_train_model</span> wandb.project=Whats-this-rockv <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                  dataset_id=[1,2] <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                  epochs=50 <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                  backbone=resnet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p align="left">
 <img src="https://i.imgur.com/1nBpPC5.png" alt="result" width="100%/">
 </p>
@@ -435,12 +455,12 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <section id="wandb-sweeps-hyperparameter-tuning" class="level3">
 <h3 class="anchored" data-anchor-id="wandb-sweeps-hyperparameter-tuning">Wandb Sweeps (Hyperparameter Tuning)</h3>
 <p>Edit configs/sweeps.yaml</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wandb</span> sweep <span class="dt">\</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>--project Whats-this-rock <span class="dt">\</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>--entity udaylunawat <span class="dt">\</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>configs/sweep.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wandb</span> sweep <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>--project Whats-this-rock <span class="dt">\</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>--entity udaylunawat <span class="dt">\</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>configs/sweep.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This will return a command with $sweepid</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wandb</span> agent udaylunawat/Whats-this-rock/<span class="va">$sweepid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wandb</span> agent udaylunawat/Whats-this-rock/<span class="va">$sweepid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="demo" class="level2">
@@ -470,30 +490,30 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <tr>
 <td>
 <ul>
-<li>Wandb</li>
-<li>Datasets
+<li><p>Wandb</p></li>
+<li><p>Datasets</p>
 <ul>
 <li>4 Datasets</li>
 </ul></li>
-<li>Augmentation
+<li><p>Augmentation</p>
 <ul>
 <li>keras-cv</li>
 <li>Regular Augmentation</li>
 </ul></li>
-<li>Sampling
+<li><p>Sampling</p>
 <ul>
 <li>Oversampling</li>
 <li>Undersampling</li>
 <li>Class weights</li>
 </ul></li>
-<li>Remove Corrupted Images</li>
-<li>Try Multiple Optimizers (Adam, RMSProp, AdamW, SGD)</li>
-<li>Generators
+<li><p>Remove Corrupted Images</p></li>
+<li><p>Try Multiple Optimizers (Adam, RMSProp, AdamW, SGD)</p></li>
+<li><p>Generators</p>
 <ul>
 <li>TFDS datasets</li>
 <li>ImageDataGenerator</li>
 </ul></li>
-<li>Models
+<li><p>Models</p>
 <ul>
 <li>ConvNextTiny</li>
 <li>BaselineCNN</li>
@@ -503,62 +523,67 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <li>MobileNetv2</li>
 <li>Xception</li>
 </ul></li>
-<li>LRScheduleer, LRDecay
+<li><p>LRScheduleer, LRDecay</p>
 <ul>
 <li>Baseline without scheduler</li>
 <li>Step decay</li>
 <li>Cosine annealing</li>
 <li>Classic cosine annealing with bathc steps w/o restart</li>
 </ul></li>
-<li>Model Checkpoint, Resume Training</li>
-<li>Evaluation
+<li><p>Model Checkpoint, Resume Training</p></li>
+<li><p>Evaluation</p>
 <ul>
 <li>Confusion Matrix</li>
 <li>Classification Report</li>
 </ul></li>
-<li>Deploy Telegram Bot
+<li><p>Deploy Telegram Bot</p>
 <ul>
 <li>Heroku - Deprecated</li>
 <li>Railway</li>
 <li>Show CM and CL in bot</li>
 </ul></li>
-<li>Docker</li>
-<li>GitHub Actions
+<li><p>Docker</p></li>
+<li><p>GitHub Actions</p>
 <ul>
 <li>Deploy Bot when bot.py is updated.</li>
 <li>Lint code using GitHub super-linter</li>
 </ul></li>
-<li>Configuration Management
+<li><p>Configuration Management</p>
 <ul>
 <li>ml-collections</li>
 <li>Hydra</li>
 </ul></li>
-<li>Performance improvement
+<li><p>Performance improvement</p>
 <ul>
 <li>Convert to tf.data.Dataset</li>
 </ul></li>
-<li>Linting &amp; Formatting
+<li><p>Linting &amp; Formatting</p>
 <ul>
 <li>Black</li>
 <li>Flake8</li>
 <li>isort</li>
-<li>pydocstyle
-</li></ul></li></ul></td>
+<li>pydocstyle</li>
+</ul></li>
+<li><p>Add Badges</p>
+<ul>
+<li>Linting</li>
+</ul></li>
+<li><p>found the classes that the model is performing terribly on</p></li>
+<li><p>nbdev</p></li>
+<li><p>CI</p></li>
+<li><p>documentation</p>
+</li></ul></td>
 <td>
-
-<li><input type="checkbox" disabled="">Deploy to Huggingface spaces</li>
-<li><input type="checkbox" disabled="">Accessing the model through FastAPI (Backend)</li>
-<li><input type="checkbox" disabled="">Streamlit (Frontend)</li>
-<li><input type="checkbox" disabled="">convert models.py to Classes and more OOP style</li>
-<li><input type="checkbox" disabled="">nbdev</li>
-<li><input type="checkbox" disabled="">Group Runs<ul class="task-list">
+<li><p><input type="checkbox" disabled="">Deploy to Huggingface spaces</p></li>
+<li><p><input type="checkbox" disabled="">Accessing the model through FastAPI (Backend)</p></li>
+<li><p><input type="checkbox" disabled="">Streamlit (Frontend)</p></li>
+<li><p><input type="checkbox" disabled="">convert models.py to Classes and more OOP style</p></li>
+<li><p><input type="checkbox" disabled="">Group Runs</p><ul class="task-list">
 <li><input type="checkbox" disabled="">kfold cross validation</li>
 </ul></li>
-<li><input type="checkbox" disabled=""><a href="https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&amp;t=VRL-ZXzznXV_Hg2h7QnjuA">WandB Tables</a></li>
-<li><input type="checkbox" disabled="">find the long tail examples or hard examples,</li>
-<li><input type="checkbox" disabled="">find the classes that the model is performing terribly on,</li>
-<li><input type="checkbox" disabled="">Add Badges<ul class="task-list">
-<li><input type="checkbox" disabled="">Linting</li>
+<li><p><input type="checkbox" disabled=""><a href="https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&amp;t=VRL-ZXzznXV_Hg2h7QnjuA">WandB Tables</a></p></li>
+<li><p><input type="checkbox" disabled="">find the long tail examples or hard examples,</p></li>
+<li><p><input type="checkbox" disabled="">Add Badges</p><ul class="task-list">
 <li><input type="checkbox" disabled="">Railway</li>
 </ul>
 </li></td>
@@ -639,6 +664,9 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 │
 ├── data
 │   ├── corrupted_images              &lt;- corrupted images will be moved to this directory
+│&nbsp;&nbsp; ├── misclassified_images          &lt;- misclassified images will be moved to this directory
+│&nbsp;&nbsp; ├── bad_images                    &lt;- Bad images will be moved to this directory
+│&nbsp;&nbsp; ├── duplicate_images              &lt;- Duplicate images will be moved to this directory
 │&nbsp;&nbsp; ├── sample_images                 &lt;- Sample images for inference
 │&nbsp;&nbsp; ├── 0_raw                         &lt;- The original, immutable data dump.
 │&nbsp;&nbsp; ├── 1_external                    &lt;- Data from third party sources.
@@ -650,7 +678,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 │                                        1.0-jqp-initial-data-exploration`.
 │
 │
-├── src                               &lt;- Source code for use in this project.
+├── rocks_classifier                  &lt;- Source code for use in this project.
 │   │
 │&nbsp;&nbsp; ├── data                          &lt;- Scripts to download or generate data
 │&nbsp;&nbsp; │&nbsp;&nbsp; ├── download.py
@@ -658,7 +686,6 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 │&nbsp;&nbsp; │&nbsp;&nbsp; └── utils.py
 │   │
 │&nbsp;&nbsp; ├── callbacks                     &lt;- functions that are executed during training at given stages of the training procedure
-│   │   ├── custom_callbacks.py
 │&nbsp;&nbsp; │&nbsp;&nbsp; └── callbacks.py
 │   │
 │&nbsp;&nbsp; ├── models                        &lt;- Scripts to train models and then use trained models to make
@@ -669,20 +696,17 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 │&nbsp;&nbsp; │&nbsp;&nbsp; ├── train.py
 │&nbsp;&nbsp; │&nbsp;&nbsp; └── utils.py
 │   │
-│&nbsp;&nbsp; └── scripts                       &lt;- Scripts to setup dir structure and download datasets
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── clean_dir.sh
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── dataset1.sh
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── dataset2.sh
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── dataset3.sh
-│&nbsp;&nbsp; │&nbsp;&nbsp; ├── dataset4.sh
-│&nbsp;&nbsp; │   └── setup.sh
-│.  │
+│   │
 │   └── visualization                 &lt;- Scripts for visualizations
 │
 ├── .dockerignore                     &lt;- Docker ignore
 ├── .gitignore                        &lt;- GitHub's excellent Python .gitignore customized for this project
 ├── LICENSE                           &lt;- Your project's license.
-├── Makefile                          &lt;- Makefile with commands like `make data` or `make train`
+├── README.md                         &lt;- The top-level README for developers using this project.
+├── CHANGELOG.md                      &lt;- Release changes.
+├── CODE_OF_CONDUCT.md                &lt;- Code of conduct.
+├── CONTRIBUTING.md                   &lt;- Contributing Guidelines.
+├── settings.ini                      &lt;- configuration.
 ├── README.md                         &lt;- The top-level README for developers using this project.
 ├── requirements.txt                  &lt;- The requirements file for reproducing the analysis environment, e.g.
 │                                        generated with `pip freeze &gt; requirements.txt`
@@ -709,7 +733,10 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <section id="credits" class="level2">
 <h2 class="anchored" data-anchor-id="credits">Credits</h2>
 <ul>
-<li><a href="https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals">Dataset - by Mahmoud Alforawi</a></li>
+<li><a href="https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals">Dataset 1 - by Mahmoud Alforawi</a></li>
+<li><a href="https://www.kaggle.com/datasets/salmaneunus/rock-classification">Dataset 2 - by salmaneunus</a></li>
+<li>nbdev inspiration - <a href="https://github.com/tmabraham/UPIT">tmabraham</a></li>
+<li></li>
 </ul>
 </section>
 <section id="support" class="level2">
@@ -721,6 +748,7 @@ Walt might be the one who knocks <br> but Hank is the one who rocks. <br>
 </p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
