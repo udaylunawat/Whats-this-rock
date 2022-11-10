@@ -56,6 +56,8 @@ def clean_data_dir():
 
 # %% ../../notebooks/01_a_download_utils.ipynb 6
 def copy_configs_tocwd():
+    if os.path.exists('configs'):
+        shutil.rmtree('configs')
     pkgdir = sys.modules['rocks_classifier'].__path__[0]
     fullpath = os.path.join(pkgdir, 'configs')
     shutil.copytree(fullpath, os.path.join(os.getcwd(), 'configs'))
