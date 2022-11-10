@@ -159,3 +159,5 @@ configs/trained/*
 notebooks/wandb/
 _proc/*
 token
+.virtual_documents/*
+configs/*
