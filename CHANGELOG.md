@@ -2,9 +2,17 @@
 
 <!-- do not remove -->
 
-## 0.0.8
+## 0.0.9
 
+- Changed Branch from nbdev to main
+- nbdev Branch deleted
 
+### Bugs Squashed
+
+- Hydra works using --config-dir argument
+	- Copied config to cwd (user accessible)
+	- Removed `download_configs`
+- get_confusion_matrix and get_classification report refactored from train.py to visualization.py
 
 
 ## 0.0.8
