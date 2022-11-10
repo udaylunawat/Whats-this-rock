@@ -85,9 +85,10 @@ parameters:
   save_model:
     value: False
 
-program: src/models/train.py
+program: rocks_train_model
 command:
   - ${env}
-  - python
   - ${program}
+  - "--config-dir"
+  - "configs"
   - ${args_no_hyphens}
