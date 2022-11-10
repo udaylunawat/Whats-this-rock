@@ -4,6 +4,11 @@
 
 ## 0.0.8
 
+
+
+
+## 0.0.8
+
 ### New Features
 
 - Hydra now works using decorators and takes CLI arguments
