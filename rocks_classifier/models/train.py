@@ -17,7 +17,6 @@ import tensorflow as tf
 import wandb
 import hydra
 from omegaconf import DictConfig, OmegaConf
-from sklearn.metrics import classification_report
 
 # speed improvements
 from tensorflow.keras import backend as K
@@ -28,7 +27,8 @@ from ..callbacks.callbacks import get_callbacks
 from ..data.utils import get_tfds_from_dir, prepare
 from .models import get_model
 from .utils import get_lr_scheduler, get_model_weights, get_optimizer
-from ..visualization.plot import plot_confusion_matrix
+from ..visualization.plot import plotly_confusion_matrix, \
+                                                get_classification_report, get_confusion_matrix
 
 # %% ../../notebooks/03_d_train.ipynb 3
 tf.get_logger().setLevel(logging.ERROR)
@@ -141,7 +141,7 @@ def train(
 
     return model, history
 
-
+# %% ../../notebooks/03_d_train.ipynb 4
 def evaluate(
     cfg: DictConfig,
     model: tf.keras.Model,
@@ -165,67 +165,38 @@ def evaluate(
         List of Labels.
     """
 
-    from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
-    import numpy as np
-    import pandas as pd
-    import seaborn as sns
-
     # Scores
     test_dataset = prepare(test_dataset, cfg)
     scores = model.evaluate(test_dataset, return_dict=True)
 
     print("\n\nTest Dataset Results!")
     print("Scores: ", scores)
+    
+    def predict(test_dataset):
+        y_true = tf.concat([y for x, y in test_dataset], axis=0)
+        true_categories = tf.argmax(y_true, axis=1)
+        y_pred = model.predict(test_dataset, verbose=1)
+        predicted_categories = tf.argmax(y_pred, axis=1)
 
-    # Predict
-
-    y_true = tf.concat([y for x, y in test_dataset], axis=0)
-    true_categories = tf.argmax(y_true, axis=1)
-    y_pred = model.predict(test_dataset, verbose=1)
-    predicted_categories = tf.argmax(y_pred, axis=1)
-
-    # Confusion Matrix
-    cm = plot_confusion_matrix(labels, true_categories, predicted_categories)
-
-    def get_cm(model, test_dataset, y_true):
-
-        y_prediction = model.predict(test_dataset)
-        y_prediction = np.argmax(y_prediction, axis=1)
-        y_test = np.argmax(y_true, axis=1)
-        # Create confusion matrix and normalizes it over predicted (columns)
-        result = confusion_matrix(y_test, y_prediction, normalize="pred")
-        disp = ConfusionMatrixDisplay(confusion_matrix=result, display_labels=labels)
-        disp.plot()
-        plt.xticks(rotation=35)
-        plt.savefig("confusion_matrix.png")
-        plt.close()
-        return result
-
-    cm_sklearn = get_cm(model, test_dataset, y_true)
-
-    # Classification Report
-    cl_report = classification_report(
-        true_categories,
-        predicted_categories,
-        labels=[i for i in range(cfg.num_classes)],
-        target_names=labels,
-        output_dict=False,
-    )
-
-    print(f"\nClassification Report\n{cl_report}")
+        return true_categories, predicted_categories
+    
+    true_categories, predicted_categories = predict(test_dataset)
+    cl_report = get_classification_report(true_categories, predicted_categories)
+    cm_sklearn = get_confusion_matrix(true_categories, predicted_categories)
+    cm_plotly = plotly_confusion_matrix(labels, true_categories, predicted_categories)
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
-    wandb.log({"Confusion Matrix": cm})
-    # wandb.log(
-    #     {
-    #         "Classification Report Image:": wandb.Image(
-    #             "classification_report.png", caption="Classification Report"
-    #         )
-    #     }
-    # )
+    wandb.log({"Confusion Matrix": cm_plotly})
+    wandb.log(
+        {
+            "Classification Report Image:": wandb.Image(
+                "classification_report.png", caption="Classification Report"
+            )
+        }
+    )
 
-
-@hydra.main(config_path="../../configs", config_name="config", version_base="1.2")
+# %% ../../notebooks/03_d_train.ipynb 5
+@hydra.main(config_path=".", config_name="config", version_base="1.2")
 def main(cfg) -> None:
     """Run Main function.
 
@@ -267,9 +238,7 @@ def main(cfg) -> None:
 
     run.finish()
 
-
-
-# %% ../../notebooks/03_d_train.ipynb 4
+# %% ../../notebooks/03_d_train.ipynb 6
 #| eval: false
 if __name__ == "__main__":
     main()
