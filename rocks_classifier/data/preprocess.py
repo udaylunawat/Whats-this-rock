@@ -14,7 +14,7 @@ from .download import download_and_move_datasets
 from .utils import *
 
 # %% ../../notebooks/02_preprocess_data.ipynb 35
-@hydra.main(config_path="../../configs", config_name="config", version_base="1.2")
+@hydra.main(config_path=".", config_name="config", version_base="1.2")
 def process_data(cfg):
     """Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.
 
@@ -23,8 +23,6 @@ def process_data(cfg):
     cfg : cfg (omegaconf.DictConfig):
         Hydra Configuration
     """
-    download_configs()
-    
     download_and_move_datasets()
     move_to_processed()
 
