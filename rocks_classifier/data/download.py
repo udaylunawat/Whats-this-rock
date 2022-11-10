@@ -8,7 +8,7 @@ import os
 import shutil
 import requests
 from .utils import timer_func, find_filepaths
-from .utils import clean_data_dir
+from .utils import clean_data_dir, copy_configs_tocwd
 
 # %% ../../notebooks/01_b_download.ipynb 11
 class download_and_move:
@@ -33,6 +33,7 @@ class download_and_move:
 
         Uses `find_filepaths` to recursively find paths for all files in a directory.
         """
+        copy_configs_tocwd()
         clean_data_dir()
         for dataset_id in self.data_dict:
             if self.archives_exist(dataset_id) and self.files_exists(dataset_id):
