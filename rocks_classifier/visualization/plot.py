@@ -8,6 +8,7 @@ import plotly.figure_factory as ff
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import matplotlib.pyplot as plt
 
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 
@@ -97,7 +98,7 @@ def plotly_confusion_matrix(labels, y, _y):
 
 
 # %% ../../notebooks/04_visualization.ipynb 3
-def get_classification_report(true_categories, predicted_categories):
+def get_classification_report(true_categories, predicted_categories, labels):
     # Classification Report
     cl_report = classification_report(
         true_categories,
@@ -111,7 +112,7 @@ def get_classification_report(true_categories, predicted_categories):
     return cl_report
 
 # %% ../../notebooks/04_visualization.ipynb 4
-def get_confusion_matrix(true_categories, predicted_categories):
+def get_confusion_matrix(true_categories, predicted_categories, labels):
     # Confusion Matrix
     
     # Create confusion matrix and normalizes it over predicted (columns)

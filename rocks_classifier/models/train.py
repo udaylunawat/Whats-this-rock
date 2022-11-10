@@ -181,19 +181,19 @@ def evaluate(
         return true_categories, predicted_categories
     
     true_categories, predicted_categories = predict(test_dataset)
-    cl_report = get_classification_report(true_categories, predicted_categories)
-    cm_sklearn = get_confusion_matrix(true_categories, predicted_categories)
+    cl_report = get_classification_report(true_categories, predicted_categories, labels)
+    cm_sklearn = get_confusion_matrix(true_categories, predicted_categories, labels)
     cm_plotly = plotly_confusion_matrix(labels, true_categories, predicted_categories)
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
     wandb.log({"Confusion Matrix": cm_plotly})
-    wandb.log(
-        {
-            "Classification Report Image:": wandb.Image(
-                "classification_report.png", caption="Classification Report"
-            )
-        }
-    )
+    # wandb.log(
+    #     {
+    #         "Classification Report Image:": wandb.Image(
+    #             "classification_report.png", caption="Classification Report"
+    #         )
+    #     }
+    # )
 
 # %% ../../notebooks/03_d_train.ipynb 5
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
