@@ -5,5 +5,5 @@ website:
   title: "rocks_classifier"
   site-url: "https://udaylunawat.github.io/Whats-this-rock"
   description: "Rock classifier deployed on railway and monitored using Weights and Biases!"
-  repo-branch: nbdev
+  repo-branch: main
   repo-url: "https://github.com/udaylunawat/Whats-this-rock"
