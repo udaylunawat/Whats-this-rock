@@ -102,7 +102,7 @@ def get_classification_report(true_categories, predicted_categories):
     cl_report = classification_report(
         true_categories,
         predicted_categories,
-        labels=[i for i in range(cfg.num_classes)],
+        labels=[i for i in range(7)],  # TODO: Convert to class, and add num_classes instead of 7 from cfg
         target_names=labels,
         output_dict=False,
     )
@@ -110,7 +110,7 @@ def get_classification_report(true_categories, predicted_categories):
     print(f"\nClassification Report\n{cl_report}")
     return cl_report
 
-# %% ../../notebooks/04_visualization.ipynb 5
+# %% ../../notebooks/04_visualization.ipynb 4
 def get_confusion_matrix(true_categories, predicted_categories):
     # Confusion Matrix
     
