@@ -32,7 +32,7 @@
     "href": "04_visualization.html",
     "title": "rocks_classifier",
     "section": "",
-    "text": "source\n\nplotly_confusion_matrix\n\n plotly_confusion_matrix (labels, y, _y)\n\n\nsource\n\n\nget_classification_report\n\n get_classification_report (true_categories, predicted_categories)\n\n\n# #| export\n\n# def get_confusion_matrix(model, test_dataset, y_true, true_categories, y_pred, predicted_categories):\n#     # Confusion Matrix\n#     def get_cm(model, test_dataset, y_true):\n\n#         y_prediction = model.predict(test_dataset)\n#         y_prediction = np.argmax(y_prediction, axis=1)\n#         y_test = np.argmax(y_true, axis=1)\n#         # Create confusion matrix and normalizes it over predicted (columns)\n#         result = confusion_matrix(y_test, y_prediction, normalize=\"pred\")\n#         disp = ConfusionMatrixDisplay(confusion_matrix=result, display_labels=labels)\n#         disp.plot()\n#         plt.xticks(rotation=35)\n#         plt.savefig(\"confusion_matrix.png\")\n#         plt.close()\n\n#     cm_sklearn = get_cm(model, test_dataset, y_true)\n#     return cm_sklearn\n\n\nsource\n\n\nget_confusion_matrix\n\n get_confusion_matrix (true_categories, predicted_categories)"
+    "text": "source\n\nplotly_confusion_matrix\n\n plotly_confusion_matrix (labels, y, _y)\n\n\nsource\n\n\nget_classification_report\n\n get_classification_report (true_categories, predicted_categories, labels)\n\n\nsource\n\n\nget_confusion_matrix\n\n get_confusion_matrix (true_categories, predicted_categories, labels)"
   },
   {
     "objectID": "a_train_utils.html",
