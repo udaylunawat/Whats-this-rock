@@ -85,7 +85,8 @@ rocks_deploy_bot
 
 ``` bash
 %%bash
-rocks_process_data remove_bad= True \
+rocks_process_data  --config-dir configs \
+                    remove_bad= True \
                     remove_misclassified= True \
                     remove_duplicates= True \
                     remove_corrupted= True \
@@ -99,7 +100,8 @@ rocks_process_data remove_bad= True \
 Run these commands
 
 ``` bash
-rocks_train_model wandb.project=Whats-this-rock \
+rocks_train_model   --config-dir configs \
+                    wandb.project=Whats-this-rock \
                     wandb.mode=offline \
                     wandb.use=False \
                     dataset_id=[1,2] \
@@ -114,13 +116,14 @@ rocks_train_model wandb.project=Whats-this-rock \
                     trainable=False \
 ```
 
-You can try different models and parameters by editing `config.json`.
+You can try different models and parameters by editing
+`configs/config.yaml`.
 
 By using Hydra it’s now much more easier to override parameters like
 this
 
 ``` bash
-rocks_train_model wandb.project=Whats-this-rockv \
+rocks_train_model wandb.project=Whats-this-rock \
                   dataset_id=[1,2] \
                   epochs=50 \
                   backbone=resnet
