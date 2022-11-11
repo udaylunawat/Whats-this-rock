@@ -13,6 +13,7 @@ format:
     toc-depth: 4
 
 website:
+  title: "Whats this rock!"
   favicon: favicon.ico
   reader-mode: false
 
