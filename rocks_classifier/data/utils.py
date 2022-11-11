@@ -60,7 +60,12 @@ def copy_configs_tocwd():
         shutil.rmtree('configs')
     pkgdir = sys.modules['rocks_classifier'].__path__[0]
     fullpath = os.path.join(pkgdir, 'configs')
-    shutil.copytree(fullpath, os.path.join(os.getcwd(), 'configs'))
+    os.makedirs('configs', exist_ok=True)
+    for path, directories, files in os.walk(fullpath):
+        for file_name in files:
+            if any([file_name.endswith(ext) for ext in ['py', 'yaml', 'txt']]):
+                shutil.copy(os.path.join(fullpath, file_name), os.path.join('configs', file_name))
+        
 
 # %% ../../notebooks/01_a_download_utils.ipynb 7
 def get_new_name(dir_list: list) -> dict:
