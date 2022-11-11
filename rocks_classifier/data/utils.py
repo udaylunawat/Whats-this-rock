@@ -28,8 +28,7 @@ from tqdm import tqdm
 
 # %% ../../notebooks/01_a_download_utils.ipynb 5
 def clean_data_dir():
-    """Clean all data directories except 0_raw.
-    """
+    """Clean all data directories except 0_raw."""
     dir_0 = '0_raw'
     dir_1 = '1_extracted'
     dir_2 = '2_processed'
@@ -56,6 +55,7 @@ def clean_data_dir():
 
 # %% ../../notebooks/01_a_download_utils.ipynb 6
 def copy_configs_tocwd():
+    """Copy configs directory from package to current directory."""    
     if os.path.exists('configs'):
         shutil.rmtree('configs')
     pkgdir = sys.modules['rocks_classifier'].__path__[0]
@@ -105,7 +105,7 @@ def get_new_name(dir_list: list) -> dict:
 # %% ../../notebooks/01_a_download_utils.ipynb 8
 def move_to_processed():
     """
-    Combines files with same subclass and moves them to the subclass under data/2_processed.
+    Combine files with same subclass and moves them to the subclass under data/2_processed.
 
     Uses `get_new_name` to create new names of files and then rename them and copy to data/2_processed.
     """
@@ -119,7 +119,7 @@ def move_to_processed():
 
 # %% ../../notebooks/01_a_download_utils.ipynb 9
 def clean_images(cfg):
-    """Removes bad, misclassified, duplicate, corrupted and unsupported images.
+    """Remove bad, misclassified, duplicate, corrupted and unsupported images.
 
     Parameters
     ----------
@@ -147,7 +147,7 @@ def clean_images(cfg):
 
 # %% ../../notebooks/01_a_download_utils.ipynb 10
 def move_bad_files(txt_file, dest, text):
-    """Moves files in txt_file to dest.
+    """Move files in txt_file to dest.
 
     Parameters
     ----------
@@ -230,6 +230,7 @@ def sampling(cfg):
             seed=cfg.seed,
             move=False,
         )
+    assert len(os.listdir('data/3_tfds_dataset')) == 3
     print("\n")
 
 
@@ -238,8 +239,8 @@ def timer_func(func):
 
     Parameters
     ----------
-    func : _type_
-        _description_
+    func : function
+        function
     """
 
     def wrap_func(*args, **kwargs):
@@ -258,12 +259,12 @@ def find_filepaths(root_folder: str):
     Parameters
     ----------
     root_folder : str
-        _description_
+        directory
 
     Returns
     -------
-    _type_
-        _description_
+    Tuple
+        sorted filepaths and length of filepaths
     """
     filepaths = []
     for dirname, _, filenames in os.walk(root_folder):
@@ -310,7 +311,13 @@ def remove_corrupted_images(
     classes = os.listdir(s_dir)
 
     def remove_corrupted_from_dir(rock_class):
-        # remove corrupted images from single directory
+        """Remove corrupted images from single directory.
+
+        Parameters
+        ----------
+        rock_class : str
+            folder name that contains images
+        """
         bad_images = []
         class_path = os.path.join(s_dir, rock_class)
         if os.path.isdir(class_path):
@@ -349,6 +356,7 @@ def remove_corrupted_images(
         print(f"Removed {len(bad_images)} corrupted images from {rock_class}.")
 
     def remove_corrupted_images_multicore():
+        """Multiprocessing enabled, remove corrupted images (Disabled as not supported on M1 macs - my local machine)."""        
         # Multiprocessing
         # create all tasks
         from multiprocessing import Process
@@ -456,19 +464,19 @@ def prepare(ds, cfg, shuffle=False, augment=False):
 
     Parameters
     ----------
-    ds : _type_
-        _description_
+    ds : Dataset
+        Tensorflow Dataset
     cfg : cfg (omegaconf.DictConfig):
         Hydra Configuration
     shuffle : bool, optional
-        _description_, by default False
+        shuffle parameter, by default False
     augment : bool, optional
-        _description_, by default False
+        augment parameter, by default False
 
     Returns
     -------
-    _type_
-        _description_
+    Dataset
+        Tensorflow Dataset preprocessed, shuffled, augmented and batched
     """
     # keras_cv
     def to_dict(image, label):
@@ -554,8 +562,8 @@ def get_tfds_from_dir(cfg):
 
     Returns
     -------
-    _type_
-        _description_
+    Tuple
+        Tuple containing 3 Tensorflow Datasets
     """
     IMAGE_SIZE = (cfg.image_size, cfg.image_size)
     train_ds = tf.keras.utils.image_dataset_from_directory(
@@ -603,7 +611,7 @@ def rename_files(source_dir: str = "data/2_processed/tmp"):
     Parameters
     ----------
     source_dir : str, optional
-        _description_, by default "data/2_processed/tmp"
+        Directory, by default "data/2_processed/tmp"
     """
     class_names = os.listdir(source_dir)
     for class_name in class_names:
@@ -627,9 +635,9 @@ def move_files(src_dir: str, dest_dir: str = "data/2_processed/tmp"):
     Parameters
     ----------
     src_dir : str
-        _description_
+        Source Directory path
     dest_dir : str, optional
-        _description_, by default "data/2_processed/tmp"
+        Destination Directory path, by default "data/2_processed/tmp"
     """
     if os.path.exists(dest_dir):
         shutil.rmtree(dest_dir)
@@ -657,7 +665,7 @@ def move_and_rename(class_dir: str):
     Parameters
     ----------
     class_dir : str
-        _description_
+        Class directory that contains folders of classes containing images
     """
     target_classes = os.listdir("data/2_processed/")
     if "tmp" in target_classes:
