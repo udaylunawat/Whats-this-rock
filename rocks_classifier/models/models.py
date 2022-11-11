@@ -12,6 +12,8 @@ from tensorflow.keras import applications, layers
 def get_backbone(cfg) -> tf.keras.models:
     """Get backbone for the model.
 
+    List of [supported models](https://www.tensorflow.org/api_docs/python/tf/keras/applications).
+
     Parameters
     ----------
     cfg : cfg (omegaconf.DictConfig):
@@ -58,6 +60,8 @@ def get_backbone(cfg) -> tf.keras.models:
 
 def get_model(cfg):
     """Get an image classifier with a CNN based backbone.
+    
+    Calls `get_backbone` and adds a top_model layer to it.
 
     Parameters
     ----------
