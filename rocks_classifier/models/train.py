@@ -136,7 +136,7 @@ def train(
             validation_data=val_dataset,
             callbacks=callbacks,
             initial_epoch=len(history.history["loss"]),
-            verbose=2,
+            verbose=verbose,
         )
 
     return model, history
