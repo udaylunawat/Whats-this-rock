@@ -12,7 +12,7 @@ import hydra, omegaconf
 
 from .utils import *
 
-# %% ../../notebooks/02_a_preprocess_data.ipynb 35
+# %% ../../notebooks/02_a_preprocess_data.ipynb 32
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
 def process_data(cfg):
     """Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.
