@@ -147,8 +147,7 @@ def evaluate(
     model: tf.keras.Model,
     history: dict,
     test_dataset: tf.data.Dataset,
-    labels: list,
-):
+    labels: list):
     """Evaluate the trained model on Test Dataset, log confusion matrix and classification report.
 
     Parameters
@@ -164,7 +163,6 @@ def evaluate(
     labels : list
         List of Labels.
     """
-
     # Scores
     test_dataset = prepare(test_dataset, cfg)
     scores = model.evaluate(test_dataset, return_dict=True)
@@ -199,13 +197,12 @@ def evaluate(
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
 def main(cfg) -> None:
     """Run Main function.
-
+    
     Parameters
     ----------
     cfg : DictConfig
         Hydra Configuration
     """
-    
     print(OmegaConf.to_yaml(cfg))
 
     tf.keras.utils.set_random_seed(cfg.seed) # Setting global seed
@@ -234,8 +231,9 @@ def main(cfg) -> None:
 
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
     
-    if history.history['val_accuracy'][-1] > 0.80:
-        evaluate(cfg, model, history, test_dataset, labels)
+    if 'val_accuracy' in history.history:
+            if history.history['val_accuracy'][-1] > 0.80:
+                evaluate(cfg, model, history, test_dataset, labels)
 
     run.finish()
 
