@@ -233,8 +233,9 @@ def main(cfg) -> None:
     val_dataset = prepare(val_dataset, cfg)
 
     model, history = train(cfg, train_dataset, val_dataset, class_weights)
-
-    evaluate(cfg, model, history, test_dataset, labels)
+    
+    if history.history['val_accuracy'][-1] > 0.80:
+        evaluate(cfg, model, history, test_dataset, labels)
 
     run.finish()
 
