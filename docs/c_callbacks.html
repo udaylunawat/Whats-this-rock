@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>rocks_classifier - Callbacks</title>
+<title>Whats this rock! - Callbacks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,10 +63,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="rocks_classifier - Callbacks">
+<meta property="og:title" content="Whats this rock! - Callbacks">
 <meta property="og:description" content="source">
-<meta property="og:site-name" content="rocks_classifier">
-<meta name="twitter:title" content="rocks_classifier - Callbacks">
+<meta property="og:site-name" content="Whats this rock!">
+<meta name="twitter:title" content="Whats this rock! - Callbacks">
 <meta name="twitter:description" content="source">
 <meta name="twitter:card" content="summary">
 </head>
@@ -79,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">rocks_classifier</span>
+    <span class="navbar-title">Whats this rock!</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -184,11 +184,23 @@ ul.task-list li input[type="checkbox"] {
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">Exploratory Data Analysis</span>
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Preprocess</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_preprocess_data.html" class="sidebar-item-text sidebar-link">Preprocess Data</a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Preprocess</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Exploratory Data Analysis</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -196,7 +208,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link">Preprocess Data</a>
+  <a href="./b_eda.html" class="sidebar-item-text sidebar-link">Exploratory Analysis</a>
   </div>
 </li>
       </ul>
@@ -353,7 +365,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code> CustomEarlyStopping (monitor='val_accuracy', value=0.6, min_epoch=15,
                       verbose=0)</code></pre>
 </blockquote>
-<p>Stops training when epoch &gt; min_epoch and monitor value &lt; value.</p>
+<p>Stops training when epoch &gt; min_epoch and monitor value &lt; default value.</p>
 <hr>
 <p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/rocks_classifier/callbacks/callbacks.py#L62" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>

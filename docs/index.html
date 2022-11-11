@@ -8,7 +8,7 @@
 
 <meta name="description" content="Telegram Rock Classification Bot!">
 
-<title>rocks_classifier - Whats-this-rock</title>
+<title>Whats this rock! - Whats-this-rock</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,10 +127,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="rocks_classifier - Whats-this-rock">
+<meta property="og:title" content="Whats this rock! - Whats-this-rock">
 <meta property="og:description" content="Telegram Rock Classification Bot!">
-<meta property="og:site-name" content="rocks_classifier">
-<meta name="twitter:title" content="rocks_classifier - Whats-this-rock">
+<meta property="og:site-name" content="Whats this rock!">
+<meta name="twitter:title" content="Whats this rock! - Whats-this-rock">
 <meta name="twitter:description" content="Telegram Rock Classification Bot!">
 <meta name="twitter:card" content="summary">
 </head>
@@ -143,7 +143,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">rocks_classifier</span>
+    <span class="navbar-title">Whats this rock!</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -248,11 +248,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">Exploratory Data Analysis</span>
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Preprocess</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_preprocess_data.html" class="sidebar-item-text sidebar-link">Preprocess Data</a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Preprocess</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Exploratory Data Analysis</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -260,7 +272,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./preprocess_data.html" class="sidebar-item-text sidebar-link">Preprocess Data</a>
+  <a href="./b_eda.html" class="sidebar-item-text sidebar-link">Exploratory Analysis</a>
   </div>
 </li>
       </ul>
@@ -351,19 +363,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#inspiration" id="toc-inspiration" class="nav-link active" data-scroll-target="#inspiration">Inspiration</a>
+  <li><a href="#inspiration" id="toc-inspiration" class="nav-link active" data-scroll-target="#inspiration">Inspiration</a></li>
+  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation">Documentation</a></li>
+  <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a>
   <ul>
-  <li><a href="#installation-training-steps" id="toc-installation-training-steps" class="nav-link" data-scroll-target="#installation-training-steps">Installation &amp; Training Steps</a>
-  <ul class="collapse">
-  <li><a href="#install" id="toc-install" class="nav-link" data-scroll-target="#install">Install</a></li>
-  <li><a href="#use-the-telegram-bot" id="toc-use-the-telegram-bot" class="nav-link" data-scroll-target="#use-the-telegram-bot">Use the Telegram Bot</a></li>
-  <li><a href="#deploy-telegram-bot" id="toc-deploy-telegram-bot" class="nav-link" data-scroll-target="#deploy-telegram-bot">Deploy Telegram Bot</a></li>
   <li><a href="#download-and-process-data" id="toc-download-and-process-data" class="nav-link" data-scroll-target="#download-and-process-data">Download and process data</a></li>
   <li><a href="#train-model" id="toc-train-model" class="nav-link" data-scroll-target="#train-model">Train Model</a></li>
   <li><a href="#wandb-sweeps-hyperparameter-tuning" id="toc-wandb-sweeps-hyperparameter-tuning" class="nav-link" data-scroll-target="#wandb-sweeps-hyperparameter-tuning">Wandb Sweeps (Hyperparameter Tuning)</a></li>
+  <li><a href="#telegram-bot" id="toc-telegram-bot" class="nav-link" data-scroll-target="#telegram-bot">Telegram Bot</a></li>
   </ul></li>
   <li><a href="#demo" id="toc-demo" class="nav-link" data-scroll-target="#demo">Demo</a></li>
   <li><a href="#features" id="toc-features" class="nav-link" data-scroll-target="#features">Features</a></li>
+  <li><a href="#planned-features" id="toc-planned-features" class="nav-link" data-scroll-target="#planned-features">Planned Features</a></li>
   <li><a href="#technologies-used" id="toc-technologies-used" class="nav-link" data-scroll-target="#technologies-used">Technologies Used</a></li>
   <li><a href="#directory-tree" id="toc-directory-tree" class="nav-link" data-scroll-target="#directory-tree">Directory Tree</a></li>
   <li><a href="#bug-feature-request" id="toc-bug-feature-request" class="nav-link" data-scroll-target="#bug-feature-request">Bug / Feature Request</a></li>
@@ -371,7 +382,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
   <li><a href="#credits" id="toc-credits" class="nav-link" data-scroll-target="#credits">Credits</a></li>
   <li><a href="#support" id="toc-support" class="nav-link" data-scroll-target="#support">Support</a></li>
-  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -423,8 +433,8 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <li>CI</li>
 <li>publishing to <a href="https://pypi.org/project/rocks-classifier/">PyPi</a></li>
 </ul>
-<section id="inspiration" class="level1">
-<h1>Inspiration</h1>
+<section id="inspiration" class="level2">
+<h2 class="anchored" data-anchor-id="inspiration">Inspiration</h2>
 <blockquote class="blockquote">
 <p><a href="https://youtu.be/J6XcP4JOHmk?t=2029">The common complaint that&nbsp;you need massive amounts of data to do deep learning &nbsp;can be a very long way from the truth!</a></p>
 </blockquote>
@@ -434,24 +444,20 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <blockquote class="blockquote">
 <p><a href="https://en.wikipedia.org/wiki/Jeremy_Howard_(entrepreneur)">Jeremy Howards</a></p>
 </blockquote>
-<section id="installation-training-steps" class="level2">
-<h2 class="anchored" data-anchor-id="installation-training-steps">Installation &amp; Training Steps</h2>
-<section id="install" class="level3">
-<h3 class="anchored" data-anchor-id="install">Install</h3>
-<p>To install, use <code>pip</code>:</p>
-<pre><code>pip install git+https://github.com/udaylunawat/Whats-this-rock.git</code></pre>
 </section>
-<section id="use-the-telegram-bot" class="level3">
-<h3 class="anchored" data-anchor-id="use-the-telegram-bot">Use the Telegram Bot</h3>
-<p>You can try the bot <a href="https://t.me/test7385_bot">here</a> on Telegram.</p>
-<blockquote class="blockquote">
-<p>Type <code>/help</code> to get instructions in chat.</p>
-</blockquote>
+<section id="documentation" class="level2">
+<h2 class="anchored" data-anchor-id="documentation">Documentation</h2>
+<p>Documentation for the project has been created using <a href="https://nbdev.fast.ai/getting_started.html"><code>nbdev</code></a>, and is available at <a href="https://udaylunawat.github.io/Whats-this-rock/">udaylunawat.github.io/Whats-this-rock</a>.</p>
+<p><a href="https://nbdev.fast.ai/getting_started.html"><code>nbdev</code></a> is a notebook-driven development platform. Simply write notebooks with lightweight markup and get high-quality documentation, tests, continuous integration, and packaging for free!</p>
+<p>Once I discovered nbdev, I couldn’t help myself but redo the whole project from scratch.</p>
+<p>It’s just makes me 10x more productive and makes the whole process streamlined and more enjoyable.</p>
 </section>
-<section id="deploy-telegram-bot" class="level3">
-<h3 class="anchored" data-anchor-id="deploy-telegram-bot">Deploy Telegram Bot</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_deploy_bot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<p>You can directly install using pip</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install rocks_classifier</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Install - Directly from Github (latest beta version)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install git+https://github.com/udaylunawat/Whats-this-rock.git</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="download-and-process-data" class="level3">
 <h3 class="anchored" data-anchor-id="download-and-process-data">Download and process data</h3>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">%%bash</span></span>
@@ -466,40 +472,46 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 </section>
 <section id="train-model" class="level3">
 <h3 class="anchored" data-anchor-id="train-model">Train Model</h3>
-<p>Run these commands</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_train_model</span>   <span class="at">--config-dir</span> configs <span class="dt">\</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                    wandb.project=Whats-this-rock <span class="dt">\</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                    wandb.mode=offline <span class="dt">\</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                    wandb.use=False <span class="dt">\</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                    dataset_id=[1,2] <span class="dt">\</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                    epochs=30 <span class="dt">\</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                    lr=0.005 <span class="dt">\</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                    augmentation=None <span class="dt">\</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>                    monitor=val_loss <span class="dt">\</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                    loss=categorical_crossentropy <span class="dt">\</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>                    backbone=resnet <span class="dt">\</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                    lr_schedule=cosine_decay_restarts <span class="dt">\</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>                    lr_decay_steps=300 <span class="dt">\</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>                    trainable=False <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can try different models and parameters by editing <code>configs/config.yaml</code>.</p>
-<p>By using Hydra it’s now much more easier to override parameters like this</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_train_model</span> wandb.project=Whats-this-rock <span class="dt">\</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                  dataset_id=[1,2] <span class="dt">\</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                  epochs=50 <span class="dt">\</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                  backbone=resnet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Train model using default parameters in <code>configs/config.yaml</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_train_model</span>   <span class="at">--config-dir</span> configs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You can try different models and parameters by editing <code>configs/config.yaml</code>, or you can override it by passing arguments like this:-</p>
+<p>By using Hydra it’s now much more easier to override parameters like this:-</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_train_model</span>   <span class="at">--config-dir</span> configs <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                    wandb.project=Whats-this-rock <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                    wandb.mode=offline <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                    wandb.use=False <span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                    dataset_id=[1,2] <span class="dt">\</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                    epochs=30 <span class="dt">\</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                    lr=0.005 <span class="dt">\</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                    augmentation=None <span class="dt">\</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>                    monitor=val_loss <span class="dt">\</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>                    loss=categorical_crossentropy <span class="dt">\</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>                    backbone=resnet <span class="dt">\</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>                    lr_schedule=cosine_decay_restarts <span class="dt">\</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                    lr_decay_steps=300 <span class="dt">\</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                    trainable=False <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p align="left">
 <img src="https://i.imgur.com/1nBpPC5.png" alt="result" width="100%/">
 </p>
 </section>
 <section id="wandb-sweeps-hyperparameter-tuning" class="level3">
 <h3 class="anchored" data-anchor-id="wandb-sweeps-hyperparameter-tuning">Wandb Sweeps (Hyperparameter Tuning)</h3>
-<p>Edit configs/sweeps.yaml</p>
+<p>Edit <code>configs/sweep.yaml</code></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wandb</span> sweep <span class="dt">\</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>--project Whats-this-rock <span class="dt">\</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>--entity udaylunawat <span class="dt">\</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>configs/sweep.yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>This will return a command with $sweepid</p>
+<p>This will return a command with $sweepid, run it to start running sweeps!</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">wandb</span> agent udaylunawat/Whats-this-rock/<span class="va">$sweepid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="telegram-bot" class="level3">
+<h3 class="anchored" data-anchor-id="telegram-bot">Telegram Bot</h3>
+<p>You can try the bot <a href="https://t.me/test7385_bot">here</a> on Telegram.</p>
+<blockquote class="blockquote">
+<p>Type <code>/help</code> to get instructions in chat.</p>
+</blockquote>
+<p>Or deploy it yourself</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">rocks_deploy_bot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="demo" class="level2">
@@ -516,120 +528,118 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 </section>
 <section id="features" class="level2">
 <h2 class="anchored" data-anchor-id="features">Features</h2>
-
-<table border="0" class="left">
-<tbody><tr>
-<td>
-<b>&lt;style=‘font-size:37px’&gt;Features added</b>
-</td>
-<td>
-<b>&lt;style=‘font-size:37px’&gt;Features planned</b>
-</td>
+<p>&amp; Things I’ve Experimented with</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th><code>Feature</code></th>
+<th></th>
+<th><code>Feature</code></th>
+<th></th>
 </tr>
-<tr>
-<td>
-<ul>
-<li><p>Wandb</p></li>
-<li><p>Datasets</p>
-<ul>
-<li>4 Datasets</li>
-</ul></li>
-<li><p>Augmentation</p>
-<ul>
-<li>keras-cv</li>
-<li>Regular Augmentation</li>
-</ul></li>
-<li><p>Sampling</p>
-<ul>
-<li>Oversampling</li>
-<li>Undersampling</li>
-<li>Class weights</li>
-</ul></li>
-<li><p>Remove Corrupted Images</p></li>
-<li><p>Try Multiple Optimizers (Adam, RMSProp, AdamW, SGD)</p></li>
-<li><p>Generators</p>
-<ul>
-<li>TFDS datasets</li>
-<li>ImageDataGenerator</li>
-</ul></li>
-<li><p>Models</p>
-<ul>
-<li>ConvNextTiny</li>
-<li>BaselineCNN</li>
-<li>Efficientnet</li>
-<li>Resnet101</li>
-<li>MobileNetv1</li>
-<li>MobileNetv2</li>
-<li>Xception</li>
-</ul></li>
-<li><p>LRScheduleer, LRDecay</p>
-<ul>
-<li>Baseline without scheduler</li>
-<li>Step decay</li>
-<li>Cosine annealing</li>
-<li>Classic cosine annealing with bathc steps w/o restart</li>
-</ul></li>
-<li><p>Model Checkpoint, Resume Training</p></li>
-<li><p>Evaluation</p>
-<ul>
-<li>Confusion Matrix</li>
-<li>Classification Report</li>
-</ul></li>
-<li><p>Deploy Telegram Bot</p>
-<ul>
-<li>Heroku - Deprecated</li>
-<li>Railway</li>
-<li>Show CM and CL in bot</li>
-</ul></li>
-<li><p>Docker</p></li>
-<li><p>GitHub Actions</p>
-<ul>
-<li>Deploy Bot when bot.py is updated.</li>
-<li>Lint code using GitHub super-linter</li>
-</ul></li>
-<li><p>Configuration Management</p>
-<ul>
-<li>ml-collections</li>
-<li>Hydra</li>
-</ul></li>
-<li><p>Performance improvement</p>
-<ul>
-<li>Convert to tf.data.Dataset</li>
-</ul></li>
-<li><p>Linting &amp; Formatting</p>
-<ul>
-<li>Black</li>
-<li>Flake8</li>
-<li>isort</li>
-<li>pydocstyle</li>
-</ul></li>
-<li><p>Add Badges</p>
-<ul>
-<li>Linting</li>
-</ul></li>
-<li><p>found the classes that the model is performing terribly on</p></li>
-<li><p>nbdev</p></li>
-<li><p>CI</p></li>
-<li><p>documentation</p>
-</li></ul></td>
-<td>
-<li><p><input type="checkbox" disabled="">Deploy to Huggingface spaces</p></li>
-<li><p><input type="checkbox" disabled="">Accessing the model through FastAPI (Backend)</p></li>
-<li><p><input type="checkbox" disabled="">Streamlit (Frontend)</p></li>
-<li><p><input type="checkbox" disabled="">convert models.py to Classes and more OOP style</p></li>
-<li><p><input type="checkbox" disabled="">Group Runs</p><ul class="task-list">
-<li><input type="checkbox" disabled="">kfold cross validation</li>
-</ul></li>
-<li><p><input type="checkbox" disabled=""><a href="https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&amp;t=VRL-ZXzznXV_Hg2h7QnjuA">WandB Tables</a></p></li>
-<li><p><input type="checkbox" disabled="">find the long tail examples or hard examples,</p></li>
-<li><p><input type="checkbox" disabled="">Add Badges</p><ul class="task-list">
-<li><input type="checkbox" disabled="">Railway</li>
-</ul>
-</li></td>
-
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Wandb</code></td>
+<td>- Experiment Tracking<br>- System Tracking<br>- Model Tracking<br>- Hyperparameter Tuning</td>
+<td><code>Datasets</code></td>
+<td>- Dataset 1<br>- Dataset 2</td>
 </tr>
-
-</tbody></table>
+<tr class="even">
+<td><code>Augmentation</code></td>
+<td>- Keras-CV<br>- MixUp<br>- CutMix<br>- Normal</td>
+<td><code>Models</code></td>
+<td>- ConvNextTiny<br>- Efficientnet<br>- Resnet101<br>- MobileNetv1<br>- MobileNetv2<br>- Xception</td>
+</tr>
+<tr class="odd">
+<td><code>Optimisers</code></td>
+<td>- Adam<br>- Adamax<br>- SGD<br>- RMSProp</td>
+<td><code>LR Scheduler</code></td>
+<td>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecay">CosineDecay</a><br>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/ExponentialDecay">ExponentialDecay</a><br>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecayRestarts">CosineDecayRestarts</a>.</td>
+</tr>
+<tr class="even">
+<td><code>Remove Images</code></td>
+<td>- Duplicate Images<br>- Corrupt Images<br>- Bad Images<br>- Misclassified</td>
+<td><code>Configuration Management</code></td>
+<td>- hydra<br>- ml-collections<br>- argparse<br>- google-fire</td>
+</tr>
+<tr class="odd">
+<td><code>Generators</code></td>
+<td>- tf.data.DataSet<br>- ImageDataGenerator</td>
+<td><code>Deployment</code></td>
+<td>- Heroku<br>- Railway</td>
+</tr>
+<tr class="even">
+<td><code>Evaluation</code></td>
+<td>- Classification Report<br>- Confusion Matrix</td>
+<td><code>GitHub Actions</code> (CICD)</td>
+<td>- GitHub Super Linter<br>- Deploy to Telegram<br>- Deploy to Railway<br>- nbdev tests CI<br>- GitHub Pages (Documentation)</td>
+</tr>
+<tr class="odd">
+<td><code>Linting</code></td>
+<td>- Flake8<br>- Pydocstyle</td>
+<td><code>Telegram Bot</code></td>
+<td>- Greet<br>- Info<br>- Predict Image</td>
+</tr>
+<tr class="even">
+<td><code>Formatting</code></td>
+<td>- Black<br>- yapf</td>
+<td><code>Documentation</code></td>
+<td>- Code Description<br>- Code comments<br>- Source link<br>- Doclinks</td>
+</tr>
+<tr class="odd">
+<td><code>Badges</code></td>
+<td>- Build<br>- Issues<br>- Lint Codebase</td>
+<td><code>Docker</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>Publishing</code></td>
+<td>- PyPi</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="planned-features" class="level2">
+<h2 class="anchored" data-anchor-id="planned-features">Planned Features</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th></th>
+<th>Feature</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Deploy</code></td>
+<td>- HuggingFaces</td>
+<td><code>Backend</code></td>
+<td>- FastAPI</td>
+</tr>
+<tr class="even">
+<td><code>Coding Style</code></td>
+<td>- Object Oriented</td>
+<td><code>Frontend</code></td>
+<td>- Streamlit</td>
+</tr>
+<tr class="odd">
+<td><code>WandB</code></td>
+<td>- Group Runs<br>- <a href="https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&amp;t=VRL-ZXzznXV_Hg2h7QnjuA">WandB Tables</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>Badges</code></td>
+<td>- Railway</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="technologies-used" class="level2">
 <h2 class="anchored" data-anchor-id="technologies-used">Technologies Used</h2>
@@ -639,24 +649,29 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <td><a href="https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing" title="Google collaboratory"><img src="https://img.shields.io/badge/Compute-Google%20Colab-F9AB00?logo=googlecolab&amp;logoColor=fff&amp;style=for-the-badge.png" class="img-fluid" alt="Google Colab"></a></td>
 <td><a href="https://github.com/python-telegram-bot/python-telegram-bot" title="Telegram Bot"><img src="https://img.shields.io/badge/ChatBot-Telegram-2CA5E0?style=for-the-badge&amp;logo=telegram&amp;logoColor=black.png" class="img-fluid" alt="python-telegram-bot"></a></td>
 <td><a href="https://railway.app" title="Railway"><img src="https://img.shields.io/badge/Deployment-Railway-131415?style=for-the-badge&amp;logo=railway&amp;logoColor=black.png" class="img-fluid" alt="Railway"></a></td>
+<td></td>
 </tr>
 <tr class="even">
 <td><a href="https://jupyter.org" title="Jupyter"><img src="https://img.shields.io/badge/Coding-jupyter-%23FA0F00.svg?style=for-the-badge&amp;logo=jupyter&amp;logoColor=black" class="img-fluid" alt="Jupyter Notebook"></a></td>
 <td><a href="https://www.python.org/" title="Python"><img src="https://img.shields.io/badge/Language-python-3670A0?style=for-the-badge&amp;logo=python&amp;logoColor=ffdd54.png" class="img-fluid" alt="Python"></a></td>
 <td><a href="https://github.com/features/actions" title="Github Actions"><img src="https://img.shields.io/badge/CI-github%20actions-%232671E5.svg?style=for-the-badge&amp;logo=githubactions&amp;logoColor=black" class="img-fluid" alt="GitHub Actions"></a></td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><a href="http://wandb.ai" title="Weights &amp; Biases"><img src="https://img.shields.io/badge/MLOps-Weights%20%26%20Biases-FFBE00?logo=weightsandbiases&amp;logoColor=000&amp;style=for-the-badge.png" class="img-fluid" alt="Weights &amp; Biases"></a></td>
 <td><a href="https://www.tensorflow.org/" title="Tensorflow"><img src="https://img.shields.io/badge/ML_Framework-TensorFlow-%23FF6F00.svg?style=for-the-badge&amp;logo=TensorFlow&amp;logoColor=black" class="img-fluid" alt="TensorFlow"></a></td>
 <td><a href="https://apple.com/macos" title="macOS"><img src="https://img.shields.io/badge/OS-mac%20os-000000?style=for-the-badge&amp;logo=macos&amp;logoColor=F0F0F0.png" class="img-fluid" alt="macOS"></a></td>
+<td></td>
 </tr>
 <tr class="even">
 <td><a href="http://docker.com" title="Docker"><img src="https://img.shields.io/badge/Container-docker-%230db7ed.svg?style=for-the-badge&amp;logo=docker&amp;logoColor=black" class="img-fluid" alt="Docker"></a></td>
 <td><a href="https://git-scm.com" title="Git"><img src="https://img.shields.io/badge/Version_Control-git-%23F05033.svg?style=for-the-badge&amp;logo=git&amp;logoColor=black" class="img-fluid" alt="Git"></a></td>
 <td><a href="http://hydra.cc" title="Hydra"><img src="https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&amp;labelColor=gray" class="img-fluid" alt="Hydra"></a></td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><a href="http://github.com/psf/black" title="Black"><img src="https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&amp;labelColor=gray" class="img-fluid" alt="Black"></a></td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
@@ -787,7 +802,6 @@ Walt might be the one who knocks <br> but Hank is the one who rocks. <br>
 </p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

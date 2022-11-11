@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.251">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Let’s Explore the data">
+
+<title>Whats this rock! - Exploratory Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Whats this rock! - Exploratory Analysis">
+<meta property="og:description" content="Let’s Explore the data">
+<meta property="og:site-name" content="Whats this rock!">
+<meta name="twitter:title" content="Whats this rock! - Exploratory Analysis">
+<meta name="twitter:description" content="Let’s Explore the data">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Whats this rock!</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html">Getting Started</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./b_download.html" aria-current="page">Tutorial</a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-resources" role="button" data-bs-toggle="dropdown" aria-expanded="false">Resources</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-resources">    
+        <li>
+    <a class="dropdown-item" href="https://t.me/test7385_bot"><i class="bi bi-play-btn-fill" role="img">
+</i> 
+ <span class="dropdown-text">Telegram Rock Classifier Chatbot</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://keras.io/guides/keras_cv/cut_mix_mix_up_and_rand_augment/"><i class="bi bi-journal-bookmark-fill" role="img">
+</i> 
+ <span class="dropdown-text">Keras-CV</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.tensorflow.org/tutorials"><i class="bi bi-link" role="img">
+</i> 
+ <span class="dropdown-text">Tensorflow (tutorial)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://nbdev.fast.ai/getting_started.html"><i class="bi bi-link" role="img">
+</i> 
+ <span class="dropdown-text">nbdev (docs)</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="button" data-bs-toggle="dropdown" aria-expanded="false">Help</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-help">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/udaylunawat/Whats-this-rock/issues"><i class="bi bi-bug" role="img">
+</i> 
+ <span class="dropdown-text">Report an Issue</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/udaylunawat"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.github.com/udaylunawat/Whats-this-rock"><i class="bi bi-github" role="img" aria-label="Twitter">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div class="quarto-toggle-container">
+                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+              </div>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Exploratory Analysis</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Download</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./b_download.html" class="sidebar-item-text sidebar-link">Download dataset</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_download_utils.html" class="sidebar-item-text sidebar-link">Download utilities</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Preprocess</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_preprocess_data.html" class="sidebar-item-text sidebar-link">Preprocess Data</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Exploratory Data Analysis</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./b_eda.html" class="sidebar-item-text sidebar-link active">Exploratory Analysis</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Config Management</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  Hydra
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">Training models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./a_train_utils.html" class="sidebar-item-text sidebar-link">Training utilities</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./b_train_models.html" class="sidebar-item-text sidebar-link">Training models</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c_callbacks.html" class="sidebar-item-text sidebar-link">Callbacks</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./d_train.html" class="sidebar-item-text sidebar-link">Training</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">MLOps</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  Experiment Tracking
+  </li>
+          <li class="sidebar-item">
+  HyperParameter Tuning
+  </li>
+          <li class="sidebar-item">
+  Model Management
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">Telegram Bot</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./bot.html" class="sidebar-item-text sidebar-link">Telegram bot deployment</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#exploring-data" id="toc-exploring-data" class="nav-link active" data-scroll-target="#exploring-data">Exploring data</a>
+  <ul>
+  <li><a href="#file-types" id="toc-file-types" class="nav-link" data-scroll-target="#file-types">File types</a></li>
+  <li><a href="#corrupt-file-counts" id="toc-corrupt-file-counts" class="nav-link" data-scroll-target="#corrupt-file-counts">Corrupt file counts</a>
+  <ul class="collapse">
+  <li><a href="#class-counts" id="toc-class-counts" class="nav-link" data-scroll-target="#class-counts">Class Counts</a></li>
+  </ul></li>
+  <li><a href="#image-size-analysis" id="toc-image-size-analysis" class="nav-link" data-scroll-target="#image-size-analysis">Image size analysis</a></li>
+  <li><a href="#sample-counts" id="toc-sample-counts" class="nav-link" data-scroll-target="#sample-counts">Sample counts</a>
+  <ul class="collapse">
+  <li><a href="#training-set-counts" id="toc-training-set-counts" class="nav-link" data-scroll-target="#training-set-counts">Training set counts</a></li>
+  <li><a href="#validation-set-counts" id="toc-validation-set-counts" class="nav-link" data-scroll-target="#validation-set-counts">Validation set counts</a></li>
+  <li><a href="#test-set-counts" id="toc-test-set-counts" class="nav-link" data-scroll-target="#test-set-counts">Test set counts</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#data-augmentation" id="toc-data-augmentation" class="nav-link" data-scroll-target="#data-augmentation">Data Augmentation</a>
+  <ul>
+  <li><a href="#sample-images" id="toc-sample-images" class="nav-link" data-scroll-target="#sample-images">Sample Images</a>
+  <ul class="collapse">
+  <li><a href="#samples-before-augmentation" id="toc-samples-before-augmentation" class="nav-link" data-scroll-target="#samples-before-augmentation">Samples before Augmentation</a></li>
+  <li><a href="#samples-after-randaugment" id="toc-samples-after-randaugment" class="nav-link" data-scroll-target="#samples-after-randaugment">Samples after RandAugment</a></li>
+  <li><a href="#samples-after-cutmix-and-mixup-augmentation" id="toc-samples-after-cutmix-and-mixup-augmentation" class="nav-link" data-scroll-target="#samples-after-cutmix-and-mixup-augmentation">Samples after cutmix and mixup augmentation</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#eda-using-fastai" id="toc-eda-using-fastai" class="nav-link" data-scroll-target="#eda-using-fastai">EDA using FastAI</a>
+  <ul>
+  <li><a href="#image-sample-size" id="toc-image-sample-size" class="nav-link" data-scroll-target="#image-sample-size">Image sample size</a></li>
+  <li><a href="#sample-images-1" id="toc-sample-images-1" class="nav-link" data-scroll-target="#sample-images-1">Sample Images</a></li>
+  <li><a href="#data-augmentation-using-fastai" id="toc-data-augmentation-using-fastai" class="nav-link" data-scroll-target="#data-augmentation-using-fastai">Data Augmentation using FastAI</a>
+  <ul class="collapse">
+  <li><a href="#mixup" id="toc-mixup" class="nav-link" data-scroll-target="#mixup">MixUp</a></li>
+  <li><a href="#cutmix" id="toc-cutmix" class="nav-link" data-scroll-target="#cutmix">CutMix</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Exploratory Analysis</h1>
+</div>
+
+<div>
+  <div class="description">
+    Let’s Explore the data
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="exploring-data" class="level1">
+<h1>Exploring data</h1>
+<div class="cell">
+<details>
+<summary>Show code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> get_df(<span class="st">"data/2_processed"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'dimensions'</span>] <span class="op">=</span> df[<span class="st">'file_path'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: get_dims(x))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'image_width'</span>] <span class="op">=</span> df[<span class="st">'dimensions'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="dv">0</span>] <span class="cf">if</span> x <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> <span class="va">None</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'image_height'</span>] <span class="op">=</span> df[<span class="st">'dimensions'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="dv">1</span>] <span class="cf">if</span> x <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> <span class="va">None</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'pixels'</span>] <span class="op">=</span> df[<span class="st">'image_width'</span>] <span class="op">*</span> df[<span class="st">'image_height'</span>]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'corrupt_status'</span>] <span class="op">=</span> df[<span class="st">'file_path'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: check_corrupted(x))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>df.head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>file_name</th>
+      <th>class</th>
+      <th>file_path</th>
+      <th>file_type</th>
+      <th>dimensions</th>
+      <th>image_width</th>
+      <th>image_height</th>
+      <th>pixels</th>
+      <th>corrupt_status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>dataset1_Limestone_147_23.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(285, 380)</td>
+      <td>285.0</td>
+      <td>380.0</td>
+      <td>108300.0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>dataset2_Limestone_418_Limestone521.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset2_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(225, 225)</td>
+      <td>225.0</td>
+      <td>225.0</td>
+      <td>50625.0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>dataset1_Limestone_315_78.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(408, 612)</td>
+      <td>408.0</td>
+      <td>612.0</td>
+      <td>249696.0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>dataset1_Limestone_078_168.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(408, 612)</td>
+      <td>408.0</td>
+      <td>612.0</td>
+      <td>249696.0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>dataset1_Limestone_305_69.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(408, 612)</td>
+      <td>408.0</td>
+      <td>612.0</td>
+      <td>249696.0</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<section id="file-types" class="level2">
+<h2 class="anchored" data-anchor-id="file-types">File types</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'file_name'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.split(<span class="st">'.'</span>)[<span class="op">-</span><span class="dv">1</span>]).value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>jpg     1797
+jpeg      23
+png        8
+JPEG       2
+Name: file_name, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="corrupt-file-counts" class="level2">
+<h2 class="anchored" data-anchor-id="corrupt-file-counts">Corrupt file counts</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df.corrupt_status.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>False    1753
+True       77
+Name: corrupt_status, dtype: int64</code></pre>
+</div>
+</div>
+<p>Corrupted file list</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">'corrupt_status'</span>]<span class="op">==</span><span class="va">True</span>].head(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>file_name</th>
+      <th>class</th>
+      <th>file_path</th>
+      <th>file_type</th>
+      <th>dimensions</th>
+      <th>image_width</th>
+      <th>image_height</th>
+      <th>pixels</th>
+      <th>corrupt_status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>8</th>
+      <td>dataset1_Limestone_225_30.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(450, 900)</td>
+      <td>450.0</td>
+      <td>900.0</td>
+      <td>405000.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>dataset1_Limestone_265_336.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(600, 600)</td>
+      <td>600.0</td>
+      <td>600.0</td>
+      <td>360000.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>dataset1_Limestone_257_329.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(1182, 1587)</td>
+      <td>1182.0</td>
+      <td>1587.0</td>
+      <td>1875834.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>dataset1_Limestone_258_33.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(533, 800)</td>
+      <td>533.0</td>
+      <td>800.0</td>
+      <td>426400.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>dataset1_Limestone_198_276.jpg</td>
+      <td>Limestone</td>
+      <td>data/2_processed/Limestone/dataset1_Limestone_...</td>
+      <td>.jpg</td>
+      <td>(533, 800)</td>
+      <td>533.0</td>
+      <td>800.0</td>
+      <td>426400.0</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<section id="class-counts" class="level3">
+<h3 class="anchored" data-anchor-id="class-counts">Class Counts</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>class_names <span class="op">=</span> df[<span class="st">'class'</span>].value_counts().keys()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> df[<span class="st">'class'</span>].value_counts().values</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>count_df <span class="op">=</span> pd.DataFrame(<span class="bu">list</span>(<span class="bu">zip</span>(class_names, counts)), columns<span class="op">=</span>[<span class="st">'class'</span>, <span class="st">'count'</span>])</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"darkgrid"</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> sns.barplot(y<span class="op">=</span><span class="st">'class'</span>, x<span class="op">=</span><span class="st">'count'</span>, data<span class="op">=</span>count_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="02_b_EDA_files/figure-html/cell-6-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Count of rock types.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="image-size-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="image-size-analysis">Image size analysis</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>width_list <span class="op">=</span> df.image_width</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>height_list <span class="op">=</span> df.image_height</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>average_width <span class="op">=</span> <span class="bu">sum</span>(width_list)<span class="op">/</span><span class="bu">len</span>(width_list)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>average_height <span class="op">=</span> <span class="bu">sum</span>(height_list)<span class="op">/</span><span class="bu">len</span>(height_list)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># print('average width: {} and height: {}'.format(average_width, average_height))</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span>plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">8</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>sns.histplot(width_list, ax<span class="op">=</span>ax[<span class="dv">0</span>])</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">'Image width'</span>)<span class="op">;</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>sns.histplot(height_list, ax<span class="op">=</span>ax[<span class="dv">1</span>])</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">'Image height'</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="02_b_EDA_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histograms to show the distribution of width and height values</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>,<span class="dv">7</span>))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].hist(df.image_width.values, bins<span class="op">=</span><span class="dv">20</span>, color <span class="op">=</span> <span class="st">'#91bd3a'</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">0</span>].set_title(<span class="st">'Width distribution'</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># axs[0].set_xlim(1000, 3000)</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].hist(df.image_height.values, bins<span class="op">=</span><span class="dv">20</span>, color <span class="op">=</span> <span class="st">'#91bd3a'</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>axs[<span class="dv">1</span>].set_title(<span class="st">'Height distribution'</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># axs[1].set_xlim(1000, 3000)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Image Dimensions'</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="02_b_EDA_files/figure-html/cell-8-output-1.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Width and Height distribution.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-counts" class="level2">
+<h2 class="anchored" data-anchor-id="sample-counts">Sample counts</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Sampling type:- None.</code></pre>
+</div>
+</div>
+<section id="training-set-counts" class="level3">
+<h3 class="anchored" data-anchor-id="training-set-counts">Training set counts</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>get_df(<span class="st">"data/3_tfds_dataset/train"</span>)[<span class="st">'class'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>Coal         289
+Quartzite    261
+Limestone    228
+Sandstone    209
+Marble       142
+Granite       84
+Basalt        66
+Name: class, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="validation-set-counts" class="level3">
+<h3 class="anchored" data-anchor-id="validation-set-counts">Validation set counts</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>get_df(<span class="st">"data/3_tfds_dataset/val"</span>)[<span class="st">'class'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>Coal         62
+Quartzite    55
+Limestone    48
+Sandstone    44
+Marble       30
+Granite      18
+Basalt       14
+Name: class, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+<section id="test-set-counts" class="level3">
+<h3 class="anchored" data-anchor-id="test-set-counts">Test set counts</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>get_df(<span class="st">"data/3_tfds_dataset/test"</span>)[<span class="st">'class'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<pre><code>Coal         63
+Quartzite    57
+Limestone    50
+Sandstone    46
+Marble       32
+Granite      19
+Basalt       15
+Name: class, dtype: int64</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="data-augmentation" class="level1">
+<h1>Data Augmentation</h1>
+<section id="sample-images" class="level2">
+<h2 class="anchored" data-anchor-id="sample-images">Sample Images</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> builder.as_dataset(split<span class="op">=</span><span class="st">'train'</span>, shuffle_files<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># tfds.show_examples(ds, builder.info)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="samples-before-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="samples-before-augmentation">Samples before Augmentation</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> load_dataset()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>visualize_dataset(train_dataset, title<span class="op">=</span><span class="st">"Before Augmentation"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="02_b_EDA_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="samples-after-randaugment" class="level3">
+<h3 class="anchored" data-anchor-id="samples-after-randaugment">Samples after RandAugment</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> load_dataset().<span class="bu">map</span>(apply_rand_augment, num_parallel_calls<span class="op">=</span>AUTOTUNE)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>visualize_dataset(train_dataset, title<span class="op">=</span><span class="st">"After RandAugment"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="02_b_EDA_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="samples-after-cutmix-and-mixup-augmentation" class="level3">
+<h3 class="anchored" data-anchor-id="samples-after-cutmix-and-mixup-augmentation">Samples after cutmix and mixup augmentation</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> load_dataset().<span class="bu">map</span>(cut_mix_and_mix_up, num_parallel_calls<span class="op">=</span>AUTOTUNE)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>visualize_dataset(train_dataset, title<span class="op">=</span><span class="st">"After cut_mix and mix_up"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<p><img src="02_b_EDA_files/figure-html/cell-16-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="eda-using-fastai" class="level1">
+<h1>EDA using FastAI</h1>
+<p>Validation Samples</p>
+<div class="cell">
+<div class="cell-output cell-output-display">
+<pre><code>[Path('data/2_processed/Quartzite/dataset1_Quartzite_134_images(202).jpg'),
+ Path('data/2_processed/Coal/dataset2_Coal_401_coal rock204.jpg'),
+ Path('data/2_processed/Coal/dataset1_Coal_105_194.jpg')]</code></pre>
+</div>
+</div>
+<section id="image-sample-size" class="level3">
+<h3 class="anchored" data-anchor-id="image-sample-size">Image sample size</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Training set samples:- 1373 images.
+Validation set samples:- 457 images.</code></pre>
+</div>
+</div>
+</section>
+<section id="sample-images-1" class="level3">
+<h3 class="anchored" data-anchor-id="sample-images-1">Sample Images</h3>
+<div class="cell">
+<div class="cell-output cell-output-display">
+<p><img src="02_b_EDA_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="data-augmentation-using-fastai" class="level2">
+<h2 class="anchored" data-anchor-id="data-augmentation-using-fastai">Data Augmentation using FastAI</h2>
+<section id="mixup" class="level3">
+<h3 class="anchored" data-anchor-id="mixup">MixUp</h3>
+<div class="cell">
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="02_b_EDA_files/figure-html/cell-20-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="cutmix" class="level3">
+<h3 class="anchored" data-anchor-id="cutmix">CutMix</h3>
+<div class="cell">
+<div class="cell-output cell-output-display">
+
+<style>
+    /* Turns off some styling */
+    progress {
+        /* gets rid of default border in Firefox and Opera. */
+        border: none;
+        /* Needs to be in here for Safari polyfill so background images work as expected. */
+        background-size: auto;
+    }
+    progress:not([value]), progress:not([value])::-webkit-progress-bar {
+        background: repeating-linear-gradient(45deg, #7e7e7e, #7e7e7e 10px, #5c5c5c 10px, #5c5c5c 20px);
+    }
+    .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+        background: #F44336;
+    }
+</style>
+</div>
+<div class="cell-output cell-output-display">
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th>epoch</th>
+      <th>train_loss</th>
+      <th>valid_loss</th>
+      <th>time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>00:00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="02_b_EDA_files/figure-html/cell-21-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'alternate';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } 
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/https:\/\/udaylunawat\.github\.io\/Whats-this-rock/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
