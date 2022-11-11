@@ -89,7 +89,7 @@ class download_and_move:
             
     
     def verify_files(self, dataset_id):
-        """verifies the image counts"""
+        """Verify the image counts."""
         _, count = find_filepaths(
             os.path.join("data", "1_extracted", f"dataset{dataset_id}"))
         assert count == self.data_dict[dataset_id]["filecount"]

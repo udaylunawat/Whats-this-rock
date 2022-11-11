@@ -68,7 +68,6 @@ def get_model_weights(train_ds: tf.data.Dataset):
 
 
 def get_lr_scheduler(cfg, lr) -> optimizers.schedules:
-    
     """Return A LearningRateSchedule.
 
     Supports [cosine_decay](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecay), [exponentialdecay](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/ExponentialDecay) and [cosine_decay_restarts](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecayRestarts).
