@@ -95,7 +95,7 @@ def train(
         verbose=verbose,
     )
 
-    if not cfg.trainable and history.history["val_accuracy"][-1] > 0.75:
+    if history.history["val_accuracy"][-1] > 0.73:
         model.layers[0].trainable = False
         # model.trainable = True
         for layer in model.layers[0].layers[-cfg.last_layers :]:
@@ -126,7 +126,7 @@ def train(
             metrics=["accuracy"],  # f1_score_metrics
         )
 
-        epochs = cfg.epochs // 3
+        epochs = (cfg.epochs // 3) + 5
 
         callbacks, cfg = get_callbacks(cfg)
 
@@ -185,13 +185,13 @@ def evaluate(
 
     wandb.log({"Test Accuracy": scores["accuracy"]})
     wandb.log({"Confusion Matrix": cm_plotly})
-    # wandb.log(
-    #     {
-    #         "Classification Report Image:": wandb.Image(
-    #             "classification_report.png", caption="Classification Report"
-    #         )
-    #     }
-    # )
+    wandb.log(
+        {
+            "Classification Report Image:": wandb.Image(
+                "classification_report.png", caption="Classification Report"
+            )
+        }
+    )
 
 # %% ../../notebooks/03_d_train.ipynb 5
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
