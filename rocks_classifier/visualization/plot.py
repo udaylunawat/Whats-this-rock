@@ -99,21 +99,60 @@ def plotly_confusion_matrix(labels, y, _y):
 
 # %% ../../notebooks/04_visualization.ipynb 3
 def get_classification_report(true_categories, predicted_categories, labels):
+    """Print Classification Report, and return formatted report to log to wandb
+
+    Parameters
+    ----------
+    true_categories : List
+        actuual categories
+    predicted_categories : List
+        predicted categories
+    labels : List
+        labels
+
+    Returns
+    -------
+    dict
+        Classification report dict
+    """    
     # Classification Report
-    cl_report = classification_report(
+    print(classification_report(
         true_categories,
         predicted_categories,
         labels=[i for i in range(7)],  # TODO: Convert to class, and add num_classes instead of 7 from cfg
         target_names=labels,
         output_dict=False,
+    ))
+    cl_report = classification_report(
+        true_categories,
+        predicted_categories,
+        labels=[i for i in range(7)],  # TODO: Convert to class, and add num_classes instead of 7 from cfg
+        target_names=labels,
+        output_dict=True,
     )
+    cr = sns.heatmap(pd.DataFrame(cl_report).iloc[:-1, :].T, annot=True)
+    plt.savefig("classification_report.png", dpi=400)
 
-    print(f"\nClassification Report\n{cl_report}")
-    return cl_report
+    return cr
 
 # %% ../../notebooks/04_visualization.ipynb 4
 def get_confusion_matrix(true_categories, predicted_categories, labels):
-    # Confusion Matrix
+    """Create, plot and save confusion matrix.
+
+    Parameters
+    ----------
+    true_categories : List
+        Actual categories
+    predicted_categories : List
+        Predicted categories
+    labels : List
+        labels
+
+    Returns
+    -------
+    array
+        Confusion matrix array
+    """
     
     # Create confusion matrix and normalizes it over predicted (columns)
     result = confusion_matrix(true_categories, predicted_categories, normalize="pred")
