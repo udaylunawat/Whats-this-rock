@@ -17,10 +17,10 @@ website:
           - Hydra
       - section: Training models
         contents:
+          - 03_d_train.ipynb
           - 03_a_train_utils.ipynb
           - 03_b_train_models.ipynb
           - 03_c_callbacks.ipynb
-          - 03_d_train.ipynb
           # - 03_e_predict.ipynb
           # - 04_visualization.ipynb
       - section: MLOps
