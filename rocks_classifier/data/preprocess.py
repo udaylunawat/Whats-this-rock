@@ -10,13 +10,13 @@ import subprocess
 import logging
 import hydra, omegaconf
 
-from .download import download_and_move_datasets
 from .utils import *
 
 # %% ../../notebooks/02_a_preprocess_data.ipynb 35
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
 def process_data(cfg):
     """Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.
+    
     Steps -> `download_and_move_datasets` -> `move_to_processed` -> 'find_filepaths' -> `clean_images` -> `sampling`
 
     Parameters
@@ -24,7 +24,6 @@ def process_data(cfg):
     cfg : cfg (omegaconf.DictConfig):
         Hydra Configuration
     """
-    download_and_move_datasets()
     move_to_processed()
 
     print("\n\nFiles other than jpg and png.\n")
