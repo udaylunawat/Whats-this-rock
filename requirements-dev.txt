@@ -12,12 +12,14 @@ matplotlib
 seaborn
 plotly
 pre-commit
-tensorflow
+tensorflow>=2.8.0; platform_machine != "arm64" or platform_system != "Darwin"
+tensorflow-macos>=2.8.0; platform_machine == "arm64" and platform_system == "Darwin"
+tensorflow-metal; platform_machine == "arm64" and platform_system == "Darwin"
 tensorflow-addons
 keras-cv
 
 # fastai & nbdev
-fastai
+# fastai
 nbdev
 
 # deployment

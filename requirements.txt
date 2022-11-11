@@ -6,7 +6,7 @@ wandb
 pandas
 hydra-core
 scikit-learn
-tensorflow-cpu
+tensorflow-cpu; platform_machine != "arm64" or platform_system != "Darwin"
 tensorflow-addons
 python-telegram-bot
 opencv-python-headless
