@@ -300,6 +300,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./d_train.html" class="sidebar-item-text sidebar-link">Training</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./a_train_utils.html" class="sidebar-item-text sidebar-link">Training utilities</a>
   </div>
 </li>
@@ -311,11 +316,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./c_callbacks.html" class="sidebar-item-text sidebar-link">Callbacks</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./d_train.html" class="sidebar-item-text sidebar-link">Training</a>
   </div>
 </li>
       </ul>
@@ -491,7 +491,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                    lr_decay_steps=300 <span class="dt">\</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                    trainable=False <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p align="left">
-<img src="https://i.imgur.com/1nBpPC5.png" alt="result" width="100%/">
+<img src="https://i.imgur.com/SqYKjuB.png" alt="result" width="100%/">
 </p>
 </section>
 <section id="wandb-sweeps-hyperparameter-tuning" class="level3">
@@ -517,6 +517,13 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <section id="demo" class="level2">
 <h2 class="anchored" data-anchor-id="demo">Demo</h2>
 <table class="table">
+<thead>
+<tr class="header">
+<th>Colab</th>
+<th>GitHub</th>
+<th>Download</th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><img src="https://www.tensorflow.org/images/colab_logo_32px.png" class="img-fluid" alt="alt colab"><a href="https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing">Run in Colab</a></td>
@@ -555,13 +562,13 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <td><code>Optimisers</code></td>
 <td>- Adam<br>- Adamax<br>- SGD<br>- RMSProp</td>
 <td><code>LR Scheduler</code></td>
-<td>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecay">CosineDecay</a><br>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/ExponentialDecay">ExponentialDecay</a><br>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecayRestarts">CosineDecayRestarts</a>.</td>
+<td>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecay">CosineDecay</a><br>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/ExponentialDecay">ExponentialDecay</a><br>- <a href="https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecayRestarts">CosineDecayRestarts</a></td>
 </tr>
 <tr class="even">
 <td><code>Remove Images</code></td>
 <td>- Duplicate Images<br>- Corrupt Images<br>- Bad Images<br>- Misclassified</td>
 <td><code>Configuration Management</code></td>
-<td>- hydra<br>- ml-collections<br>- argparse<br>- google-fire</td>
+<td>- hydra<br>- ml-collections<br>- argparse<br>-google-fire</td>
 </tr>
 <tr class="odd">
 <td><code>Generators</code></td>
@@ -573,7 +580,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <td><code>Evaluation</code></td>
 <td>- Classification Report<br>- Confusion Matrix</td>
 <td><code>GitHub Actions</code> (CICD)</td>
-<td>- GitHub Super Linter<br>- Deploy to Telegram<br>- Deploy to Railway<br>- nbdev tests CI<br>- GitHub Pages (Documentation)</td>
+<td>- GitHub Super Linter<br>- Deploy to Telegram<br>- Deploy to Railway<br>- nbdev tests CI<br>- GitHub Pages(Documentation)</td>
 </tr>
 <tr class="odd">
 <td><code>Linting</code></td>
@@ -629,14 +636,8 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <tr class="odd">
 <td><code>WandB</code></td>
 <td>- Group Runs<br>- <a href="https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&amp;t=VRL-ZXzznXV_Hg2h7QnjuA">WandB Tables</a></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
 <td><code>Badges</code></td>
 <td>- Railway</td>
-<td></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -644,34 +645,36 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <section id="technologies-used" class="level2">
 <h2 class="anchored" data-anchor-id="technologies-used">Technologies Used</h2>
 <table class="table">
+<thead>
+<tr class="header">
+<th><!-- --></th>
+<th><!-- --></th>
+<th><!-- --></th>
+</tr>
+</thead>
 <tbody>
 <tr class="odd">
 <td><a href="https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing" title="Google collaboratory"><img src="https://img.shields.io/badge/Compute-Google%20Colab-F9AB00?logo=googlecolab&amp;logoColor=fff&amp;style=for-the-badge.png" class="img-fluid" alt="Google Colab"></a></td>
 <td><a href="https://github.com/python-telegram-bot/python-telegram-bot" title="Telegram Bot"><img src="https://img.shields.io/badge/ChatBot-Telegram-2CA5E0?style=for-the-badge&amp;logo=telegram&amp;logoColor=black.png" class="img-fluid" alt="python-telegram-bot"></a></td>
 <td><a href="https://railway.app" title="Railway"><img src="https://img.shields.io/badge/Deployment-Railway-131415?style=for-the-badge&amp;logo=railway&amp;logoColor=black.png" class="img-fluid" alt="Railway"></a></td>
-<td></td>
 </tr>
 <tr class="even">
 <td><a href="https://jupyter.org" title="Jupyter"><img src="https://img.shields.io/badge/Coding-jupyter-%23FA0F00.svg?style=for-the-badge&amp;logo=jupyter&amp;logoColor=black" class="img-fluid" alt="Jupyter Notebook"></a></td>
 <td><a href="https://www.python.org/" title="Python"><img src="https://img.shields.io/badge/Language-python-3670A0?style=for-the-badge&amp;logo=python&amp;logoColor=ffdd54.png" class="img-fluid" alt="Python"></a></td>
 <td><a href="https://github.com/features/actions" title="Github Actions"><img src="https://img.shields.io/badge/CI-github%20actions-%232671E5.svg?style=for-the-badge&amp;logo=githubactions&amp;logoColor=black" class="img-fluid" alt="GitHub Actions"></a></td>
-<td></td>
 </tr>
 <tr class="odd">
 <td><a href="http://wandb.ai" title="Weights &amp; Biases"><img src="https://img.shields.io/badge/MLOps-Weights%20%26%20Biases-FFBE00?logo=weightsandbiases&amp;logoColor=000&amp;style=for-the-badge.png" class="img-fluid" alt="Weights &amp; Biases"></a></td>
 <td><a href="https://www.tensorflow.org/" title="Tensorflow"><img src="https://img.shields.io/badge/ML_Framework-TensorFlow-%23FF6F00.svg?style=for-the-badge&amp;logo=TensorFlow&amp;logoColor=black" class="img-fluid" alt="TensorFlow"></a></td>
 <td><a href="https://apple.com/macos" title="macOS"><img src="https://img.shields.io/badge/OS-mac%20os-000000?style=for-the-badge&amp;logo=macos&amp;logoColor=F0F0F0.png" class="img-fluid" alt="macOS"></a></td>
-<td></td>
 </tr>
 <tr class="even">
 <td><a href="http://docker.com" title="Docker"><img src="https://img.shields.io/badge/Container-docker-%230db7ed.svg?style=for-the-badge&amp;logo=docker&amp;logoColor=black" class="img-fluid" alt="Docker"></a></td>
 <td><a href="https://git-scm.com" title="Git"><img src="https://img.shields.io/badge/Version_Control-git-%23F05033.svg?style=for-the-badge&amp;logo=git&amp;logoColor=black" class="img-fluid" alt="Git"></a></td>
 <td><a href="http://hydra.cc" title="Hydra"><img src="https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&amp;labelColor=gray" class="img-fluid" alt="Hydra"></a></td>
-<td></td>
 </tr>
 <tr class="odd">
 <td><a href="http://github.com/psf/black" title="Black"><img src="https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&amp;labelColor=gray" class="img-fluid" alt="Black"></a></td>
-<td></td>
 <td></td>
 <td></td>
 </tr>
@@ -790,7 +793,6 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <li><a href="https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals">Dataset 1 - by Mahmoud Alforawi</a></li>
 <li><a href="https://www.kaggle.com/datasets/salmaneunus/rock-classification">Dataset 2 - by salmaneunus</a></li>
 <li>nbdev inspiration - <a href="https://github.com/tmabraham/UPIT">tmabraham</a></li>
-<li></li>
 </ul>
 </section>
 <section id="support" class="level2">

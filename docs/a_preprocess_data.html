@@ -300,6 +300,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./d_train.html" class="sidebar-item-text sidebar-link">Training</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./a_train_utils.html" class="sidebar-item-text sidebar-link">Training utilities</a>
   </div>
 </li>
@@ -311,11 +316,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./c_callbacks.html" class="sidebar-item-text sidebar-link">Callbacks</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./d_train.html" class="sidebar-item-text sidebar-link">Training</a>
   </div>
 </li>
       </ul>
@@ -365,23 +365,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#steps" id="toc-steps" class="nav-link active" data-scroll-target="#steps">Steps</a>
   <ul>
-  <li><a href="#download-and-move-datasets." id="toc-download-and-move-datasets." class="nav-link" data-scroll-target="#download-and-move-datasets.">1. Download and move datasets.</a>
-  <ul class="collapse">
-  <li><a href="#download_and_move_datasets" id="toc-download_and_move_datasets" class="nav-link" data-scroll-target="#download_and_move_datasets">download_and_move_datasets</a></li>
-  </ul></li>
-  <li><a href="#rename-and-move-files-to-data2_processed." id="toc-rename-and-move-files-to-data2_processed." class="nav-link" data-scroll-target="#rename-and-move-files-to-data2_processed.">2. Rename and move files to data/2_processed.</a>
+  <li><a href="#rename-and-move-files-to-data2_processed." id="toc-rename-and-move-files-to-data2_processed." class="nav-link" data-scroll-target="#rename-and-move-files-to-data2_processed.">1. Rename and move files to data/2_processed.</a>
   <ul class="collapse">
   <li><a href="#move_to_processed" id="toc-move_to_processed" class="nav-link" data-scroll-target="#move_to_processed">move_to_processed</a></li>
   </ul></li>
-  <li><a href="#list-files-other-than-jpg-and-png-to-remove-unsupported-files." id="toc-list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="nav-link" data-scroll-target="#list-files-other-than-jpg-and-png-to-remove-unsupported-files.">3. List files other than jpg and png, to remove unsupported files.</a></li>
-  <li><a href="#list-file-by-types-before-cleaning." id="toc-list-file-by-types-before-cleaning." class="nav-link" data-scroll-target="#list-file-by-types-before-cleaning.">4. List file by types before cleaning.</a></li>
-  <li><a href="#remove" id="toc-remove" class="nav-link" data-scroll-target="#remove">5. Remove</a>
+  <li><a href="#list-files-other-than-jpg-and-png-to-remove-unsupported-files." id="toc-list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="nav-link" data-scroll-target="#list-files-other-than-jpg-and-png-to-remove-unsupported-files.">2. List files other than jpg and png, to remove unsupported files.</a></li>
+  <li><a href="#list-file-by-types-before-cleaning." id="toc-list-file-by-types-before-cleaning." class="nav-link" data-scroll-target="#list-file-by-types-before-cleaning.">3. List file by types before cleaning.</a></li>
+  <li><a href="#remove" id="toc-remove" class="nav-link" data-scroll-target="#remove">4. Remove</a>
   <ul class="collapse">
   <li><a href="#clean_images" id="toc-clean_images" class="nav-link" data-scroll-target="#clean_images">clean_images</a></li>
   </ul></li>
-  <li><a href="#list-file-by-types-after-cleaning." id="toc-list-file-by-types-after-cleaning." class="nav-link" data-scroll-target="#list-file-by-types-after-cleaning.">6. List file by types after cleaning.</a></li>
-  <li><a href="#get-count-of-files-by-class-types." id="toc-get-count-of-files-by-class-types." class="nav-link" data-scroll-target="#get-count-of-files-by-class-types.">7. Get count of files by class types.</a></li>
-  <li><a href="#handle-imbalance" id="toc-handle-imbalance" class="nav-link" data-scroll-target="#handle-imbalance">8. Handle Imbalance</a>
+  <li><a href="#list-file-by-types-after-cleaning." id="toc-list-file-by-types-after-cleaning." class="nav-link" data-scroll-target="#list-file-by-types-after-cleaning.">5. List file by types after cleaning.</a></li>
+  <li><a href="#get-count-of-files-by-class-types." id="toc-get-count-of-files-by-class-types." class="nav-link" data-scroll-target="#get-count-of-files-by-class-types.">6. Get count of files by class types.</a></li>
+  <li><a href="#handle-imbalance" id="toc-handle-imbalance" class="nav-link" data-scroll-target="#handle-imbalance">7. Handle Imbalance</a>
   <ul class="collapse">
   <li><a href="#sampling" id="toc-sampling" class="nav-link" data-scroll-target="#sampling">sampling</a></li>
   </ul></li>
@@ -425,7 +421,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This is the description &amp; steps of the <code>preprocess_data</code> function which combines the following functions</p>
 </blockquote>
 <ol type="1">
-<li>Clear data directory, Download and move datasets.</li>
 <li>Rename and move files to data/2_processed.</li>
 <li>List files other than jpg and png, to remove unsupported files.</li>
 <li>List file by types before cleaning.</li>
@@ -445,28 +440,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">'configs/config.yaml'</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>cfg <span class="op">=</span> omegaconf.OmegaConf.load(path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="download-and-move-datasets." class="level2">
-<h2 class="anchored" data-anchor-id="download-and-move-datasets.">1. Download and move datasets.</h2>
-<blockquote class="blockquote">
-<p>Also clears the data directory if files already exists.</p>
-</blockquote>
-<hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/rocks_classifier/data/download.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="download_and_move_datasets" class="level3">
-<h3 class="anchored" data-anchor-id="download_and_move_datasets">download_and_move_datasets</h3>
-<blockquote class="blockquote">
-<pre><code> download_and_move_datasets ()</code></pre>
-</blockquote>
-<p>Run the download and move datasets script.</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Function 'run_scripts' executed in 5.2326s</code></pre>
-</div>
-</div>
-</section>
-</section>
 <section id="rename-and-move-files-to-data2_processed." class="level2">
-<h2 class="anchored" data-anchor-id="rename-and-move-files-to-data2_processed.">2. Rename and move files to data/2_processed.</h2>
+<h2 class="anchored" data-anchor-id="rename-and-move-files-to-data2_processed.">1. Rename and move files to data/2_processed.</h2>
 <hr>
 <p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="move_to_processed" class="level3">
@@ -490,13 +465,13 @@ Moving files from dataset1/Sandstone and dataset2/Sandstone to data/2_processed/
 </section>
 </section>
 <section id="list-files-other-than-jpg-and-png-to-remove-unsupported-files." class="level2">
-<h2 class="anchored" data-anchor-id="list-files-other-than-jpg-and-png-to-remove-unsupported-files.">3. List files other than jpg and png, to remove unsupported files.</h2>
+<h2 class="anchored" data-anchor-id="list-files-other-than-jpg-and-png-to-remove-unsupported-files.">2. List files other than jpg and png, to remove unsupported files.</h2>
 <div class="cell" data-output-location="slide">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Files other than jpg and png.</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>files, _ <span class="op">=</span> find_filepaths(<span class="st">'data/2_processed/'</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="kw">not</span> x.endswith(<span class="st">'jpg'</span>) <span class="kw">and</span> <span class="kw">not</span> x.endswith(<span class="st">'png'</span>), files))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Files other than jpg and png.</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>files, _ <span class="op">=</span> find_filepaths(<span class="st">'data/2_processed/'</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(<span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> x: <span class="kw">not</span> x.endswith(<span class="st">'jpg'</span>) <span class="kw">and</span> <span class="kw">not</span> x.endswith(<span class="st">'png'</span>), files))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -568,7 +543,7 @@ data/2_processed/Sandstone/dataset1_Sandstone_248_320.webp</code></pre>
 </div>
 </section>
 <section id="list-file-by-types-before-cleaning." class="level2">
-<h2 class="anchored" data-anchor-id="list-file-by-types-before-cleaning.">4. List file by types before cleaning.</h2>
+<h2 class="anchored" data-anchor-id="list-file-by-types-before-cleaning.">3. List file by types before cleaning.</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -584,7 +559,7 @@ Name: file_type, dtype: int64</code></pre>
 </div>
 </section>
 <section id="remove" class="level2">
-<h2 class="anchored" data-anchor-id="remove">5. Remove</h2>
+<h2 class="anchored" data-anchor-id="remove">4. Remove</h2>
 <pre><code>- Bad Images
 - Duplicate Images
 - Misclassified Images
@@ -617,7 +592,7 @@ Name: file_type, dtype: int64</code></pre>
 </section>
 </section>
 <section id="list-file-by-types-after-cleaning." class="level2">
-<h2 class="anchored" data-anchor-id="list-file-by-types-after-cleaning.">6. List file by types after cleaning.</h2>
+<h2 class="anchored" data-anchor-id="list-file-by-types-after-cleaning.">5. List file by types after cleaning.</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -633,7 +608,7 @@ Name: file_type, dtype: int64</code></pre>
 </div>
 </section>
 <section id="get-count-of-files-by-class-types." class="level2">
-<h2 class="anchored" data-anchor-id="get-count-of-files-by-class-types.">7. Get count of files by class types.</h2>
+<h2 class="anchored" data-anchor-id="get-count-of-files-by-class-types.">6. Get count of files by class types.</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -651,7 +626,7 @@ Name: class, dtype: int64</code></pre>
 </div>
 </section>
 <section id="handle-imbalance" class="level2">
-<h2 class="anchored" data-anchor-id="handle-imbalance">8. Handle Imbalance</h2>
+<h2 class="anchored" data-anchor-id="handle-imbalance">7. Handle Imbalance</h2>
 <p>Using Undersampling, Oversampling and No Sampling.</p>
 <hr>
 <p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/rocks_classifier/data/utils.py#LNone" target="_blank" style="float:right; font-size:smaller">source</a></p>
@@ -683,13 +658,14 @@ Name: class, dtype: int64</code></pre>
 <h2 class="anchored" data-anchor-id="putting-it-all-together">Putting it all together</h2>
 <p><a href="https://udaylunawat.github.io/Whats-this-rock/a_preprocess_data.html#process_data"><code>process_data</code></a> wraps all the above functions.</p>
 <hr>
-<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/rocks_classifier/data/preprocess.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/rocks_classifier/data/preprocess.py#L17" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="process_data" class="level3">
 <h3 class="anchored" data-anchor-id="process_data">process_data</h3>
 <blockquote class="blockquote">
 <pre><code> process_data (cfg)</code></pre>
 </blockquote>
-<p>Download dataset, removes unsupported and corrupted images, and splits data into train, val and test. Steps -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/b_download.html#download_and_move_datasets"><code>download_and_move_datasets</code></a> -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#move_to_processed"><code>move_to_processed</code></a> -&gt; ‘find_filepaths’ -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#clean_images"><code>clean_images</code></a> -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#sampling"><code>sampling</code></a></p>
+<p>Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.</p>
+<p>Steps -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/b_download.html#download_and_move_datasets"><code>download_and_move_datasets</code></a> -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#move_to_processed"><code>move_to_processed</code></a> -&gt; ‘find_filepaths’ -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#clean_images"><code>clean_images</code></a> -&gt; <a href="https://udaylunawat.github.io/Whats-this-rock/a_download_utils.html#sampling"><code>sampling</code></a></p>
 <table class="table">
 <thead>
 <tr class="header">
