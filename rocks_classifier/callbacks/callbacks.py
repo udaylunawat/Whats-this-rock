@@ -83,7 +83,7 @@ class LRLogger(tf.keras.callbacks.Callback):
 
 
 class CustomEarlyStopping(tf.keras.callbacks.Callback):
-    """Stops training when epoch > min_epoch and monitor value < value.
+    """Stops training when epoch > min_epoch and monitor value < default value.
 
     Parameters
     ----------
