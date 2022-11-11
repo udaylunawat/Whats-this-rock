@@ -46,7 +46,7 @@ Additionally, [nbdev](https://github.com/fastai/nbdev) was used to
 - CI
 - publishing to [PyPi](https://pypi.org/project/rocks-classifier/)
 
-# Inspiration
+## Inspiration
 
 > [The common complaint that you need massive amounts of data to do deep
 > learning  can be a very long way from the
@@ -61,24 +61,36 @@ Additionally, [nbdev](https://github.com/fastai/nbdev) was used to
 > [Jeremy
 > Howards](https://en.wikipedia.org/wiki/Jeremy_Howard_(entrepreneur))
 
-## Installation & Training Steps
+## Documentation
 
-### Install
+Documentation for the project has been created using
+[`nbdev`](https://nbdev.fast.ai/getting_started.html), and is available
+at
+[udaylunawat.github.io/Whats-this-rock](https://udaylunawat.github.io/Whats-this-rock/).
 
-To install, use `pip`:
+[`nbdev`](https://nbdev.fast.ai/getting_started.html) is a
+notebook-driven development platform. Simply write notebooks with
+lightweight markup and get high-quality documentation, tests, continuous
+integration, and packaging for free!
 
-    pip install git+https://github.com/udaylunawat/Whats-this-rock.git
+Once I discovered nbdev, I couldn’t help myself but redo the whole
+project from scratch.
 
-### Use the Telegram Bot
+It’s just makes me 10x more productive and makes the whole process
+streamlined and more enjoyable.
 
-You can try the bot [here](https://t.me/test7385_bot) on Telegram.
+## Installation
 
-> Type `/help` to get instructions in chat.
-
-### Deploy Telegram Bot
+You can directly install using pip
 
 ``` bash
-rocks_deploy_bot
+pip install rocks_classifier
+```
+
+Install - Directly from Github (latest beta version)
+
+``` bash
+pip install git+https://github.com/udaylunawat/Whats-this-rock.git
 ```
 
 ### Download and process data
@@ -97,7 +109,18 @@ rocks_process_data  --config-dir configs \
 
 ### Train Model
 
-Run these commands
+Train model using default parameters in `configs/config.yaml`.
+
+``` bash
+rocks_train_model   --config-dir configs
+```
+
+You can try different models and parameters by editing
+`configs/config.yaml`, or you can override it by passing arguments like
+this:-
+
+By using Hydra it’s now much more easier to override parameters like
+this:-
 
 ``` bash
 rocks_train_model   --config-dir configs \
@@ -116,26 +139,13 @@ rocks_train_model   --config-dir configs \
                     trainable=False \
 ```
 
-You can try different models and parameters by editing
-`configs/config.yaml`.
-
-By using Hydra it’s now much more easier to override parameters like
-this
-
-``` bash
-rocks_train_model wandb.project=Whats-this-rock \
-                  dataset_id=[1,2] \
-                  epochs=50 \
-                  backbone=resnet
-```
-
 <p align="left">
 <img src="https://i.imgur.com/1nBpPC5.png" alt="result" width=100%/>
 </p>
 
 ### Wandb Sweeps (Hyperparameter Tuning)
 
-Edit configs/sweeps.yaml
+Edit `configs/sweep.yaml`
 
 ``` bash
 wandb sweep \
@@ -144,10 +154,23 @@ wandb sweep \
 configs/sweep.yaml
 ```
 
-This will return a command with \$sweepid
+This will return a command with \$sweepid, run it to start running
+sweeps!
 
 ``` bash
 wandb agent udaylunawat/Whats-this-rock/$sweepid
+```
+
+### Telegram Bot
+
+You can try the bot [here](https://t.me/test7385_bot) on Telegram.
+
+> Type `/help` to get instructions in chat.
+
+Or deploy it yourself
+
+``` bash
+rocks_deploy_bot
 ```
 
 ## Demo
@@ -158,147 +181,39 @@ wandb agent udaylunawat/Whats-this-rock/$sweepid
 
 ## Features
 
-<table border="0" class="left">
-<tr>
-<td>
-<b>\<style=‘font-size:37px’\>Features added</b>
-</td>
-<td>
-<b>\<style=‘font-size:37px’\>Features planned</b>
-</td>
-</tr>
-<tr>
-<td>
+& Things I’ve Experimented with
 
-- Wandb
+| `Feature`       |                                                                                            | `Feature`                  |                                                                                                                                                                                                                                                                                                                                                     |
+|-----------------|--------------------------------------------------------------------------------------------|----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Wandb`         | \- Experiment Tracking<br>- System Tracking<br>- Model Tracking<br>- Hyperparameter Tuning | `Datasets`                 | \- Dataset 1<br>- Dataset 2                                                                                                                                                                                                                                                                                                                         |
+| `Augmentation`  | \- Keras-CV<br>- MixUp<br>- CutMix<br>- Normal                                             | `Models`                   | \- ConvNextTiny<br>- Efficientnet<br>- Resnet101<br>- MobileNetv1<br>- MobileNetv2<br>- Xception                                                                                                                                                                                                                                                    |
+| `Optimisers`    | \- Adam<br>- Adamax<br>- SGD<br>- RMSProp                                                  | `LR Scheduler`             | \- [CosineDecay](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecay)<br>- [ExponentialDecay](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/ExponentialDecay)<br>- [CosineDecayRestarts](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecayRestarts). |
+| `Remove Images` | \- Duplicate Images<br>- Corrupt Images<br>- Bad Images<br>- Misclassified                 | `Configuration Management` | \- hydra<br>- ml-collections<br>- argparse<br>- google-fire                                                                                                                                                                                                                                                                                         |
+| `Generators`    | \- tf.data.DataSet<br>- ImageDataGenerator                                                 | `Deployment`               | \- Heroku<br>- Railway                                                                                                                                                                                                                                                                                                                              |
+| `Evaluation`    | \- Classification Report<br>- Confusion Matrix                                             | `GitHub Actions` (CICD)    | \- GitHub Super Linter<br>- Deploy to Telegram<br>- Deploy to Railway<br>- nbdev tests CI<br>- GitHub Pages (Documentation)                                                                                                                                                                                                                         |
+| `Linting`       | \- Flake8<br>- Pydocstyle                                                                  | `Telegram Bot`             | \- Greet<br>- Info<br>- Predict Image                                                                                                                                                                                                                                                                                                               |
+| `Formatting`    | \- Black<br>- yapf                                                                         | `Documentation`            | \- Code Description<br>- Code comments<br>- Source link<br>- Doclinks                                                                                                                                                                                                                                                                               |
+| `Badges`        | \- Build<br>- Issues<br>- Lint Codebase                                                    | `Docker`                   |                                                                                                                                                                                                                                                                                                                                                     |
+| `Publishing`    | \- PyPi                                                                                    |                            |                                                                                                                                                                                                                                                                                                                                                     |
 
-- Datasets
+## Planned Features
 
-  - 4 Datasets
-
-- Augmentation
-
-  - keras-cv
-  - Regular Augmentation
-
-- Sampling
-
-  - Oversampling
-  - Undersampling
-  - Class weights
-
-- Remove Corrupted Images
-
-- Try Multiple Optimizers (Adam, RMSProp, AdamW, SGD)
-
-- Generators
-
-  - TFDS datasets
-  - ImageDataGenerator
-
-- Models
-
-  - ConvNextTiny
-  - BaselineCNN
-  - Efficientnet
-  - Resnet101
-  - MobileNetv1
-  - MobileNetv2
-  - Xception
-
-- LRScheduleer, LRDecay
-
-  - Baseline without scheduler
-  - Step decay
-  - Cosine annealing
-  - Classic cosine annealing with bathc steps w/o restart
-
-- Model Checkpoint, Resume Training
-
-- Evaluation
-
-  - Confusion Matrix
-  - Classification Report
-
-- Deploy Telegram Bot
-
-  - Heroku - Deprecated
-  - Railway
-  - Show CM and CL in bot
-
-- Docker
-
-- GitHub Actions
-
-  - Deploy Bot when bot.py is updated.
-  - Lint code using GitHub super-linter
-
-- Configuration Management
-
-  - ml-collections
-  - Hydra
-
-- Performance improvement
-
-  - Convert to tf.data.Dataset
-
-- Linting & Formatting
-
-  - Black
-  - Flake8
-  - isort
-  - pydocstyle
-
-- Add Badges
-
-  - Linting
-
-- found the classes that the model is performing terribly on
-
-- nbdev
-
-- CI
-
-- documentation
-
-  </td>
-  <td>
-
-- [ ] Deploy to Huggingface spaces
-
-- [ ] Accessing the model through FastAPI (Backend)
-
-- [ ] Streamlit (Frontend)
-
-- [ ] convert models.py to Classes and more OOP style
-
-- [ ] Group Runs
-
-  - [ ] kfold cross validation
-
-- [ ] [WandB
-  Tables](https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&t=VRL-ZXzznXV_Hg2h7QnjuA)
-
-- [ ] find the long tail examples or hard examples,
-
-- [ ] Add Badges
-
-  - [ ] Railway
-
-  </td>
-
-</tr>
-</table>
+| Feature        |                                                                                                                              | Feature    |              |
+|----------------|------------------------------------------------------------------------------------------------------------------------------|------------|--------------|
+| `Deploy`       | \- HuggingFaces                                                                                                              | `Backend`  | \- FastAPI   |
+| `Coding Style` | \- Object Oriented                                                                                                           | `Frontend` | \- Streamlit |
+| `WandB`        | \- Group Runs<br>- [WandB Tables](https://twitter.com/ayushthakur0/status/1508962184357113856?s=21&t=VRL-ZXzznXV_Hg2h7QnjuA) |            |              |
+| `Badges`       | \- Railway                                                                                                                   |            |              |
 
 ## Technologies Used
 
-|                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                 |                                                                                                                                                                                                  |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [![Google Colab](https://img.shields.io/badge/Compute-Google%20Colab-F9AB00?logo=googlecolab&logoColor=fff&style=for-the-badge.png)](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing "Google collaboratory") | [![python-telegram-bot](https://img.shields.io/badge/ChatBot-Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=black.png)](https://github.com/python-telegram-bot/python-telegram-bot "Telegram Bot") | [![Railway](https://img.shields.io/badge/Deployment-Railway-131415?style=for-the-badge&logo=railway&logoColor=black.png)](https://railway.app "Railway")                                         |
-| [![Jupyter Notebook](https://img.shields.io/badge/Coding-jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=black)](https://jupyter.org "Jupyter")                                                                                   | [![Python](https://img.shields.io/badge/Language-python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54.png)](https://www.python.org/ "Python")                                                         | [![GitHub Actions](https://img.shields.io/badge/CI-github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=black)](https://github.com/features/actions "Github Actions") |
-| [![Weights & Biases](https://img.shields.io/badge/MLOps-Weights%20%26%20Biases-FFBE00?logo=weightsandbiases&logoColor=000&style=for-the-badge.png)](http://wandb.ai "Weights & Biases")                                                            | [![TensorFlow](https://img.shields.io/badge/ML_Framework-TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=black)](https://www.tensorflow.org/ "Tensorflow")                               | [![macOS](https://img.shields.io/badge/OS-mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0.png)](https://apple.com/macos "macOS")                                                 |
-| [![Docker](https://img.shields.io/badge/Container-docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=black)](http://docker.com "Docker")                                                                                               | [![Git](https://img.shields.io/badge/Version_Control-git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black)](https://git-scm.com "Git")                                                                | [![Hydra](https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&labelColor=gray)](http://hydra.cc "Hydra")                                                                     |
-| [![Black](https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&labelColor=gray)](http://github.com/psf/black "Black")                                                                                                     |                                                                                                                                                                                                                 |                                                                                                                                                                                                  |
+|                                                                                                                                                                                                                                                    |                                                                                                                                                                                                                 |                                                                                                                                                                                                  |     |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|
+| [![Google Colab](https://img.shields.io/badge/Compute-Google%20Colab-F9AB00?logo=googlecolab&logoColor=fff&style=for-the-badge.png)](https://colab.research.google.com/drive/1N1CIqdOKlJSJla5PU53Yn9KWSao47eMv?usp=sharing "Google collaboratory") | [![python-telegram-bot](https://img.shields.io/badge/ChatBot-Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=black.png)](https://github.com/python-telegram-bot/python-telegram-bot "Telegram Bot") | [![Railway](https://img.shields.io/badge/Deployment-Railway-131415?style=for-the-badge&logo=railway&logoColor=black.png)](https://railway.app "Railway")                                         |     |
+| [![Jupyter Notebook](https://img.shields.io/badge/Coding-jupyter-%23FA0F00.svg?style=for-the-badge&logo=jupyter&logoColor=black)](https://jupyter.org "Jupyter")                                                                                   | [![Python](https://img.shields.io/badge/Language-python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54.png)](https://www.python.org/ "Python")                                                         | [![GitHub Actions](https://img.shields.io/badge/CI-github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=black)](https://github.com/features/actions "Github Actions") |     |
+| [![Weights & Biases](https://img.shields.io/badge/MLOps-Weights%20%26%20Biases-FFBE00?logo=weightsandbiases&logoColor=000&style=for-the-badge.png)](http://wandb.ai "Weights & Biases")                                                            | [![TensorFlow](https://img.shields.io/badge/ML_Framework-TensorFlow-%23FF6F00.svg?style=for-the-badge&logo=TensorFlow&logoColor=black)](https://www.tensorflow.org/ "Tensorflow")                               | [![macOS](https://img.shields.io/badge/OS-mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0.png)](https://apple.com/macos "macOS")                                                 |     |
+| [![Docker](https://img.shields.io/badge/Container-docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=black)](http://docker.com "Docker")                                                                                               | [![Git](https://img.shields.io/badge/Version_Control-git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=black)](https://git-scm.com "Git")                                                                | [![Hydra](https://img.shields.io/badge/config-hydra1.1-89b8cd?style=for-the-badge&labelColor=gray)](http://hydra.cc "Hydra")                                                                     |     |
+| [![Black](https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge&labelColor=gray)](http://github.com/psf/black "Black")                                                                                                     |                                                                                                                                                                                                                 |                                                                                                                                                                                                  |     |
 
 <!-- ## Technologies Used
 ::: {layout-ncol=3}
