@@ -337,7 +337,6 @@ file for details.
 - [Dataset 2 - by
   salmaneunus](https://www.kaggle.com/datasets/salmaneunus/rock-classification)
 - nbdev inspiration - [tmabraham](https://github.com/tmabraham/UPIT)
-- 
 
 ## Support
 
