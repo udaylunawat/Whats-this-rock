@@ -11,14 +11,14 @@ __all__ = ['clean_data_dir', 'copy_configs_tocwd', 'find_filepaths', 'get_new_na
 # %% ../../notebooks/01_a_download_utils.ipynb 1
 _doc_ = """Utility function for downloading data."""
 
-# %% ../../notebooks/01_a_download_utils.ipynb 5
+# %% ../../notebooks/01_a_download_utils.ipynb 4
 import os
 import sys
+import time
 import imghdr
 import requests
 import shutil
 import splitfolders
-from time import time
 from typing import Optional
 
 import cv2
@@ -31,7 +31,7 @@ from PIL import Image
 from tensorflow.keras import applications, layers
 from tqdm import tqdm
 
-# %% ../../notebooks/01_a_download_utils.ipynb 6
+# %% ../../notebooks/01_a_download_utils.ipynb 5
 def clean_data_dir():
     """Clean all data directories except 0_raw."""
     dir_0 = "0_raw"
@@ -70,7 +70,7 @@ def clean_data_dir():
     for class_name in classes:
         os.makedirs(os.path.join("data", dir_2, class_name))
 
-# %% ../../notebooks/01_a_download_utils.ipynb 7
+# %% ../../notebooks/01_a_download_utils.ipynb 6
 def copy_configs_tocwd():
     """Copy configs directory from package to current directory."""
     if os.path.exists("configs"):
@@ -86,7 +86,7 @@ def copy_configs_tocwd():
                     os.path.join("configs", file_name),
                 )
 
-# %% ../../notebooks/01_a_download_utils.ipynb 8
+# %% ../../notebooks/01_a_download_utils.ipynb 7
 def find_filepaths(root_folder: str):
     """Recursively finds all files.
 
@@ -106,7 +106,7 @@ def find_filepaths(root_folder: str):
             filepaths.append(os.path.join(dirname, filename))
     return sorted(filepaths), len(filepaths)
 
-# %% ../../notebooks/01_a_download_utils.ipynb 9
+# %% ../../notebooks/01_a_download_utils.ipynb 8
 def get_new_name(dir_list: list) -> dict:
     """Return dict with old name and new name of files in multiple directories.
 
@@ -146,15 +146,18 @@ def get_new_name(dir_list: list) -> dict:
 
     return file_dict
 
-# %% ../../notebooks/01_a_download_utils.ipynb 10
+# %% ../../notebooks/01_a_download_utils.ipynb 9
 def move_to_processed():
     """
     Combine files with same subclass and moves them to the subclass under data/2_processed.
 
     Uses `get_new_name` to create new names of files and then rename them and copy to data/2_processed.
     """
-    dir1 = "data/1_extracted/dataset1"
-    dir2 = "data/1_extracted/dataset2"
+    time.sleep(5)
+    assert '1_extracted' in os.listdir('data')
+    assert all([dir in os.listdir('data/1_extracted/') for dir in ['dataset1', 'dataset2']])
+    dir1 = 'data/1_extracted/dataset1'
+    dir2 = 'data/1_extracted/dataset2'
     for d1, d2 in zip(sorted(os.listdir(dir1)), sorted(os.listdir(dir2))):
         path_dict = get_new_name([os.path.join(dir1, d1), os.path.join(dir2, d2)])
         print(
@@ -163,7 +166,7 @@ def move_to_processed():
         for old_path, new_path in path_dict.items():
             shutil.copy(old_path, new_path)
 
-# %% ../../notebooks/01_a_download_utils.ipynb 11
+# %% ../../notebooks/01_a_download_utils.ipynb 10
 def move_bad_files(txt_file, dest, text):
     """Move files in txt_file to dest.
 
@@ -196,7 +199,7 @@ def move_bad_files(txt_file, dest, text):
                 continue
     print(f"Moved {count} images to {dest}.")
 
-# %% ../../notebooks/01_a_download_utils.ipynb 12
+# %% ../../notebooks/01_a_download_utils.ipynb 11
 def timer_func(func):
     """Show the execution time of the function object passed.
 
@@ -207,15 +210,15 @@ def timer_func(func):
     """
 
     def wrap_func(*args, **kwargs):
-        t1 = time()
+        t1 = time.time()
         result = func(*args, **kwargs)
-        t2 = time()
+        t2 = time.time()
         print(f"Function {func.__name__!r} executed in {(t2-t1):.4f}s")
         return result
 
     return wrap_func
 
-# %% ../../notebooks/01_a_download_utils.ipynb 13
+# %% ../../notebooks/01_a_download_utils.ipynb 12
 @timer_func
 def remove_corrupted_images(
     s_dir: str, ext_list: list = ["jpg", "png", "jpeg", "gif", "bmp", "JPEG"]
@@ -298,7 +301,7 @@ def remove_corrupted_images(
     for rock_class in classes:
         remove_corrupted_from_dir(rock_class)
 
-# %% ../../notebooks/01_a_download_utils.ipynb 14
+# %% ../../notebooks/01_a_download_utils.ipynb 13
 def remove_unsupported_images(root_folder: str):
     """Remove unsupported images.
 
@@ -319,7 +322,7 @@ def remove_unsupported_images(root_folder: str):
             count += 1
     print(f"Removed {count} unsupported files.")
 
-# %% ../../notebooks/01_a_download_utils.ipynb 15
+# %% ../../notebooks/01_a_download_utils.ipynb 14
 def clean_images(cfg):
     """Remove bad, misclassified, duplicate, corrupted and unsupported images.
 
@@ -352,7 +355,7 @@ def clean_images(cfg):
     if cfg.remove_corrupted:
         remove_corrupted_images("data/2_processed")
 
-# %% ../../notebooks/01_a_download_utils.ipynb 16
+# %% ../../notebooks/01_a_download_utils.ipynb 15
 def sampling(cfg):
     """Oversamples/Undersample/No Sampling data into train, val, test.
 

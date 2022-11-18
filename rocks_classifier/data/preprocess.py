@@ -20,7 +20,16 @@ Performs the following:-
 # %% auto 0
 __all__ = ['process_data']
 
-# %% ../../notebooks/02_a_preprocess_data.ipynb 6
+# %% ../../notebooks/02_a_preprocess_data.ipynb 5
+import os
+import requests
+import subprocess
+import logging
+import hydra, omegaconf
+
+from .utils import *
+
+# %% ../../notebooks/02_a_preprocess_data.ipynb 9
 _doc_ = """Preprocess the extracted dataset, to be ready to trained.
 
 Performs the following:-
@@ -37,15 +46,6 @@ Performs the following:-
 6. Get count of files by class types.
 7. Handle Imbalance using Undersampling, Oversampling.
 """
-
-# %% ../../notebooks/02_a_preprocess_data.ipynb 10
-import os
-import requests
-import subprocess
-import logging
-import hydra, omegaconf
-
-from .utils import *
 
 # %% ../../notebooks/02_a_preprocess_data.ipynb 33
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
