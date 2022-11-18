@@ -45,6 +45,8 @@ website:
             icon: bug
             href: https://github.com/udaylunawat/Whats-this-rock/issues
     right:
+      - icon: house
+        href: https://udaylunawat.github.io
       - icon: twitter
         href: https://twitter.com/udaylunawat
       - icon: github
