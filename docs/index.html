@@ -195,6 +195,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
+    <a class="nav-link" href="https://udaylunawat.github.io"><i class="bi bi-house" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/udaylunawat"><i class="bi bi-twitter" role="img">
 </i> 
  </a>
@@ -413,7 +418,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>
 This project deploys a telegram bot that classifies rock images into 1 of 7 types.<br> <img src="https://i.imgur.com/cDrrfqF.jpg" alt="What's my name?" width="20%" align="right">
 </p>
-<p><img src="https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Lint%20Code%20Base.png" class="img-fluid" alt="GitHub Workflow Status"> <img src="https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="GitHub issues"> <a href="https://github.com/marketplace/actions/super-linter"><img src="https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg" class="img-fluid" alt="GitHub Super-Linter"></a></p>
+<p><img src="https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Lint%20Code%20Base.png" class="img-fluid" alt="GitHub Workflow Status"> <img src="https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Deploy%20to%20GitHub%20Pages/main?label=pages.png" class="img-fluid" alt="GitHub pages"> <img src="https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="GitHub issues"> <a href="https://github.com/marketplace/actions/super-linter"><img src="https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg" class="img-fluid" alt="GitHub Super-Linter"></a></p>
 <p><img src="https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="code-size"> <img src="https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="repo-size"> <img src="https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="top-language"></p>
 <p><img src="https://img.shields.io/badge/python-v3.8.0+-success.svg" class="img-fluid" alt="Python"> <img src="https://img.shields.io/badge/tensorflow-v2.9.0+-success.svg" class="img-fluid" alt="Tensorflow"></p>
 <p><a href="https://github.com/dwyl/esta/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" class="img-fluid" alt="contributions welcome"></a> <a href="http://hits.dwyl.com/udaylunawat/Whats-this-rock"><img src="https://hits.dwyl.com/udaylunawat/Whats-this-rock.svg?style=flat" class="img-fluid" alt="HitCount"></a></p>
@@ -491,7 +496,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>                    lr_decay_steps=300 <span class="dt">\</span></span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>                    trainable=False <span class="dt">\</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p align="left">
-<img src="https://i.imgur.com/SqYKjuB.png" alt="result" width="100%/">
+<a href="https://wandb.ai/udaylunawat/Whats-this-rock/runs/t3r63wnf?workspace=user-udaylunawat"> <img src="https://i.imgur.com/SqYKjuB.png" alt="result" width="100%/"> </a>
 </p>
 </section>
 <section id="wandb-sweeps-hyperparameter-tuning" class="level3">
@@ -550,7 +555,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <td><code>Wandb</code></td>
 <td>- Experiment Tracking<br>- System Tracking<br>- Model Tracking<br>- Hyperparameter Tuning</td>
 <td><code>Datasets</code></td>
-<td>- Dataset 1<br>- Dataset 2</td>
+<td>- <a href="https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals">Dataset 1</a><br>- <a href="https://www.kaggle.com/datasets/salmaneunus/rock-classification">Dataset 2</a></td>
 </tr>
 <tr class="even">
 <td><code>Augmentation</code></td>
@@ -726,16 +731,13 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 │&nbsp;&nbsp; ├── duplicate_images              &lt;- Duplicate images will be moved to this directory
 │&nbsp;&nbsp; ├── sample_images                 &lt;- Sample images for inference
 │&nbsp;&nbsp; ├── 0_raw                         &lt;- The original, immutable data dump.
-│&nbsp;&nbsp; ├── 1_external                    &lt;- Data from third party sources.
-│&nbsp;&nbsp; ├── 2_interim                     &lt;- Intermediate data that has been transformed.
-│&nbsp;&nbsp; └── 3_processed                   &lt;- The final, canonical data sets for modeling.
+│&nbsp;&nbsp; ├── 1_extracted                   &lt;- Extracted data.
+│&nbsp;&nbsp; ├── 2_processed                   &lt;- Intermediate data that has been transformed.
+│&nbsp;&nbsp; └── 3_tfds_dataset                &lt;- The final, canonical data sets for modeling.
 │
-├── notebooks                         &lt;- Jupyter notebooks. Naming convention is a number (for ordering),
-│                                        the creator's initials, and a short `-` delimited description, e.g.
-│                                        1.0-jqp-initial-data-exploration`.
+├── notebooks                         &lt;- Jupyter notebooks. Used to create the source code.
 │
-│
-├── rocks_classifier                  &lt;- Source code for use in this project.
+├── rocks_classifier                  &lt;- Source code used in this project.
 │   │
 │&nbsp;&nbsp; ├── data                          &lt;- Scripts to download or generate data
 │&nbsp;&nbsp; │&nbsp;&nbsp; ├── download.py
@@ -752,7 +754,6 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 │&nbsp;&nbsp; │&nbsp;&nbsp; ├── predict.py
 │&nbsp;&nbsp; │&nbsp;&nbsp; ├── train.py
 │&nbsp;&nbsp; │&nbsp;&nbsp; └── utils.py
-│   │
 │   │
 │   └── visualization                 &lt;- Scripts for visualizations
 │
@@ -785,7 +786,7 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 </section>
 <section id="license" class="level2">
 <h2 class="anchored" data-anchor-id="license">License</h2>
-<p>LinkFree is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
+<p>Whats-this-rock! is licensed under the MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</p>
 </section>
 <section id="credits" class="level2">
 <h2 class="anchored" data-anchor-id="credits">Credits</h2>

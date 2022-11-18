@@ -125,6 +125,11 @@ ul.task-list li input[type="checkbox"] {
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
+    <a class="nav-link" href="https://udaylunawat.github.io"><i class="bi bi-house" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/udaylunawat"><i class="bi bi-twitter" role="img">
 </i> 
  </a>
@@ -320,7 +325,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="get_prediction" class="level3">
 <h3 class="anchored" data-anchor-id="get_prediction">get_prediction</h3>
 <blockquote class="blockquote">
-<pre><code> get_prediction (file)</code></pre>
+<pre><code> get_prediction (file, cfg, class_names)</code></pre>
 </blockquote>
 <p>Get prediction for image.</p>
 <table class="table">
@@ -343,6 +348,16 @@ ul.task-list li input[type="checkbox"] {
 <td>Image file</td>
 </tr>
 <tr class="even">
+<td>cfg</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>class_names</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
 <td><strong>Returns</strong></td>
 <td><strong>str</strong></td>
 <td><strong>Prediction with class name and confidence %.</strong></td>
@@ -355,7 +370,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="load_model" class="level3">
 <h3 class="anchored" data-anchor-id="load_model">load_model</h3>
 <blockquote class="blockquote">
-<pre><code> load_model ()</code></pre>
+<pre><code> load_model (cfg)</code></pre>
 </blockquote>
 <hr>
 <p><a href="https://github.com/udaylunawat/Whats-this-rock/blob/main/rocks_classifier/models/predict.py#L52" target="_blank" style="float:right; font-size:smaller">source</a></p>
