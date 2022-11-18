@@ -1,12 +1,12 @@
 -e .
 
 -r requirements-dev.txt
-numpy
-wandb
-pandas
 hydra-core
-scikit-learn
-tensorflow-cpu; platform_machine != "arm64" or platform_system != "Darwin"
-tensorflow-addons
-python-telegram-bot
+numpy
 opencv-python-headless
+pandas
+python-telegram-bot
+scikit-learn
+tensorflow-addons
+tensorflow-cpu; platform_machine != "arm64" or platform_system != "Darwin"
+wandb
