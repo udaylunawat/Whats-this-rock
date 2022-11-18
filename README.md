@@ -11,6 +11,8 @@ of 7 types.</br>
 ![GitHub Workflow
 Status](https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Lint%20Code%20Base.png)
 ![GitHub
+pages](https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Deploy%20to%20GitHub%20Pages/main?label=pages.png)
+![GitHub
 issues](https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png)
 [![GitHub
 Super-Linter](https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
@@ -140,7 +142,9 @@ rocks_train_model   --config-dir configs \
 ```
 
 <p align="left">
+<a href='https://wandb.ai/udaylunawat/Whats-this-rock/runs/t3r63wnf?workspace=user-udaylunawat'>
 <img src="https://i.imgur.com/SqYKjuB.png" alt="result" width=100%/>
+</a>
 </p>
 
 ### Wandb Sweeps (Hyperparameter Tuning)
@@ -185,7 +189,7 @@ rocks_deploy_bot
 
 | `Feature`       |                                                                                            | `Feature`                  |                                                                                                                                                                                                                                                                                                                                                    |
 |-----------------|--------------------------------------------------------------------------------------------|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Wandb`         | \- Experiment Tracking<br>- System Tracking<br>- Model Tracking<br>- Hyperparameter Tuning | `Datasets`                 | \- Dataset 1<br>- Dataset 2                                                                                                                                                                                                                                                                                                                        |
+| `Wandb`         | \- Experiment Tracking<br>- System Tracking<br>- Model Tracking<br>- Hyperparameter Tuning | `Datasets`                 | \- [Dataset 1](https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals)<br>- [Dataset 2](https://www.kaggle.com/datasets/salmaneunus/rock-classification)                                                                                                                                               |
 | `Augmentation`  | \- Keras-CV<br>- MixUp<br>- CutMix<br>- Normal                                             | `Models`                   | \- ConvNextTiny<br>- Efficientnet<br>- Resnet101<br>- MobileNetv1<br>- MobileNetv2<br>- Xception                                                                                                                                                                                                                                                   |
 | `Optimisers`    | \- Adam<br>- Adamax<br>- SGD<br>- RMSProp                                                  | `LR Scheduler`             | \- [CosineDecay](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecay)<br>- [ExponentialDecay](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/ExponentialDecay)<br>- [CosineDecayRestarts](https://www.tensorflow.org/api_docs/python/tf/keras/optimizers/schedules/CosineDecayRestarts) |
 | `Remove Images` | \- Duplicate Images<br>- Corrupt Images<br>- Bad Images<br>- Misclassified                 | `Configuration Management` | \- hydra<br>- ml-collections<br>- argparse<br>-google-fire                                                                                                                                                                                                                                                                                         |
@@ -260,16 +264,13 @@ rocks_deploy_bot
     │   ├── duplicate_images              <- Duplicate images will be moved to this directory
     │   ├── sample_images                 <- Sample images for inference
     │   ├── 0_raw                         <- The original, immutable data dump.
-    │   ├── 1_external                    <- Data from third party sources.
-    │   ├── 2_interim                     <- Intermediate data that has been transformed.
-    │   └── 3_processed                   <- The final, canonical data sets for modeling.
+    │   ├── 1_extracted                   <- Extracted data.
+    │   ├── 2_processed                   <- Intermediate data that has been transformed.
+    │   └── 3_tfds_dataset                <- The final, canonical data sets for modeling.
     │
-    ├── notebooks                         <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                                        the creator's initials, and a short `-` delimited description, e.g.
-    │                                        1.0-jqp-initial-data-exploration`.
+    ├── notebooks                         <- Jupyter notebooks. Used to create the source code.
     │
-    │
-    ├── rocks_classifier                  <- Source code for use in this project.
+    ├── rocks_classifier                  <- Source code used in this project.
     │   │
     │   ├── data                          <- Scripts to download or generate data
     │   │   ├── download.py
@@ -286,7 +287,6 @@ rocks_deploy_bot
     │   │   ├── predict.py
     │   │   ├── train.py
     │   │   └── utils.py
-    │   │
     │   │
     │   └── visualization                 <- Scripts for visualizations
     │
@@ -326,8 +326,8 @@ Please include sample queries and their corresponding results.
 
 ## License
 
-LinkFree is licensed under the MIT License - see the [LICENSE](LICENSE)
-file for details.
+Whats-this-rock! is licensed under the MIT License - see the
+[LICENSE](LICENSE) file for details.
 
 ## Credits
 
