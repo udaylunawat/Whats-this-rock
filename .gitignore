@@ -161,3 +161,4 @@ _proc/*
 token
 .virtual_documents/*
 configs/*
+report/*
