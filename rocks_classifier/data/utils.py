@@ -153,9 +153,6 @@ def move_to_processed():
 
     Uses `get_new_name` to create new names of files and then rename them and copy to data/2_processed.
     """
-    time.sleep(5)
-    assert '1_extracted' in os.listdir('data')
-    assert all([dir in os.listdir('data/1_extracted/') for dir in ['dataset1', 'dataset2']])
     dir1 = 'data/1_extracted/dataset1'
     dir2 = 'data/1_extracted/dataset2'
     for d1, d2 in zip(sorted(os.listdir(dir1)), sorted(os.listdir(dir2))):
