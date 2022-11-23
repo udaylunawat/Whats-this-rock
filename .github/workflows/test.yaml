@@ -2,6 +2,16 @@ name: CI
 on:  [workflow_dispatch, pull_request, push]
 
 jobs:
-  test:
+  test-nbdev-sync:
     runs-on: ubuntu-latest
-    steps: [uses: fastai/workflows/nbdev-ci@master]
+    steps:
+      - uses: fastai/workflows/nbdev-ci@master]
+        with:
+          skip_test: true
+
+  test-notebooks:
+    needs: test-nbdev-sync
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test notebooks
+      run: nbdev_test --flags '' --n_workers 1 --do_print --timing
