@@ -8,12 +8,14 @@ jobs:
       - uses: fastai/workflows/nbdev-ci@master
         with:
           skip_test: true
-
-  test-notebooks:
+  download-data:
     needs: test-nbdev-sync
+    steps:
+    - name: Download and extract data.
+      run: rocks_download_data
+  test-notebooks:
+    needs: download-data
     runs-on: ubuntu-latest
     steps:
-    - name: download-data
-      run: rocks_download_data
     - name: Test notebooks
       run: nbdev_test --flags '' --do_print --timing
