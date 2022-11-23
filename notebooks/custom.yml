@@ -4,8 +4,8 @@ format:
   html:
     page-layout: full
     theme:
-      dark: [darkly, style-dark.scss]
-      light: [cosmo, style-light.scss]
+      dark: [cyborg, style-dark.scss]
+      light: [minty, style-light.scss] # https://bootswatch.com/cyborg/
 
     max-width: 100%
     css: styles.css
