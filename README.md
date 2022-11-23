@@ -301,6 +301,11 @@ rocks_deploy_bot
     │                                        generated with `pip freeze > requirements.txt`
     └── setup.py                          <- makes project pip installable (pip install -e .) so src can be imported
 
+# Learnings
+
+- [“Better data is better than better
+  models!”](https://youtu.be/yrtAoBr3iuQ?t=306)
+
 ## Bug / Feature Request
 
 If you find a bug (the site couldn’t handle the query and / or gave
@@ -329,11 +334,15 @@ Whats-this-rock! is licensed under the MIT License - see the
 
 ## Credits
 
+- [Jeremy Howard & Lex Fridman
+  Podcast](https://www.youtube.com/watch?v=J6XcP4JOHmk&t=3883s&ab_channel=LexFridman)
+- [Underfitted](https://youtu.be/yrtAoBr3iuQ?t=306) -
+  [Twitter](https://twitter.com/svpino)
+- nbdev inspiration - [tmabraham](https://github.com/tmabraham/UPIT)
 - [Dataset 1 - by Mahmoud
   Alforawi](https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals)
 - [Dataset 2 - by
   salmaneunus](https://www.kaggle.com/datasets/salmaneunus/rock-classification)
-- nbdev inspiration - [tmabraham](https://github.com/tmabraham/UPIT)
 
 ## Support
 
