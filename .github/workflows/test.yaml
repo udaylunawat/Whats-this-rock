@@ -1,5 +1,5 @@
 name: CI
-on:  [workflow_dispatch, pull_request, push]
+on: [workflow_dispatch, pull_request, push]
 
 jobs:
   test-nbdev-sync:
@@ -10,12 +10,13 @@ jobs:
           skip_test: true
   download-data:
     needs: test-nbdev-sync
+    runs-on: ubuntu-latest
     steps:
-    - name: Download and extract data.
-      run: rocks_download_data
+      - name: Download and extract data.
+        run: rocks_download_data
   test-notebooks:
     needs: download-data
     runs-on: ubuntu-latest
     steps:
-    - name: Test notebooks
-      run: nbdev_test --flags '' --do_print --timing
+      - name: Test notebooks
+        run: nbdev_test --flags '' --do_print --timing
