@@ -59,6 +59,7 @@ def clean_data_dir():
         "Sandstone",
     ]
     os.makedirs(os.path.join("data", dir_0), exist_ok=True)
+    print("Cleaning data dir...")
     for dir_name in dir_list:
         for root, dirs, files in os.walk(os.path.join("data", dir_name)):
             for f in files:
@@ -153,6 +154,8 @@ def move_to_processed():
 
     Uses `get_new_name` to create new names of files and then rename them and copy to data/2_processed.
     """
+    print(f"CWD {os.getcwd()}")
+    print(f"listdir:- {os.listdir('.')}")
     dir1 = 'data/1_extracted/dataset1'
     dir2 = 'data/1_extracted/dataset2'
     for d1, d2 in zip(sorted(os.listdir(dir1)), sorted(os.listdir(dir2))):
