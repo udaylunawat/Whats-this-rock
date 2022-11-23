@@ -13,5 +13,7 @@ jobs:
     needs: test-nbdev-sync
     runs-on: ubuntu-latest
     steps:
+    - name: download-data
+      run: rocks_download_data
     - name: Test notebooks
-      run: nbdev_test --flags '' --n_workers 1 --do_print --timing
+      run: nbdev_test --flags '' --do_print --timing
