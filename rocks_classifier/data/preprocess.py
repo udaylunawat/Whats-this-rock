@@ -50,7 +50,7 @@ Performs the following:-
 # %% ../../notebooks/02_a_preprocess_data.ipynb 33
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
 def process_data(cfg):
-    """Download dataset, removes unsupported and corrupted images, and splits data into train, val and test.
+    """Removes unsupported and corrupted images, and splits data into train, val and test.
 
     Steps -> `download_and_move_datasets` -> `move_to_processed` -> 'find_filepaths' -> `clean_images` -> `sampling`
 
