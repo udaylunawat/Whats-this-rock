@@ -17,7 +17,7 @@ import os
 import shutil
 import requests
 from .utils import timer_func, find_filepaths
-from .utils import clean_data_dir, copy_configs_tocwd
+from .utils import copy_configs_tocwd
 
 # %% ../../notebooks/01_b_download.ipynb 12
 class download_and_move:
@@ -55,7 +55,7 @@ class download_and_move:
         Uses `find_filepaths` to recursively find paths for all files in a directory.
         """
         copy_configs_tocwd()
-        clean_data_dir()
+        self.clean_data_dir()
         for dataset_id in self.data_dict:
             if self.archives_exist(dataset_id) and self.files_exists(dataset_id):
                 # if both zip files exist and are extracted
@@ -64,16 +64,58 @@ class download_and_move:
                 print(f"Total Files in dataset{dataset_id}:- {count}.\n")
             if not self.archives_exist(dataset_id):
                 # if zip files do not exist
-                print(f"Extracting dataset {dataset_id}...")
+                print(f"Downloading dataset {dataset_id}...")
                 self.download_file(dataset_id)
             if not self.files_exists(dataset_id):
                 # if zip files exists but they're not extracted
+                print(f"Extracting dataset {dataset_id}...")
                 self.extract_archive(f"data/0_raw/dataset{dataset_id}.zip")
                 shutil.move(
                     f'data/1_extracted/{self.data_dict[dataset_id]["folder_name"]}',
                     f"data/1_extracted/dataset{dataset_id}",
                 )
             self.move_subclasses_to_root_dir(dataset_id)
+
+
+    def clean_data_dir(self):
+        """Clean all data directories except 0_raw."""
+        dir_0 = "0_raw"
+        dir_1 = "1_extracted"
+        dir_2 = "2_processed"
+        dir_3 = "3_tfds_dataset"
+
+        dir_list = [
+            dir_1,
+            dir_2,
+            dir_3,
+            "corrupted_images",
+            "duplicate_images",
+            "misclassified_images",
+            "bad_images",
+        ]
+
+        classes = [
+            "Coal",
+            "Basalt",
+            "Granite",
+            "Marble",
+            "Quartzite",
+            "Limestone",
+            "Sandstone",
+        ]
+        os.makedirs(os.path.join("data", dir_0), exist_ok=True)
+        print("Cleaning data dir...")
+        for dir_name in dir_list:
+            for root, dirs, files in os.walk(os.path.join("data", dir_name)):
+                for f in files:
+                    os.unlink(os.path.join(root, f))
+                for d in dirs:
+                    shutil.rmtree(os.path.join(root, d), ignore_errors=True)
+            os.makedirs(os.path.join("data", dir_name), exist_ok=True)
+
+        for class_name in classes:
+            os.makedirs(os.path.join("data", dir_2, class_name))
+
 
     def download_file(self, dataset_id, dest_dir="data/0_raw/"):
         """Download and write file to destination directory."""
@@ -135,3 +177,4 @@ class download_and_move:
 def download_and_move_datasets():
     """Run the download and move datasets script."""
     download_and_move().run_scripts()
+    print("Download and move process finished!")
