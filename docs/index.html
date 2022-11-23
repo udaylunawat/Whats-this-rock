@@ -382,11 +382,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#planned-features" id="toc-planned-features" class="nav-link" data-scroll-target="#planned-features">Planned Features</a></li>
   <li><a href="#technologies-used" id="toc-technologies-used" class="nav-link" data-scroll-target="#technologies-used">Technologies Used</a></li>
   <li><a href="#directory-tree" id="toc-directory-tree" class="nav-link" data-scroll-target="#directory-tree">Directory Tree</a></li>
+  <li><a href="#learnings" id="toc-learnings" class="nav-link" data-scroll-target="#learnings">Learnings</a>
+  <ul>
   <li><a href="#bug-feature-request" id="toc-bug-feature-request" class="nav-link" data-scroll-target="#bug-feature-request">Bug / Feature Request</a></li>
   <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing">Contributing</a></li>
   <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
   <li><a href="#credits" id="toc-credits" class="nav-link" data-scroll-target="#credits">Credits</a></li>
   <li><a href="#support" id="toc-support" class="nav-link" data-scroll-target="#support">Support</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/udaylunawat/Whats-this-rock/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -418,7 +421,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>
 This project deploys a telegram bot that classifies rock images into 1 of 7 types.<br> <img src="https://i.imgur.com/cDrrfqF.jpg" alt="What's my name?" width="20%" align="right">
 </p>
-<p><img src="https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Lint%20Code%20Base.png" class="img-fluid" alt="GitHub Workflow Status"> <img src="https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Deploy%20to%20GitHub%20Pages/main?label=pages.png" class="img-fluid" alt="GitHub pages"> <img src="https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="GitHub issues"> <a href="https://github.com/marketplace/actions/super-linter"><img src="https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg" class="img-fluid" alt="GitHub Super-Linter"></a></p>
+<p><a href="https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml"><img src="https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml/badge.svg" class="img-fluid" alt="CI"></a> <img src="https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Deploy%20to%20GitHub%20Pages/main?label=GitHubPages.png" class="img-fluid" alt="GitHub pages"> <img src="https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="GitHub issues"> <!-- [![GitHub Super-Linter](https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter) --></p>
 <p><img src="https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="code-size"> <img src="https://img.shields.io/github/repo-size/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="repo-size"> <img src="https://img.shields.io/github/languages/top/udaylunawat/Whats-this-rock.png" class="img-fluid" alt="top-language"></p>
 <p><img src="https://img.shields.io/badge/python-v3.8.0+-success.svg" class="img-fluid" alt="Python"> <img src="https://img.shields.io/badge/tensorflow-v2.9.0+-success.svg" class="img-fluid" alt="Tensorflow"></p>
 <p><a href="https://github.com/dwyl/esta/issues"><img src="https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat" class="img-fluid" alt="contributions welcome"></a> <a href="http://hits.dwyl.com/udaylunawat/Whats-this-rock"><img src="https://hits.dwyl.com/udaylunawat/Whats-this-rock.svg?style=flat" class="img-fluid" alt="HitCount"></a></p>
@@ -770,6 +773,11 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 │                                        generated with `pip freeze &gt; requirements.txt`
 └── setup.py                          &lt;- makes project pip installable (pip install -e .) so src can be imported</code></pre>
 </section>
+<section id="learnings" class="level1">
+<h1>Learnings</h1>
+<ul>
+<li><a href="https://youtu.be/yrtAoBr3iuQ?t=306">“Better data is better than better models!”</a></li>
+</ul>
 <section id="bug-feature-request" class="level2">
 <h2 class="anchored" data-anchor-id="bug-feature-request">Bug / Feature Request</h2>
 <p>If you find a bug (the site couldn’t handle the query and / or gave undesired results), kindly open an issue <a href="https://github.com/udaylunawat/Whats-this-rock/issues">here</a> by including your search query and the expected result.</p>
@@ -791,9 +799,11 @@ This project deploys a telegram bot that classifies rock images into 1 of 7 type
 <section id="credits" class="level2">
 <h2 class="anchored" data-anchor-id="credits">Credits</h2>
 <ul>
+<li><a href="https://www.youtube.com/watch?v=J6XcP4JOHmk&amp;t=3883s&amp;ab_channel=LexFridman">Jeremy Howard &amp; Lex Fridman Podcast</a></li>
+<li><a href="https://youtu.be/yrtAoBr3iuQ?t=306">Underfitted</a> - <a href="https://twitter.com/svpino">Twitter</a></li>
+<li>nbdev inspiration - <a href="https://github.com/tmabraham/UPIT">tmabraham</a></li>
 <li><a href="https://www.kaggle.com/datasets/mahmoudalforawi/igneous-metamorphic-sedimentary-rocks-and-minerals">Dataset 1 - by Mahmoud Alforawi</a></li>
 <li><a href="https://www.kaggle.com/datasets/salmaneunus/rock-classification">Dataset 2 - by salmaneunus</a></li>
-<li>nbdev inspiration - <a href="https://github.com/tmabraham/UPIT">tmabraham</a></li>
 </ul>
 </section>
 <section id="support" class="level2">
@@ -805,6 +815,7 @@ Walt might be the one who knocks <br> but Hank is the one who rocks. <br>
 </p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
