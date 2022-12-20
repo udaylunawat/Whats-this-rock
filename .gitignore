@@ -162,3 +162,4 @@ token
 .virtual_documents/*
 configs/*
 report/*
+*.DS_Store
