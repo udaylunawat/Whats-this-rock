@@ -1,6 +1,8 @@
-from pkg_resources import parse_version
+import platform
 from configparser import ConfigParser
+from pkg_resources import parse_version
 import setuptools
+
 assert parse_version(setuptools.__version__)>=parse_version('36.2')
 
 # note: all settings are in settings.ini; edit there, not here
@@ -30,6 +32,13 @@ min_python = cfg['min_python']
 lic = licenses.get(cfg['license'].lower(), (cfg['license'], None))
 dev_requirements = (cfg.get('dev_requirements') or '').split()
 
+platform_machine = platform.machine()
+platform_system = platform.system()
+if platform_machine == "arm64" and platform_system == "Darwin":
+    tensorfow_req = ['tensorflow-macos==2.9', 'tensorflow-metal']
+else:
+    tensorfow_req = ['tensorflow']
+
 setuptools.setup(
     name = cfg['lib_name'],
     license = lic[0],
@@ -42,13 +51,11 @@ setuptools.setup(
     packages = setuptools.find_packages(),
     include_package_data = True,
     package_data={'': ['*.txt', '*.yaml', '*.py',]},
-    install_requires = requirements,
-    extras_require={'dev': dev_requirements,
-                    'gpu': ['tensorflow-gpu'],
-                    'cpu': ['tensorflow']},
+    install_requires = requirements + tensorfow_req,
+    extras_require={ 'dev': dev_requirements },
     dependency_links = cfg.get('dep_links','').split(),
     python_requires  = '>=' + cfg['min_python'],
-    long_description = open('README.md').read(),
+    long_description = open('README.md', encoding="utf8").read(),
     long_description_content_type = 'text/markdown',
     zip_safe = False,
     entry_points = {
@@ -56,5 +63,3 @@ setuptools.setup(
         'nbdev': [f'{cfg.get("lib_path")}={cfg.get("lib_path")}._modidx:d']
     },
     **setup_cfg)
-
-

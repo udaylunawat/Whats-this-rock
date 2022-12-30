@@ -78,7 +78,6 @@ class download_and_move:
                 )
             self.move_subclasses_to_root_dir(dataset_id)
 
-
     def clean_data_dir(self):
         """Clean all data directories except 0_raw."""
         dir_0 = "0_raw"
@@ -117,7 +116,6 @@ class download_and_move:
 
         for class_name in classes:
             os.makedirs(os.path.join("data", dir_2, class_name))
-
 
     def download_file(self, dataset_id, dest_dir="data/0_raw/"):
         """Download and write file to destination directory."""

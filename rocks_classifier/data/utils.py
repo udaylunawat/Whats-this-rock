@@ -116,8 +116,8 @@ def move_to_processed():
     """
     print(f"CWD {os.getcwd()}")
     print(f"listdir:- {os.listdir('.')}")
-    dir1 = 'data/1_extracted/dataset1'
-    dir2 = 'data/1_extracted/dataset2'
+    dir1 = "data/1_extracted/dataset1"
+    dir2 = "data/1_extracted/dataset2"
     for d1, d2 in zip(sorted(os.listdir(dir1)), sorted(os.listdir(dir2))):
         path_dict = get_new_name([os.path.join(dir1, d1), os.path.join(dir2, d2)])
         print(
@@ -369,7 +369,7 @@ def sampling(cfg):
             seed=cfg.seed,
             move=False,
         )
-    assert len(os.listdir("data/3_tfds_dataset")) == 3
+    # assert len(os.listdir("data/3_tfds_dataset")) == 3
     print("\n")
 
 

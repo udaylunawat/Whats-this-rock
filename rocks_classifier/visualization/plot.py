@@ -10,7 +10,11 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import (
+    classification_report,
+    confusion_matrix,
+    ConfusionMatrixDisplay,
+)
 
 # %% ../../notebooks/04_visualization.ipynb 2
 def plotly_confusion_matrix(labels, y, _y):
@@ -96,7 +100,6 @@ def plotly_confusion_matrix(labels, y, _y):
     fig.show()
     return fig
 
-
 # %% ../../notebooks/04_visualization.ipynb 3
 def get_classification_report(true_categories, predicted_categories, labels):
     """Print Classification Report, and return formatted report to log to wandb
@@ -114,19 +117,25 @@ def get_classification_report(true_categories, predicted_categories, labels):
     -------
     dict
         Classification report dict
-    """    
+    """
     # Classification Report
-    print(classification_report(
-        true_categories,
-        predicted_categories,
-        labels=[i for i in range(7)],  # TODO: Convert to class, and add num_classes instead of 7 from cfg
-        target_names=labels,
-        output_dict=False,
-    ))
+    print(
+        classification_report(
+            true_categories,
+            predicted_categories,
+            labels=[
+                i for i in range(7)
+            ],  # TODO: Convert to class, and add num_classes instead of 7 from cfg
+            target_names=labels,
+            output_dict=False,
+        )
+    )
     cl_report = classification_report(
         true_categories,
         predicted_categories,
-        labels=[i for i in range(7)],  # TODO: Convert to class, and add num_classes instead of 7 from cfg
+        labels=[
+            i for i in range(7)
+        ],  # TODO: Convert to class, and add num_classes instead of 7 from cfg
         target_names=labels,
         output_dict=True,
     )
@@ -153,7 +162,7 @@ def get_confusion_matrix(true_categories, predicted_categories, labels):
     array
         Confusion matrix array
     """
-    
+
     # Create confusion matrix and normalizes it over predicted (columns)
     result = confusion_matrix(true_categories, predicted_categories, normalize="pred")
     disp = ConfusionMatrixDisplay(confusion_matrix=result, display_labels=labels)

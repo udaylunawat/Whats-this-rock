@@ -66,15 +66,14 @@ def handle_photo(update, context):
     file = context.bot.get_file(update.message.photo[-1].file_id)
     update.message.reply_text(get_prediction(file))
 
-
 # %% ../notebooks/05_bot.ipynb 4
 def deploy_bot():
-    if 'TELEGRAM_TOKEN' in os.environ:
+    if "TELEGRAM_TOKEN" in os.environ:
         TOKEN = os.environ["TELEGRAM_TOKEN"]
     else:
-        f = open('secrets.json')
+        f = open("secrets.json")
         secrets = json.load(f)
-        TOKEN = secrets['TELEGRAM_TOKEN']
+        TOKEN = secrets["TELEGRAM_TOKEN"]
     updater = Updater(TOKEN, use_context=True)
     bot = updater.bot
     dp = updater.dispatcher
