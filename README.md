@@ -8,11 +8,11 @@ of 7 types.</br>
 <img src="https://i.imgur.com/cDrrfqF.jpg" alt="What's my name?" width=20% align="right"/>
 </p>
 
-[![CI](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml/badge.svg)](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml)
+[![CI](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml/badge.svg)](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml) ![GitHub
+issues](https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png)
 <!-- ![GitHub
 pages](https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Deploy%20to%20GitHub%20Pages/main?label=GitHubPages.png) -->
-![GitHub
-issues](https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png)
+
 <!-- [![GitHub Super-Linter](https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter) -->
 
 ![code-size](https://img.shields.io/github/languages/code-size/udaylunawat/Whats-this-rock.png)
