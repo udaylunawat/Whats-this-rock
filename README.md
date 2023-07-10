@@ -9,8 +9,8 @@ of 7 types.</br>
 </p>
 
 [![CI](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml/badge.svg)](https://github.com/udaylunawat/Whats-this-rock/actions/workflows/test.yaml)
-![GitHub
-pages](https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Deploy%20to%20GitHub%20Pages/main?label=GitHubPages.png)
+<!-- ![GitHub
+pages](https://img.shields.io/github/workflow/status/udaylunawat/Whats-this-rock/Deploy%20to%20GitHub%20Pages/main?label=GitHubPages.png) -->
 ![GitHub
 issues](https://img.shields.io/github/issues-raw/udaylunawat/Whats-this-rock.png)
 <!-- [![GitHub Super-Linter](https://github.com/nvuillam/npm-groovy-lint/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter) -->
